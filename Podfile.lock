@@ -1,0 +1,35 @@
+PODS:
+  - Cache (5.3.0)
+  - Charts (3.3.0):
+    - Charts/Core (= 3.3.0)
+  - Charts/Core (3.3.0)
+  - CoreGPX (0.8.0)
+  - CoreStore (6.3.1)
+  - SnapKit (5.0.0)
+
+DEPENDENCIES:
+  - Cache
+  - Charts
+  - CoreGPX
+  - CoreStore (~> 6.3.1)
+  - SnapKit (~> 5.0.0)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Charts
+    - CoreStore
+    - SnapKit
+  trunk:
+    - Cache
+    - CoreGPX
+
+SPEC CHECKSUMS:
+  Cache: 48762993ec44e1d93483c4d4a13edd18452326f4
+  Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
+  CoreGPX: 7d1cd0caafc0037dd19d6e2070b427f9d386dbd9
+  CoreStore: 1ce7b77a95f0939d90b2d1e04e66a4a5bc1614d7
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
+
+PODFILE CHECKSUM: f70b509dcd2b5726c27ffecedc13ac3f890453f5
+
+COCOAPODS: 1.8.0
