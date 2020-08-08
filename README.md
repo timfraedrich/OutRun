@@ -25,7 +25,7 @@ You want to make this app even better, not problem! There are lots of ways you c
 
 * **Share this project.** The simplest way of contributing is by sharing this project with your friends and family. Once more people see that it exists, it is more likely to get support and people interested and capable of adding to it.
 * **Report Issues.** If you see some parts of the app not working as expected, if you want to give any kind of feedback or if you just have a question you can submit an issue on the [issue page](https://github.com/timfraedrich/OutRun/issues) of this project.
-* **Write Code.** And then there is the standard way of contributing to an open-source project. You can always write code that advances the app. To see how to contribute look at the [Contribution Guidelines](https://github.com/timfraedrich/OutRun/CONTRIBUTING.md).
+* **Write Code.** And then there is the standard way of contributing to an open-source project. You can always write code that advances the app. To see how to contribute look at the [Contribution Guidelines](https://github.com/timfraedrich/OutRun/blob/dev/CONTRIBUTING.md).
 
 ## License
 
