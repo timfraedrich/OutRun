@@ -40,7 +40,7 @@ extension Double {
      */
     func rounded(decimalPlaces: Int = 0, rule: FloatingPointRoundingRule) -> Double {
         
-        let roundingFactor = Double(10^decimalPlaces)
+        let roundingFactor = Double(pow(10, Double(decimalPlaces)))
         
         return ( self * roundingFactor ).rounded(rule) / roundingFactor
         
