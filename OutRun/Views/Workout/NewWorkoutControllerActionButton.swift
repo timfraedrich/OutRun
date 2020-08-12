@@ -59,6 +59,11 @@ class NewWorkoutControllerActionButton: UIView {
             make.right.equalTo(stopButton.snp.left).offset(-10)
             make.width.equalTo(pauseOrContinueButton.snp.height)
         }
+        
+        self.startButton.isEnabled = false
+        self.startButton.isUserInteractionEnabled = false
+        self.stopButton.isHidden = true
+        self.pauseOrContinueButton.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -86,6 +91,8 @@ class NewWorkoutControllerActionButton: UIView {
         switch (lastStatus, status) {
         case (.waiting, .ready), (.ready, .waiting):
             self.startButton.backgroundColor = status == .waiting ? .gray : .accentColor
+            self.startButton.isEnabled = status == .ready
+            self.startButton.isUserInteractionEnabled = status == .ready
         case (.recording, .paused), (.paused, .recording), (.autoPaused, .paused):
             self.pauseOrContinueButton.setImage(status == .paused ? .play : .pause, for: .normal)
         case (.recording, .ready), (.paused, .ready), (.autoPaused, .ready), (.ready, .recording):
@@ -108,12 +115,13 @@ class NewWorkoutControllerActionButton: UIView {
         
     }
     
-    func baseButton(withTitle title: String, backgroundColor: UIColor = .gray, selector: Selector) -> UIButton {
+    private func baseButton(withTitle title: String, backgroundColor: UIColor = .gray, selector: Selector) -> UIButton {
         let button = UIButton()
         button.backgroundColor = backgroundColor
         button.setTitle(title, for: .normal)
+        button.setTitle("...", for: .disabled)
         button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.lightGray, for: .focused)
+        button.setTitleColor(.lightGray, for: .disabled)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         button.layer.cornerRadius = 20
         button.addTarget(self, action: selector, for: .touchUpInside)
