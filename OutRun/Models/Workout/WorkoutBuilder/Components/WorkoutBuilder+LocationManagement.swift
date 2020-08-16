@@ -110,7 +110,7 @@ extension WorkoutBuilder {
                 
                 self.averageAccuracy = ( self.averageAccuracy * globalCount + averageAccuracy * localCount ) / ( globalCount + localCount )
                 
-                self.desiredAccuracy = averageAccuracy < 20 ? 20 : self.averageAccuracy.rounded(decimalPlaces: 10, rule: .up)
+                self.desiredAccuracy = averageAccuracy < 20 ? 20 : self.averageAccuracy.rounded(decimalPlaces: -1, rule: .up)
                 
             }
             
