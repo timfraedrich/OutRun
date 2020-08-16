@@ -57,8 +57,9 @@ extension WorkoutBuilder {
                         
                     } else {
                         
-                        let autoPause = AutoPause(startDate: predictedStartDate, endDate: timestamp)
-                        detectedAutoPauses.append(autoPause)
+                        if let autoPause = AutoPause(start: predictedStartDate, end: timestamp) {
+                            detectedAutoPauses.append(autoPause)
+                        }
                         self.currentPredictedStartDate = nil
                         
                     }
@@ -119,8 +120,9 @@ extension WorkoutBuilder {
             if autoPauses.last?.endDate == endDate {
                 
                 let lastPause = autoPauses.removeLast()
-                let newPause = AutoPause(startDate: lastPause.startDate, endDate: timestamp)
-                autoPauses.append(newPause)
+                if let newPause = AutoPause(start: lastPause.startDate, end: timestamp) {
+                    autoPauses.append(newPause)
+                }
                 self.detectedAutoPauses = autoPauses
                 
             } else {
@@ -142,8 +144,9 @@ extension WorkoutBuilder {
             
             if let predictedStartDate = self.currentPredictedStartDate, predictedStartDate.distance(to: endDate) > 3 {
                 
-                let autoPause = AutoPause(startDate: predictedStartDate, endDate: endDate)
-                tempAutoPauses.append(autoPause)
+                if let autoPause = AutoPause(start: predictedStartDate, end: endDate) {
+                    tempAutoPauses.append(autoPause)
+                }
                 
             }
             
@@ -230,8 +233,9 @@ extension WorkoutBuilder {
                 
                 if self.isManuallyPaused, let startDate = self.currentPredictedStartDate {
                     let endDate = timestamp.addingTimeInterval(-0.01)
-                    let autoPause = AutoPause(startDate: startDate, endDate: endDate)
-                    self.detectedAutoPauses.append(autoPause)
+                    if let autoPause = AutoPause(start: startDate, end: endDate) {
+                        self.detectedAutoPauses.append(autoPause)
+                    }
                     self.currentPredictedStartDate = nil
                 }
                 

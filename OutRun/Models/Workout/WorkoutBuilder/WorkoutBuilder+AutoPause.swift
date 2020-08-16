@@ -32,14 +32,14 @@ extension WorkoutBuilder {
         /**
          Combining two instances of the AutoPause object into one
          - parameter with: the `AutoPause` object to merge
-         - returns: one `AutoPause` instance with the earliest start date and the latest end date of the provided and `self`
+         - returns: one `AutoPause` instance with the earliest start date and the latest end date of the provided and `self`; if the initialisation with the new dates fails `self` will be returned
         */
         func merge(with anotherPause: AutoPause) -> AutoPause {
             
             let commonStart = startDate < anotherPause.startDate ? startDate : anotherPause.startDate
             let commonEnd = endDate > anotherPause.endDate ? endDate : anotherPause.endDate
             
-            return AutoPause(startDate: commonStart, endDate: commonEnd)
+            return AutoPause(start: commonStart, end: commonEnd) ?? self
             
         }
         
@@ -64,6 +64,22 @@ extension WorkoutBuilder {
             let endInterval = self.endDate.distance(to: date)
             
             return startInterval...endInterval
+            
+        }
+        
+        /**
+         Initialises an `AutoPause` object with the provided datesif the start is earlier than the end
+         - parameter start: the start date of the automatic pause
+         - parameter end: the end date of the automatic pause
+         */
+        init?(start: Date, end: Date) {
+            
+            guard start < end else {
+                return nil
+            }
+            
+            self.startDate = start
+            self.endDate = end
             
         }
         

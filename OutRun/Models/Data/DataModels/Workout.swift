@@ -67,14 +67,22 @@ extension Workout: CustomStringConvertible {
         }
         for pauseEvent in pauseEvents {
             let pauseInterval = interval(pauseEvent.startDate.value)
-            let range: ClosedRange<Double> = {
+            
+            let endInterval: TimeInterval = {
                 if !resumeEvents.isEmpty {
                     let resumeEvent = resumeEvents.removeFirst()
-                    return pauseInterval...interval(resumeEvent.startDate.value)
+                    return interval(resumeEvent.startDate.value)
                 } else {
-                    return pauseInterval...interval(self.endDate.value)
+                    return interval(self.endDate.value)
                 }
             }()
+            
+            guard pauseInterval < endInterval else {
+                continue
+            }
+            
+            let range = pauseInterval...endInterval
+            
             pauseRanges.append(range)
         }
         return pauseRanges
