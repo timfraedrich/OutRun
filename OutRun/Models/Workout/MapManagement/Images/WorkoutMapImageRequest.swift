@@ -27,13 +27,13 @@ class WorkoutMapImageRequest: Equatable {
     let highPriority: Bool
     var completion: (Bool, UIImage?) -> Void
     
-    var cacheIdentifier: String? {
+    func cacheIdentifier(forDarkAppearance usesDarkAppearance: Bool = Config.isDarkModeEnabled) -> String? {
         guard let uuid = workoutUUID else {
             return nil
         }
         let id = String(describing: uuid)
         let size = self.size.identifier
-        let appearance = Config.isDarkModeEnabled ? "dark" : "light"
+        let appearance = usesDarkAppearance ? "dark" : "light"
         return id + "_" + size + "_" + appearance
     }
     

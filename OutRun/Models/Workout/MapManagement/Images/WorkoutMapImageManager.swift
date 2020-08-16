@@ -40,7 +40,7 @@ enum WorkoutMapImageManager {
     /// - Parameter request: An instance of WorkoutMapImageRequest indicating the type of image being requested
     public static func execute(_ request: WorkoutMapImageRequest) {
         
-        if let id = request.cacheIdentifier, let image = CustomImageCache.mapImageCache.getMapImage(for: id) {
+        if let id = request.cacheIdentifier(), let image = CustomImageCache.mapImageCache.getMapImage(for: id) {
             request.completion(true, image)
             return
         }
@@ -80,8 +80,8 @@ enum WorkoutMapImageManager {
         
         let imageUsesDarkMode = Config.isDarkModeEnabled
         let completion: (Bool, UIImage?) -> Void = { (success, image) in
+            requestQueue.remove(request)
             DispatchQueue.main.async {
-                requestQueue.remove(request)
                 request.completion(success, image)
                 executeNextInQueue()
             }
@@ -137,12 +137,18 @@ enum WorkoutMapImageManager {
                             let resultImage = UIGraphicsGetImageFromCurrentImageContext()
                             UIGraphicsEndImageContext()
                             
-                            if let image = resultImage, let id = request.cacheIdentifier {
+                            if let image = resultImage, let id = request.cacheIdentifier(forDarkAppearance: imageUsesDarkMode) {
                                 CustomImageCache.mapImageCache.set(mapImage: image, for: id)
                             }
                             
                             DispatchQueue.main.async {
+                                
                                 completion(true, resultImage)
+                                
+                                if Config.isDarkModeEnabled != imageUsesDarkMode {
+                                    self.requestQueue.add(request)
+                                }
+                                
                             }
                             
                         } else {
