@@ -38,7 +38,7 @@ enum Config {
     }
     
     static var changeLogs: [String:String] = [
-        "1.2" : LS("ChangeLog_1.2")
+        "1.2.1" : LS("ChangeLog_1.2.1")
     ]
     
     static var isDarkModeEnabled: Bool {

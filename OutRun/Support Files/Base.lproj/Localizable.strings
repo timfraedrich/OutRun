@@ -377,31 +377,16 @@
 // MARK: ChangeLog
 
 "ChangeLog" = "Changelog";
-"ChangeLog_1.2" = "It has been way too long since the last release, many of you have reached out and even asked if the project will still be continued, and I'm glad to be able to share some very exciting news regarding that.
+"ChangeLog_1.2.1" = "This release only contains a few critical bug fixes, which needed to be fixed fast.
 
-OutRun was never a project for profit, I always just wanted a simple fitness tracker that just does its job and does not need me to hand over all my data to some random company. That is why I decided to make OutRun not only free, but also open-source from this day on.
+Specifically I am talking about:
 
-Thank you all so much for your support, I really could not have done it without you and I hope now that the app is free you will be able to recommend it to even more people.
+- way too long waiting times when wanting to record a workout due to a rounding error in the apps logic
+- app crashes because of inconsistencies in the data
+- map views having the wrong appearance
+- an alert talking about there being an error in the logic supposed to record the workouts, even though that logic worked just fine
 
-
-But now let's get into what changed in this update:
-
-- You can now finally pause a workout if you want to take a break and in addition to that the app will also automatically pause if it detects that you are not moving. This was a pretty highly requested feature, so I hope you will enjoy it.
-
-- When finishing a workout you will now get the ability to continue it through a neat little dialog, which will also enable you to discard or save the workout (the latter happening automatically after a certain time).
-
-- There is a share feature now, which you can use to share individual workouts as OutRun-Backups or GPX-file.
-
-- Starting a workout is now faster, because you will not be asked what kind of workout you want to record anymore. To get the old dialog you can still long-press the plus button on the main screen, but you can also just tap the type on the recording screen and even change it after you started the workout. The default type of workout to record can be set in settings.
-
-- Two more workout types were added: OutRun now also supports hiking and skating
-
-- When editing non-essential information like a comment for a workout there now will not be a dialog that it could be fake anymore, this was due to the mechanism behind workout editing and is not fixed
-
-one last thing:
-
-- I hope I finally got to fix the crashing issue a number of people were having, at least sort of. The crashes were due to the map on the recording screen drawing too much performance. People affected by this problem can now just turn the map off in settings to prevent those crashes until a permanent solution is found.
-
+And that is it when it comes to changes in this version.
 
 If you have any questions or feedback, feel free to reach out at outrun@tadris.de.
 

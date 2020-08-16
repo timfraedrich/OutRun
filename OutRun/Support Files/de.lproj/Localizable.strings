@@ -367,31 +367,16 @@
 // MARK: ChangeLog
 
 "ChangeLog" = "Changelog";
-"ChangeLog_1.2" = "Der letzte Release liegt leider schon so lange zurück, dass ich schon gefragt wurde, ob das Projekt noch weitergeführt wird, und nun bin ich froh dazu sehr gute Nachrichten teilen zu können.
+"ChangeLog_1.2" = "Diese Version enthält nur einige Fehlerbehebungen, die schnell beseitigt werden mussten, da sie die Nutzung der App beeinträchtigen.
 
-OutRun war nie dazu bestimmt finanziell erfolgreich zu werden. Ich wollte lediglich einen einfach Fitness-Tracker, der seinen Job macht und meien Daten nicht einfach mit ihrend einer Firma teilt. Deshalb habe ich mich dazu entschlossen OutRun von nun an nicht nur kostenfrei, sondern auch open-source zu machen.
+Genau rede ich über folgendes:
 
-Ich danke wirklich Jedem, der mich bis hier her unterstütz hat. Ohne so viel Unterstützung hätte ich das nie geschafft und ich hoffe, dass ihr sie jetzt, da die App kostenfrei ist, an noch mehr Leute weiterempfehlen könnt.
+- viel zu lange Ladezeit wenn man ein Workout aufnehmen möchte, weil es einen Rundungsfehler in der Applogik gab
+- Appabstürze aufgrund von Widersprüchen in den Daten
+- Kartenbilder mit falschem Aussehen
+- ein Dialog, der darüber redet, es gäbe einen Fehler in der Logik, die das Workout aufnehmen soll, obwohl die Logik vollkommen plangemäß funktioniert hat
 
-
-Aber nun zu den Sachen, die sich in dieser Version verändert haben:
-
-- Man kann nun endlich ein Workout pausieren, wenn man mal eine Pause machen möchte und zusätzlich macht die App auch automatisch eine Pause, wenn sie merkt, dass man sich nicht bewegt. Das war eine sehr oft gewünschte Funktion, ich hoffe sie gefällt euch.
-
-- Nachdem man ein Workout abgeschlossen hat, hat man jetzt die Möglichkeit dieses weiter zu führen.
-
-- Das Teilen eines einzelnen Workouts ist nun möglich, sowohl als OutRun-Backup, als auch als GPX-Datei
-
-- Ein Workout zu starten geht nun schneller, weil es nun einen Standardtypen gibt und man andere entweder durch langes Drücken auf den Plus-Knopf oder durch Ändern des Workouttypen im Aufnahmebildschirm wählen kann.
-
-- Es gibt nun zwei neue Workouttypen: Wandern und Skaten
-
-- Beim Bearbeiten von Workouts werden diese nicht mehr als potenziell gefälscht angezeigt, wenn man Daten wie zum Beispiel den Kommentar ändert.
-
-und zum Schluss noch etwas:
-
-- I hoffe ich konnte mit diesem Update endlich die Abstürze beheben, die Einige beim Aufnehmen haben. Leute, die von diesem Problem betroffen waren, können nun in den Einstellungen einfach die dafür verantwortliche Karte, während des Aufnehmens ausstellen, bis ich eine permanente Lösung gefunden habe.
-
+Das war auch schon alles, was sich in dieser Version verändert hat.
 
 Solltest du noch Fragen oder Feedback haben, dann schreib mir doch unter outrun@tadris.de.
 
