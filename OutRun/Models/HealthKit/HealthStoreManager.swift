@@ -70,6 +70,10 @@ enum HealthStoreManager {
         }
     }
     
+    static func authorizationStatus(for type: HKObjectType) -> HKAuthorizationStatus {
+        return HealthStoreManager.healthStore.authorizationStatus(for: type)
+    }
+    
     // MARK: Save Health Workout
     static func saveHealthWorkout(forWorkout workout: Workout, completion: @escaping (Bool, HKWorkout?) -> Void) {
         
@@ -117,41 +121,60 @@ enum HealthStoreManager {
                     )
                     
                     var samplesToAdd = [HKSample]()
-                    
-                    if [.running, .walking, .cycling].contains(tempWorkout.realWorkoutType) {
-                        let distanceSample = HKQuantitySample(
-                            type: (tempWorkout.realWorkoutType == .cycling ? objectTypeDistanceCycling : objectTypeDistanceWalkingRunning),
-                            quantity: distanceQuantity,
-                            start: startDate,
-                            end: endDate,
-                            device: HKDevice.local(),
-                            metadata: nil
-                        )
-                        samplesToAdd.append(distanceSample)
+                    if tempWorkout.realWorkoutType == .cycling {
+                        if authorizationStatus(for: objectTypeDistanceCycling) == HKAuthorizationStatus.sharingAuthorized {
+                            let distanceSample = HKQuantitySample(
+                                type: objectTypeDistanceCycling,
+                                quantity: distanceQuantity,
+                                start: startDate,
+                                end: endDate,
+                                device: HKDevice.local(),
+                                metadata: nil
+                            )
+                            samplesToAdd.append(distanceSample)
+                        }
                     }
                     
-                    if let stepsQuantity = stepsQuantity {
-                        let stepsSample = HKQuantitySample(
-                            type: objectTypeStepCount,
-                            quantity: stepsQuantity,
-                            start: startDate,
-                            end: endDate,
-                            device: HKDevice.local(),
-                            metadata: nil
-                        )
-                        samplesToAdd.append(stepsSample)
+                    if [.running, .walking].contains(tempWorkout.realWorkoutType) {
+                        if authorizationStatus(for: objectTypeDistanceWalkingRunning) == HKAuthorizationStatus.sharingAuthorized {
+                            let distanceSample = HKQuantitySample(
+                                type: objectTypeDistanceWalkingRunning,
+                                quantity: distanceQuantity,
+                                start: startDate,
+                                end: endDate,
+                                device: HKDevice.local(),
+                                metadata: nil
+                            )
+                            samplesToAdd.append(distanceSample)
+                        }
                     }
                     
-                    if let caloriesQuantity = caloriesQuantity {
-                        let caloriesSample = HKQuantitySample(
-                            type: objectTypeActiveEnergyBurned,
-                            quantity: caloriesQuantity,
-                            start: startDate as Date,
-                            end: endDate as Date,
-                            device: HKDevice.local(),
-                            metadata: nil
-                        )
-                        samplesToAdd.append(caloriesSample)
+                    if authorizationStatus(for: objectTypeStepCount) == HKAuthorizationStatus.sharingAuthorized {
+                        if let stepsQuantity = stepsQuantity {
+                            let stepsSample = HKQuantitySample(
+                                type: objectTypeStepCount,
+                                quantity: stepsQuantity,
+                                start: startDate,
+                                end: endDate,
+                                device: HKDevice.local(),
+                                metadata: nil
+                            )
+                            samplesToAdd.append(stepsSample)
+                        }
+                    }
+                    
+                    if authorizationStatus(for: objectTypeActiveEnergyBurned) == HKAuthorizationStatus.sharingAuthorized {
+                        if let caloriesQuantity = caloriesQuantity {
+                            let caloriesSample = HKQuantitySample(
+                                type: objectTypeActiveEnergyBurned,
+                                quantity: caloriesQuantity,
+                                start: startDate as Date,
+                                end: endDate as Date,
+                                device: HKDevice.local(),
+                                metadata: nil
+                            )
+                            samplesToAdd.append(caloriesSample)
+                        }
                     }
                     
                     HealthStoreManager.healthStore.save(healthWorkout) { (workoutSuccess, error) in
