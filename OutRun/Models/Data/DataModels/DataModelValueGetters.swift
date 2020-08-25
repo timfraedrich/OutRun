@@ -53,7 +53,7 @@ enum DataModelValueGetters {
     }
     static func dimensionalAltitudes(_ partialObject: PartialObject<Workout>) -> (Double, Double) {
         let altitudes = partialObject.completeObject().routeData.map { (sample) -> Double in return sample.altitude.value }
-        var tempAcending: Double = 0
+        var tempAscending: Double = 0
         var tempDescending: Double = 0
         var lastRoundedAltitude: Double?
         for (index, value) in altitudes.enumerated() {
@@ -73,15 +73,15 @@ enum DataModelValueGetters {
             }
             let difference = rounded - lastRounded
             if difference > 0 {
-                tempDescending += difference
+                tempAscending += difference
             } else if difference < 0 {
-                tempAcending += abs(difference)
+                tempDescending += abs(difference)
             }
             lastRoundedAltitude = rounded
         }
-        tempAcending.round()
+        tempAscending.round()
         tempDescending.round()
-        return (tempAcending, tempDescending)
+        return (tempAscending, tempDescending)
     }
     static func ascendingAltitude(_ partialObject: PartialObject<Workout>) -> Double {
         return dimensionalAltitudes(partialObject).0
