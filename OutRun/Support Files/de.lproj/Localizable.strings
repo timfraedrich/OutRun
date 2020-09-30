@@ -166,6 +166,8 @@
 "WorkoutStats.AverageSpeed" = "Durchschn.";
 "WorkoutStats.TopSpeed" = "Höchstgeschw.";
 "WorkoutStats.SpeedOverTime" = "Geschw. Über Zeit";
+"WorkoutStats.HeartRate" = "Herzfrequenz";
+"WorkoutStats.HeartRateOverTime" = "Herzfrequenz im Laufe der Zeit";
 
 "WorkoutStats.BurnedEnergy" = "Verbrannte Energie";
 "WorkoutStats.TotalEnergy" = "Gesamtenergie";

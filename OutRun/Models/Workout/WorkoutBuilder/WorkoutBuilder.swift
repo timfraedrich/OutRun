@@ -54,7 +54,9 @@ class WorkoutBuilder: ApplicationStateObserver {
     public private(set) var manualPauseEvents: [TempWorkoutEvent] = []
     /// a boolean indicating whether background updates should be performed
     public private(set) var shouldPerformBackgroundUpdates: Bool = true
-    
+    /// An array of TempWorkoutHeartRateDataSample containing Heart Rate samples during the start and end dates
+    public private(set) var heartRateSamples: [TempWorkoutHeartRateDataSample] = []
+
     // MARK: Actions
     
     /**
@@ -127,13 +129,28 @@ class WorkoutBuilder: ApplicationStateObserver {
         let completion = makeClosureThreadSafe(completion)
         let timestamp = Date()
         
-        validateTransition(to: .ready) { (success) in
-            
-            if success {
+        guard let startDate = self.startDate else {
+            print("Missing start date, can't finish workout")
+            completion(false)
+            return
+        }
+        
+        HealthQueryManager.getHeartRateSamples(startDate: startDate, endDate: timestamp) { heartRateSamples in
+            self.heartRateSamples = heartRateSamples
+            self.validateTransition(to: .ready) { (success) in
+                guard success
+                else {
+                    completion(false)
+                    return
+                }
                 
                 self.endDate = timestamp
-                
-                if let snapshot = self.createSnapshot() {
+                DispatchQueue.main.async {
+                    guard let snapshot = self.createSnapshot()
+                    else {
+                        completion(false)
+                        return
+                    }
                     
                     let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
                     
@@ -145,20 +162,9 @@ class WorkoutBuilder: ApplicationStateObserver {
                     
                     completion(true)
                     
-                } else {
-                    
-                    completion(false)
-                    
+                    self.reset()
                 }
-                
-                self.reset()
-                
-            } else {
-                
-                completion(false)
-                
             }
-            
         }
         
     }
@@ -324,7 +330,7 @@ class WorkoutBuilder: ApplicationStateObserver {
             healthKitUUID: nil,
             workoutEvents: events,
             locations: routeData,
-            heartRates: []
+            heartRates: self.heartRateSamples
         )
         
     }

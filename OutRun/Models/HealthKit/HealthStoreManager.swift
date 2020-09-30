@@ -43,10 +43,7 @@ enum HealthStoreManager {
         objectTypeDistanceCycling,
         objectTypeRouteType,
         objectTypeBodyMass,
-        // not fully implemented yet
-        /*
         objectTypeHeartRate,
-        */
         objectTypeStepCount
     ])
     

@@ -235,6 +235,7 @@ struct DataManager {
                     sample.uuid .= heartRate.uuid ?? UUID()
                     sample.heartRate .= heartRate.heartRate
                     sample.timestamp .= heartRate.timestamp
+                    sample.workout .= workout
                 }
                 
                 tempWorkouts.append(workout)

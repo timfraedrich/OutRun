@@ -173,6 +173,7 @@
 		22FEA0AF24CDD7B50007CA9C /* DiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0AE24CDD7B50007CA9C /* DiskStorage.swift */; };
 		22FEA0B124CDDFF80007CA9C /* CustomByteFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0B024CDDFF80007CA9C /* CustomByteFormatting.swift */; };
 		22FEA0B324CDE31E0007CA9C /* DebugController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0B224CDE31E0007CA9C /* DebugController.swift */; };
+		2895C50E2527308700DB5079 /* HeartRateStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895C50D2527308700DB5079 /* HeartRateStatsView.swift */; };
 		50A16B63C6F23E2D1E6210BA /* Pods_OutRun.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2DC1601B9458B3FC1788F0E /* Pods_OutRun.framework */; };
 /* End PBXBuildFile section */
 
@@ -347,6 +348,7 @@
 		22FEA0AE24CDD7B50007CA9C /* DiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorage.swift; sourceTree = "<group>"; };
 		22FEA0B024CDDFF80007CA9C /* CustomByteFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomByteFormatting.swift; sourceTree = "<group>"; };
 		22FEA0B224CDE31E0007CA9C /* DebugController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugController.swift; sourceTree = "<group>"; };
+		2895C50D2527308700DB5079 /* HeartRateStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateStatsView.swift; sourceTree = "<group>"; };
 		8C0699EE439FF3DC5E16B8E0 /* Pods-OutRun.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OutRun.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OutRun/Pods-OutRun.debug.xcconfig"; sourceTree = "<group>"; };
 		C1C8D965F1351F85D4E4F35D /* Pods-OutRun.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OutRun.release.xcconfig"; path = "Pods/Target Support Files/Pods-OutRun/Pods-OutRun.release.xcconfig"; sourceTree = "<group>"; };
 		D2DC1601B9458B3FC1788F0E /* Pods_OutRun.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OutRun.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -749,6 +751,7 @@
 				22CBB44C2303FF5100DDA2E0 /* DistanceStatsView.swift */,
 				22CBB44E2303FF6800DDA2E0 /* TimeStatsView.swift */,
 				22CBB4502303FF7200DDA2E0 /* SpeedStatsView.swift */,
+				2895C50D2527308700DB5079 /* HeartRateStatsView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1162,6 +1165,7 @@
 				222632AC24B24FF80017517E /* ShareManager.swift in Sources */,
 				22B6CF5722CA0814002D2FB0 /* AppDelegate.swift in Sources */,
 				22FEA0A724CDA3FF0007CA9C /* ClosedRange.swift in Sources */,
+				2895C50E2527308700DB5079 /* HeartRateStatsView.swift in Sources */,
 				2230925C24D6F39700A3F636 /* WorkoutBuilderComponent.swift in Sources */,
 				22C1108424532E36009ACE81 /* WorkoutMapImageQueue.swift in Sources */,
 				2226A3BD240BF9AD00FF7A94 /* ProgressViewController.swift in Sources */,

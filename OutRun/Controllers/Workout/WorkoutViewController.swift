@@ -101,6 +101,7 @@ class WorkoutViewController: DetailViewController {
                 let distanceStatsView = DistanceStatsView(stats: stats)
                 let timeStatsView = TimeStatsView(stats: stats)
                 let speedStatsView = SpeedStatsView(stats: stats)
+                let heartRateStatsView = HeartRateStatsView(stats: stats)
                 let energyStatsView = EnergyStatsView(stats: stats)
                 let routeStatsView = RouteStatsView(controller: self, workout: workout, stats: stats)
                 let deleteView = DeleteWorkoutView(controller: self, workout: workout)
@@ -136,6 +137,7 @@ class WorkoutViewController: DetailViewController {
                 self.contentView.addSubview(distanceStatsView)
                 self.contentView.addSubview(timeStatsView)
                 self.contentView.addSubview(speedStatsView)
+                self.contentView.addSubview(heartRateStatsView)
                 self.contentView.addSubview(editView)
                 self.contentView.addSubview(deleteView)
                 
@@ -163,7 +165,7 @@ class WorkoutViewController: DetailViewController {
                 }
                 
                 var firstActionView: UIView?
-                var lastView: UIView?
+                var lastView: UIView = speedStatsView
                 
                 self.contentView.addSubview(appleHealthView)
                 
@@ -174,51 +176,28 @@ class WorkoutViewController: DetailViewController {
                 
                 firstActionView = appleHealthView
                 
-                if stats.hasRouteSamples && stats.hasEnergyValue {
-                    
-                    self.contentView.addSubview(energyStatsView)
-                    self.contentView.addSubview(routeStatsView)
-                    
-                    energyStatsView.snp.makeConstraints { (make) in
-                        make.left.right.equalToSuperview()
-                        make.top.equalTo(speedStatsView.snp.bottom).offset(20)
-                    }
-                    routeStatsView.snp.makeConstraints { (make) in
-                        make.left.right.equalToSuperview()
-                        make.top.equalTo(energyStatsView.snp.bottom).offset(20)
-                    }
-                    
-                    lastView = routeStatsView
-                    
-                } else if stats.hasRouteSamples {
-                    
-                    self.contentView.addSubview(routeStatsView)
-                    
-                    routeStatsView.snp.makeConstraints { (make) in
-                        make.left.right.equalToSuperview()
-                        make.top.equalTo(speedStatsView.snp.bottom).offset(20)
-                    }
-                    
-                    lastView = routeStatsView
-                    
-                } else if stats.hasEnergyValue {
-                    
-                    self.contentView.addSubview(energyStatsView)
-                    
-                    energyStatsView.snp.makeConstraints { (make) in
-                        make.left.right.equalToSuperview()
-                        make.top.equalTo(speedStatsView.snp.bottom).offset(20)
-                    }
-                    
-                    lastView = energyStatsView
-                    
-                } else {
-                    
-                    lastView = speedStatsView
-                    
-                }
+                var dynamicViews : [UIView] = []
                 
-                if (workout.comment.value != nil || workout.isUserModified.value), let lastView = lastView, let firstActionView = firstActionView {
+                if stats.hasEnergyValue {
+                    dynamicViews.append(energyStatsView)
+                }
+                if stats.hasHeartRateData {
+                    dynamicViews.append(heartRateStatsView)
+                }
+                if stats.hasRouteSamples {
+                    dynamicViews.append(routeStatsView)
+                }
+
+                for view in dynamicViews {
+                    self.contentView.addSubview(view)
+                    view.snp.makeConstraints { make in
+                        make.left.right.equalToSuperview()
+                        make.top.equalTo(lastView.snp.bottom).offset(20)
+                    }
+                    lastView = view
+                }
+
+                if (workout.comment.value != nil || workout.isUserModified.value), let firstActionView = firstActionView {
                     
                     self.contentView.addSubview(commentView)
                     
@@ -230,7 +209,7 @@ class WorkoutViewController: DetailViewController {
                     
                 } else {
                     
-                    lastView?.snp.makeConstraints({ (make) in
+                    lastView.snp.makeConstraints({ (make) in
                         make.bottom.equalTo((firstActionView ?? deleteView).snp.top).offset(-30)
                     })
                     

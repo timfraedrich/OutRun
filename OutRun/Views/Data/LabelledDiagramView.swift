@@ -123,7 +123,13 @@ class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
             self.headlineLabel.text = self.title
             return
         }
-        
+
+
+        guard units.0.symbol != "" && units.1.symbol != "" else {
+            self.headlineLabel.text = self.title
+            return
+        }
+
         let formatter = MeasurementFormatter()
         formatter.unitOptions = .providedUnit
         let unitString = formatter.string(from: units.1) + "-" + formatter.string(from: units.0)

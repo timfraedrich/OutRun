@@ -165,6 +165,8 @@
 "WorkoutStats.AverageSpeed" = "Avg. Speed";
 "WorkoutStats.TopSpeed" = "Top Speed";
 "WorkoutStats.SpeedOverTime" = "Speed Over Time";
+"WorkoutStats.HeartRate" = "Heart Rate";
+"WorkoutStats.HeartRateOverTime" = "Heart Rate Over Time";
 
 "WorkoutStats.BurnedEnergy" = "Burned Energy";
 "WorkoutStats.TotalEnergy" = "Total Energy";
