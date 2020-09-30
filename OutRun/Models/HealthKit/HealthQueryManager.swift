@@ -71,8 +71,9 @@ enum HealthQueryManager {
                         }
                         completeIfAppropriate()
                         samples.forEach { (workout) in
+                            count += 1
+
                             guard let queryObject = HKWorkoutQueryObject(workout) else {
-                                count += 1
                                 completeIfAppropriate()
                                 return
                             }
@@ -81,7 +82,6 @@ enum HealthQueryManager {
                                 HealthQueryManager.getAndAttatchSteps(to: queryObject) {
                                     // not fully implemented
                                     //HealthQueryManager.getAndAttachHeartRate(to: queryObject) {
-                                        count += 1
                                         completeIfAppropriate()
                                     //}
                                 }
