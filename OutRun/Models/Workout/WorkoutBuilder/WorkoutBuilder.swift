@@ -128,45 +128,35 @@ class WorkoutBuilder: ApplicationStateObserver {
         
         let completion = makeClosureThreadSafe(completion)
         let timestamp = Date()
-        
-        guard let startDate = self.startDate else {
-            print("Missing start date, can't finish workout")
-            completion(false)
-            return
-        }
-        
-        HealthQueryManager.getHeartRateSamples(startDate: startDate, endDate: timestamp) { heartRateSamples in
-            self.heartRateSamples = heartRateSamples
-            self.validateTransition(to: .ready) { (success) in
-                guard success
+
+        self.validateTransition(to: .ready) { (success) in
+            guard success
+            else {
+                completion(false)
+                return
+            }
+
+            self.endDate = timestamp
+            DispatchQueue.main.async {
+                guard let snapshot = self.createSnapshot()
                 else {
                     completion(false)
                     return
                 }
-                
-                self.endDate = timestamp
-                DispatchQueue.main.async {
-                    guard let snapshot = self.createSnapshot()
-                    else {
-                        completion(false)
-                        return
-                    }
-                    
-                    let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
-                    
-                    if shouldProvideCompletionActions {
-                        handler.display()
-                    } else {
-                        handler.saveWorkout()
-                    }
-                    
-                    completion(true)
-                    
-                    self.reset()
+
+                let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
+
+                if shouldProvideCompletionActions {
+                    handler.display()
+                } else {
+                    handler.saveWorkout()
                 }
+
+                completion(true)
+
+                self.reset()
             }
         }
-        
     }
     
     /**

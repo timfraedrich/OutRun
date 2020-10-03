@@ -30,7 +30,7 @@ class WorkoutViewController: DetailViewController {
         scrollView.backgroundColor = .backgroundColor
         return scrollView
     }()
-    
+
     let dateLabel = UILabel(
         textColor: .secondaryColor,
         font: UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -68,7 +68,7 @@ class WorkoutViewController: DetailViewController {
         
         contentView.snp.makeConstraints { (make) in
             make.top.equalTo(headlineContainerView.snp.bottom)
-            make.left.right.bottom.equalTo(self.view)
+            make.bottom.equalTo(self.view)
         }
         
         self.view.addSubview(loadingView)
@@ -133,87 +133,64 @@ class WorkoutViewController: DetailViewController {
                         
                     }
                 }
-                
-                self.contentView.addSubview(distanceStatsView)
-                self.contentView.addSubview(timeStatsView)
-                self.contentView.addSubview(speedStatsView)
-                self.contentView.addSubview(heartRateStatsView)
-                self.contentView.addSubview(editView)
-                self.contentView.addSubview(deleteView)
-                
-                distanceStatsView.snp.makeConstraints { (make) in
-                    make.left.right.top.equalToSuperview()
+
+
+                let dynamicStackView = UIStackView()
+                dynamicStackView.alignment = .fill
+                dynamicStackView.spacing = 20
+                dynamicStackView.axis = .vertical
+                dynamicStackView.distribution = .equalSpacing
+
+                self.contentView.snp.makeConstraints { make in
+                    make.left.right.equalToSuperview()
+                }
+
+                self.contentView.addSubview(dynamicStackView)
+
+                dynamicStackView.snp.makeConstraints { make in
                     make.width.equalToSuperview()
                 }
-                timeStatsView.snp.makeConstraints { (make) in
-                    make.left.right.equalToSuperview()
-                    make.top.equalTo(distanceStatsView.snp.bottom).offset(20)
-                }
-                speedStatsView.snp.makeConstraints { (make) in
-                    make.left.right.equalToSuperview()
-                    make.top.equalTo(timeStatsView.snp.bottom).offset(20)
-                }
-                editView.snp.makeConstraints { (make) in
-                    make.left.equalToSuperview().offset(20)
-                    make.right.equalTo(deleteView.snp.left).offset(-20)
-                    make.width.equalTo(deleteView)
-                    make.bottom.equalTo(deleteView)
-                }
-                deleteView.snp.makeConstraints { (make) in
-                    make.right.equalToSuperview().offset(-20)
-                    make.bottom.equalToSuperview().offset(-20)
-                }
-                
-                var firstActionView: UIView?
-                var lastView: UIView = speedStatsView
-                
-                self.contentView.addSubview(appleHealthView)
-                
-                appleHealthView.snp.makeConstraints { (make) in
-                    make.right.left.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
-                    make.bottom.equalTo(deleteView.snp.top).offset(-20)
-                }
-                
-                firstActionView = appleHealthView
-                
-                var dynamicViews : [UIView] = []
-                
+
+                dynamicStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+                dynamicStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+                dynamicStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+                dynamicStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+
+                dynamicStackView.addArrangedSubview(distanceStatsView)
+                dynamicStackView.addArrangedSubview(timeStatsView)
+                dynamicStackView.addArrangedSubview(speedStatsView)
+
                 if stats.hasEnergyValue {
-                    dynamicViews.append(energyStatsView)
+                    dynamicStackView.addArrangedSubview(energyStatsView)
                 }
-                if stats.hasHeartRateData {
-                    dynamicViews.append(heartRateStatsView)
-                }
+
+                dynamicStackView.addArrangedSubview(heartRateStatsView)
+
                 if stats.hasRouteSamples {
-                    dynamicViews.append(routeStatsView)
+                dynamicStackView.addArrangedSubview(routeStatsView)
                 }
 
-                for view in dynamicViews {
-                    self.contentView.addSubview(view)
-                    view.snp.makeConstraints { make in
-                        make.left.right.equalToSuperview()
-                        make.top.equalTo(lastView.snp.bottom).offset(20)
-                    }
-                    lastView = view
+
+                if (workout.comment.value != nil || workout.isUserModified.value) {
+                    dynamicStackView.addArrangedSubview(commentView)
+                }
+                dynamicStackView.addArrangedSubview(appleHealthView)
+
+
+                // Separate container for the action buttons
+                let actionViewContainer = UIStackView()
+
+
+                actionViewContainer.addArrangedSubview(editView)
+                actionViewContainer.addArrangedSubview(deleteView)
+                actionViewContainer.spacing = 20
+                actionViewContainer.axis = .horizontal
+
+                editView.snp.makeConstraints { (make) in
+                    make.width.equalTo(deleteView)
                 }
 
-                if (workout.comment.value != nil || workout.isUserModified.value), let firstActionView = firstActionView {
-                    
-                    self.contentView.addSubview(commentView)
-                    
-                    commentView.snp.makeConstraints({ (make) in
-                        make.bottom.equalTo(firstActionView.snp.top).offset(-30)
-                        make.top.equalTo(lastView.snp.bottom).offset(20)
-                        make.left.right.equalToSuperview()
-                    })
-                    
-                } else {
-                    
-                    lastView.snp.makeConstraints({ (make) in
-                        make.bottom.equalTo((firstActionView ?? deleteView).snp.top).offset(-30)
-                    })
-                    
-                }
+                dynamicStackView.addArrangedSubview(actionViewContainer)
             }
         }
     }

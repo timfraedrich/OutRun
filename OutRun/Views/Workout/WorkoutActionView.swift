@@ -66,7 +66,9 @@ class WorkoutActionView: UIView {
         
         button.snp.makeConstraints { (make) in
             make.height.equalTo(50)
-            make.edges.equalToSuperview()
+            make.height.equalToSuperview()
+            make.left.equalTo(20)
+            make.right.equalTo(-20)
         }
         
     }

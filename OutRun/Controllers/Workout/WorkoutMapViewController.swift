@@ -141,7 +141,6 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
         
         segementedControl.snp.makeConstraints { (make) in
             make.left.right.top.equalTo(containerView.safeAreaLayoutGuide).inset(spacing)
-            make.height.equalTo(30)
         }
         diagramView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(containerView.safeAreaLayoutGuide).inset(spacing)

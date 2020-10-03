@@ -58,40 +58,34 @@ enum HealthQueryManager {
                         safeCompletion(false, [])
                         return
                     }
-                    
+
                     DispatchQueue.main.async {
-                        
+
                         var queryObjects = [HKWorkoutQueryObject]()
-                        
-                        guard samples.count != 0
-                        else {
-                            safeCompletion(true, [])
-                            return
-                        }
+                        var count = 0
 
-                        let group = DispatchGroup()
-                        
-                        for workout in samples {
-                            guard let queryObject = HKWorkoutQueryObject(workout) else {
-                                continue
+                        func completeIfAppropriate() {
+                            if count == samples.count {
+                                safeCompletion(true, queryObjects)
                             }
-                            
-                            group.enter()
-
+                        }
+                        completeIfAppropriate()
+                        samples.forEach { (workout) in
+                            guard let queryObject = HKWorkoutQueryObject(workout) else {
+                                count += 1
+                                completeIfAppropriate()
+                                return
+                            }
                             queryObjects.append(queryObject)
                             HealthQueryManager.getAndAttatchRoute(to: queryObject) {
                                 HealthQueryManager.getAndAttatchSteps(to: queryObject) {
-                                    HealthQueryManager.getAndAttachHeartRate(to: queryObject) {
-                                        group.leave()
-                                    }
+                                        count += 1
+                                        completeIfAppropriate()
                                 }
                             }
                         }
-                        
-                        group.wait()
-                        safeCompletion(true, queryObjects)
                     }
-                    
+
                 })
                 HealthStoreManager.healthStore.execute(query)
                 
@@ -228,15 +222,6 @@ enum HealthQueryManager {
         }
         
         HealthStoreManager.healthStore.execute(heartRateQuery)
-    }
-    
-    // MARK: Query Heart Rates and Attach to Query Object
-    static func getAndAttachHeartRate(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
-
-        getHeartRateSamples(startDate: queryObject.hkWorkout.startDate, endDate: queryObject.hkWorkout.endDate ) { samples in
-            queryObject.heartRates = samples
-            completion()
-        }
     }
     
     // MARK: Query Most Recent Weight And Save To UserPreferences
