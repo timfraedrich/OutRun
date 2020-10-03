@@ -167,7 +167,7 @@ class WorkoutViewController: DetailViewController {
                 dynamicStackView.addArrangedSubview(heartRateStatsView)
 
                 if stats.hasRouteSamples {
-                dynamicStackView.addArrangedSubview(routeStatsView)
+                    dynamicStackView.addArrangedSubview(routeStatsView)
                 }
 
 
