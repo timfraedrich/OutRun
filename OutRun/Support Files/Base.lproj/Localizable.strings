@@ -378,17 +378,16 @@
 // MARK: ChangeLog
 
 "ChangeLog" = "Changelog";
-"ChangeLog_1.2.1" = "This release only contains a few critical bug fixes, which needed to be fixed fast.
+"ChangeLog_1.2.2" = "After receiving a trademark complaint \"OutRun\" will now be called \"Out-Run\" in the UK. This update has the main purpose of addressing this complaint.
 
-Specifically I am talking about:
+Additionally it contains the following bug fixes:
 
-- way too long waiting times when wanting to record a workout due to a rounding error in the apps logic
-- app crashes because of inconsistencies in the data
-- map views having the wrong appearance
-- an alert talking about there being an error in the logic supposed to record the workouts, even though that logic worked just fine
+- sometimes data was not added properly to Apple Health, this should now be fixed
+- ascending and descending altitude were swapped in the statistics, now they are in the right order
+- there have been some style issues because of changes in iOS 14, everything should look normally again
 
-And that is it when it comes to changes in this version.
+And for this update nothing more changed.
 
 If you have any questions or feedback, feel free to reach out at outrun@tadris.de.
 
-Tim, the developer.";
+Tim, the Developer.";

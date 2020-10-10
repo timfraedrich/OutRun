@@ -153,7 +153,7 @@
 "WorkoutStats.Distance" = "Entfernung";
 "WorkoutStats.AltitudeOverTime" = "Höhe Über Zeit";
 "WorkoutStats.Altitude" = "Höhe";
-"WorkoutStats.AscendingAltitude" = "Aufstieg";
+"WorkoutStats.AscendingAltitude" = "Anstieg";
 "WorkoutStats.DescendingAltitude" = "Abstieg";
 
 "WorkoutStats.Time" = "Zeit";
@@ -368,16 +368,13 @@
 // MARK: ChangeLog
 
 "ChangeLog" = "Changelog";
-"ChangeLog_1.2" = "Diese Version enthält nur einige Fehlerbehebungen, die schnell beseitigt werden mussten, da sie die Nutzung der App beeinträchtigen.
+"ChangeLog_1.2.2" = "Aufgrund eines Trademark Beschwerde, wird \"OutRun\" von nun an \"Out-Run\" in der UK heißen. Dieses Upadate hat den Hauptzweck dieser Beschwerde folge zu leisten.
 
-Genau rede ich über folgendes:
+Zusätzlich enthält es folgende Fehlerbehebungen:
 
-- viel zu lange Ladezeit wenn man ein Workout aufnehmen möchte, weil es einen Rundungsfehler in der Applogik gab
-- Appabstürze aufgrund von Widersprüchen in den Daten
-- Kartenbilder mit falschem Aussehen
-- ein Dialog, der darüber redet, es gäbe einen Fehler in der Logik, die das Workout aufnehmen soll, obwohl die Logik vollkommen plangemäß funktioniert hat
-
-Das war auch schon alles, was sich in dieser Version verändert hat.
+- manchmal wurden daten nicht ordentlich zu Apple Health hinzugefügt, dies sollte nun behoben sein
+- die Statistiken für Anstieg und Abstieg waren vertauscht und sind jetzt in der richtigen Reihenfolge
+- es gab ein paar Designfehler in der App aufgrund von Änderungen in iOS 14, es sollte alles wieder normal aussehen
 
 Solltest du noch Fragen oder Feedback haben, dann schreib mir doch unter outrun@tadris.de.
 
