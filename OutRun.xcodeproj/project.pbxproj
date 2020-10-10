@@ -1345,7 +1345,7 @@
 				CODE_SIGN_ENTITLEMENTS = OutRun/OutRun.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				INFOPLIST_FILE = "$(SRCROOT)/OutRun/Support Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1369,7 +1369,7 @@
 				CODE_SIGN_ENTITLEMENTS = OutRun/OutRun.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				INFOPLIST_FILE = "$(SRCROOT)/OutRun/Support Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
