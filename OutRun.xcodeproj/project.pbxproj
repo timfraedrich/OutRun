@@ -206,6 +206,9 @@
 		2227C643234B6EF400CFE31A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		2229056924DDD81F0052ACFF /* WorkoutCompletionBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCompletionBanner.swift; sourceTree = "<group>"; };
 		2229056E24DE14D80052ACFF /* TextBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBanner.swift; sourceTree = "<group>"; };
+		222A775925273EB600317E5A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		222A775D25273F6700317E5A /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		222A775F2527401E00317E5A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		222AB94A243C725B000E8BB7 /* OutRunV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutRunV3.swift; sourceTree = "<group>"; };
 		222CAE5E23AC180000588827 /* SetupActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupActionView.swift; sourceTree = "<group>"; };
 		222CAE6123AC266A00588827 /* SetupTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupTextFieldView.swift; sourceTree = "<group>"; };
@@ -214,12 +217,12 @@
 		2230925E24D6F6A700A3F636 /* WorkoutBuilder+Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+Status.swift"; sourceTree = "<group>"; };
 		2230926024D7081A00A3F636 /* WorkoutBuilder+LocationManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+LocationManagement.swift"; sourceTree = "<group>"; };
 		2230926224D7573C00A3F636 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		223C2E0B25252F1B00D4B13D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		223EEF3724B1243500554126 /* WorkoutShareAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutShareAlert.swift; sourceTree = "<group>"; };
 		2248A45122F08E66000F82BB /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		224AF629237624E80047CBDE /* CustomTimeFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTimeFormatting.swift; sourceTree = "<group>"; };
 		2250D119239A70F700DE31A3 /* StartScreenFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenFeatureView.swift; sourceTree = "<group>"; };
 		2252DEF32393973D00DF914D /* StartScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenViewController.swift; sourceTree = "<group>"; };
-		2253982A22EE449F00C1C1BC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22558386242E80FA0043432F /* PolicyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyManager.swift; sourceTree = "<group>"; };
 		22558388242E94AE0043432F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		2256492423FA776100E4A986 /* EditWorkoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutController.swift; sourceTree = "<group>"; };
@@ -279,8 +282,6 @@
 		22ACA7C224D97703005DFB4E /* ORBaseBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORBaseBanner.swift; sourceTree = "<group>"; };
 		22ACA7C524D9778F005DFB4E /* ORBannerQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORBannerQueue.swift; sourceTree = "<group>"; };
 		22AD5C39233631C8001C7311 /* WorkoutBuilderReadinessIndicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutBuilderReadinessIndicationView.swift; sourceTree = "<group>"; };
-		22B1F14022D61CF400C02973 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		22B1F14322D61D0F00C02973 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22B1F14622D61D3300C02973 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledDiagramView.swift; sourceTree = "<group>"; };
 		22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledTimeView.swift; sourceTree = "<group>"; };
@@ -580,8 +581,8 @@
 			children = (
 				22B6CF6022CA0815002D2FB0 /* Assets.xcassets */,
 				22B6CF5622CA0814002D2FB0 /* AppDelegate.swift */,
-				2253982A22EE449F00C1C1BC /* Info.plist */,
 				22B1F14122D61CF400C02973 /* LaunchScreen.storyboard */,
+				223C2E0B25252F1B00D4B13D /* Info.plist */,
 				2291863C23679AA300929885 /* InfoPlist.strings */,
 				22B1F14222D61D0F00C02973 /* Localizable.strings */,
 			);
@@ -924,7 +925,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Tim Fraedrich";
 				TargetAttributes = {
 					22B6CF5222CA0814002D2FB0 = {
@@ -949,8 +950,9 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 				de,
+				"en-GB",
+				Base,
 			);
 			mainGroup = 22B6CF4A22CA0814002D2FB0;
 			productRefGroup = 22B6CF5422CA0814002D2FB0 /* Products */;
@@ -1190,6 +1192,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				2291863B23679AA300929885 /* de */,
+				222A775D25273F6700317E5A /* en-GB */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1197,7 +1200,7 @@
 		22B1F14122D61CF400C02973 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				22B1F14022D61CF400C02973 /* Base */,
+				222A775925273EB600317E5A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1205,8 +1208,8 @@
 		22B1F14222D61D0F00C02973 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				22B1F14322D61D0F00C02973 /* Base */,
 				22B1F14622D61D3300C02973 /* de */,
+				222A775F2527401E00317E5A /* Base */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1241,6 +1244,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1303,6 +1307,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
