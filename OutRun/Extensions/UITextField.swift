@@ -37,6 +37,7 @@ extension UITextField {
         let toolBar = UIToolbar()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: LS("Done"), style: .done, target: self, action: #selector(self.endEditing(_:)))
+        toolBar.tintColor = .accentColor
         toolBar.setItems([flexSpace, doneButton], animated: false)
         
         toolBar.snp.makeConstraints { (make) in

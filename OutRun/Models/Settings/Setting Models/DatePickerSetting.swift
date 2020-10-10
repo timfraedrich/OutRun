@@ -45,6 +45,9 @@ class DatePickerSetting: InputViewSetting {
         
         datePicker.setDate(date, animated: false)
         datePicker.datePickerMode = pickerMode
+        if #available(iOS 14.0, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
         datePicker.addTarget(self, action: #selector(newDateSelected(datePicker:)), for: .valueChanged)
         self.dummyTextField.inputView = datePicker
     }
