@@ -1,5 +1,5 @@
 //
-//  LS.swift
+//  InfoPlist.strings
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -18,16 +18,4 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Foundation
-
-/// shortened version to get a localized String
-func LS(_ key: String, comment: String = "") -> String {
-    
-    let localisedString = NSLocalizedString(key, comment: comment)
-    
-    if Locale.current.regionCode?.lowercased() == "gb" {
-        return localisedString.replacingOccurrences(of: "OutRun", with: "Out-Run")
-    }
-    
-    return localisedString
-}
+CFBundleDisplayName = "Out-Run";
