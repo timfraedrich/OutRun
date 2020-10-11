@@ -155,22 +155,18 @@
 "WorkoutStats.Altitude" = "Höhe";
 "WorkoutStats.AscendingAltitude" = "Anstieg";
 "WorkoutStats.DescendingAltitude" = "Abstieg";
-
 "WorkoutStats.Time" = "Zeit";
 "WorkoutStats.Duration" = "Dauer";
 "Workout.ActiveDuration" = "Aktive Dauer";
 "Workout.PauseDuration" = "Pausen Dauer";
 "WorkoutStats.StartTime" = "Startzeit";
 "WorkoutStats.EndTime" = "Stopzeit";
-
 "WorkoutStats.Speed" = "Geschwindigkeit";
 "WorkoutStats.AverageSpeed" = "Durchschn.";
 "WorkoutStats.TopSpeed" = "Höchstgeschw.";
 "WorkoutStats.SpeedOverTime" = "Geschw. Über Zeit";
-
 "WorkoutStats.BurnedEnergy" = "Verbrannte Energie";
 "WorkoutStats.TotalEnergy" = "Gesamtenergie";
-
 "WorkoutStats.Route" = "Strecke";
 
 // MARK: Workout deletion
@@ -197,12 +193,10 @@
 // MARK: Settings
 
 "Settings" = "Einstellungen";
-
 "Settings.UserSettings" = "Nutzereinstellungen";
 "Settings.Name" = "Name";
 "Settings.Weight" = "Gewicht";
 "Settings.UserSettings.Description" = "Diese App braucht dein Gewicht, um einen Schätzwert für verbrannte Energie während eines Workouts zu berechnen. Die Angabe deines Namens ist optional.";
-
 "Settings.AppleHealthPreferences" = "Apple Health Einstellungen";
 "Settings.AppleHealthPreferences.Message" = "Wenn die Synchronisieren-Optionen aktiviert, sind versucht die App automatisch neue Daten bei Apple Health zu speichern. Des Weiteren werden Gewichtsänderungen in der Health App automatisch auch hier vorgenommen.\n\nSollte die 'Workout Auto-Import'-Option aktiviert sein, versucht die App Workouts von anderen Apps automatisch in die lokale Datenbank hinzuzufügen.\n\n'Alle Workouts Synchronisieren' synchronisiert alle noch nicht synchronisierten Workouts in dieser App mit Apple Health.";
 "Settings.SynchronizeWorkoutsWithAppleHealth" = "Workouts Synchonisieren";
@@ -213,7 +207,6 @@
 "Settings.SyncAll.Success" = "Alle vorher noch nicht synchronisierten Workouts wurden erfolgreich in Apple Health gespeichert.";
 "Settings.SyncAll.Error" = "Es gab einen Fehler beim Versuch alle vorher noch nicht synchronisierten Workouts in Apple Health zu speichern, manche wurden vielleicht nicht synchonisiert.";
 "Settings.SyncAll.AllSyncedAlready" = "Es scheint so als wären alle Workouts bereits synchonisiert.";
-
 "Settings.DataPreferences" = "Dateneinstellungen";
 "Settings.DataPreferences.Message" = "Backups in OutRun funktionieren etwas anders, als in den meisten anderen Apps. Es sind nämlich einfache Dateien, für die man keine speziellen Tools zum Laden oder Transferieren braucht. Diese Dateien bleiben außerdem auch lokal (außer man speichert sie in einer Cloud)\n\nBeim Erstellen eines Backups bekommst du eine '.orbup'-Datei, die du dann mit allen anderen Apps und dem Dateimanager teilen kannst. Dabei solltest du beachten, dass die Daten in der Datei nicht verschlüsselt sind, die Datei also nur mit Leuten und Diensten geteilt werden sollte, denen du vertraust.\n\nDas Importieren ist genau so einfach. Wähle einfach eine '.orbup'-Datei aus und die App wird alle darin gespeicherten Workouts importieren.";
 "Settings.CreateBackup" = "Backup erstellen";
@@ -231,7 +224,6 @@
 "Settings.DeleteAll.Error.Message" = "Es gab einen Fehler, während deine Daten in der App gelöscht werden sollten, einige könnten möglicherweise noch vorhanden sein. Bitte versuche es später nochmal.";
 "Settings.DeleteAll.AppleHealth.Error.Title" = "Löschen fehlgeschlagen";
 "Settings.DeleteAll.AppleHealth.Error.Message" = "Es gab einen Fehler, während deine Daten in Apple Health gelöscht werden sollten, einige könnten möglicherweise noch vorhanden sein. Du kannst die noch vorhandenen Daten eigenständig in der Apple Health App löschen.";
-
 "Settings.UnitPreferences" = "Einheiteneinstellungen";
 "Settings.DistanceUnit" = "Entfernungseinheit";
 "Settings.SpeedUnit" = "Geschwindigkeitseinheit";
@@ -240,7 +232,6 @@
 "Settings.WeightUnit" = "Gewichtseinheit";
 "Settings.UnitPick.Headline" = "Einheit wählen";
 "Settings.UnitPick.Message" = "Die Einheit, die du wählst, wird dann standardmäßig zur Anzeige von Daten verwendet.";
-
 "Settings.RecordingPreferences" = "Aufnahmeeinstellungen";
 "Settings.StandardWorkoutType" = "Standardtyp";
 "Settings.StandardWorkoutType.Message" = "Der Workouttyp, den du auswählst, wird als Standard für das Aufnehmen eines neuen Workouts genutzt. Du kannst andere Typen auswählen, indem du lange auf den Plusknopf oder auf die Typanzeige im Aufnahmebildschirm drückst.";
@@ -256,7 +247,6 @@
 "Settings.DisplayPace" = "Tempo anzeigen";
 "Settings.DisplayRollingSpeed" = "Laufende Geschw. anzeigen";
 "Settings.RecordingPreferences.Message" = "Sollte die App während des Aufnehmens abstürzen, solltest du 'Karte anzeigen' auf aus stellen. Die meisten Abstürze konnten nämlich mit zu hoher Leistung ausgehend von der Karte verbunden werden.\n\nWenn 'Tempo anzeigen' aktiviert ist, wird das Tempo statt der Geschwindigkeit angezeigt. Sollte 'Laufende Geschw. anzeigen' an sein, wird die durschnittliche Geschwindigkeit bzw. das durchschnittliche Tempo des letzten Kilometers abgebildet, falls nicht wird entweder die aktuelle Geschwindigkeit oder das Gesamttempo gezeigt.";
-
 "Settings.Support" = "Support";
 "Settings.TermsOfService" = "Nutzungsbedingungen";
 "Settings.PrivacyPolicy" = "Datenschutzbestimmung";
@@ -264,7 +254,6 @@
 "Settings.Email.Error" = "Es scheint entweder keine E-Mail-App auf deinem iPhone zu geben oder sie kann vom System nicht geöffnet werden. Du kannst aber gerne manuell eine E-Mail an support@tadris.de senden, falls du Probleme mit der App hast.";
 "Settings.SourceCode" = "Quellcode ansehen";
 "Settings.SourceCode.Error" = "Der Link konnte nicht geöffnet werden, der er vom System zurückgewiesen wurde.";
-
 "Settings.AppInfo" = "App-Informationen";
 "Settings.AppVersion" = "App Version";
 "Settings.ReleaseStatus" = "Veröffentlichungs Status";
@@ -289,17 +278,14 @@
 "Setup.Headline" = "Willkommen bei";
 "Setup.Introduction" = "die Lauf-App, die sich wirklich für deine Privatsphäre interressiert, wo man keinen Account erstellen, geschweige denn sensible Daten weiter geben muss, die dann irgendwo im Nirgendwo auf einem Server liegen.\nAber davon später noch mehr, lass uns jetzt erstmal anfangen.";
 "Setup.StartButton" = "Los geht's";
-
 "Setup.Feature.Route.Title" = "Genaues Tracking";
 "Setup.Feature.Route.Message" = "Zeichne deine Lauf-, Geh- und Fahrradworkouts mit der auf deinem Handy größtmöglichen Genauigkeit auf.";
 "Setup.Feature.Chart.Title" = "Detaillierte Statistiken";
 "Setup.Feature.Chart.Message" = "Guck dir nach deinen Workouts detaillierte Statistiken, wie z.B. Höchstgeschwindigkeit oder Tempo, an.";
 "Setup.Feature.Lock.Title" = "Privatsphäre im Vordergrund";
 "Setup.Feature.Lock.Message" = "Mach dir keine Sorgen über deine Daten, solange du sie nicht woanders willst bleiben sie lokal.";
-
 "Setup.Formalities.Title" = "Okay, lass uns mit den Formalitäten anfangen";
 "Setup.Formalities.Message" = "Da dies der langweiligste Teil des Setups ist, lass es und schnell hinter uns bringen. Falls du nicht die ganzen Erklärungen lesen möchtest, ist hier eine kleine Zusammenfassung: Alle deine Daten bleiben lokal auf deinem Gerät (außer wenn du deine Daten mit Apple Health synchronisierst), du bleibst also in voller Kontrolle über sie und läufst nicht Gefahr, dass sie geklaut oder ausgenutzt werden.";
-
 "Setup.UserInfo.Title" = "Aber jetzt zu Dir";
 "Setup.UserInfo.Message" = "Um unsere Dienste bereitzustellen brauchen wir ein paar grundlegende Infos über dich. Dein Gewicht brauchen wir beispielsweise, um die geschätzte verbrannte Energie in einem Workout zu berechnen. (Die Angabe deines Namen ist komplett freiwillig)";
 "Setup.UserInfo.Username" = "Nutzername";
@@ -308,26 +294,21 @@
 "Setup.UserInfo.PreferredSystem.Metric" = "Metrisch";
 "Setup.UserInfo.PreferredSystem.Imperial" = "Imperial";
 "Setup.UserInfo.Weight" = "Gewicht";
-
 "Setup.AppleHealth.Title" = "Mit Apple Health synchronisieren?";
 "Setup.AppleHealth.Message" = "Wenn du deine Daten in einem zentralen Ort speichern möchtest, wäre Apple Health aufgrund der guten Integration in iOS eine gute Wahl. Die Synchronisation ist natürlich komplett optional und es sollte angemerkt werden, dass deine Daten bei Aktivierung möglicherweise dein Handy verlassen und auf Apples Servern gespeichert werden, dazu mehr in der Datenschutzerklärung. Solltest du dich für die Auto-Import-Option entscheiden wird versucht Workouts von anderen Apps auch hinzuzufügen, damit du den überblick über wirklich alle deine Workouts behältst.";
 "Setup.AppleHealth.SyncWorkouts" = "Workouts synchronisieren";
 "Setup.AppleHealth.SyncWeight" = "Gewicht synchronisieren";
 "Setup.AppleHealth.AutoImportWorkouts" = "Workout Auto-Import";
-
 "Setup.Permissions.Title" = "Jetzt brauchen wir nur noch deine Berechtigung";
 "Setup.Permissions.Message" = "Da wir zur Bereitstellung unserer Dienste ein paar APIs nutzen müssen, brauchen wir bespielsweise deine Berechtigung für die Nutzung der Standort- und ggf. anderer Dienste.";
-
 "Setup.Permission.Location" = "Standortberechtigung";
 "Setup.Permission.Location.Message" = "Wir brauchen Standortberechtigung, da wir die Routen zu deinen Workouts aufzeichnen müssen, um an wichtige Informationen wie die zurückgelegte Distanz zu kommen.";
 "Setup.Permission.Location.Restricted.Title" = "Standortabruf eingeschränkt";
 "Setup.Permission.Location.Restricted.Message" = "Wir können gerade nur deinen Standort abfragen während die App geöffnet ist. Für das Aufzeichnen von Workouts ist eine Erteilung von Aufzeichnen im Hintergrund jedoch empfehlenswert, so muss dein Handy nämlich nicht dauerhaft an und die app im Vordergrund geöffnet sein. Um uns immer Zugriff auf deinen Standort zu geben, musst du dies manuell in den Einstellungen festlegen. Um diese zu öffnen klicke auf 'Öffnen'";
 "Setup.Permission.Location.Error" = "Scheinbar hast du uns keine Berechtigung auf deinen Standort gegeben, dies ist jedoch für die Nutzung dieses Dienstes essentiell. Um uns Zugriff auf deinen Standort zu geben, musst du dies manuell in den Einstellungen festlegen und danach den Knopf wieder betätigen.";
-
 "Setup.Permission.AppleHealth" = "Health-Berechtigung";
 "Setup.Permission.AppleHealth.Message" = "Da du möchtest, dass wir deine Workouts und dein Gewicht mit Apple Health synchronisieren, brauchen wir die dafür nötige Berechtigung von dir.";
 "Setup.Permission.AppleHealth.Error" = "Scheinbar hast du uns nicht die nötige Berechtigung für Apple Health gegeben. Möchtest du es nochmal probieren oder die Synchronisation ausschalten?";
-
 "Setup.Permission.Motion" = "Bewegung & Fitness";
 "Setup.Permission.Motion.Message" = "Für Daten wie Schritte, die du während eines Workouts machst, braucht diese App Zugang zu Bewegungs- und Fitnessdaten.";
 "Setup.Permission.Motion.Error" = "Du hast uns scheinbar keinen Zugang auf deine Bewegungs- und Fitnessdaten gegeben. Um das zu ändern, musst du die Berechtigung manuell in den iOS-Einstellungen geben. Willst du die Einstellungen öffnen?";
@@ -368,14 +349,17 @@
 // MARK: ChangeLog
 
 "ChangeLog" = "Changelog";
-"ChangeLog_1.2.2" = "Aufgrund einer Trademark Beschwerde, wird \"OutRun\" von nun an \"Out-Run\" in der UK heißen. Dieses Upadate hat den Hauptzweck, dieser Beschwerde folge zu leisten.
+"ChangeLog_1.2.2" = "Aufgrund einer Trademark Beschwerde, wird \"OutRun\" von nun an \"Out-Run\" in der UK heißen. Dieses Upadate hat den Hauptzweck, dieser Beschwerde folge zu leisten.Zusätzlich enthält es folgende Fehlerbehebungen:- manchmal wurden Daten nicht ordentlich zu Apple Health hinzugefügt, dies sollte nun behoben sein- die Statistiken für Anstieg und Abstieg waren vertauscht und sind jetzt in der richtigen Reihenfolge- es gab ein paar Designfehler in der App aufgrund von Änderungen in iOS 14, es sollte Alles wieder normal aussehenSolltest du noch Fragen oder Feedback haben, dann schreib mir doch unter outrun@tadris.de.Tim, der Developer.";
+"ShareManager.GPXError" = "Die App konnte keine GPX-Datei erstellen, bitte kontaktiere den Support.";
 
-Zusätzlich enthält es folgende Fehlerbehebungen:
+// MARK: ShareManager
 
-- manchmal wurden Daten nicht ordentlich zu Apple Health hinzugefügt, dies sollte nun behoben sein
-- die Statistiken für Anstieg und Abstieg waren vertauscht und sind jetzt in der richtigen Reihenfolge
-- es gab ein paar Designfehler in der App aufgrund von Änderungen in iOS 14, es sollte Alles wieder normal aussehen
+"ShareManager.BackupError" = "Die App konnte kein Backup erstellen, bitte kontaktiere den Support.";
+"WorkoutShareAlert.OutRunBackup" = "OutRun-Backup";
+"WorkoutShareAlert.GPXExport" = "GPX-Datei";
+"WorkoutShareAlert.Message" = "Bitte wähle aus den folgenden Optionen, wie dein Workout exportiert werden soll. Solltest du eine Export-Option vermissen, melde dich doch und schlage diese vor.";
 
-Solltest du noch Fragen oder Feedback haben, dann schreib mir doch unter outrun@tadris.de.
+// MARK: Workout Share Alert
 
-Tim, der Developer.";
+"WorkoutShareAlert.Title" = "Exportiere dein Workout";
+"WorkoutList.Filter.HasRoute" = "Hat Route";
