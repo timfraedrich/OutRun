@@ -29,11 +29,11 @@
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>This app needs access to your health data to read and possible correct workouts constructed by this app</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs you location to track running workouts</string>
+	<string>This app needs you location to track workouts</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs you location to track running workouts</string>
+	<string>This app needs you location to track workouts</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs you location to track running workouts</string>
+	<string>This app needs you location to track workouts</string>
 	<key>NSMotionUsageDescription</key>
 	<string>This app needs motion related tracking capabilities to record data like steps during a workout</string>
 	<key>UIBackgroundModes</key>
