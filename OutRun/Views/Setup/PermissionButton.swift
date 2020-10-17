@@ -26,7 +26,7 @@ class PermissionButton: UIView {
     var successState = false
     
     let label = UILabel(
-        text: LS("Grant").uppercased(),
+        text: LS["Grant"].uppercased(),
         textColor: .backgroundColor,
         font: .systemFont(ofSize: 12, weight: .bold)
     )

@@ -40,7 +40,7 @@ class SettingsViewController: UITableViewController {
         self.tableView = UITableView(frame: self.tableView.frame, style: .grouped)
         self.view.backgroundColor = .backgroundColor
         
-        self.navigationItem.title = settingsModel?.title ?? LS("Settings", comment: "")
+        self.navigationItem.title = settingsModel?.title ?? LS["Settings"]
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -129,7 +129,7 @@ class SettingsViewController: UITableViewController {
     }
     
     func refreshTableView() {
-        self.navigationItem.title = self.settingsModel?.title ?? LS("Settings")
+        self.navigationItem.title = self.settingsModel?.title ?? LS["Settings"]
         self.tableView.reloadData()
     }
     

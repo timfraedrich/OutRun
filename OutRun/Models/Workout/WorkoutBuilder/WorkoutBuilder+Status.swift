@@ -43,15 +43,15 @@ extension WorkoutBuilder {
         var title: String {
             switch self {
             case .waiting:
-                return LS("WorkoutBuilder.Status.Waiting")
+                return LS["WorkoutBuilder.Status.Waiting"]
             case .ready:
-                return LS("WorkoutBuilder.Status.Ready")
+                return LS["WorkoutBuilder.Status.Ready"]
             case .recording:
-                return LS("WorkoutBuilder.Status.Recording")
+                return LS["WorkoutBuilder.Status.Recording"]
             case .paused:
-                return LS("WorkoutBuilder.Status.Paused")
+                return LS["WorkoutBuilder.Status.Paused"]
             case .autoPaused:
-                return LS("WorkoutBuilder.Status.AutoPaused")
+                return LS["WorkoutBuilder.Status.AutoPaused"]
             }
             
         }

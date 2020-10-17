@@ -100,13 +100,13 @@ enum ShareManager {
             if let url = url {
                 ShareManager.displayShareMenu(forFileAt: url, on: controller)
             } else {
-                controller.displayError(withMessage: LS("ShareManager.GPX.Error"))
+                controller.displayError(withMessage: LS["ShareManager.GPX.Error"])
             }
         }
     }
     
     static func exportBackupAlertAction(forWorkouts workouts: [Workout]? = nil, controller: UIViewController) {
-        let alertProgressClosure = controller.startLoading(asProgress: true, title: LS("Loading"), message: LS("Settings.ExportBackupData.Message"))
+        let alertProgressClosure = controller.startLoading(asProgress: true, title: LS["Loading"], message: LS["Settings.ExportBackupData.Message"])
         
         BackupManager.createBackup(
             forWorkouts: workouts,
@@ -115,7 +115,7 @@ enum ShareManager {
                     if url != nil {
                         ShareManager.displayShareMenu(forFileAt: url, on: controller)
                     } else {
-                        controller.displayError(withMessage: LS("ShareManager.Backup.Error"))
+                        controller.displayError(withMessage: LS["ShareManager.Backup.Error"])
                     }
                 }
             },

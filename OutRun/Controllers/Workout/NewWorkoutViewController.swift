@@ -47,15 +47,15 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
         alert.present(on: self)
     }
     
-    let distanceView: LabelledDataView = LabelledDataView(title: LS("Workout.Distance"), measurement: NSMeasurement(doubleValue: 0, unit: UnitLength.meters))
+    let distanceView: LabelledDataView = LabelledDataView(title: LS["Workout.Distance"], measurement: NSMeasurement(doubleValue: 0, unit: UnitLength.meters))
     
-    let durationView: LabelledDataView = LabelledDataView(title: LS("Workout.Duration"), measurement: NSMeasurement(doubleValue: 0, unit: UnitDuration.seconds))
+    let durationView: LabelledDataView = LabelledDataView(title: LS["Workout.Duration"], measurement: NSMeasurement(doubleValue: 0, unit: UnitDuration.seconds))
     
-    let speedView: LabelledDataView = LabelledDataView(title: UserPreferences.displayRollingSpeed.value ? LS("Workout.AverageSpeed") : LS("Workout.CurrentSpeed"), measurement: NSMeasurement(doubleValue: 0, unit: UnitSpeed.metersPerSecond))
+    let speedView: LabelledDataView = LabelledDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.AverageSpeed"] : LS["Workout.CurrentSpeed"], measurement: NSMeasurement(doubleValue: 0, unit: UnitSpeed.metersPerSecond))
     
-    let paceView: LabelledRelativeDataView = LabelledRelativeDataView(title: UserPreferences.displayRollingSpeed.value ? LS("Workout.RollingPace") : LS("Workout.TotalPace"), relativeMeasurement: RelativeMeasurement(value: 0, primaryUnit: UnitDuration.minutes, dividingUnit: UserPreferences.distanceMeasurementType.safeValue))
+    let paceView: LabelledRelativeDataView = LabelledRelativeDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.RollingPace"] : LS["Workout.TotalPace"], relativeMeasurement: RelativeMeasurement(value: 0, primaryUnit: UnitDuration.minutes, dividingUnit: UserPreferences.distanceMeasurementType.safeValue))
     
-    let caloriesView: LabelledDataView = LabelledDataView(title: LS("Workout.BurnedCalories"), measurement: NSMeasurement(doubleValue: 0, unit: UnitEnergy.kilocalories))
+    let caloriesView: LabelledDataView = LabelledDataView(title: LS["Workout.BurnedCalories"], measurement: NSMeasurement(doubleValue: 0, unit: UnitEnergy.kilocalories))
     
     lazy var actionButton = NewWorkoutControllerActionButton { (button, actionType) in
         
@@ -98,7 +98,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
         }
     }
     
-    lazy var recenterButton = FloatingButton(title: LS("NewWorkoutViewController.Recenter")) { (button) in
+    lazy var recenterButton = FloatingButton(title: LS["NewWorkoutViewController.Recenter"]) { (button) in
         self.userMovedMap = false
         
         guard let location = self.builder.locationManagement.locations.last else {
@@ -126,7 +126,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
             
         }
         
-        self.headline = LS("Workout.NewWorkout")
+        self.headline = LS["Workout.NewWorkout"]
         self.builder = WorkoutBuilder(workoutType: type, delegate: self)
         mapView?.delegate = WorkoutMapViewDelegate.standard
         self.readinessIndicatorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(displayIndicationAlert)))
@@ -277,20 +277,20 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
     
     func didInformOfInsufficientLocationPermission() {
         self.displayOpenSettingsAlert(
-            withTitle: LS("Error"),
-            message: LS("Setup.Permission.Location.Error")
+            withTitle: LS["Error"],
+            message: LS["Setup.Permission.Location.Error"]
         )
     }
     
     @objc func displayIndicationAlert() {
         if self.readinessIndicatorView.status == .waiting {
             let alert = UIAlertController(
-                title: LS("NewWorkoutViewController.WaitingAlert.Title"),
-                message: LS("NewWorkoutViewController.WaitingAlert.Message"),
+                title: LS["NewWorkoutViewController.WaitingAlert.Title"],
+                message: LS["NewWorkoutViewController.WaitingAlert.Message"],
                 preferredStyle: .alert,
                 options: [
                     (
-                        title: LS("Okay"),
+                        title: LS["Okay"],
                         style: .default,
                         action: nil
                     )
@@ -306,12 +306,12 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
             
             var alert: UIAlertController?
             alert = UIAlertController(
-                title: LS("NewWorkoutViewController.Cancel.Error.Recording.Title"),
-                message: LS("NewWorkoutViewController.Cancel.Error.Recording.Message"),
+                title: LS["NewWorkoutViewController.Cancel.Error.Recording.Title"],
+                message: LS["NewWorkoutViewController.Cancel.Error.Recording.Message"],
                 preferredStyle: .alert,
                 options: [
                     (
-                        title: LS("NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording"),
+                        title: LS["NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording"],
                         style: .destructive,
                         action: { _ in
                             self.builder.finish(shouldProvideCompletionActions: false) { (success) in
@@ -329,7 +329,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
                         }
                     ),
                     (
-                        title: LS("Continue"),
+                        title: LS["Continue"],
                         style: .cancel,
                         action: nil
                     )
@@ -351,7 +351,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
     
     func displayBuilderFailureError() {
         DispatchQueue.main.async {
-            self.displayError(withMessage: LS("NewWorkoutViewController.WorkoutBuilder.Error")
+            self.displayError(withMessage: LS["NewWorkoutViewController.WorkoutBuilder.Error"]
             )
         }
     }

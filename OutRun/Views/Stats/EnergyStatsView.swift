@@ -25,10 +25,10 @@ class EnergyStatsView: StatsView {
     init(stats: WorkoutStats) {
         
         super.init(
-            title: LS("WorkoutStats.BurnedEnergy"),
+            title: LS["WorkoutStats.BurnedEnergy"],
             statViews: [
                 LabelledDataView(
-                    title: LS("WorkoutStats.TotalEnergy"),
+                    title: LS["WorkoutStats.TotalEnergy"],
                     measurement: stats.burnedEnergy
                 ),
                 LabelledRelativeDataView(

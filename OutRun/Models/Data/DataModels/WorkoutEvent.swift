@@ -102,21 +102,21 @@ extension WorkoutEvent: CustomStringConvertible {
         var description: String {
             switch self {
             case .pause:
-                return LS("WorkoutEvent.Type.Pause")
+                return LS["WorkoutEvent.Type.Pause"]
             case .autoPause:
-                return LS("WorkoutEvent.Type.AutoPause")
+                return LS["WorkoutEvent.Type.AutoPause"]
             case .resume:
-                return LS("WorkoutEvent.Type.Resume")
+                return LS["WorkoutEvent.Type.Resume"]
             case .autoResume:
-                return LS("WorkoutEvent.Type.AutoResume")
+                return LS["WorkoutEvent.Type.AutoResume"]
             case .lap:
-                return LS("WorkoutEvent.Type.Lap")
+                return LS["WorkoutEvent.Type.Lap"]
             case .marker:
-                return LS("WorkoutEvent.Type.Marker")
+                return LS["WorkoutEvent.Type.Marker"]
             case .segment:
-                return LS("WorkoutEvent.Type.Segment")
+                return LS["WorkoutEvent.Type.Segment"]
             case .unknown:
-                return LS("WorkoutEvent.Type.Unknown")
+                return LS["WorkoutEvent.Type.Unknown"]
             }
         }
         

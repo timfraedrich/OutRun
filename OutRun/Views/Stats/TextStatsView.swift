@@ -37,7 +37,7 @@ class TextStatsView: UIView {
         
         DispatchQueue.main.async {
             let comment = workout.comment.value
-            let modified = LS("Workout.IsUserModified.Text")
+            let modified = LS["Workout.IsUserModified.Text"]
             
             if workout.isUserModified.value && comment != nil {
                 self.commentLabel.text = comment! + "\n\n" + modified
@@ -48,7 +48,7 @@ class TextStatsView: UIView {
             }
         }
         
-        let headerView = WorkoutHeaderView(title: LS("Workout.Comment"))
+        let headerView = WorkoutHeaderView(title: LS["Workout.Comment"])
         
         self.addSubview(headerView)
         self.addSubview(commentLabel)

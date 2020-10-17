@@ -38,8 +38,8 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
             control.styleLikeIOS12()
         }
         
-        control.insertSegment(withTitle: LS("WorkoutStats.Altitude", comment: ""), at: 0, animated: false)
-        control.insertSegment(withTitle: LS("WorkoutStats.Speed", comment: ""), at: 1, animated: false)
+        control.insertSegment(withTitle: LS["WorkoutStats.Altitude"], at: 0, animated: false)
+        control.insertSegment(withTitle: LS["WorkoutStats.Speed"], at: 1, animated: false)
         
         control.selectedSegmentIndex = 0
         
@@ -55,20 +55,20 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
     }()
     
     lazy var mapTypeButton = FloatingButton(
-        title: LS("Standard").uppercased(),
+        title: LS["Standard"].uppercased(),
         action: { button in
             
             func option(for type: MKMapType) -> (title: String, style: UIAlertAction.Style, action: (UIAlertAction) -> Void) {
                 let title: String = {
                     switch type {
                     case .standard:
-                        return LS("Standard")
+                        return LS["Standard"]
                     case .hybrid:
-                        return LS("MapView.MapType.Hybrid")
+                        return LS["MapView.MapType.Hybrid"]
                     case .satellite:
-                        return LS("MapView.MapType.Satellite")
+                        return LS["MapView.MapType.Satellite"]
                     default:
-                        return LS("Error")
+                        return LS["Error"]
                     }
                 }()
                 
@@ -83,15 +83,15 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
             }
             
             let alert = UIAlertController(
-                title: LS("MapView.MapTypeAlert.Title"),
-                message: LS("MapView.MapTypeAlert.Message"),
+                title: LS["MapView.MapTypeAlert.Title"],
+                message: LS["MapView.MapTypeAlert.Message"],
                 preferredStyle: .alert,
                 options: [
                     option(for: .standard),
                     option(for: .hybrid),
                     option(for: .satellite),
                     (
-                        title: LS("Cancel"),
+                        title: LS["Cancel"],
                         style: .cancel,
                         action: nil
                     )
@@ -124,7 +124,7 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
             return
         }
         
-        self.headline = LS("WorkoutMapController.Headline", comment: "")
+        self.headline = LS["WorkoutMapController.Headline"]
         
         if let mapView = self.mapView {
             WorkoutMapViewManager.setupRoute(forWorkout: workout, mapView: mapView, customEdgePadding: UIEdgeInsets(top: 100, left: 20, bottom: 50, right: 20)) {
@@ -164,7 +164,7 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
             stats.queryAltitudes { (success, series) in
                 if let series = series {
                     let convertedSections = series.convertedForChartView(includeSamples: true, yUnit: UserPreferences.altitudeMeasurementType.safeValue)
-                    self.diagramView.title = LS("WorkoutStats.Altitude")
+                    self.diagramView.title = LS["WorkoutStats.Altitude"]
                     self.diagramView.setData(for: convertedSections)
                 }
             }
@@ -172,7 +172,7 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
             stats.querySpeeds { (success, series) in
                 if let series = series {
                     let convertedSections = series.convertedForChartView(includeSamples: true, yUnit: UserPreferences.speedMeasurementType.safeValue)
-                    self.diagramView.title = LS("WorkoutStats.Speed")
+                    self.diagramView.title = LS["WorkoutStats.Speed"]
                     self.diagramView.setData(for: convertedSections)
                 }
             }

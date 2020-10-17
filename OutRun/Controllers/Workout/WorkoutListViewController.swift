@@ -41,7 +41,7 @@ class WorkoutListViewController: UITableViewController, ListSectionObserver, Tab
     private lazy var sortItem = UIBarButtonItem(title: self.sortType.stringWithArrow, style: .plain, target: self, action: #selector(showSortController))
     
     let noDataLabel = UILabel(
-        text: LS("NoData.Message"),
+        text: LS["NoData.Message"],
         textColor: .secondaryColor,
         font: .systemFont(ofSize: 16, weight: .bold),
         numberOfLines: 0,
@@ -56,7 +56,7 @@ class WorkoutListViewController: UITableViewController, ListSectionObserver, Tab
         
         self.tableView.separatorStyle = .none
         
-        self.navigationItem.title = LS("WorkoutListViewController.Headline", comment: "")
+        self.navigationItem.title = LS["WorkoutListViewController.Headline"]
         
         self.tableView.addSubview(noDataLabel)
         noDataLabel.snp.makeConstraints { (make) in
@@ -207,11 +207,11 @@ class WorkoutListViewController: UITableViewController, ListSectionObserver, Tab
         var string: String {
             switch self {
             case .day(_):
-                return LS("WorkoutList.Sort.Date")
+                return LS["WorkoutList.Sort.Date"]
             case .distance(_):
-                return LS("WorkoutStats.Distance")
+                return LS["WorkoutStats.Distance"]
             case .duration(_):
-                return LS("Workout.Duration")
+                return LS["Workout.Duration"]
             }
         }
         
@@ -250,9 +250,9 @@ class WorkoutListViewController: UITableViewController, ListSectionObserver, Tab
         var string: String {
             switch self {
             case .isRace:
-                return LS("WorkoutList.Filter.IsRace")
+                return LS["WorkoutList.Filter.IsRace"]
             case .type(_):
-                return LS("Workout.Type")
+                return LS["Workout.Type"]
             }
             
         }

@@ -39,7 +39,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         let listController = WorkoutListViewController()
         let timeline = NavigationController(rootViewController: listController)
         timeline.tabBarItem = UITabBarItem(
-            title: LS("TabBar.Timeline"),
+            title: LS["TabBar.Timeline"],
             image: .tabbarTimeline,
             selectedImage: .tabbarTimelineFilled
         )
@@ -50,7 +50,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         }
         let settings = NavigationController(rootViewController: settingsController)
         let settingsTabBarItem = UITabBarItem(
-            title: LS("TabBar.Settings"),
+            title: LS["TabBar.Settings"],
             image: .tabbarSettings,
             selectedImage: .tabbarSettingsFilled
         )

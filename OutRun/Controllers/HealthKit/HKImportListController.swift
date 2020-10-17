@@ -29,17 +29,17 @@ class HKImportListController: UITableViewController {
     }
     
     let noDataLabel = UILabel(
-        text: LS("NoData.Message"),
+        text: LS["NoData.Message"],
         textColor: .secondaryColor,
         font: .systemFont(ofSize: 16, weight: .bold),
         textAlignment: .center
     )
     
-    lazy var importButton = UIBarButtonItem(title: LS("ImportList.ImportAll"), style: .plain, target: self, action: #selector(importAll))
+    lazy var importButton = UIBarButtonItem(title: LS["ImportList.ImportAll"], style: .plain, target: self, action: #selector(importAll))
     
     override func viewDidLoad() {
         
-        self.navigationItem.title = LS("ImportList.Title")
+        self.navigationItem.title = LS["ImportList.Title"]
         self.view.backgroundColor = .backgroundColor
         
         self.navigationItem.rightBarButtonItem = importButton
@@ -73,17 +73,17 @@ class HKImportListController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let alert = UIAlertController(
-            title: LS("HKImport.Alert.Title"),
-            message: LS("HKImport.Alert.Title"),
+            title: LS["HKImport.Alert.Title"],
+            message: LS["HKImport.Alert.Title"],
             preferredStyle: .alert,
             options: [
                 (
-                    title: LS("No"),
+                    title: LS["No"],
                     style: .cancel,
                     action: nil
                 ),
                 (
-                    title: LS("Yes"),
+                    title: LS["Yes"],
                     style: .default,
                     action: { _ in
                         
@@ -95,7 +95,7 @@ class HKImportListController: UITableViewController {
                                         self.queriedObjects.remove(at: indexPath.row)
                                         tableView.deleteRows(at: [indexPath], with: .automatic)
                                     } else {
-                                        self.displayError(withMessage: LS("HKImport.Error"))
+                                        self.displayError(withMessage: LS["HKImport.Error"])
                                     }
                                 }
                             }
@@ -109,17 +109,17 @@ class HKImportListController: UITableViewController {
     
     @objc func importAll() {
         let alert = UIAlertController(
-            title: LS("HKImport.ImportAll.Alert.Title"),
-            message: LS("HKImport.ImportAll.Alert.Title"),
+            title: LS["HKImport.ImportAll.Alert.Title"],
+            message: LS["HKImport.ImportAll.Alert.Title"],
             preferredStyle: .alert,
             options: [
                 (
-                    title: LS("No"),
+                    title: LS["No"],
                     style: .cancel,
                     action: nil
                 ),
                 (
-                    title: LS("Yes"),
+                    title: LS["Yes"],
                     style: .default,
                     action: { _ in
                         
@@ -127,7 +127,7 @@ class HKImportListController: UITableViewController {
                             DataManager.saveWorkouts(for: self.queriedObjects) { (success, error, workouts) in
                                 self.endLoading {
                                     if !success {
-                                        self.displayError(withMessage: LS("HKImport.ImportAll.Error"), dismissAction: { _ in
+                                        self.displayError(withMessage: LS["HKImport.ImportAll.Error"], dismissAction: { _ in
                                             self.startQuery()
                                         })
                                     } else {
@@ -155,7 +155,7 @@ class HKImportListController: UITableViewController {
                             self.tableView.reloadData()
                             self.importButton.isEnabled = !objects.isEmpty
                         } else {
-                            self.displayError(withMessage: LS("ImportList.Error.FetchFailed.Message")) { (_) in
+                            self.displayError(withMessage: LS["ImportList.Error.FetchFailed.Message"]) { (_) in
                                 self.dismiss(animated: true)
                             }
                             self.importButton.isEnabled = false

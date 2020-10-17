@@ -23,7 +23,7 @@ import UIKit
 class EditWorkoutView: WorkoutActionView {
     
     init(controller: UIViewController, workout: Workout) {
-        super.init(title: { return LS("Edit") }, controller: controller, workout: workout)
+        super.init(title: { return LS["Edit"] }, controller: controller, workout: workout)
     }
     
     required init?(coder aDecoder: NSCoder) {

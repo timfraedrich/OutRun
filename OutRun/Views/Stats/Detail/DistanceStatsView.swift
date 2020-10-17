@@ -29,23 +29,23 @@ class DistanceStatsView: StatsView {
         
         var statViews = [StatView]()
         
-        statViews.append(LabelledDataView(title: LS("Workout.Distance"), measurement: stats.distance))
+        statViews.append(LabelledDataView(title: LS["Workout.Distance"], measurement: stats.distance))
         if stats.steps != nil {
-            statViews.append(LabelledDataView(title: stats.type == .cycling ? LS("Workout.Strokes") : LS("Workout.Steps"), measurement: stats.steps!))
+            statViews.append(LabelledDataView(title: stats.type == .cycling ? LS["Workout.Strokes"] : LS["Workout.Steps"], measurement: stats.steps!))
         }
         if stats.ascendingAltitude != nil {
-            statViews.append(LabelledDataView(title: LS("WorkoutStats.AscendingAltitude"), measurement: stats.ascendingAltitude, isAltitude: true))
+            statViews.append(LabelledDataView(title: LS["WorkoutStats.AscendingAltitude"], measurement: stats.ascendingAltitude, isAltitude: true))
         }
         if stats.descendingAltitude != nil {
-            statViews.append(LabelledDataView(title: LS("WorkoutStats.DescendingAltitude"), measurement: stats.descendingAltitude, isAltitude: true))
+            statViews.append(LabelledDataView(title: LS["WorkoutStats.DescendingAltitude"], measurement: stats.descendingAltitude, isAltitude: true))
         }
-        self.altitudeChart = stats.hasRouteSamples ? LabelledDiagramView(title: LS("WorkoutStats.AltitudeOverTime")) : nil
+        self.altitudeChart = stats.hasRouteSamples ? LabelledDiagramView(title: LS["WorkoutStats.AltitudeOverTime"]) : nil
         if let altit = self.altitudeChart {
             statViews.append(altit)
         }
         self.altitudeChart?.disableSelection()
         
-        super.init(title: LS("Workout.Distance"), statViews: statViews)
+        super.init(title: LS["Workout.Distance"], statViews: statViews)
         
         if stats.hasRouteSamples {
             stats.queryAltitudes { (success, series) in

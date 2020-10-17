@@ -20,14 +20,61 @@
 
 import Foundation
 
-/// shortened version to get a localized String
-func LS(_ key: String, comment: String = "") -> String {
+/// A struct containg only static subscripts and needed enumerations to enable easier localisation.
+struct LS {
     
-    let localisedString = NSLocalizedString(key, comment: comment)
-    
-    if Locale.current.regionCode?.lowercased() == "gb" {
-        return localisedString.replacingOccurrences(of: "OutRun", with: "Out-Run")
+    /**
+     Returns a localised string for the provided key and specified source.
+     - parameter key: the key pointing to the localised string
+     - parameter sourceType: the `LSSourceType` defining which file to get the string from
+     - returns: the localised `String`
+     */
+    public static subscript(_ key: String, sourceType: LSSourceType = .appStrings) -> String {
+        
+        let errorValue = "NIL"
+        var localizedString = Bundle.main.localizedString(forKey: key, value: errorValue, table: sourceType.tableName)
+        
+        // falling back on base language if string for key is not availabe
+        if localizedString == "NIL" {
+            localizedString = sourceType.fallbackBundle.localizedString(forKey: key, value: errorValue, table: sourceType.tableName)
+        }
+        
+        // checking if trademark applies and app name needs to be changed
+        if Locale.current.regionCode?.lowercased() == "gb" {
+            return localizedString.replacingOccurrences(of: "OutRun", with: "Out-Run")
+        }
+        
+        return ""
     }
     
-    return localisedString
+    /// Enumeration of possible localised string source types referring to different string tables in the project.
+    public enum LSSourceType {
+        
+        /// Referring to strings used inside the app.
+        case appStrings
+        /// Referring to strings contained by the info.plist and needed for things like permission descriptions.
+        case infoPlist
+        
+        /// A `String` pointing to the file in which the localised strings of the given `LSSourceType` are located.
+        fileprivate var tableName: String {
+            switch self {
+            case .appStrings:
+                return "Localizable"
+            case .infoPlist:
+                return "InfoPlist"
+            }
+        }
+        
+        /// The `Bundle` that is to be used in case a string is not localised for the current language
+        fileprivate var fallbackBundle: Bundle {
+            switch self {
+            case .appStrings:
+                return Bundle(path: Bundle.main.path(forResource: "Base", ofType: "lproj")!)!
+            case .infoPlist:
+                return Bundle(path: Bundle.main.path(forResource: "en", ofType: "lproj")!)!
+            }
+        }
+        
+    }
+    
 }

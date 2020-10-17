@@ -31,7 +31,7 @@ class ProgressViewController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = .backgroundColor
         
-        let infoLabel = UILabel(text: LS("Loading-DoNotClose"), textColor: .primaryColor, font: .systemFont(ofSize: 16, weight: .bold), textAlignment: .center)
+        let infoLabel = UILabel(text: LS["Loading-DoNotClose"], textColor: .primaryColor, font: .systemFont(ofSize: 16, weight: .bold), textAlignment: .center)
         progressView.progressTintColor = .accentColor
         
         self.view.addSubview(infoLabel)

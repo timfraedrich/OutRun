@@ -26,7 +26,7 @@ class WorkoutCompletionBanner: ORBaseBanner {
     private var handler: WorkoutCompletionActionHandler
     
     private let titleLabel: UILabel = UILabel(
-        text: LS("NewWorkoutCompletion.Title"),
+        text: LS["NewWorkoutCompletion.Title"],
         textColor: .primaryColor,
         font: .systemFont(ofSize: 24, weight: .bold),
         numberOfLines: 1
@@ -36,7 +36,7 @@ class WorkoutCompletionBanner: ORBaseBanner {
         
         let button = UIButton()
         
-        button.setTitle(LS("Save"), for: .normal)
+        button.setTitle(LS["Save"], for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         button.backgroundColor = .accentColor
@@ -50,7 +50,7 @@ class WorkoutCompletionBanner: ORBaseBanner {
         
         let button = UIButton()
         
-        button.setTitle(LS("Continue"), for: .normal)
+        button.setTitle(LS["Continue"], for: .normal)
         button.setTitleColor(.gray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         button.backgroundColor = .foregroundColor
@@ -64,7 +64,7 @@ class WorkoutCompletionBanner: ORBaseBanner {
         
         let button = UIButton()
         
-        button.setTitle(LS("Discard"), for: .normal)
+        button.setTitle(LS["Discard"], for: .normal)
         button.setTitleColor(.gray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         button.backgroundColor = .foregroundColor

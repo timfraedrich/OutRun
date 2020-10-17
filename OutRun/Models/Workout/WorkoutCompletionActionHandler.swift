@@ -67,7 +67,7 @@ class WorkoutCompletionActionHandler {
         
         DataManager.saveWorkout(tempWorkout: self.snapshot) { (success, error, workout) in
             
-            let banner = TextBanner(text: LS("NewWorkoutCompletion.Save." + (success ? "Success" : "Error")))
+            let banner = TextBanner(text: LS["NewWorkoutCompletion.Save." + (success ? "Success" : "Error")])
             banner.duration = 5
             banner.show()
             
@@ -100,7 +100,7 @@ class WorkoutCompletionActionHandler {
             
         }
         
-        let banner = TextBanner(text: LS(messageKey))
+        let banner = TextBanner(text: LS[messageKey])
         banner.duration = 5
         banner.show()
         

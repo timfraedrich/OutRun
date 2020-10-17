@@ -45,7 +45,7 @@ class SetupViewController: UIViewController {
         let button = UIButton()
         button.setTitleColor(.accentColor, for: .normal)
         button.setTitleColor(.secondaryColor, for: .disabled)
-        button.setTitle(LS("Next"), for: .normal)
+        button.setTitle(LS["Next"], for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         button.isEnabled = false
         return button
@@ -121,7 +121,7 @@ class SetupViewController: UIViewController {
                 case 1:
                     self.toggleButtonStatusForUserInfo()
                 case 2:
-                    self.nextButton.setTitle(LS("Skip"), for: .normal)
+                    self.nextButton.setTitle(LS["Skip"], for: .normal)
                 case 3:
                     self.healthPermissionView?.isHidden = !(self.shouldSyncWeight || self.shouldSyncWorkouts)
                     self.toggleButtonStatusForPermissions()
@@ -157,8 +157,8 @@ class SetupViewController: UIViewController {
                     self.isTransitioning = false
                 })
                 if currentPage + 1 == numberOfPages {
-                    self.nextButton.setTitle(LS("Finish"), for: .normal)
-                    self.nextButton.setTitle(LS("Finish"), for: .disabled)
+                    self.nextButton.setTitle(LS["Finish"], for: .normal)
+                    self.nextButton.setTitle(LS["Finish"], for: .disabled)
                 }
             } else {
                 
@@ -226,12 +226,12 @@ class SetupViewController: UIViewController {
     }
     
     lazy var formalitiesView = SetupView(
-        title: LS("Setup.Formalities.Title"),
-        text: LS("Setup.Formalities.Message"),
+        title: LS["Setup.Formalities.Title"],
+        text: LS["Setup.Formalities.Message"],
         customViewClosure: { view -> UIView in
             
             let privacySwitchView = SetupSwitchView(
-                title: LS("Settings.PrivacyPolicy"),
+                title: LS["Settings.PrivacyPolicy"],
                 isOn: false,
                 switchAction: { (onStatus) in
                     
@@ -245,7 +245,7 @@ class SetupViewController: UIViewController {
                 }
             )
             let termsSwitchView = SetupSwitchView(
-                title: LS("Settings.TermsOfService"),
+                title: LS["Settings.TermsOfService"],
                 isOn: false,
                 switchAction: { (onStatus) in
                     
@@ -293,21 +293,21 @@ class SetupViewController: UIViewController {
     }
     
     lazy var userInfoView = SetupView(
-        title: LS("Setup.UserInfo.Title"),
-        text: LS("Setup.UserInfo.Message"),
+        title: LS["Setup.UserInfo.Title"],
+        text: LS["Setup.UserInfo.Message"],
         customViewClosure: { view -> UIView in
             
             let nameField = SetupTextFieldView(
-                title: LS("Setup.UserInfo.Username"),
-                placeholder: LS("Setup.UserInfo.Username.Placeholder"),
+                title: LS["Setup.UserInfo.Username"],
+                placeholder: LS["Setup.UserInfo.Username.Placeholder"],
                 textFieldAction: { (input) in
                     self.username = input
                 }
             )
             var weightField: SetupTextFieldView?
             weightField = SetupTextFieldView(
-                title: LS("Setup.UserInfo.Weight"),
-                placeholder: LS("Setup.UserInfo.Weight"),
+                title: LS["Setup.UserInfo.Weight"],
+                placeholder: LS["Setup.UserInfo.Weight"],
                 keyboardType: .decimalPad,
                 textBehindTextField: self.getWeightFieldBehindLabelText(forIndex: self.preferredMeasurementSystem),
                 textFieldAction: { (input) in
@@ -324,8 +324,8 @@ class SetupViewController: UIViewController {
                 }
             )
             let systemSeg = SetupSegementedControlView(
-                title: LS("Setup.UserInfo.PreferredSystem"),
-                segmentTitles: [LS("Setup.UserInfo.PreferredSystem.Metric"), LS("Setup.UserInfo.PreferredSystem.Imperial")],
+                title: LS["Setup.UserInfo.PreferredSystem"],
+                segmentTitles: [LS["Setup.UserInfo.PreferredSystem.Metric"], LS["Setup.UserInfo.PreferredSystem.Imperial"]],
                 initialSegment: self.preferredMeasurementSystem,
                 segmentedControlAction: { (newIndex) in
                     let oldIndex = self.preferredMeasurementSystem
@@ -373,19 +373,19 @@ class SetupViewController: UIViewController {
     
     func changeNextButtonTitleAppropriatelyToAppleHealth() {
         if shouldSyncWorkouts || shouldSyncWeight {
-            self.nextButton.setTitle(LS("Next"), for: .normal)
+            self.nextButton.setTitle(LS["Next"], for: .normal)
         } else {
-            self.nextButton.setTitle(LS("Skip"), for: .normal)
+            self.nextButton.setTitle(LS["Skip"], for: .normal)
         }
     }
     
     lazy var appleHealthSyncView = SetupView(
-        title: LS("Setup.AppleHealth.Title"),
-        text: LS("Setup.AppleHealth.Message"),
+        title: LS["Setup.AppleHealth.Title"],
+        text: LS["Setup.AppleHealth.Message"],
         customViewClosure: { view -> UIView in
             
             let autoImport = SetupSwitchView(
-                title: LS("Setup.AppleHealth.AutoImportWorkouts"),
+                title: LS["Setup.AppleHealth.AutoImportWorkouts"],
                 isOn: self.shouldAutoImportWorkouts,
                 switchAction: { newStatus in
                     self.shouldAutoImportWorkouts = newStatus
@@ -400,7 +400,7 @@ class SetupViewController: UIViewController {
             toggleAutoImportOption()
             
             let syncWorkouts = SetupSwitchView(
-                title: LS("Setup.AppleHealth.SyncWorkouts"),
+                title: LS["Setup.AppleHealth.SyncWorkouts"],
                 isOn: self.shouldSyncWorkouts,
                 switchAction: { newStatus in
                     self.shouldSyncWorkouts = newStatus
@@ -409,7 +409,7 @@ class SetupViewController: UIViewController {
                 }
             )
             let syncWeight = SetupSwitchView(
-                title: LS("Setup.AppleHealth.SyncWeight"),
+                title: LS["Setup.AppleHealth.SyncWeight"],
                 isOn: self.shouldSyncWeight,
                 switchAction: { newStatus in
                     self.shouldSyncWeight = newStatus
@@ -457,12 +457,12 @@ class SetupViewController: UIViewController {
     var healthPermissionView: SetupPermissionView?
     
     lazy var permissionsView = SetupView(
-        title: LS("Setup.Permissions.Title"),
-        text: LS("Setup.Permissions.Message"),
+        title: LS["Setup.Permissions.Title"],
+        text: LS["Setup.Permissions.Message"],
         customViewClosure: { view -> UIView in
             
             let locationPermission = SetupPermissionView(
-                title: LS("Setup.Permission.Location"),
+                title: LS["Setup.Permission.Location"],
                 permissionAction: { (button) in
                     PermissionManager.standard.checkLocationPermission(closure: { status in
                         if status == .granted || status == .restricted {
@@ -475,8 +475,8 @@ class SetupViewController: UIViewController {
                                 
                                 DispatchQueue.main.async {
                                     self.displayOpenSettingsAlert(
-                                        withTitle: LS("Setup.Permission.Location.Restricted.Title"),
-                                        message: LS("Setup.Permission.Location.Restricted.Message")
+                                        withTitle: LS["Setup.Permission.Location.Restricted.Title"],
+                                        message: LS["Setup.Permission.Location.Restricted.Message"]
                                     )
                                 }
                                 
@@ -488,8 +488,8 @@ class SetupViewController: UIViewController {
                             
                             DispatchQueue.main.async {
                                 self.displayOpenSettingsAlert(
-                                    withTitle: LS("Error"),
-                                    message: LS("Setup.Permission.Location.Error")
+                                    withTitle: LS["Error"],
+                                    message: LS["Setup.Permission.Location.Error"]
                                 )
                             }
                         }
@@ -497,13 +497,13 @@ class SetupViewController: UIViewController {
                 },
                 buttonAction: {
                     DispatchQueue.main.async {
-                        self.displayInfoAlert(withMessage: LS("Setup.Permission.Location.Message"))
+                        self.displayInfoAlert(withMessage: LS["Setup.Permission.Location.Message"])
                     }
                 }
             )
             
             let motionPermission = SetupPermissionView(
-                title: LS("Setup.Permission.Motion"),
+                title: LS["Setup.Permission.Motion"],
                 permissionAction: { (button) in
                     PermissionManager.standard.checkMotionPermission { (success) in
                         button.transitionState(to: success)
@@ -513,20 +513,20 @@ class SetupViewController: UIViewController {
                         if !success {
                             DispatchQueue.main.async {
                                 self.displayOpenSettingsAlert(
-                                    withTitle: LS("Error"),
-                                    message: LS("Setup.Permission.Motion.Error")
+                                    withTitle: LS["Error"],
+                                    message: LS["Setup.Permission.Motion.Error"]
                                 )
                             }
                         }
                     }
                 },
                 buttonAction: {
-                    self.displayInfoAlert(withMessage: LS("Setup.Permission.Motion.Message"))
+                    self.displayInfoAlert(withMessage: LS["Setup.Permission.Motion.Message"])
                 }
             )
             
             self.healthPermissionView = SetupPermissionView(
-                title: LS("Setup.Permission.AppleHealth"),
+                title: LS["Setup.Permission.AppleHealth"],
                 permissionAction: { (button) in
                     PermissionManager.standard.checkHealthPermission(closure: { success in
                         button.transitionState(to: success)
@@ -535,14 +535,14 @@ class SetupViewController: UIViewController {
                         
                         if !success {
                             DispatchQueue.main.async {
-                                self.displayError(withMessage: LS("Setup.Permission.AppleHealth.Error"))
+                                self.displayError(withMessage: LS["Setup.Permission.AppleHealth.Error"])
                             }
                         }
                     })
                 },
                 buttonAction: {
                     DispatchQueue.main.async {
-                        self.displayInfoAlert(withMessage: LS("Setup.Permission.AppleHealth.Message"))
+                        self.displayInfoAlert(withMessage: LS["Setup.Permission.AppleHealth.Message"])
                     }
                 }
             )

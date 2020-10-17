@@ -33,7 +33,7 @@ class BackupDocumentPickerDelegate: NSObject, UIDocumentPickerDelegate {
             return
         }
         
-        let closure = self.currentController?.startLoading(asProgress: true, title: LS("Loading"), message: LS("Settings.ImportBackupData.Message"))
+        let closure = self.currentController?.startLoading(asProgress: true, title: LS["Loading"], message: LS["Settings.ImportBackupData.Message"])
         
         BackupManager.insertBackup(url: url, completion: { (success, workouts, events) in
             print("was able to read and load backup:", success)
@@ -44,9 +44,9 @@ class BackupDocumentPickerDelegate: NSObject, UIDocumentPickerDelegate {
             
             controller.endLoading {
                 if success {
-                    controller.displayInfoAlert(withMessage: LS("Settings.ImportBackupData.Success"))
+                    controller.displayInfoAlert(withMessage: LS["Settings.ImportBackupData.Success"])
                 } else {
-                    controller.displayError(withMessage: LS("Settings.ImportBackupData.Error"))
+                    controller.displayError(withMessage: LS["Settings.ImportBackupData.Error"])
                 }
             }
         }, progressClosure: { newProgress in

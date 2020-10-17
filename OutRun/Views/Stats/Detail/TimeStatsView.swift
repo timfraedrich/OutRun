@@ -26,11 +26,11 @@ class TimeStatsView: StatsView {
         
         var statViews = [StatView]()
         
-        let activeView = LabelledDataView(title: LS("Workout.ActiveDuration"), measurement: stats.activeDuration)
-        let pauseView = LabelledDataView(title: LS("Workout.PauseDuration"), measurement: stats.pauseDuration)
+        let activeView = LabelledDataView(title: LS["Workout.ActiveDuration"], measurement: stats.activeDuration)
+        let pauseView = LabelledDataView(title: LS["Workout.PauseDuration"], measurement: stats.pauseDuration)
         let paceView = LabelledRelativeDataView(title: nil, relativeMeasurement: stats.pace)
-        let startView = LabelledTimeView(title: LS("WorkoutStats.StartTime"), date: stats.startDate)
-        let endView = LabelledTimeView(title: LS("WorkoutStats.EndTime"), date: stats.endDate)
+        let startView = LabelledTimeView(title: LS["WorkoutStats.StartTime"], date: stats.startDate)
+        let endView = LabelledTimeView(title: LS["WorkoutStats.EndTime"], date: stats.endDate)
         
         if stats.pauseDuration.doubleValue == 0 {
             statViews.append(contentsOf: [activeView, paceView, startView, endView])
@@ -38,7 +38,7 @@ class TimeStatsView: StatsView {
             statViews.append(contentsOf: [activeView, pauseView, startView, endView, paceView])
         }
         
-        super.init(title: LS("WorkoutStats.Time"), statViews: statViews)
+        super.init(title: LS["WorkoutStats.Time"], statViews: statViews)
         
         self.backgroundColor = .backgroundColor
         

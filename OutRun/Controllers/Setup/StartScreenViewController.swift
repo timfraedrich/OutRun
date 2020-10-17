@@ -23,13 +23,13 @@ import UIKit
 class StartScreenViewController: UIViewController {
     
     let headlineLabel = UILabel(
-        text: LS("Setup.Headline"),
+        text: LS["Setup.Headline"],
         font: UIFont.systemFont(ofSize: 32, weight: .bold),
         textAlignment: .center
     )
     
     let titleLabel = UILabel(
-        text: LS("OutRun"),
+        text: LS["OutRun"],
         textColor: .accentColor,
         font: UIFont.systemFont(ofSize: 42, weight: .heavy).withLowerCaseSmallCaps,
         textAlignment: .center
@@ -40,7 +40,7 @@ class StartScreenViewController: UIViewController {
     let startButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor.accentColor
-        button.setTitle(LS("Setup.StartButton").uppercased(), for: .normal)
+        button.setTitle(LS["Setup.StartButton"].uppercased(), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(.lightGray, for: .focused)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
@@ -79,18 +79,18 @@ class StartScreenViewController: UIViewController {
         }
         
         let feature1 = StartScreenFeatureView(
-            title: LS("Setup.Feature.Route.Title"),
-            description: LS("Setup.Feature.Route.Message"),
+            title: LS["Setup.Feature.Route.Title"],
+            description: LS["Setup.Feature.Route.Message"],
             image:.setupRoute
         )
         let feature2 = StartScreenFeatureView(
-            title: LS("Setup.Feature.Chart.Title"),
-            description: LS("Setup.Feature.Chart.Message"),
+            title: LS["Setup.Feature.Chart.Title"],
+            description: LS["Setup.Feature.Chart.Message"],
             image: .setupChart
         )
         let feature3 = StartScreenFeatureView(
-            title: LS("Setup.Feature.Lock.Title"),
-            description: LS("Setup.Feature.Lock.Message"),
+            title: LS["Setup.Feature.Lock.Title"],
+            description: LS["Setup.Feature.Lock.Message"],
             image: .setupLock
         )
         

@@ -51,7 +51,7 @@ class WorkoutListSortViewController: ClearSettingsViewController, UIPopoverPrese
         
         func typeFilterSelectionSetting(for workoutType: Workout.WorkoutType?) -> Setting {
             SelectionSetting(
-                title: { workoutType?.description ?? LS("All") },
+                title: { workoutType?.description ?? LS["All"] },
                 isSelected: {
                     guard let workoutType = workoutType else {
                         return !(self.listController?.filterTypes.contains(where: { (filterType) -> Bool in
@@ -100,13 +100,13 @@ class WorkoutListSortViewController: ClearSettingsViewController, UIPopoverPrese
             title: "",
             sections: [
                 SettingSection(
-                    title: LS("WorkoutList.Filter"),
+                    title: LS["WorkoutList.Filter"],
                     settings: [
                         TitleSubTitleSetting(
                             title: WorkoutListViewController.WorkoutListFilterType.type(.unknown).string,
                             subTitle: { (listController?.filterTypes.first { (type) -> Bool in
                                 possibleTypeFilterTypes.contains(type)
-                                })?.workoutType?.description ?? LS("All")
+                                })?.workoutType?.description ?? LS["All"]
                             }(),
                             doesRedirect: true,
                             selectAction: { (setting, controller, cell) in
@@ -116,7 +116,7 @@ class WorkoutListSortViewController: ClearSettingsViewController, UIPopoverPrese
                                     title: "",
                                     sections: [
                                         SettingSection(
-                                            title: LS("Workout.Type"),
+                                            title: LS["Workout.Type"],
                                             settings: [
                                                 typeFilterSelectionSetting(for: nil),
                                                 typeFilterSelectionSetting(for: .running),
@@ -136,7 +136,7 @@ class WorkoutListSortViewController: ClearSettingsViewController, UIPopoverPrese
                     ]
                 ),
                 SettingSection(
-                    title: LS("WorkoutList.SortBy"),
+                    title: LS["WorkoutList.SortBy"],
                     settings: [
                         orderSelectionSetting(for: .day(true), .day(false)),
                         orderSelectionSetting(for: .distance(true), .distance(false))/*,
@@ -144,10 +144,10 @@ class WorkoutListSortViewController: ClearSettingsViewController, UIPopoverPrese
                     ]
                 ),
                 SettingSection(
-                    title: LS("WorkoutList.Order"),
+                    title: LS["WorkoutList.Order"],
                     settings: [
                         SwitchSetting(
-                            title: { LS("WorkoutList.Order.Descending") },
+                            title: { LS["WorkoutList.Order.Descending"] },
                             isSwitchOn: { self.isDescending },
                             isEnabled: { true },
                             switchToggleAction: { (newValue, setting) in
@@ -160,7 +160,7 @@ class WorkoutListSortViewController: ClearSettingsViewController, UIPopoverPrese
         )
         
         let dismissButton = UIButton()
-        dismissButton.setTitle(LS("Done"), for: .normal)
+        dismissButton.setTitle(LS["Done"], for: .normal)
         dismissButton.setTitleColor(.accentColor, for: .normal)
         dismissButton.titleLabel?.font = .preferredFont(forTextStyle: .body)
         dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true

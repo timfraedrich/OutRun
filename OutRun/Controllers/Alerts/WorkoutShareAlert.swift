@@ -25,7 +25,7 @@ class WorkoutShareAlert: UIAlertController {
     convenience init(controller: UIViewController, workout: Workout) {
         
         let orBackupOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
-            title: LS("WorkoutShareAlert.OutRunBackup"),
+            title: LS["WorkoutShareAlert.OutRunBackup"],
             style: .default,
             action: { action in
                 ShareManager.exportBackupAlertAction(forWorkouts: [workout], controller: controller)
@@ -33,7 +33,7 @@ class WorkoutShareAlert: UIAlertController {
         )
         
         let gpxOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
-            title: LS("WorkoutShareAlert.GPXExport"),
+            title: LS["WorkoutShareAlert.GPXExport"],
             style: .default,
             action: { action in
                 ShareManager.exportGPXAlertAction(for: workout, on: controller)
@@ -41,14 +41,14 @@ class WorkoutShareAlert: UIAlertController {
         )
         
         let cancel: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
-            title: LS("Cancel"),
+            title: LS["Cancel"],
             style: .cancel,
             action: nil
         )
         
         self.init(
-            title: LS("WorkoutShareAlert.Title"),
-            message: LS("WorkoutShareAlert.Message"),
+            title: LS["WorkoutShareAlert.Title"],
+            message: LS["WorkoutShareAlert.Message"],
             preferredStyle: .actionSheet,
             options: [
                 orBackupOption,

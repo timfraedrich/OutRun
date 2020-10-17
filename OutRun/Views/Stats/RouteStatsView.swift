@@ -38,7 +38,7 @@ class RouteStatsView: UIView, ApplicationStateObserver {
     
     let noDataLabel: UILabel = {
         let label = UILabel(
-            text: LS("NoDataAvailable"),
+            text: LS["NoDataAvailable"],
             font: .systemFont(ofSize: 14),
             textAlignment: .center)
         label.isHidden = true
@@ -47,7 +47,7 @@ class RouteStatsView: UIView, ApplicationStateObserver {
     
     init(controller: UIViewController, workout: Workout, stats: WorkoutStats) {
         
-        self.headerView = WorkoutHeaderView(title: LS("WorkoutStats.Route"))
+        self.headerView = WorkoutHeaderView(title: LS["WorkoutStats.Route"])
         
         self.controller = controller
         self.workout = workout

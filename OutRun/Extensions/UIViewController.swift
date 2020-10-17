@@ -23,7 +23,7 @@ extension UIViewController {
     
     func startLoading(asProgress: Bool = false, title: String? = nil, message: String? = nil, completion: (() -> Void)? = nil) -> ((Double, String?) -> Void)? {
         if asProgress {
-            let alert = UIAlertController(title: title ?? LS("Loading"), message: message, preferredStyle: .alert)
+            let alert = UIAlertController(title: title ?? LS["Loading"], message: message, preferredStyle: .alert)
             alert.restorationIdentifier = "loadingAlert"
             
             let progressView = UIProgressView()
@@ -45,7 +45,7 @@ extension UIViewController {
                 progressView.setProgress(Float(newProgressValue), animated: true)
             }
         } else {
-            let alert = UIAlertController(title: nil, message: LS("Loading"), preferredStyle: .alert)
+            let alert = UIAlertController(title: nil, message: LS["Loading"], preferredStyle: .alert)
             let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
             loadingIndicator.startAnimating()
             alert.view.addSubview(loadingIndicator)
@@ -74,7 +74,7 @@ extension UIViewController {
             preferredStyle: .alert,
             options: [
                 (
-                    title: LS("Okay"),
+                    title: LS["Okay"],
                     style: .cancel,
                     action: dismissAction
                 )
@@ -84,11 +84,11 @@ extension UIViewController {
     }
     
     func displayError(withMessage message: String, dismissAction: ((UIAlertAction) -> Void)? = nil) {
-        displayDismissableAlert(withTitle: LS("Error"), message: message, dismissAction: dismissAction)
+        displayDismissableAlert(withTitle: LS["Error"], message: message, dismissAction: dismissAction)
     }
     
     func displayInfoAlert(withMessage message: String, dismissAction: ((UIAlertAction) -> Void)? = nil) {
-        displayDismissableAlert(withTitle: LS("Info"), message: message, dismissAction: dismissAction)
+        displayDismissableAlert(withTitle: LS["Info"], message: message, dismissAction: dismissAction)
     }
     
     func displayOpenSettingsAlert(withTitle title: String, message: String, dismissAction: (() -> Void)? = nil) {
@@ -99,14 +99,14 @@ extension UIViewController {
             preferredStyle: .alert,
             options: [
                 (
-                    title: LS("Cancel"),
+                    title: LS["Cancel"],
                     style: .cancel,
                     action: { _ in
                         dismissAction?()
                     }
                 ),
                 (
-                    title: LS("Open"),
+                    title: LS["Open"],
                     style: .default,
                     action: { _ in
                         if let url = URL.init(string: UIApplication.openSettingsURLString) {

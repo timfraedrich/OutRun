@@ -26,9 +26,9 @@ class CustomTimeFormatting {
     
     static func dayString(forDate date: Date) -> String {
         if date.isSameDay() {
-            return LS("Today")
+            return LS["Today"]
         } else if date.isYesterday() {
-            return LS("Yesterday")
+            return LS["Yesterday"]
         }
         let dateFormatter = DateFormatter()
         

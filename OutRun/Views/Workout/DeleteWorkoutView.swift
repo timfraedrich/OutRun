@@ -23,7 +23,7 @@ import UIKit
 class DeleteWorkoutView: WorkoutActionView {
     
     init(controller: UIViewController, workout: Workout) {
-        super.init(title: { return LS("Delete") }, color: .systemRed, controller: controller, workout: workout)
+        super.init(title: { return LS["Delete"] }, color: .systemRed, controller: controller, workout: workout)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,12 +32,12 @@ class DeleteWorkoutView: WorkoutActionView {
     
     override func action(button: UIButton) {
         let alert = UIAlertController(
-            title: LS("WorkoutDeletion.Title"),
-            message: LS("WorkoutDeletion.Message"),
+            title: LS["WorkoutDeletion.Title"],
+            message: LS["WorkoutDeletion.Message"],
             preferredStyle: .alert,
             options: [
                 (
-                    title: LS("Delete"),
+                    title: LS["Delete"],
                     style: .destructive,
                     action: { _ in
                         
@@ -54,7 +54,7 @@ class DeleteWorkoutView: WorkoutActionView {
                                             }
                                             controller.close()
                                         } else {
-                                            self.controller.displayError(withMessage: LS("WorkoutDeletion.Error.Message"))
+                                            self.controller.displayError(withMessage: LS["WorkoutDeletion.Error.Message"])
                                         }
                                     })
                                 }
@@ -63,18 +63,18 @@ class DeleteWorkoutView: WorkoutActionView {
                             if self.workout.healthKitUUID.value != nil {
                                 
                                 let appleHealthAlert = UIAlertController(
-                                    title: LS("WorkoutDeletion.AppleHealth.Title"),
-                                    message: LS("WorkoutDeletion.AppleHealth.Message"),
+                                    title: LS["WorkoutDeletion.AppleHealth.Title"],
+                                    message: LS["WorkoutDeletion.AppleHealth.Message"],
                                     preferredStyle: .alert,
                                     options: [
                                         (
-                                            title: LS("Delete"),
+                                            title: LS["Delete"],
                                             style: .destructive,
                                             action: { _ in
                                                 HealthStoreManager.deleteHealthWorkout(fromWorkout: self.workout) { (success) in
                                                     
                                                     if !success {
-                                                        self.controller.displayError(withMessage: LS("WorkoutDeletion.Error.AppleHealth.Message"), dismissAction: { _ in
+                                                        self.controller.displayError(withMessage: LS["WorkoutDeletion.Error.AppleHealth.Message"], dismissAction: { _ in
                                                             deleteWorkout()
                                                         })
                                                     } else {
@@ -84,7 +84,7 @@ class DeleteWorkoutView: WorkoutActionView {
                                             }
                                         ),
                                         (
-                                            title: LS("Keep"),
+                                            title: LS["Keep"],
                                             style: .cancel,
                                             action: { _ in
                                                 deleteWorkout()
@@ -103,7 +103,7 @@ class DeleteWorkoutView: WorkoutActionView {
                     }
                 ),
                 (
-                    title: LS("Cancel"),
+                    title: LS["Cancel"],
                     style: .cancel,
                     action: nil
                 )

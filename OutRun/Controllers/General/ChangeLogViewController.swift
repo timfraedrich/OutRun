@@ -63,7 +63,7 @@ class ChangeLogViewController: UIViewController {
         }
         
         let titleLabel = UILabel(
-            text: LS("ChangeLog") + " - " + (Config.version),
+            text: LS["ChangeLog"] + " - " + (Config.version),
             textColor: .accentColor,
             font: UIFont.systemFont(ofSize: 24, weight: .heavy).withLowerCaseSmallCaps,
             numberOfLines: 1,
@@ -71,9 +71,6 @@ class ChangeLogViewController: UIViewController {
         )
         
         let closeButton = UIButton()
-//        closeButton.setTitle(LS("Close"), for: .normal)
-//        closeButton.setTitleColor(.accentColor, for: .normal)
-//        closeButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         closeButton.setImage(.close, for: .normal)
         closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         

@@ -98,14 +98,14 @@ class MeasurementUserPreference<UnitType> where UnitType: Unit {
         
         let settingsModel = SettingsModel(title: title, sections: [
             SettingSection(
-                title: LS("Settings.UnitPick.Headline"),
-                message: LS("Settings.UnitPick.Message"),
+                title: LS["Settings.UnitPick.Headline"],
+                message: LS["Settings.UnitPick.Message"],
                 settings: {
                     var settings = [SelectionSetting]()
                     
                     if let standardUnit = self.standardLocalValue {
                         let selectSetting = SelectionSetting(
-                            title: LS("Standard") + " (\(MeasurementFormatter().string(from: standardUnit)))",
+                            title: LS["Standard"] + " (\(MeasurementFormatter().string(from: standardUnit)))",
                             subTitle: "",
                             isSelected: { () -> Bool in
                                 return self.value == nil

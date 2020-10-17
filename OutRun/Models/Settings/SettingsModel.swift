@@ -26,7 +26,7 @@ class SettingsModel {
     public let title: String
     public let sections: [SettingSection]
     
-    public init(title: String = LS("Settings"), sections: [SettingSection]) {
+    public init(title: String = LS["Settings"], sections: [SettingSection]) {
         self.title = title
         self.sections = sections
         sections.forEach { (section) in
@@ -80,19 +80,19 @@ class SettingsModel {
     static var custom: SettingsModel {
         return SettingsModel(sections: [
             SettingSection(
-                title: LS("Settings.UserSettings"),
-                message: LS("Settings.UserSettings.Description"),
+                title: LS["Settings.UserSettings"],
+                message: LS["Settings.UserSettings.Description"],
                 settings: [
                     TextInputSetting(
-                        title: LS("Settings.Name"),
+                        title: LS["Settings.Name"],
                         textFieldText: UserPreferences.name.value,
-                        textFieldPlaceholder: LS("Settings.Name"),
+                        textFieldPlaceholder: LS["Settings.Name"],
                         textFieldValueAction: { (newValue, setting) in
                             UserPreferences.name.value = newValue
                     }
                     ),
                     TextInputSetting(
-                        title: { LS("Settings.Weight") },
+                        title: { LS["Settings.Weight"] },
                         textFieldText: {
                             guard let weight = UserPreferences.weight.value else  {
                                 return nil
@@ -100,7 +100,7 @@ class SettingsModel {
                             let value = UserPreferences.weightMeasurementType.convert(fromValue: weight, toPrefered: true)
                             return CustomNumberFormatting.string(from: value, fractionDigits: 2)
                         },
-                        textFieldPlaceholder: { LS("Settings.Weight") },
+                        textFieldPlaceholder: { LS["Settings.Weight"] },
                         keyboardType: .decimalPad,
                         textBehindTextField: UserPreferences.weightMeasurementType.safeValue.symbol,
                         textFieldValueAction: { (newStringValue, setting) in
@@ -126,27 +126,27 @@ class SettingsModel {
                     )
             ]),
             SettingSection(
-                title: LS("Settings.UnitPreferences"),
+                title: LS["Settings.UnitPreferences"],
                 settings: [
-                    UserPreferences.distanceMeasurementType.setting(forTitle: LS("Settings.DistanceUnit")),
-                    UserPreferences.altitudeMeasurementType.setting(forTitle: LS("Settings.AltitudeUnit")),
-                    UserPreferences.speedMeasurementType.setting(forTitle: LS("Settings.SpeedUnit")),
-                    UserPreferences.energyMeasurementType.setting(forTitle: LS("Settings.EnergyUnit")),
-                    UserPreferences.weightMeasurementType.setting(forTitle: LS("Settings.WeightUnit"))
+                    UserPreferences.distanceMeasurementType.setting(forTitle: LS["Settings.DistanceUnit"]),
+                    UserPreferences.altitudeMeasurementType.setting(forTitle: LS["Settings.AltitudeUnit"]),
+                    UserPreferences.speedMeasurementType.setting(forTitle: LS["Settings.SpeedUnit"]),
+                    UserPreferences.energyMeasurementType.setting(forTitle: LS["Settings.EnergyUnit"]),
+                    UserPreferences.weightMeasurementType.setting(forTitle: LS["Settings.WeightUnit"])
             ]),
             SettingSection(
-                title: LS("Settings.RecordingPreferences"),
-                message: LS("Settings.RecordingPreferences.Message"),
+                title: LS["Settings.RecordingPreferences"],
+                message: LS["Settings.RecordingPreferences.Message"],
                 settings: [
                     TitleSubTitleSetting(
-                        title: { LS("Settings.StandardWorkoutType") },
+                        title: { LS["Settings.StandardWorkoutType"] },
                         subTitle: { Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value).description },
                         SettingsModel(
-                            title: LS("Settings.StandardWorkoutType"),
+                            title: LS["Settings.StandardWorkoutType"],
                             sections: [
                                 SettingSection(
-                                    title: LS("Workout.Type"),
-                                    message: LS("Settings.StandardWorkoutType.Message"),
+                                    title: LS["Workout.Type"],
+                                    message: LS["Settings.StandardWorkoutType.Message"],
                                     settings: {
                                         func selectionSetting(withType type: Workout.WorkoutType) -> SelectionSetting {
                                             SelectionSetting(
@@ -170,15 +170,15 @@ class SettingsModel {
                         )
                     ),
                     SwitchSetting(
-                        title: LS("Settings.MapVisibility"),
+                        title: LS["Settings.MapVisibility"],
                         isSwitchOn: UserPreferences.shouldShowMap.value,
                         switchToggleAction: { (newValue, setting) in
                             UserPreferences.shouldShowMap.value = newValue
                         }
                     ),
                     TitleSubTitleSetting(
-                        title: LS("Settings.GPSAccuracy"),
-                        subTitle: UserPreferences.gpsAccuracy.value != nil ? (UserPreferences.gpsAccuracy.value == -1 ? LS("Settings.GPSAccuracy.Off") : "\(UserPreferences.gpsAccuracy.value!) m") : LS("Settings.GPSAccuracy.Standard"),
+                        title: LS["Settings.GPSAccuracy"],
+                        subTitle: UserPreferences.gpsAccuracy.value != nil ? (UserPreferences.gpsAccuracy.value == -1 ? LS["Settings.GPSAccuracy.Off"] : "\(UserPreferences.gpsAccuracy.value!) m") : LS["Settings.GPSAccuracy.Standard"],
                         {
                             func selectionSetting(withTitle title: String, value: Double?) -> SelectionSetting {
                                 let valueString = (value != nil && value ?? -1 > 0) ? "\(value!) m" : ""
@@ -195,17 +195,17 @@ class SettingsModel {
                             }
                             
                             return SettingsModel(
-                                title: LS("Settings.GPSAccuracy"),
+                                title: LS["Settings.GPSAccuracy"],
                                 sections: [
                                     SettingSection(
-                                        title: LS("Settings.GPSAccuracy.Title"),
-                                        message: LS("Settings.GPSAccuracy.Text"),
+                                        title: LS["Settings.GPSAccuracy.Title"],
+                                        message: LS["Settings.GPSAccuracy.Text"],
                                         settings: [
-                                            selectionSetting(withTitle: LS("Settings.GPSAccuracy.Standard"), value: nil),
-                                            selectionSetting(withTitle: LS("Settings.GPSAccuracy.High"), value: 20),
-                                            selectionSetting(withTitle: LS("Settings.GPSAccuracy.Acceptable"), value: 30),
-                                            selectionSetting(withTitle: LS("Settings.GPSAccuracy.LastResort"), value: 50),
-                                            selectionSetting(withTitle: LS("Settings.GPSAccuracy.Off"), value: -1)
+                                            selectionSetting(withTitle: LS["Settings.GPSAccuracy.Standard"], value: nil),
+                                            selectionSetting(withTitle: LS["Settings.GPSAccuracy.High"], value: 20),
+                                            selectionSetting(withTitle: LS["Settings.GPSAccuracy.Acceptable"], value: 30),
+                                            selectionSetting(withTitle: LS["Settings.GPSAccuracy.LastResort"], value: 50),
+                                            selectionSetting(withTitle: LS["Settings.GPSAccuracy.Off"], value: -1)
                                         ]
                                     )
                                 ]
@@ -213,14 +213,14 @@ class SettingsModel {
                         }()
                     ),
                     SwitchSetting(
-                        title: LS("Settings.DisplayPace"),
+                        title: LS["Settings.DisplayPace"],
                         isSwitchOn: UserPreferences.usePaceForSpeedDisplay.value,
                         switchToggleAction: { (newValue, setting) in
                             UserPreferences.usePaceForSpeedDisplay.value = newValue
                         }
                     ),
                     SwitchSetting(
-                        title: LS("Settings.DisplayRollingSpeed"),
+                        title: LS["Settings.DisplayRollingSpeed"],
                         isSwitchOn: UserPreferences.displayRollingSpeed.value,
                         switchToggleAction: { (newValue, setting) in
                             UserPreferences.displayRollingSpeed.value = newValue
@@ -229,11 +229,11 @@ class SettingsModel {
                 ]
             ),
             SettingSection(
-                title: LS("Settings.AppleHealthPreferences"),
-                message: LS("Settings.AppleHealthPreferences.Message"),
+                title: LS["Settings.AppleHealthPreferences"],
+                message: LS["Settings.AppleHealthPreferences.Message"],
                 settings: [
                     SwitchSetting(
-                        title: { LS("Settings.SynchronizeWorkoutsWithAppleHealth") },
+                        title: { LS["Settings.SynchronizeWorkoutsWithAppleHealth"] },
                         isSwitchOn: { UserPreferences.synchronizeWorkoutsWithAppleHealth.value },
                         switchToggleAction: { (newValue, setting) in
                             if newValue {
@@ -249,7 +249,7 @@ class SettingsModel {
                         }
                     ),
                     SwitchSetting(
-                        title: LS("Settings.SynchronizeWeightWithAppleHealth"),
+                        title: LS["Settings.SynchronizeWeightWithAppleHealth"],
                         isSwitchOn: UserPreferences.synchronizeWeightWithAppleHealth.value,
                         switchToggleAction: { (newValue, setting) in
                             if newValue {
@@ -263,7 +263,7 @@ class SettingsModel {
                         }
                     ),
                     SwitchSetting(
-                        title: { LS("Settings.AutoImportHealthWorkouts") },
+                        title: { LS["Settings.AutoImportHealthWorkouts"] },
                         isSwitchOn: { (UserPreferences.synchronizeWorkoutsWithAppleHealth.value ?  UserPreferences.automaticallyImportNewHealthWorkouts.value : false) },
                         isEnabled: { UserPreferences.synchronizeWorkoutsWithAppleHealth.value },
                         switchToggleAction: { (newValue, setting) in
@@ -277,7 +277,7 @@ class SettingsModel {
                         }
                     ),
                     TitleSetting(
-                        title: LS("Settings.ImportFromAppleHealth"),
+                        title: LS["Settings.ImportFromAppleHealth"],
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
                             
@@ -287,19 +287,19 @@ class SettingsModel {
                         }
                     ),
                     ButtonSetting(
-                        title: { return LS("Settings.SyncAll") },
+                        title: { return LS["Settings.SyncAll"] },
                         selectAction: { (setting, controller, cell) in
                             _ = controller.startLoading {
                                 HealthStoreManager.syncAllUnsyncedWorkoutsWithAppleHealth { (success, allSyncedAlready) in
                                     controller.endLoading {
                                         if success {
                                             if allSyncedAlready ?? false {
-                                                 controller.displayInfoAlert(withMessage: LS("Settings.SyncAll.AllSyncedAlready"))
+                                                 controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.AllSyncedAlready"])
                                             } else {
-                                                controller.displayInfoAlert(withMessage: LS("Settings.SyncAll.Success"))
+                                                controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.Success"])
                                             }
                                         } else {
-                                            controller.displayError(withMessage: LS("Settings.SyncAll.Error"))
+                                            controller.displayError(withMessage: LS["Settings.SyncAll.Error"])
                                         }
                                     }
                                 }
@@ -310,18 +310,18 @@ class SettingsModel {
                 ]
             ),
             SettingSection(
-                title: LS("Settings.DataPreferences"),
-                message: LS("Settings.DataPreferences.Message"),
+                title: LS["Settings.DataPreferences"],
+                message: LS["Settings.DataPreferences.Message"],
                 settings: [
                     TitleSetting(
-                        title: LS("Settings.CreateBackup"),
+                        title: LS["Settings.CreateBackup"],
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
                             ShareManager.exportBackupAlertAction(controller: controller)
                         }
                     ),
                     TitleSetting(
-                        title: LS("Settings.ImportBackupData"),
+                        title: LS["Settings.ImportBackupData"],
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
                             let picker = UIDocumentPickerViewController(documentTypes: ["de.tadris.orbup"], in: .import)
@@ -332,16 +332,16 @@ class SettingsModel {
                         }
                     ),
                     ButtonSetting(
-                        title: LS("Settings.DeleteAllData"),
+                        title: LS["Settings.DeleteAllData"],
                         selectAction: { (setting, controller, cell) in
                             
                             let alert = UIAlertController(
-                                title: LS("Settings.DeleteAll.Confirmation.Title"),
-                                message: LS("Settings.DeleteAll.Confirmation.Message"),
+                                title: LS["Settings.DeleteAll.Confirmation.Title"],
+                                message: LS["Settings.DeleteAll.Confirmation.Message"],
                                 preferredStyle: .alert,
                                 options: [
                                 (
-                                    title: LS("Delete"),
+                                    title: LS["Delete"],
                                     style: .destructive,
                                     action: { _ in
                                         
@@ -368,12 +368,12 @@ class SettingsModel {
                                                             
                                                         } else {
                                                             let errorAlert = UIAlertController(
-                                                                title: LS("Settings.DeleteAll.Error.Title"),
-                                                                message: LS("Settings.DeleteAll.Error.Message"),
+                                                                title: LS["Settings.DeleteAll.Error.Title"],
+                                                                message: LS["Settings.DeleteAll.Error.Message"],
                                                                 preferredStyle: .alert,
                                                                 options: [
                                                                     (
-                                                                        title: LS("Okay"),
+                                                                        title: LS["Okay"],
                                                                         style: .cancel,
                                                                         action: nil
                                                                     )
@@ -390,12 +390,12 @@ class SettingsModel {
                                         }
                                             
                                         let appleHealthAlert = UIAlertController(
-                                            title: LS("Settings.DeleteAll.AppleHealth.Title"),
-                                            message: LS("Settings.DeleteAll.AppleHealth.Message"),
+                                            title: LS["Settings.DeleteAll.AppleHealth.Title"],
+                                            message: LS["Settings.DeleteAll.AppleHealth.Message"],
                                             preferredStyle: .alert,
                                             options: [
                                                 (
-                                                    title: LS("Delete"),
+                                                    title: LS["Delete"],
                                                     style: .destructive,
                                                     action: { _ in
                                                         deleteData {
@@ -404,12 +404,12 @@ class SettingsModel {
                                                                     controller.endLoading() {
                                                                         if !success {
                                                                             let errorAlert = UIAlertController(
-                                                                                title: LS("Settings.DeleteAll.AppleHealth.Error.Title"),
-                                                                                message: LS("Settings.DeleteAll.AppleHealth.Error.Message"),
+                                                                                title: LS["Settings.DeleteAll.AppleHealth.Error.Title"],
+                                                                                message: LS["Settings.DeleteAll.AppleHealth.Error.Message"],
                                                                                 preferredStyle: .alert,
                                                                                 options: [
                                                                                     (
-                                                                                        title: LS("Okay"),
+                                                                                        title: LS["Okay"],
                                                                                         style: .cancel,
                                                                                         action: nil
                                                                                     )
@@ -424,7 +424,7 @@ class SettingsModel {
                                                     }
                                                 ),
                                                 (
-                                                    title: LS("Keep"),
+                                                    title: LS["Keep"],
                                                     style: .default,
                                                     action: { _ in
                                                         deleteData()
@@ -440,7 +440,7 @@ class SettingsModel {
                                     
                                     ),
                                 (
-                                    title: LS("Cancel"),
+                                    title: LS["Cancel"],
                                     style: .cancel,
                                     action: nil
                                     )
@@ -453,10 +453,10 @@ class SettingsModel {
                     )
             ]),
             SettingSection(
-                title: LS("Settings.Support"),
+                title: LS["Settings.Support"],
                 settings: [
                     TitleSetting(
-                        title: LS("Settings.TermsOfService"),
+                        title: LS["Settings.TermsOfService"],
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
                             
@@ -466,7 +466,7 @@ class SettingsModel {
                     }
                     ),
                     TitleSetting(
-                        title: LS("Settings.PrivacyPolicy"),
+                        title: LS["Settings.PrivacyPolicy"],
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
                             
@@ -476,7 +476,7 @@ class SettingsModel {
                     }
                     ),
                     TitleSubTitleSetting(
-                        title: LS("Settings.Email"),
+                        title: LS["Settings.Email"],
                         subTitle: "outrun@tadris.de",
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
@@ -486,12 +486,12 @@ class SettingsModel {
                             UIApplication.shared.open(url) { (success) in
                                 if !success {
                                     print("Failed to open Mail")
-                                    controller.displayError(withMessage: LS("Settings.Email.Error"))
+                                    controller.displayError(withMessage: LS["Settings.Email.Error"])
                                 }
                             }
                     }),
                     TitleSubTitleSetting(
-                        title: LS("Settings.SourceCode"),
+                        title: LS["Settings.SourceCode"],
                         subTitle: "github.com",
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
@@ -501,21 +501,21 @@ class SettingsModel {
                             UIApplication.shared.open(url) { (success) in
                                 if !success {
                                     print("Failed to open link to source code")
-                                    controller.displayError(withMessage: LS("Settings.SourceCode.Error"))
+                                    controller.displayError(withMessage: LS["Settings.SourceCode.Error"])
                                 }
                             }
                     })
             ]),
             SettingSection(
-                title: LS("Settings.AppInfo"),
+                title: LS["Settings.AppInfo"],
                 message: "ⓒ 2020 Tim Fraedrich\n\n",
                 settings: [
                     TitleSubTitleSetting(
-                        title: LS("Settings.AppVersion"),
+                        title: LS["Settings.AppVersion"],
                         subTitle: Config.version
                     ),
                     TitleSubTitleSetting(
-                        title: LS("Settings.ReleaseStatus"),
+                        title: LS["Settings.ReleaseStatus"],
                         subTitle: Config.releaseStatus.rawValue
                     )
             ]),

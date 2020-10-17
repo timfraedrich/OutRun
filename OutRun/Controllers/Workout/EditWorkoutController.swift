@@ -34,7 +34,7 @@ class EditWorkoutController: SettingsViewController {
     var comment: String? = nil
     var pauseResumeEvents = [TempWorkoutEvent]()
     
-    lazy var addItem = UIBarButtonItem(title: LS("Save"), style: .done, target: self, action: #selector(saveWorkout))
+    lazy var addItem = UIBarButtonItem(title: LS["Save"], style: .done, target: self, action: #selector(saveWorkout))
     
     override func viewDidLoad() {
         
@@ -56,19 +56,19 @@ class EditWorkoutController: SettingsViewController {
             })
         }
         
-        let cancelItem = UIBarButtonItem(title: LS("Cancel"), style: .plain, target: self, action: #selector(closeSelector))
+        let cancelItem = UIBarButtonItem(title: LS["Cancel"], style: .plain, target: self, action: #selector(closeSelector))
         self.navigationItem.leftBarButtonItem = cancelItem
         self.navigationItem.rightBarButtonItem = addItem
         self.addItem.isEnabled = false
         
         self.settingsModel = SettingsModel(
-            title: self.workout == nil ? LS("EditWorkoutController.NewWorkout") : LS("EditWorkoutController.EditWorkout"),
+            title: self.workout == nil ? LS["EditWorkoutController.NewWorkout"] : LS["EditWorkoutController.EditWorkout"],
             sections: [
                 SettingSection(
                     title: "Info",
                     settings: [
                         PickerSetting(
-                            title: LS("Workout.Type"),
+                            title: LS["Workout.Type"],
                             selectedIndex: self.workoutType.rawValue,
                             possibleValues: [Workout.WorkoutType.running, .walking, .cycling],
                             selectionAction: { (workoutType, setting) in
@@ -77,7 +77,7 @@ class EditWorkoutController: SettingsViewController {
                             }
                         ),
                         TextInputSetting(
-                            title: LS("Workout.Distance"),
+                            title: LS["Workout.Distance"],
                             textFieldText: {
                                 let value = UserPreferences.distanceMeasurementType.convert(fromValue: self.distance ?? 0, toPrefered: true)
                                 return CustomNumberFormatting.string(from: value, fractionDigits: 2)
@@ -94,11 +94,11 @@ class EditWorkoutController: SettingsViewController {
                             }
                         ),
                         TextInputSetting(
-                            title: self.workoutType == .cycling ? LS("Workout.Strokes") : LS("Workout.Steps"),
+                            title: self.workoutType == .cycling ? LS["Workout.Strokes"] : LS["Workout.Steps"],
                             textFieldText: {
                                 return self.steps != nil ? CustomNumberFormatting.string(from: Double(self.steps!), fractionDigits: 0) : nil
                             }(),
-                            textFieldPlaceholder: LS("NotSet"),
+                            textFieldPlaceholder: LS["NotSet"],
                             keyboardType: .numberPad,
                             textFieldValueAction: { (newValue, setting) in
                                 let newSteps = CustomNumberFormatting.number(from: newValue)
@@ -107,7 +107,7 @@ class EditWorkoutController: SettingsViewController {
                             }
                         ),
                         DatePickerSetting(
-                            title: LS("Workout.StartDate"),
+                            title: LS["Workout.StartDate"],
                             date: self.startDate,
                             pickerMode: .dateAndTime,
                             dateSelectionAction: { (date, setting) in
@@ -116,7 +116,7 @@ class EditWorkoutController: SettingsViewController {
                             }
                         ),
                         TimeIntervalPickerSetting(
-                            title: LS("Workout.Duration"),
+                            title: LS["Workout.Duration"],
                             startValue: self.duration,
                             timeIntervalSelectionAction: { (timeInterval, setting) in
                                 self.duration = timeInterval
@@ -124,7 +124,7 @@ class EditWorkoutController: SettingsViewController {
                             }
                         ),
                         SwitchSetting(
-                            title: LS("Workout.Race"),
+                            title: LS["Workout.Race"],
                             isSwitchOn: self.isRace,
                             switchToggleAction: { (newValue, setting) in
                                 self.isRace = newValue
@@ -135,10 +135,10 @@ class EditWorkoutController: SettingsViewController {
                 ),
                 // MARK: not yet implemented
                 /*SettingSection(
-                    title: LS("Workout.Pauses"),
+                    title: LS["Workout.Pauses"],
                     settings: [
                         TitleSetting(
-                            title: LS("EditWorkoutController.EditPauses"),
+                            title: LS["EditWorkoutController.EditPauses"],
                             doesRedirect: true,
                             selectAction: { (settings, controller, cell) in
                                 let pauseContoller = EditWorkoutPauseController()
@@ -149,11 +149,11 @@ class EditWorkoutController: SettingsViewController {
                     ]
                 ),*/
                 SettingSection(
-                    title: LS("Workout.Comment"),
+                    title: LS["Workout.Comment"],
                     settings: [
                         TextViewSetting(
                             text: self.comment,
-                            placeholder: LS("Workout.Comment"),
+                            placeholder: LS["Workout.Comment"],
                             textViewValueAction: { (newValue, setting) in
                                 self.comment = newValue == "" ? nil : newValue
                                 self.validateData()
@@ -194,7 +194,7 @@ class EditWorkoutController: SettingsViewController {
             ) { (success, error, workout) in
                 
                 guard let workout = workout, error == nil else {
-                    self.displayError(withMessage: LS("EditWorkoutController.SaveWorkout.Error"))
+                    self.displayError(withMessage: LS["EditWorkoutController.SaveWorkout.Error"])
                     return
                 }
                 
@@ -217,7 +217,7 @@ class EditWorkoutController: SettingsViewController {
                         if !success {
                             DataManager.removeHealthKitWorkoutUUID(forWorkout: workout) { (referenceRemovalSuccess) in
                                 if !referenceRemovalSuccess {
-                                    self.displayError(withMessage: LS("EditWorkoutController.AlterWorkout.AppleHealth.Error")) { action in
+                                    self.displayError(withMessage: LS["EditWorkoutController.AlterWorkout.AppleHealth.Error"]) { action in
                                         customClose()
                                     }
                                     print("Error - was not able to remove reference from altered workout that could not be saved to Apple Health")
@@ -250,7 +250,7 @@ class EditWorkoutController: SettingsViewController {
             ) { (success, error, workout) in
                 
                 guard let workout = workout, error == nil else {
-                    self.displayError(withMessage: LS("EditWorkoutController.SaveWorkout.Error"))
+                    self.displayError(withMessage: LS["EditWorkoutController.SaveWorkout.Error"])
                     return
                 }
                 
@@ -258,7 +258,7 @@ class EditWorkoutController: SettingsViewController {
                 
                     HealthStoreManager.saveHealthWorkout(forWorkout: workout, completion: { (success, healthWorkout) in
                         if !success {
-                            self.displayError(withMessage: LS("EditWorkoutController.SaveWorkout.AppleHealth.Error")) { (_) in
+                            self.displayError(withMessage: LS["EditWorkoutController.SaveWorkout.AppleHealth.Error"]) { (_) in
                                 self.close()
                             }
                         } else {

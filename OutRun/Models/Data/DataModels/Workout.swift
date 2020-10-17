@@ -168,17 +168,17 @@ extension Workout: CustomStringConvertible {
         var description: String {
             switch self {
             case .running:
-                return LS("Workout.Type.Running")
+                return LS["Workout.Type.Running"]
             case .walking:
-                return LS("Workout.Type.Walking")
+                return LS["Workout.Type.Walking"]
             case .cycling:
-                return LS("Workout.Type.Cycling")
+                return LS["Workout.Type.Cycling"]
             case .skating:
-                return LS("Workout.Type.Skating")
+                return LS["Workout.Type.Skating"]
             case .hiking:
-                return LS("Workout.Type.Hiking")
+                return LS["Workout.Type.Hiking"]
             case .unknown:
-                return LS("Workout.Type.Unknown")
+                return LS["Workout.Type.Unknown"]
             }
         }
         

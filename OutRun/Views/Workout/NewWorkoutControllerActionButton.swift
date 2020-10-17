@@ -26,8 +26,8 @@ class NewWorkoutControllerActionButton: UIView {
     private var lastStatus = WorkoutBuilder.Status.waiting
     var isAnimating = false
     
-    lazy var startButton = baseButton(withTitle: LS("Start"), selector: #selector(startWorkout))
-    lazy var stopButton = baseButton(withTitle: LS("Stop"), backgroundColor: .accentColor, selector: #selector(stopWorkout))
+    lazy var startButton = baseButton(withTitle: LS["Start"], selector: #selector(startWorkout))
+    lazy var stopButton = baseButton(withTitle: LS["Stop"], backgroundColor: .accentColor, selector: #selector(stopWorkout))
     lazy var pauseOrContinueButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .gray

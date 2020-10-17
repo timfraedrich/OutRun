@@ -48,7 +48,7 @@ class WorkoutViewController: DetailViewController {
     override func viewDidLoad() {
         
         self.headline = workout?.type.description ?? "ERROR"
-        self.dateLabel.text = (CustomTimeFormatting.dayString(forDate: workout?.startDate.value ?? .init(timeIntervalSince1970: 0)).uppercased() ) + (workout?.isRace.value ?? false ? " - " + LS("Workout.Race") : "").uppercased()
+        self.dateLabel.text = (CustomTimeFormatting.dayString(forDate: workout?.startDate.value ?? .init(timeIntervalSince1970: 0)).uppercased() ) + (workout?.isRace.value ?? false ? " - " + LS["Workout.Race"] : "").uppercased()
         super.viewDidLoad()
         
         headlineContainerView.addSubview(dateLabel)
@@ -92,7 +92,7 @@ class WorkoutViewController: DetailViewController {
                 self.loadingView.isHidden = true
                 
                 guard let stats = stats else {
-                    self.displayError(withMessage: LS("WorkoutViewController.LoadingError")) { _ in
+                    self.displayError(withMessage: LS["WorkoutViewController.LoadingError"]) { _ in
                         self.close()
                     }
                     return
@@ -107,7 +107,7 @@ class WorkoutViewController: DetailViewController {
                 let editView = EditWorkoutView(controller: self, workout: workout)
                 let commentView = TextStatsView(workout: workout)
                 let appleHealthView = WorkoutActionView(title: { () -> String in
-                    workout.healthKitUUID.value != nil ? LS("AppleHealth.Remove") : LS("AppleHealth.Add")
+                    workout.healthKitUUID.value != nil ? LS["AppleHealth.Remove"] : LS["AppleHealth.Add"]
                 }, controller: self, workout: workout) { (workout, actionView) in
                     
                     func updateOrShowError(for success: Bool, message: String) {
@@ -121,13 +121,13 @@ class WorkoutViewController: DetailViewController {
                     if workout.healthKitUUID.value == nil {
                         
                         HealthStoreManager.saveHealthWorkout(forWorkout: workout) { (success, hkWorkout) in
-                            updateOrShowError(for: success, message: LS("AppleHealth.Add.Error"))
+                            updateOrShowError(for: success, message: LS["AppleHealth.Add.Error"])
                         }
                         
                     } else {
                         
                         HealthStoreManager.deleteHealthWorkout(fromWorkout: workout) { (success) in
-                            updateOrShowError(for: success, message: LS("AppleHealth.Remove.Error"))
+                            updateOrShowError(for: success, message: LS["AppleHealth.Remove.Error"])
                         }
                         
                     }

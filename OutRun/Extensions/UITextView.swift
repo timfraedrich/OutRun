@@ -25,7 +25,7 @@ extension UITextView {
     func addDoneToolbar() {
         let toolBar = UIToolbar()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: LS("Done"), style: .done, target: self, action: #selector(self.endEditing(_:)))
+        let doneButton = UIBarButtonItem(title: LS["Done"], style: .done, target: self, action: #selector(self.endEditing(_:)))
         toolBar.setItems([flexSpace, doneButton], animated: false)
         
         toolBar.snp.makeConstraints { (make) in

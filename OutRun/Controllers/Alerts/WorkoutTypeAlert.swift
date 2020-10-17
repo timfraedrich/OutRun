@@ -45,7 +45,7 @@ class WorkoutTypeAlert: UIAlertController {
         if let manualAction = manualAction {
             options.append(
                 (
-                    title: LS("NewWorkoutAlert.EnterManually"),
+                    title: LS["NewWorkoutAlert.EnterManually"],
                     style: .default,
                     action: { _ in
                         manualAction()
@@ -56,15 +56,15 @@ class WorkoutTypeAlert: UIAlertController {
         
         options.append(
             (
-                title: LS("Cancel"),
+                title: LS["Cancel"],
                 style: .cancel,
                 action: nil
             )
         )
         
         self.init(
-            title: LS("NewWorkoutAlert.Title"),
-            message: LS("NewWorkoutAlert.Message"),
+            title: LS["NewWorkoutAlert.Title"],
+            message: LS["NewWorkoutAlert.Message"],
             preferredStyle: .alert,
             options: options
         )

@@ -28,19 +28,19 @@ class SpeedStatsView: StatsView {
         
         var statViews = [StatView]()
         
-        let avgSpeedView = LabelledDataView(title: LS("WorkoutStats.AverageSpeed"), measurement: stats.averageSpeed)
+        let avgSpeedView = LabelledDataView(title: LS["WorkoutStats.AverageSpeed"], measurement: stats.averageSpeed)
         statViews.append(avgSpeedView)
         
         if stats.hasRouteSamples {
-            let topSpeedView = LabelledDataView(title: LS("WorkoutStats.TopSpeed"), measurement: stats.topSpeed)
-            self.speedChart = LabelledDiagramView(title: LS("WorkoutStats.SpeedOverTime"))
+            let topSpeedView = LabelledDataView(title: LS["WorkoutStats.TopSpeed"], measurement: stats.topSpeed)
+            self.speedChart = LabelledDiagramView(title: LS["WorkoutStats.SpeedOverTime"])
             statViews.append(contentsOf: [topSpeedView, speedChart!])
         } else {
             self.speedChart = nil
         }
         self.speedChart?.disableSelection()
         
-        super.init(title: LS("WorkoutStats.Speed"), statViews: statViews)
+        super.init(title: LS["WorkoutStats.Speed"], statViews: statViews)
         
         if stats.hasRouteSamples {
             stats.querySpeeds { (success, series) in

@@ -163,19 +163,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         DispatchQueue.main.async {
                             let alert = UIAlertController(
-                                title: LS("TerminationBackup.SaveAlert.Title"),
-                                message: LS("TerminationBackup.SaveAlert.Message"),
+                                title: LS["TerminationBackup.SaveAlert.Title"],
+                                message: LS["TerminationBackup.SaveAlert.Message"],
                                 preferredStyle: .alert,
                                 options: [
                                     (
-                                        title: LS("Cancel"),
+                                        title: LS["Cancel"],
                                         style: .destructive,
                                         action: { _ in
                                             safeCompletion()
                                         }
                                     ),
                                     (
-                                        title: LS("Save"),
+                                        title: LS["Save"],
                                         style: .default,
                                         action: { _ in
                                             
@@ -185,7 +185,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     
                                                     guard let workout = workout, success else {
                                                         print("Error: Termination Workout could not be saved:", error ?? "no error")
-                                                        controller.displayError(withMessage: LS("TerminationBackup.Save.Error"), dismissAction: { _ in
+                                                        controller.displayError(withMessage: LS["TerminationBackup.Save.Error"], dismissAction: { _ in
                                                                 safeCompletion()
                                                             }
                                                         )
@@ -196,7 +196,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     
                                                         HealthStoreManager.saveHealthWorkout(forWorkout: workout, completion: { (success, healthWorkout) in
                                                             guard success else {
-                                                                controller.displayError(withMessage: LS("TerminationBackup.Save.Health.Error"), dismissAction: { _ in
+                                                                controller.displayError(withMessage: LS["TerminationBackup.Save.Health.Error"], dismissAction: { _ in
                                                                         safeCompletion()
                                                                     }
                                                                 )
@@ -234,12 +234,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 DispatchQueue.main.async {
                     let alert = UIAlertController(
-                        title: LS("TerminationBackup.LostAlert.Title"),
-                        message: LS("TerminationBackup.LostAlert.Message"),
+                        title: LS["TerminationBackup.LostAlert.Title"],
+                        message: LS["TerminationBackup.LostAlert.Message"],
                         preferredStyle: .alert,
                         options: [
                             (
-                                title: LS("Okay"),
+                                title: LS["Okay"],
                                 style: .default,
                                 action: nil
                             )
@@ -278,7 +278,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     PermissionManager.standard.checkHealthPermission { (success) in
                         if !success {
                             DispatchQueue.main.async {
-                                controller.displayError(withMessage: LS("Setup.Permission.AppleHealth.Error"), dismissAction: { _ in
+                                controller.displayError(withMessage: LS["Setup.Permission.AppleHealth.Error"], dismissAction: { _ in
                                     safeCompletion()
                                 })
                             }
@@ -296,8 +296,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if !success {
                         DispatchQueue.main.async {
                             controller.displayOpenSettingsAlert(
-                                withTitle: LS("Error"),
-                                message: LS("Setup.Permission.Motion.Error"),
+                                withTitle: LS["Error"],
+                                message: LS["Setup.Permission.Motion.Error"],
                                 dismissAction: {
                                     checkHealthPermission()
                                 }
@@ -317,8 +317,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 case .restricted:
                     DispatchQueue.main.async {
                         controller.displayOpenSettingsAlert(
-                            withTitle: LS("Setup.Permission.Location.Restricted.Title"),
-                            message: LS("Setup.Permission.Location.Restricted.Message"),
+                            withTitle: LS["Setup.Permission.Location.Restricted.Title"],
+                            message: LS["Setup.Permission.Location.Restricted.Message"],
                             dismissAction: {
                                 checkMotionPermission()
                             }
@@ -327,8 +327,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 default:
                     DispatchQueue.main.async {
                         controller.displayOpenSettingsAlert(
-                            withTitle: LS("Error"),
-                            message: LS("Setup.Permission.Location.Error"),
+                            withTitle: LS["Error"],
+                            message: LS["Setup.Permission.Location.Error"],
                             dismissAction: {
                                 checkMotionPermission()
                             }

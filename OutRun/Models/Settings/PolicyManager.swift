@@ -71,9 +71,9 @@ class PolicyManager {
         var title: String {
             switch self {
             case .termsOfService:
-                return LS("Settings.TermsOfService")
+                return LS["Settings.TermsOfService"]
             case .privacyPolicy:
-                return LS("Settings.PrivacyPolicy")
+                return LS["Settings.PrivacyPolicy"]
             }
         }
         
