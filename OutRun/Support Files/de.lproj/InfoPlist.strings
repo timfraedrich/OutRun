@@ -18,9 +18,9 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-NSHealthShareUsageDescription = "Diese App braucht Zugriff auf deine Health-Daten, um die erstellten Workouts zu speichern";
-NSHealthUpdateUsageDescription = "Diese App braucht Zugriff auf deine Health-Daten um gespeicherte Workouts auszulesen und gegebenenfalls zu korrigieren";
-NSLocationAlwaysAndWhenInUseUsageDescription = "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen";
-NSLocationAlwaysUsageDescription = "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen";
-NSLocationWhenInUseUsageDescription = "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen";
-NSMotionUsageDescription = "Diese App braucht bewegungsbezogene Trackingberechtigung, um Daten wie Schritte aufzuzeichnen";
+"NSHealthShareUsageDescription" = "Diese App braucht Zugriff auf deine Health-Daten, um die erstellten Workouts zu speichern";
+"NSHealthUpdateUsageDescription" = "Diese App braucht Zugriff auf deine Health-Daten um gespeicherte Workouts auszulesen und gegebenenfalls zu korrigieren";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen";
+"NSLocationAlwaysUsageDescription" = "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen";
+"NSLocationWhenInUseUsageDescription" = "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen";
+"NSMotionUsageDescription" = "Diese App braucht bewegungsbezogene Trackingberechtigung, um Daten wie Schritte aufzuzeichnen";

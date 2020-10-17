@@ -18,13 +18,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// MARK: TabBar
-
 "TabBar.Timeline" = "Timeline";
 "TabBar.Settings" = "Settings";
-
-// MARK: General
-
 "OutRun" = "OutRun";
 "Cancel" = "Cancel";
 "Save" = "Save";
@@ -53,9 +48,6 @@
 "Stop" = "Stop";
 "All" = "All";
 "NotSet" = "Not Set";
-
-// MARK: NewWorkoutViewController
-
 "NewWorkoutViewController.Cancel.Error.Recording.Title" = "Workout is being recorded";
 "NewWorkoutViewController.Cancel.Error.Recording.Message" = "You can't close this menu while recording a workout. Do you want to stop the workout or go on?";
 "NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording" = "Stop recording";
@@ -68,31 +60,16 @@
 "NewWorkoutViewController.WaitingAlert.Message" = "The GPS signal is not accurate enough for a sufficient route quality, finding an accurate signal can take a couple of seconds to a minute. If this is a common phenomenon where you live try adjusting the needed accuracy in settings.";
 "NewWorkoutViewController.Recenter" = "Re-Center";
 "NewWorkoutViewController.WorkoutBuilder.Error" = "There was an error in the logic supposed to construct the workout.";
-
-// MARK: WorkoutListController
-
 "WorkoutListViewController.Headline" = "Your Workouts";
-
-// MARK: NewWorkoutAlert
-
 "NewWorkoutAlert.Title" = "Workout";
 "NewWorkoutAlert.Message" = "What kind of workout do you want to record?";
 "NewWorkoutAlert.EnterManually" = "Enter Manually";
-
-// MARK: NewWorkoutCompletion
-
 "NewWorkoutCompletion.Title" = "Finished Workout";
 "NewWorkoutCompletion.Save.Success" = "Your workout was successfully saved.";
 "NewWorkoutCompletion.Save.Error" = "Unfortunately your workout could not be saved.";
 "NewWorkoutCompletion.Continue.Success" = "The app is now continuing to record your workout.";
 "NewWorkoutCompletion.Continue.Error" = "Unfortunately your workout could not be continued.";
-
-// MARK: WorkoutController
-
 "WorkoutViewController.LoadingError" = "There was an error while trying to display statistics about this workout, please try again.";
-
-// MARK: Workout
-
 "Workout" = "Workout";
 "Workout.Distance" = "Distance";
 "Workout.Steps" = "Steps";
@@ -118,9 +95,6 @@
 "Workout.Comment" = "Comment";
 "Workout.IsUserModified.Text" = "This Workout was modified or manually added by a person, so the data might be inaccurate or even fake.";
 "Workout.Pauses" = "Pauses";
-
-// MARK: WorkoutEvent
-
 "WorkoutEvent.Type.Pause" = "Pause";
 "WorkoutEvent.Type.AutoPause" = "Auto Pause";
 "WorkoutEvent.Type.Resume" = "Resume";
@@ -129,28 +103,18 @@
 "WorkoutEvent.Type.Marker" = "Marker";
 "WorkoutEvent.Type.Segment" = "Segment";
 "WorkoutEvent.Type.Unknown" = "Unknown";
-
-// MARK: WorkoutList
-
 "WorkoutList.Sort.Date" = "Date";
-// others included in WorkoutStats or Workout
 "WorkoutList.Filter" = "Filter";
 "WorkoutList.Filter.IsRace" = "Is Race";
 "WorkoutList.Filter.HasRoute" = "Has Route";
 "WorkoutList.SortBy" = "Sort by";
 "WorkoutList.Order" = "Order";
 "WorkoutList.Order.Descending" = "Descending";
-
-// MARK: Apple Health
-
 "AppleHealth.Add" = "Add to Apple Health";
 "AppleHealth.Add.Error" = "Could not add workout to Apple Health, please try again later.";
 "AppleHealth.Remove" = "Remove from Apple Health";
 "AppleHealth.Remove.Error" = "Could not remove workout from Apple Health, please try again later or check in the Apple health app. It is possible that the workout was not added to Apple Health by OutRun, which means we cannot modify it.";
 "AppleHealth.RecentlyRemovedWorkouts" = "Some workouts saved in this app were recently removed from Apple Health, but are still saved here, you can sync them again in Settings or delete them manually.";
-
-// MARK: WorkoutStats
-
 "WorkoutStats.Distance" = "Distance";
 "WorkoutStats.AltitudeOverTime" = "Altitude Over Time";
 "WorkoutStats.Altitude" = "Altitude";
@@ -167,30 +131,18 @@
 "WorkoutStats.BurnedEnergy" = "Burned Energy";
 "WorkoutStats.TotalEnergy" = "Total Energy";
 "WorkoutStats.Route" = "Route";
-
-// MARK: Workout deletion
-
 "WorkoutDeletion.Title" = "Delete Workout?";
 "WorkoutDeletion.Message" = "Do you really want to delete the workout, you cannot restore it once deleted?";
 "WorkoutDeletion.AppleHealth.Title" = "Delete in Apple Health?";
 "WorkoutDeletion.AppleHealth.Message" = "Do you also want to delete the workout saved in Apple Health?";
 "WorkoutDeletion.Error.Message" = "There was an Error while trying to delete the workout from the app.";
 "WorkoutDeletion.Error.AppleHealth.Message" = "There was an Error while trying to delete the workout from Apple Health, you can still delete it in the Apple Health app.";
-
-// MARK: WorkoutBuilder
-
 "WorkoutBuilder.Status.Waiting" = "waiting";
 "WorkoutBuilder.Status.Ready" = "ready";
 "WorkoutBuilder.Status.Recording" = "recording";
 "WorkoutBuilder.Status.Paused" = "paused";
 "WorkoutBuilder.Status.AutoPaused" = "auto paused";
-
-// MARK: WorkoutMapController
-
 "WorkoutMapController.Headline" = "Your Route";
-
-// MARK: Settings
-
 "Settings" = "Settings";
 "Settings.UserSettings" = "User Settings";
 "Settings.Name" = "Name";
@@ -256,24 +208,15 @@
 "Settings.AppInfo" = "App Info";
 "Settings.AppVersion" = "App Version";
 "Settings.ReleaseStatus" = "Release Status";
-
-// MARK: Apple Health Import List
-
 "ImportList.Title" = "Import";
 "ImportList.Error.FetchFailed.Message" = "There was an Error while trying to fetch workouts from Apple Health.";
 "ImportList.ImportAll" = "Import All";
-
-// MARK: HKImport
-
 "HKImport.Alert.Title" = "Import this Workout?";
 "HKImport.Alert.Message" = "Do you want to Import this Apple Health Workout into OutRun?";
 "HKImport.Error" = "The Apple Health Workout could not be added, please try again later.";
 "HKImport.ImportAll.Alert.Title" = "Import all Workouts?";
 "HKImport.ImportAll.Alert.Message" = "Do you want to Import all Apple Health Workout into OutRun, this may take some time?";
 "HKImport.ImportAll.Error" = "Some Apple Health Workouts could not be added, they will still appear in the list, please try again later.";
-
-// MARK: Setup
-
 "Setup.Headline" = "welcome to";
 "Setup.Introduction" = "the running app that actually cares about your privacy, where you don't have to create a user account, or give sensitive data that then lies on a server in the middle of nowhere.\nBut more of that later for now let's just get started.";
 "Setup.StartButton" = "Let's go";
@@ -311,23 +254,14 @@
 "Setup.Permission.Motion" = "Motion Access";
 "Setup.Permission.Motion.Message" = "For data like the steps you take during a workout this app needs access to motion and fitness data.";
 "Setup.Permission.Motion.Error" = "You have not given this app permission to motion and fitness related sensor data. To change that and give the app access to data like steps, you have to enable access in iOS Settings manually. Do you want to open Settings?";
-
-// MARK: Termination Backup
-
 "TerminationBackup.SaveAlert.Title" = "Rescued Workout";
 "TerminationBackup.SaveAlert.Message" = "The last time you have been recoding a workout you seem to have quit this app without saving it. We have been able to save the data before the app was terminated, do you want to save it now?";
 "TerminationBackup.Save.Error" = "We are sorry, the workout could not be saved.";
 "TerminationBackup.Save.Health.Error" = "For some Reason the Workout could not be saved to Apple Health.";
 "TerminationBackup.LostAlert.Title" = "Lost Workout";
 "TerminationBackup.LostAlert.Message" = "It seems that the last time you have been recording a workout the app was terminated and we have not been able to save your workout data.";
-
-// MARK: Time
-
 "Today" = "Today";
 "Yesterday" = "Yesterday";
-
-// MARK: EditWorkoutController
-
 "EditWorkoutController.SaveWorkout.Error" = "Failed to add workout, please try again.";
 "EditWorkoutController.SaveWorkout.AppleHealth.Error" = "Failed to add workout to Apple Health";
 "EditWorkoutController.AlterWorkout.AppleHealth.Error" = "Could not alter workout in Apple Health. It is possible that the workout was not added to Apple Health by OutRun, which means we cannot modify it. The old instance is still present in the Health app, but the reference was removed from this app. If you want to add the new workout to Apple Health you have to do that manually.";
@@ -336,27 +270,15 @@
 "EditWorkoutController.Info" = "Info";
 "EditWorkoutController.Custom" = "Custom";
 "EditWorkoutController.EditPauses" = "Edit Pauses";
-
-// MARK: MapView
-
 "MapView.MapType.Hybrid" = "Hybrid";
 "MapView.MapType.Satellite" = "Satellite";
 "MapView.MapTypeAlert.Title" = "Map Type";
 "MapView.MapTypeAlert.Message" = "Please choose the type of map you want to have displayed.";
-
-// MARK: Workout Share Alert
-
 "WorkoutShareAlert.Title" = "Export Your Workout";
 "WorkoutShareAlert.Message" = "Please choose how to export your workout from the options below. If you feel like an option is missing feel free to reach out and suggest it.";
 "WorkoutShareAlert.GPXExport" = "GPX File";
 "WorkoutShareAlert.OutRunBackup" = "OutRun Backup";
-
-// MARK: ShareManager
-
 "ShareManager.BackupError" = "The app failed to create a backup, please contact the support.";
 "ShareManager.GPXError" = "The app failed to create a GPX file, please contact the support.";
-
-// MARK: ChangeLog
-
 "ChangeLog" = "Changelog";
 "ChangeLog_1.2.2" = "After receiving a trademark complaint \"OutRun\" will now be called \"Out-Run\" in the UK. This update has the main purpose of addressing this complaint.\n\nAdditionally it contains the following bug fixes:\n\n- sometimes data was not added properly to Apple Health, this should now be fixed\n- ascending and descending altitude were swapped in the statistics, now they are in the right order\n- there have been some style issues because of changes in iOS 14, everything should look normally again\n\nAnd for this update nothing more changed.\n\nIf you have any questions or feedback, feel free to reach out at outrun@tadris.de.\n\nTim, the Developer.";

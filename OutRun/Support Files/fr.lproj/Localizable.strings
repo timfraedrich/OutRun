@@ -19,28 +19,16 @@
 //
 
 "ChangeLog_1.2.2" = "Après avoir reçu une plainte relative à une marque de commerce, « OutRun » sera désormais appelé « Out-Run » au Royaume-Uni. Cette mise à jour a pour objectif principal de répondre à cette plainte.\n\nEn outre, elle contient les corrections d'erreurs suivantes :\n\n- parfois les données n'étaient pas ajoutées correctement à Apple Health ; ceci devrait maintenant être corrigé\n- l'altitude ascendante et descendante a été permutée dans les statistiques ; maintenant elles sont dans le bon ordre\n- il y avait des problèmes de style à cause des changements apportés à iOS 14 ; tout devrait à nouveau être comme il faut.\nEt pour cette mise à jour, rien n'a changé.\n\nSi vous avez des questions ou des remarques, n'hésitez pas à me contacter sur outrun@tadris.de.\n\nTim, le développeur.";
-
-// MARK: ChangeLog
-
 "ChangeLog" = "Journal des modifications";
 "ShareManager.GPXError" = "L'application n'a pas réussi à créer un fichier GPX, veuillez contacter l'assistance.";
-
-// MARK: ShareManager
-
 "ShareManager.BackupError" = "L'application n'a pas réussi à créer une sauvegarde, veuillez contacter le support.";
 "WorkoutShareAlert.OutRunBackup" = "Sauvegarde OutRun";
 "WorkoutShareAlert.GPXExport" = "Fichier GPX";
 "WorkoutShareAlert.Message" = "Veuillez choisir comment exporter votre entraînement parmi les options ci-dessous. Si vous pensez qu'une option manque, n'hésitez pas à nous contacter et à la suggérer.";
-
-// MARK: Workout Share Alert
-
 "WorkoutShareAlert.Title" = "Exportez votre entraînement";
 "MapView.MapTypeAlert.Message" = "Veuillez choisir le type de carte que vous voulez afficher.";
 "MapView.MapTypeAlert.Title" = "Type de carte";
 "MapView.MapType.Satellite" = "Satellite";
-
-// MARK: MapView
-
 "MapView.MapType.Hybrid" = "Hybride";
 "EditWorkoutController.EditPauses" = "Modifier les pauses";
 "EditWorkoutController.Custom" = "Personnalisé";
@@ -49,23 +37,14 @@
 "EditWorkoutController.NewWorkout" = "Nouvel entraînement";
 "EditWorkoutController.AlterWorkout.AppleHealth.Error" = "Impossible de modifier l'entraînement dans Apple Health. Il est possible que l'entraînement n'ait pas été ajouté à Apple Health par OutRun, ce qui signifie que nous ne pouvons pas le modifier. L'ancienne instance est toujours présente dans l'application Health, mais la référence a été supprimée de cette application. Si vous souhaitez ajouter le nouvel entraînement à Apple Health, vous devez le faire manuellement.";
 "EditWorkoutController.SaveWorkout.AppleHealth.Error" = "Échec de l'ajout d'un entraînement à Apple Health";
-
-// MARK: EditWorkoutController
-
 "EditWorkoutController.SaveWorkout.Error" = "Échec de l'ajout de l'entraînement, veuillez réessayer.";
 "Yesterday" = "Hier";
-
-// MARK: Time
-
 "Today" = "Aujourd'hui";
 "TerminationBackup.LostAlert.Message" = "Il semble que la dernière fois que vous avez enregistré un entraînement, l'application a été fermée et nous n'avons pas pu enregistrer vos données d'entraînement.";
 "TerminationBackup.LostAlert.Title" = "Entraînement perdu";
 "TerminationBackup.Save.Health.Error" = "Pour une raison quelconque, l'entraînement n'a pas pu être enregistré dans Apple Health.";
 "TerminationBackup.Save.Error" = "Nous sommes désolés, l'entraînement n'a pas pu être enregistré.";
 "TerminationBackup.SaveAlert.Message" = "La dernière fois que vous avez recodé un entraînement, vous semblez avoir quitté cette application sans l'enregistrer. Nous avons pu enregistrer les données avant l'arrêt de l'application, voulez-vous l'enregistrer maintenant ?";
-
-// MARK: Termination Backup
-
 "TerminationBackup.SaveAlert.Title" = "Entraînement sauvé";
 "Setup.Permission.Motion.Error" = "Vous n'avez pas autorisé cette application à accéder aux données de capteur liées aux mouvements. Pour changer cela et donner à l'application l'accès aux données telles que les pas, vous devez activer manuellement l'accès dans les paramètres iOS. Voulez-vous ouvrir les paramètres ?";
 "Setup.Permission.Motion.Message" = "Pour des données telles que les pas que vous faites pendant un entraînement, cette application doit accéder aux données de mouvement et de fitness.";
@@ -100,9 +79,6 @@
 "Setup.Feature.Route.Message" = "Enregistrez vos entraînements de course à pied, de marche ou de vélo avec la plus grande précision possible sur votre téléphone.";
 "Setup.Feature.Route.Title" = "Suivi précis";
 "Setup.StartButton" = "C'est parti";
-
-// MARK: Setup
-
 "Setup.Headline" = "bienvenue dans";
 "Setup.Introduction" = "l'application de course qui se soucie réellement de votre vie privée, où vous n'avez pas à créer de compte utilisateur ou à fournir de données sensibles qui se trouvent ensuite sur un serveur au milieu de nulle part.\nMais voyons ça plus tard, commençons simplement.";
 "HKImport.ImportAll.Error" = "Certains entraînements Apple Health n'ont pas pu être ajoutés, ils apparaîtront toujours dans la liste, veuillez réessayer plus tard.";
@@ -110,15 +86,9 @@
 "HKImport.ImportAll.Alert.Title" = "Importer tous les entraînements ?";
 "HKImport.Error" = "L'entraînement Apple Health n'a pas pu être ajouté, veuillez réessayer plus tard.";
 "HKImport.Alert.Message" = "Voulez-vous importer cet entraînement Apple Health dans OutRun ?";
-
-// MARK: HKImport
-
 "HKImport.Alert.Title" = "Importer cet entraînement ?";
 "ImportList.ImportAll" = "Tout importer";
 "ImportList.Error.FetchFailed.Message" = "Une erreur s'est produite lors de la tentative de récupération des entraînements depuis Apple Health.";
-
-// MARK: Apple Health Import List
-
 "ImportList.Title" = "Importer";
 "Settings.ReleaseStatus" = "État de la version";
 "Settings.AppVersion" = "Version de l'appli";
@@ -186,30 +156,18 @@
 "Settings.Weight" = "Poids";
 "Settings.Name" = "Nom";
 "Settings.UserSettings" = "Paramètres utilisateur";
-
-// MARK: Settings
-
 "Settings" = "Paramètres";
-
-// MARK: WorkoutMapController
-
 "WorkoutMapController.Headline" = "Votre itinéraire";
 "WorkoutBuilder.Status.AutoPaused" = "en pause auto";
 "WorkoutBuilder.Status.Paused" = "en pause";
 "WorkoutBuilder.Status.Recording" = "enregistre";
 "WorkoutBuilder.Status.Ready" = "prêt";
-
-// MARK: WorkoutBuilder
-
 "WorkoutBuilder.Status.Waiting" = "en attente";
 "WorkoutDeletion.Error.AppleHealth.Message" = "Une erreur s'est produite lors de la tentative de suppression de l'entraînement d'Apple Health, vous pouvez toujours le supprimer dans l'application Apple Health.";
 "WorkoutDeletion.Error.Message" = "Une erreur s'est produite lors de la tentative de suppression de l'entraînement de l'application.";
 "WorkoutDeletion.AppleHealth.Message" = "Voulez-vous également supprimer l'entraînement enregistré dans Apple Health ?";
 "WorkoutDeletion.AppleHealth.Title" = "Supprimer dans Apple Health ?";
 "WorkoutDeletion.Message" = "Voulez-vous vraiment supprimer l'entraînement ? Vous ne pouvez pas le restaurer une fois supprimé.";
-
-// MARK: Workout deletion
-
 "WorkoutDeletion.Title" = "Supprimer l'entraînement ?";
 "WorkoutStats.Route" = "Itinéraire";
 "WorkoutStats.TotalEnergy" = "Énergie totale";
@@ -226,17 +184,11 @@
 "WorkoutStats.AscendingAltitude" = "Montante";
 "WorkoutStats.Altitude" = "Altitude";
 "WorkoutStats.AltitudeOverTime" = "Altitude au fil du temps";
-
-// MARK: WorkoutStats
-
 "WorkoutStats.Distance" = "Distance";
 "AppleHealth.RecentlyRemovedWorkouts" = "Certains entraînements enregistrés dans cette application ont été récemment supprimés d'Apple Health, mais sont toujours enregistrés ici, vous pouvez les synchroniser à nouveau dans les paramètres ou les supprimer manuellement.";
 "AppleHealth.Remove.Error" = "Impossible de supprimer l'entraînement d'Apple Health, veuillez réessayer plus tard ou vérifier l'application Apple Health. Il est possible que l'entraînement n'ait pas été ajouté à Apple Health par OutRun, ce qui signifie que nous ne pouvons pas le modifier.";
 "AppleHealth.Remove" = "Retirer d'Apple Health";
 "AppleHealth.Add.Error" = "Impossible d'ajouter un entraînement à Apple Health, veuillez réessayer plus tard.";
-
-// MARK: Apple Health
-
 "AppleHealth.Add" = "Ajouter à Apple Health";
 "WorkoutList.Order.Descending" = "Descendant";
 "WorkoutList.Order" = "Ordre";
@@ -244,11 +196,7 @@
 "Workout.Race" = "Compétition";
 "WorkoutList.Filter.HasRoute" = "A un itinéraire";
 "WorkoutList.Filter.IsRace" = "Compétition";
-// others included in WorkoutStats or Workout
 "WorkoutList.Filter" = "Filtre";
-
-// MARK: WorkoutList
-
 "WorkoutList.Sort.Date" = "Date";
 "WorkoutEvent.Type.Unknown" = "Inconnu";
 "WorkoutEvent.Type.Segment" = "Segment";
@@ -257,9 +205,6 @@
 "WorkoutEvent.Type.AutoResume" = "Reprise auto";
 "WorkoutEvent.Type.Resume" = "Reprendre";
 "WorkoutEvent.Type.AutoPause" = "Pause auto";
-
-// MARK: WorkoutEvent
-
 "WorkoutEvent.Type.Pause" = "Pause";
 "Workout.Pauses" = "Pauses";
 "Workout.IsUserModified.Text" = "Cet entraînement a été modifié ou ajouté manuellement par une personne, de sorte que les données peuvent être inexactes ou même fausses.";
@@ -282,13 +227,7 @@
 "Workout.Strokes" = "Coups de pédale";
 "Workout.Steps" = "Pas";
 "Workout.Distance" = "Distance";
-
-// MARK: Workout
-
 "Workout" = "Entraînement";
-
-// MARK: WorkoutController
-
 "WorkoutViewController.LoadingError" = "Une erreur s'est produite lors de la tentative d'affichage des statistiques sur cet entraînement, veuillez réessayer.";
 "NewWorkoutCompletion.Continue.Error" = "Malheureusement, votre entraînement n'a pas pu être poursuivi.";
 "Settings.Email.Error" = "Il semble qu'il n'y ait pas d'application de messagerie sur votre téléphone, ou iOS ne peut pas l'ouvrir. Vous pouvez toujours envoyer un courriel à support@tadris.de pour obtenir de l'aide en cas de problème concernant l'application.";
@@ -296,19 +235,10 @@
 "NewWorkoutCompletion.Continue.Success" = "L'application continue maintenant d'enregistrer votre entraînement.";
 "NewWorkoutCompletion.Save.Error" = "Malheureusement, votre entraînement n'a pas pu être sauvegardé.";
 "NewWorkoutCompletion.Save.Success" = "Votre entraînement a été sauvegardé avec succès.";
-
-// MARK: NewWorkoutCompletion
-
 "NewWorkoutCompletion.Title" = "Entraînement terminé";
 "NewWorkoutAlert.EnterManually" = "Entrer manuellement";
 "NewWorkoutAlert.Message" = "Quel type d'entraînement voulez-vous enregistrer ?";
-
-// MARK: NewWorkoutAlert
-
 "NewWorkoutAlert.Title" = "Entraînement";
-
-// MARK: WorkoutListController
-
 "WorkoutListViewController.Headline" = "Vos entraînements";
 "NewWorkoutViewController.WorkoutBuilder.Error" = "Il y avait une erreur dans la logique censée construire l'entraînement.";
 "NewWorkoutViewController.Recenter" = "Recentrer";
@@ -322,9 +252,6 @@
 "NewWorkoutViewController.Save.Title" = "Sauvegarder";
 "NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording" = "Arrêter l'enregistrement";
 "NewWorkoutViewController.Cancel.Error.Recording.Message" = "Vous ne pouvez pas fermer ce menu pendant l'enregistrement d'un entraînement. Voulez-vous arrêter l'entraînement ou continuer ?";
-
-// MARK: NewWorkoutViewController
-
 "NewWorkoutViewController.Cancel.Error.Recording.Title" = "Un entraînement est en train d'être enregistré";
 "NotSet" = "Non défini";
 "All" = "Tous";
@@ -352,11 +279,6 @@
 "Continue" = "Continuer";
 "Save" = "Enregistrer";
 "Cancel" = "Annuler";
-
-// MARK: General
-
 "OutRun" = "OutRun";
 "TabBar.Settings" = "Paramètres";
-// MARK: TabBar
-
 "TabBar.Timeline" = "Historique";

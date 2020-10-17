@@ -18,9 +18,9 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-NSHealthShareUsageDescription = "This app needs access to your health data to save workouts constructed by this app";
-NSHealthUpdateUsageDescription = "This app needs access to your health data to read and possible correct workouts constructed by this app";
-NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to track workouts";
-NSLocationAlwaysUsageDescription = "This app needs your location to track workouts";
-NSLocationWhenInUseUsageDescription = "This app needs your location to track workouts";
-NSMotionUsageDescription = "This app needs motion related tracking capabilities to record data like steps during a workout";
+"NSHealthShareUsageDescription" = "This app needs access to your health data to save workouts constructed by this app";
+"NSHealthUpdateUsageDescription" = "This app needs access to your health data to read and possible correct workouts constructed by this app";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "This app needs your location to track workouts";
+"NSLocationAlwaysUsageDescription" = "This app needs your location to track workouts";
+"NSLocationWhenInUseUsageDescription" = "This app needs your location to track workouts";
+"NSMotionUsageDescription" = "This app needs motion related tracking capabilities to record data like steps during a workout";
