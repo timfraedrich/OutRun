@@ -278,7 +278,6 @@
 "MapView.MapTypeAlert.Title" = "Kartentyp";
 "MapView.MapTypeAlert.Message" = "Bitte wähle einen Kartentyp zum Anzeigen.";
 "ChangeLog" = "Änderungsprotokoll";
-"ChangeLog_1.2.2" = "Aufgrund einer Trademark Beschwerde, wird \"OutRun\" von nun an \"Out-Run\" in der UK heißen. Dieses Upadate hat den Hauptzweck, dieser Beschwerde folge zu leisten.\n\nZusätzlich enthält es folgende Fehlerbehebungen:\n\n- manchmal wurden Daten nicht ordentlich zu Apple Health hinzugefügt, dies sollte nun behoben sein\n- die Statistiken für Anstieg und Abstieg waren vertauscht und sind jetzt in der richtigen Reihenfolge\n- es gab ein paar Designfehler in der App aufgrund von Änderungen in iOS 14, es sollte Alles wieder normal aussehen\n\nSolltest du noch Fragen oder Feedback haben, dann schreib mir doch unter outrun@tadris.de.\n\nTim, der Developer.";
 "ShareManager.GPXError" = "Die App konnte keine GPX-Datei erstellen, bitte kontaktiere den Support.";
 "ShareManager.BackupError" = "Die App konnte kein Backup erstellen, bitte kontaktiere den Support.";
 "WorkoutShareAlert.OutRunBackup" = "OutRun-Backup";

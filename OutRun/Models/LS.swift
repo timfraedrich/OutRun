@@ -54,6 +54,8 @@ struct LS {
         case appStrings
         /// Referring to strings contained by the info.plist and needed for things like permission descriptions.
         case infoPlist
+        /// Referring to strings used in changelogs
+        case changelog
         
         /// A `String` pointing to the file in which the localised strings of the given `LSSourceType` are located.
         fileprivate var tableName: String {
@@ -62,6 +64,8 @@ struct LS {
                 return "Localizable"
             case .infoPlist:
                 return "InfoPlist"
+            case .changelog:
+                return "Changelog"
             }
         }
         
@@ -70,7 +74,7 @@ struct LS {
             switch self {
             case .appStrings:
                 return Bundle(path: Bundle.main.path(forResource: "Base", ofType: "lproj")!)!
-            case .infoPlist:
+            case .infoPlist, .changelog:
                 return Bundle(path: Bundle.main.path(forResource: "en", ofType: "lproj")!)!
             }
         }

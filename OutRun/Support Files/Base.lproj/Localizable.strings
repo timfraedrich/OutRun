@@ -281,4 +281,3 @@
 "ShareManager.BackupError" = "The app failed to create a backup, please contact the support.";
 "ShareManager.GPXError" = "The app failed to create a GPX file, please contact the support.";
 "ChangeLog" = "Changelog";
-"ChangeLog_1.2.2" = "After receiving a trademark complaint \"OutRun\" will now be called \"Out-Run\" in the UK. This update has the main purpose of addressing this complaint.\n\nAdditionally it contains the following bug fixes:\n\n- sometimes data was not added properly to Apple Health, this should now be fixed\n- ascending and descending altitude were swapped in the statistics, now they are in the right order\n- there have been some style issues because of changes in iOS 14, everything should look normally again\n\nAnd for this update nothing more changed.\n\nIf you have any questions or feedback, feel free to reach out at outrun@tadris.de.\n\nTim, the Developer.";

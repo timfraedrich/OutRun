@@ -18,7 +18,6 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-"ChangeLog_1.2.2" = "Après avoir reçu une plainte relative à une marque de commerce, « OutRun » sera désormais appelé « Out-Run » au Royaume-Uni. Cette mise à jour a pour objectif principal de répondre à cette plainte.\n\nEn outre, elle contient les corrections d'erreurs suivantes :\n\n- parfois les données n'étaient pas ajoutées correctement à Apple Health ; ceci devrait maintenant être corrigé\n- l'altitude ascendante et descendante a été permutée dans les statistiques ; maintenant elles sont dans le bon ordre\n- il y avait des problèmes de style à cause des changements apportés à iOS 14 ; tout devrait à nouveau être comme il faut.\nEt pour cette mise à jour, rien n'a changé.\n\nSi vous avez des questions ou des remarques, n'hésitez pas à me contacter sur outrun@tadris.de.\n\nTim, le développeur.";
 "ChangeLog" = "Journal des modifications";
 "ShareManager.GPXError" = "L'application n'a pas réussi à créer un fichier GPX, veuillez contacter l'assistance.";
 "ShareManager.BackupError" = "L'application n'a pas réussi à créer une sauvegarde, veuillez contacter le support.";

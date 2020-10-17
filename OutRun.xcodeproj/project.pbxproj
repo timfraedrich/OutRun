@@ -163,6 +163,7 @@
 		22F0000F234A2821008CFAD2 /* TitleSubTitleSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0000E234A2821008CFAD2 /* TitleSubTitleSetting.swift */; };
 		22F23F3F2422C44200838B87 /* KeyboardAvoidanceSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F23F3E2422C44200838B87 /* KeyboardAvoidanceSetting.swift */; };
 		22F3318D23AA23DD006CB7E5 /* SetupSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F3318C23AA23DD006CB7E5 /* SetupSwitchView.swift */; };
+		22FAB3B4253BAC450040CBB1 /* Changelog.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22FAB3B6253BAC450040CBB1 /* Changelog.strings */; };
 		22FC085423AFF13E00184E4B /* SetupPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC085323AFF13E00184E4B /* SetupPermissionView.swift */; };
 		22FC085623AFF3FC00184E4B /* PermissionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC085523AFF3FC00184E4B /* PermissionButton.swift */; };
 		22FEA09024CD37390007CA9C /* WorkoutBuilder+AutoPause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA08F24CD37390007CA9C /* WorkoutBuilder+AutoPause.swift */; };
@@ -341,6 +342,9 @@
 		22FAB3A625336B600040CBB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		22FAB3AA253B9C690040CBB1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		22FAB3AB253B9C690040CBB1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22FAB3B5253BAC450040CBB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22FAB3B8253BAC4A0040CBB1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22FAB3B9253BAC4B0040CBB1 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Changelog.strings; sourceTree = "<group>"; };
 		22FC085323AFF13E00184E4B /* SetupPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupPermissionView.swift; sourceTree = "<group>"; };
 		22FC085523AFF3FC00184E4B /* PermissionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionButton.swift; sourceTree = "<group>"; };
 		22FEA08F24CD37390007CA9C /* WorkoutBuilder+AutoPause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+AutoPause.swift"; sourceTree = "<group>"; };
@@ -588,6 +592,7 @@
 				223C2E0B25252F1B00D4B13D /* Info.plist */,
 				2291863C23679AA300929885 /* InfoPlist.strings */,
 				22B1F14222D61D0F00C02973 /* Localizable.strings */,
+				22FAB3B6253BAC450040CBB1 /* Changelog.strings */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -975,6 +980,7 @@
 			files = (
 				22B1F13F22D61CF400C02973 /* LaunchScreen.storyboard in Resources */,
 				2291863A23679AA300929885 /* InfoPlist.strings in Resources */,
+				22FAB3B4253BAC450040CBB1 /* Changelog.strings in Resources */,
 				22B1F14922D6246800C02973 /* Localizable.strings in Resources */,
 				22B6CF6122CA0815002D2FB0 /* Assets.xcassets in Resources */,
 			);
@@ -1219,6 +1225,16 @@
 				22FAB3AB253B9C690040CBB1 /* fr */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		22FAB3B6253BAC450040CBB1 /* Changelog.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22FAB3B5253BAC450040CBB1 /* en */,
+				22FAB3B8253BAC4A0040CBB1 /* fr */,
+				22FAB3B9253BAC4B0040CBB1 /* de */,
+			);
+			name = Changelog.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
