@@ -38,6 +38,7 @@ So far the following languages are supported:
 |----------|--------------------|
 | English  | [![en translation status](https://hosted.weblate.org/widgets/outrun/en/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/en/) |
 | German   | [![de translation status](https://hosted.weblate.org/widgets/outrun/de/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/de/) |
+| French   | [![fr translation status](https://hosted.weblate.org/widgets/outrun/fr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fr/) |
 
 If you want to add languages or improve already translated ones you can do this [here](https://hosted.weblate.org/engage/outrun/).
 

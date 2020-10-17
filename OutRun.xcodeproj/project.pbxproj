@@ -339,6 +339,8 @@
 		22F23F3E2422C44200838B87 /* KeyboardAvoidanceSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidanceSetting.swift; sourceTree = "<group>"; };
 		22F3318C23AA23DD006CB7E5 /* SetupSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupSwitchView.swift; sourceTree = "<group>"; };
 		22FAB3A625336B600040CBB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22FAB3AA253B9C690040CBB1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22FAB3AB253B9C690040CBB1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22FC085323AFF13E00184E4B /* SetupPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupPermissionView.swift; sourceTree = "<group>"; };
 		22FC085523AFF3FC00184E4B /* PermissionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionButton.swift; sourceTree = "<group>"; };
 		22FEA08F24CD37390007CA9C /* WorkoutBuilder+AutoPause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+AutoPause.swift"; sourceTree = "<group>"; };
@@ -954,6 +956,7 @@
 				de,
 				"en-GB",
 				Base,
+				fr,
 			);
 			mainGroup = 22B6CF4A22CA0814002D2FB0;
 			productRefGroup = 22B6CF5422CA0814002D2FB0 /* Products */;
@@ -1195,6 +1198,7 @@
 				2291863B23679AA300929885 /* de */,
 				222A775D25273F6700317E5A /* en-GB */,
 				22FAB3A625336B600040CBB1 /* en */,
+				22FAB3AA253B9C690040CBB1 /* fr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1212,6 +1216,7 @@
 			children = (
 				22B1F14622D61D3300C02973 /* de */,
 				222A775F2527401E00317E5A /* Base */,
+				22FAB3AB253B9C690040CBB1 /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

@@ -1,5 +1,22 @@
-
-
+//
+//  Localizable.strings
+//
+//  OutRun
+//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
 "ChangeLog_1.2.2" = "Après avoir reçu une plainte relative à une marque de commerce, « OutRun » sera désormais appelé « Out-Run » au Royaume-Uni. Cette mise à jour a pour objectif principal de répondre à cette plainte.\n\nEn outre, elle contient les corrections d'erreurs suivantes :\n\n- parfois les données n'étaient pas ajoutées correctement à Apple Health ; ceci devrait maintenant être corrigé\n- l'altitude ascendante et descendante a été permutée dans les statistiques ; maintenant elles sont dans le bon ordre\n- il y avait des problèmes de style à cause des changements apportés à iOS 14 ; tout devrait à nouveau être comme il faut.\nEt pour cette mise à jour, rien n'a changé.\n\nSi vous avez des questions ou des remarques, n'hésitez pas à me contacter sur outrun@tadris.de.\n\nTim, le développeur.";
 
