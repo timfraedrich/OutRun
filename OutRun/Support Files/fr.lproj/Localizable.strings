@@ -1,0 +1,345 @@
+
+
+
+"ChangeLog_1.2.2" = "Après avoir reçu une plainte relative à une marque de commerce, « OutRun » sera désormais appelé « Out-Run » au Royaume-Uni. Cette mise à jour a pour objectif principal de répondre à cette plainte.\n\nEn outre, elle contient les corrections d'erreurs suivantes :\n\n- parfois les données n'étaient pas ajoutées correctement à Apple Health ; ceci devrait maintenant être corrigé\n- l'altitude ascendante et descendante a été permutée dans les statistiques ; maintenant elles sont dans le bon ordre\n- il y avait des problèmes de style à cause des changements apportés à iOS 14 ; tout devrait à nouveau être comme il faut.\nEt pour cette mise à jour, rien n'a changé.\n\nSi vous avez des questions ou des remarques, n'hésitez pas à me contacter sur outrun@tadris.de.\n\nTim, le développeur.";
+
+// MARK: ChangeLog
+
+"ChangeLog" = "Journal des modifications";
+"ShareManager.GPXError" = "L'application n'a pas réussi à créer un fichier GPX, veuillez contacter l'assistance.";
+
+// MARK: ShareManager
+
+"ShareManager.BackupError" = "L'application n'a pas réussi à créer une sauvegarde, veuillez contacter le support.";
+"WorkoutShareAlert.OutRunBackup" = "Sauvegarde OutRun";
+"WorkoutShareAlert.GPXExport" = "Fichier GPX";
+"WorkoutShareAlert.Message" = "Veuillez choisir comment exporter votre entraînement parmi les options ci-dessous. Si vous pensez qu'une option manque, n'hésitez pas à nous contacter et à la suggérer.";
+
+// MARK: Workout Share Alert
+
+"WorkoutShareAlert.Title" = "Exportez votre entraînement";
+"MapView.MapTypeAlert.Message" = "Veuillez choisir le type de carte que vous voulez afficher.";
+"MapView.MapTypeAlert.Title" = "Type de carte";
+"MapView.MapType.Satellite" = "Satellite";
+
+// MARK: MapView
+
+"MapView.MapType.Hybrid" = "Hybride";
+"EditWorkoutController.EditPauses" = "Modifier les pauses";
+"EditWorkoutController.Custom" = "Personnalisé";
+"EditWorkoutController.Info" = "Infos";
+"EditWorkoutController.EditWorkout" = "Modifier l'entraînement";
+"EditWorkoutController.NewWorkout" = "Nouvel entraînement";
+"EditWorkoutController.AlterWorkout.AppleHealth.Error" = "Impossible de modifier l'entraînement dans Apple Health. Il est possible que l'entraînement n'ait pas été ajouté à Apple Health par OutRun, ce qui signifie que nous ne pouvons pas le modifier. L'ancienne instance est toujours présente dans l'application Health, mais la référence a été supprimée de cette application. Si vous souhaitez ajouter le nouvel entraînement à Apple Health, vous devez le faire manuellement.";
+"EditWorkoutController.SaveWorkout.AppleHealth.Error" = "Échec de l'ajout d'un entraînement à Apple Health";
+
+// MARK: EditWorkoutController
+
+"EditWorkoutController.SaveWorkout.Error" = "Échec de l'ajout de l'entraînement, veuillez réessayer.";
+"Yesterday" = "Hier";
+
+// MARK: Time
+
+"Today" = "Aujourd'hui";
+"TerminationBackup.LostAlert.Message" = "Il semble que la dernière fois que vous avez enregistré un entraînement, l'application a été fermée et nous n'avons pas pu enregistrer vos données d'entraînement.";
+"TerminationBackup.LostAlert.Title" = "Entraînement perdu";
+"TerminationBackup.Save.Health.Error" = "Pour une raison quelconque, l'entraînement n'a pas pu être enregistré dans Apple Health.";
+"TerminationBackup.Save.Error" = "Nous sommes désolés, l'entraînement n'a pas pu être enregistré.";
+"TerminationBackup.SaveAlert.Message" = "La dernière fois que vous avez recodé un entraînement, vous semblez avoir quitté cette application sans l'enregistrer. Nous avons pu enregistrer les données avant l'arrêt de l'application, voulez-vous l'enregistrer maintenant ?";
+
+// MARK: Termination Backup
+
+"TerminationBackup.SaveAlert.Title" = "Entraînement sauvé";
+"Setup.Permission.Motion.Error" = "Vous n'avez pas autorisé cette application à accéder aux données de capteur liées aux mouvements. Pour changer cela et donner à l'application l'accès aux données telles que les pas, vous devez activer manuellement l'accès dans les paramètres iOS. Voulez-vous ouvrir les paramètres ?";
+"Setup.Permission.Motion.Message" = "Pour des données telles que les pas que vous faites pendant un entraînement, cette application doit accéder aux données de mouvement et de fitness.";
+"Setup.Permission.Motion" = "Accès aux mouvements";
+"Setup.Permission.AppleHealth.Error" = "Vous ne semblez pas nous avoir permis d'accéder à toutes les catégories demandées d'Apple Health. Voulez-vous réessayer ou désactiver la synchronisation ?";
+"Setup.Permission.AppleHealth.Message" = "Puisque vous souhaitez que nous enregistrions vos entraînements et votre poids dans Apple Health, nous avons besoin de votre autorisation pour lire et écrire sur l'Apple Health Store concernant les catégories synchronisées.";
+"Setup.Permission.AppleHealth" = "Autorisation Health";
+"Setup.Permission.Location.Error" = "Il semble que vous ne nous ayez pas accordé la permission d'enregistrer votre position. Veuillez noter que ceci est nécessaire pour que notre service fonctionne. Pour modifier ce paramètre, vous devez accéder aux paramètres de votre téléphone et nous accorder la permission. Ensuite, appuyez à nouveau sur le bouton. Voulez-vous ouvrir les paramètres ?";
+"Setup.Permission.Location.Restricted.Message" = "Nous ne pouvons accéder à votre emplacement que lorsque cette application est ouverte. Pour le suivi d’une séance d’entraînement, il est conseillé de donner un accès à l’emplacement en arrière-plan, de sorte que votre téléphone n’a pas à être allumé avec l’application ouverte tout le temps. Pour nous donner tout le temps un accès à votre emplacement, vous devez ouvrir les paramètres de votre téléphone et le modifier manuellement.";
+"Setup.Permission.Location.Restricted.Title" = "Accès à l'emplacement restreint";
+"Setup.Permission.Location.Message" = "Nous avons besoin de votre position pour enregistrer l'itinéraire et donc également des informations importantes telles que la distance des entraînements que vous enregistrez dans cette application.";
+"Setup.Permission.Location" = "Autorisation de localisation";
+"Setup.Permissions.Message" = "Puisque nous voulons vous fournir nos services, nous devons accéder à certaines interfaces de programmation d’application telles que les services de localisation ou si vous souhaitez vous synchroniser avec Apple Health, vous devez également accéder en lecture et en écriture à ce service.";
+"Setup.Permissions.Title" = "Maintenant, nous avons juste besoin de votre permission";
+"Setup.AppleHealth.AutoImportWorkouts" = "Importer les entraînements automatiquement";
+"Setup.AppleHealth.SyncWeight" = "Synchroniser le poids";
+"Setup.AppleHealth.SyncWorkouts" = "Synchroniser les entraînements";
+"Setup.AppleHealth.Title" = "Voulez-vous synchroniser avec Apple Health ?";
+"Setup.UserInfo.Weight" = "Poids";
+"Setup.UserInfo.PreferredSystem.Imperial" = "Impérial";
+"Setup.UserInfo.PreferredSystem.Metric" = "Métrique";
+"Setup.UserInfo.PreferredSystem" = "Système préféré";
+"Setup.UserInfo.Username.Placeholder" = "Nom";
+"Setup.UserInfo.Username" = "Nom d'utilisateur";
+"Setup.UserInfo.Message" = "Pour activer certaines des fonctionnalités de cette application, nous avons besoin d'informations de base sur vous. Votre poids, par exemple, est nécessaire pour calculer l'énergie approximative dépensée lors d'un entraînement. (Nous donner votre nom est totalement facultatif)";
+"Setup.UserInfo.Title" = "Mais maintenant, parlons de vous";
+"Setup.Formalities.Message" = "Ceci est la partie la plus ennuyeuse de la configuration, alors finissons-en. Si vous ne voulez pas lire les politiques (ce que nous comprenons totalement), voici un très court résumé : toutes vos données sont enregistrées localement (à l'exception de la synchronisation avec Apple Health), donc vous en gardez le contrôle et vous n'avez besoin de vous inquiéter de fuites de données.";
+"Setup.Formalities.Title" = "Commençons par les formalités je suppose";
+"Setup.Feature.Lock.Message" = "Ne vous inquiétez pas pour vos données, toutes restent sur votre appareil aussi longtemps que vous le souhaitez.";
+"Setup.Feature.Lock.Title" = "Axé sur la confidentialité";
+"Setup.Feature.Chart.Title" = "Statistiques détaillées";
+"Setup.Feature.Route.Message" = "Enregistrez vos entraînements de course à pied, de marche ou de vélo avec la plus grande précision possible sur votre téléphone.";
+"Setup.Feature.Route.Title" = "Suivi précis";
+"Setup.StartButton" = "C'est parti";
+
+// MARK: Setup
+
+"Setup.Headline" = "bienvenue dans";
+"Setup.Introduction" = "l'application de course qui se soucie réellement de votre vie privée, où vous n'avez pas à créer de compte utilisateur ou à fournir de données sensibles qui se trouvent ensuite sur un serveur au milieu de nulle part.\nMais voyons ça plus tard, commençons simplement.";
+"HKImport.ImportAll.Error" = "Certains entraînements Apple Health n'ont pas pu être ajoutés, ils apparaîtront toujours dans la liste, veuillez réessayer plus tard.";
+"HKImport.ImportAll.Alert.Message" = "Voulez-vous importer tous les entraînements d'Apple Health dans OutRun ? Ceci peut prendre un certain temps.";
+"HKImport.ImportAll.Alert.Title" = "Importer tous les entraînements ?";
+"HKImport.Error" = "L'entraînement Apple Health n'a pas pu être ajouté, veuillez réessayer plus tard.";
+"HKImport.Alert.Message" = "Voulez-vous importer cet entraînement Apple Health dans OutRun ?";
+
+// MARK: HKImport
+
+"HKImport.Alert.Title" = "Importer cet entraînement ?";
+"ImportList.ImportAll" = "Tout importer";
+"ImportList.Error.FetchFailed.Message" = "Une erreur s'est produite lors de la tentative de récupération des entraînements depuis Apple Health.";
+
+// MARK: Apple Health Import List
+
+"ImportList.Title" = "Importer";
+"Settings.ReleaseStatus" = "État de la version";
+"Settings.AppVersion" = "Version de l'appli";
+"Settings.AppInfo" = "Infos de l'appli";
+"Settings.SourceCode.Error" = "Le lien n'a pas pu être ouvert car le système l'a rejeté.";
+"Settings.SourceCode" = "Voir le code source";
+"Settings.PrivacyPolicy" = "Politique de confidentialité";
+"Settings.TermsOfService" = "Conditions d'utilisation";
+"Settings.Support" = "Assistance";
+"Setup.AppleHealth.Message" = "Si vous souhaitez que vos données soient stockées dans un espace central, Apple Health peut être une bonne option car il est bien intégré à l'iOS. La synchronisation est cependant totalement facultative et il convient de noter que si vous choisissez de vous synchroniser avec Apple Health, vos données quitteront éventuellement votre téléphone et seront stockées sur des serveurs Apple ; plus à ce sujet dans la politique de confidentialité. Si vous choisissez d'activer l'importation automatique, l'application essaye d'importer les entraînements ajoutés par d'autres applications dans la base de données locale afin que vous gardiez une vue d'ensemble de tous vos entraînements.";
+"Setup.Feature.Chart.Message" = "Regardez des statistiques détaillées comme la vitesse maximale et votre allure moyenne après avoir terminé votre entraînement";
+"Settings.DisplayPace" = "Afficher l'allure";
+"Workout.TotalPace" = "Allure totale";
+"Workout.RollingPace" = "Allure en course";
+"Settings.RecordingPreferences.Message" = "Si vous rencontrez des plantages ou des comportements similaires lors de l'enregistrement d'un entraînement, vous devriez essayer de désactiver « Afficher la carte », car la plupart de ces plantages sont liés au dessin de la carte demandant trop de puissance.\n\nSi « Afficher l'allure » est activé au lieu d'afficher la vitesse, l'allure est affichée. Si « Afficher la vitesse en course » correspond à la vitesse ou à l'allure affichée, la moyenne du dernier kilomètre, sinon la vitesse actuelle ou l'allure totale sont affichées.";
+"Settings.DisplayRollingSpeed" = "Afficher la vitesse en course";
+"Settings.GPSAccuracy.Off" = "Désactivé (non recommandé)";
+"Settings.GPSAccuracy.LastResort" = "Dernier recours";
+"Settings.GPSAccuracy.Acceptable" = "Acceptable";
+"Settings.GPSAccuracy.High" = "Haute";
+"Settings.GPSAccuracy.Standard" = "Standard";
+"Settings.GPSAccuracy.Text" = "Lors de la réception des signaux GPS, ils sont envoyés avec une certaine précision pour déterminer si les données sont adéquates pour une utilisation. Selon la façon dont vous définissez ce filtre, vos entraînements enregistrés varieront en qualité.\n\nIdéalement, le filtre doit rester sur « Standard », mais s'il y a des complications avec vos données (par exemple, elles sont trop inexactes ou tout est filtré), vous pouvez essayer l'une des autres.";
+"Settings.GPSAccuracy.Title" = "Précision désirée";
+"Settings.GPSAccuracy" = "Précision du GPS";
+"Settings.MapVisibility" = "Afficher la carte";
+"Settings.StandardWorkoutType.Message" = "N'importe quel type d'entraînement que vous choisissez sera la norme pour enregistrer un nouvel entraînement. Vous pouvez toujours sélectionner un type différent en appuyant longuement sur le bouton plus ou en appuyant sur l'étiquette de type sur l'écran d'enregistrement";
+"Settings.StandardWorkoutType" = "Type standard";
+"Settings.RecordingPreferences" = "Préférences d'enregistrement";
+"Settings.UnitPick.Message" = "L'unité choisie sera utilisée pour afficher les données";
+"Settings.UnitPick.Headline" = "Choisissez une unité";
+"Settings.WeightUnit" = "Unité de poids";
+"Settings.EnergyUnit" = "Unité d'énergie";
+"Settings.SpeedUnit" = "Unité de vitesse";
+"Settings.AltitudeUnit" = "Unité d'altitude";
+"Settings.DistanceUnit" = "Unité de distance";
+"Settings.UnitPreferences" = "Préférences des unités";
+"Settings.DeleteAll.AppleHealth.Error.Message" = "Une erreur s'est produite lors de la tentative de suppression de vos données dans Apple Health, certaines sont peut-être toujours présentes. Vous pouvez supprimer les données restantes dans l'application Apple Health.";
+"Settings.DeleteAll.AppleHealth.Error.Title" = "Suppression impossible";
+"Settings.DeleteAll.Error.Message" = "Une erreur s'est produite lors de la tentative de suppression de vos données dans l'application, certaines sont peut-être toujours là. Veuillez réessayer plus tard.";
+"Settings.DeleteAll.Error.Title" = "Suppression impossible";
+"Settings.DeleteAll.AppleHealth.Message" = "Voulez-vous conserver les entraînements que vous avez enregistrés dans l'application Apple Health, ou voulez-vous les supprimer également ?";
+"Settings.DeleteAll.AppleHealth.Title" = "Supprimer les données d'Apple Health ?";
+"Settings.DeleteAll.Confirmation.Message" = "Êtes-vous sûr·e de vouloir supprimer toutes les données stockées par cette application ? Ceci inclut tous les entraînements que vous avez enregistrés et tous les paramètres que vous avez définis. Aucune donnée d'entraînement ne peut être restaurée si elle n'est pas sauvegardée dans Apple Health et vos paramètres seront définitivement perdus.";
+"Settings.DeleteAll.Confirmation.Title" = "Tout supprimer ?";
+"Settings.DeleteAllData" = "Supprimer toutes les données";
+"Settings.ExportBackupData.Message" = "Exportation des entraînements";
+"Settings.ImportBackupData.Message" = "Importer les entraînements uniques";
+"Settings.ImportBackupData.Error" = "Impossible de lire correctement la sauvegarde, veuillez contacter l'assistance pour obtenir des informations supplémentaires.";
+"Settings.ImportBackupData.Success" = "Les entraînements uniques de votre sauvegarde ont été importés, les entraînements qui existent déjà dans cette base de données d'applications ont été laissés de côté.";
+"Settings.ImportBackupData" = "Importer les données de sauvegarde";
+"Settings.CreateBackup" = "Créer une sauvegarde";
+"Settings.DataPreferences.Message" = "Les sauvegardes dans OutRun, probablement contrairement à la plupart des autres applications, ne sont que des fichiers, pour lesquels vous n'avez pas besoin d'outils spéciaux pour les insérer dans l'application ou transférer vers un autre appareil. Ils restent également locaux (sauf si vous les enregistrez dans le nuage).\n\nLors de la création d'une sauvegarde, un fichier « .orbup » vous sera présenté que vous pourrez partager avec n'importe quelle autre application de votre choix. Sachez cependant que les données à l'intérieur de ce fichier ne sont pas chiffrées, les envoyer à quelqu'un ou les téléverser sur un service peut compromettre votre vie privée, alors gardez cela à l'esprit.\n\nPour importer une sauvegarde, sélectionnez simplement un fichier « .orbup » à partir de l'endroit où vous l'avez précédemment enregistré, l'application importera alors tous les entraînements contenus dans la sauvegarde, en s'assurant qu'il n'y a pas de doublons automatiquement.";
+"Settings.DataPreferences" = "Préférences des données";
+"Settings.SyncAll.AllSyncedAlready" = "Il semble que tous les entraînements soient déjà synchronisés.";
+"Settings.SyncAll.Error" = "Une erreur s'est produite lors de la tentative de synchronisation de tous les entraînements non synchronisés avec Apple Health, certains entraînements peuvent ne pas avoir été synchronisés.";
+"Settings.SyncAll.Success" = "Tous les entraînements non synchronisés ont été synchronisés avec succès avec Apple Health.";
+"Settings.AppleHealthPreferences.Message" = "Si les options de synchronisation sont activées, l'application tente de se synchroniser avec Apple Health, de sorte que les nouvelles données de cette application sont automatiquement enregistrées dans l'application Health et si le poids dans Apple Health change, elles sont automatiquement ajustées ici aussi.\n\nSi l'option « Importation automatique des entraînements » est activée, l'application essaye d'importer automatiquement de nouvelles séances d'entraînement ajoutées par d'autres applications dans la base de données locale.\n\n« Synchroniser tous les entraînements non synchronisés » synchronise tous les entraînements de cette application, non déjà synchronisés, avec Apple Health.";
+"Settings.SyncAll" = "Synchroniser tous les entraînements non synchronisés";
+"Settings.ImportFromAppleHealth" = "Importer d'Apple Health";
+"Settings.AutoImportHealthWorkouts" = "Importer les entraînements automatiquement";
+"Settings.SynchronizeWeightWithAppleHealth" = "Synchroniser le poids";
+"Settings.SynchronizeWorkoutsWithAppleHealth" = "Synchroniser les entraînements";
+"Settings.AppleHealthPreferences" = "Préférences Apple Health";
+"Settings.UserSettings.Description" = "Cette application a besoin de votre poids pour calculer une valeur estimée de l'énergie dépensée pendant un entraînement. Fournir votre nom est entièrement facultatif.";
+"Settings.Weight" = "Poids";
+"Settings.Name" = "Nom";
+"Settings.UserSettings" = "Paramètres utilisateur";
+
+// MARK: Settings
+
+"Settings" = "Paramètres";
+
+// MARK: WorkoutMapController
+
+"WorkoutMapController.Headline" = "Votre itinéraire";
+"WorkoutBuilder.Status.AutoPaused" = "en pause auto";
+"WorkoutBuilder.Status.Paused" = "en pause";
+"WorkoutBuilder.Status.Recording" = "enregistre";
+"WorkoutBuilder.Status.Ready" = "prêt";
+
+// MARK: WorkoutBuilder
+
+"WorkoutBuilder.Status.Waiting" = "en attente";
+"WorkoutDeletion.Error.AppleHealth.Message" = "Une erreur s'est produite lors de la tentative de suppression de l'entraînement d'Apple Health, vous pouvez toujours le supprimer dans l'application Apple Health.";
+"WorkoutDeletion.Error.Message" = "Une erreur s'est produite lors de la tentative de suppression de l'entraînement de l'application.";
+"WorkoutDeletion.AppleHealth.Message" = "Voulez-vous également supprimer l'entraînement enregistré dans Apple Health ?";
+"WorkoutDeletion.AppleHealth.Title" = "Supprimer dans Apple Health ?";
+"WorkoutDeletion.Message" = "Voulez-vous vraiment supprimer l'entraînement ? Vous ne pouvez pas le restaurer une fois supprimé.";
+
+// MARK: Workout deletion
+
+"WorkoutDeletion.Title" = "Supprimer l'entraînement ?";
+"WorkoutStats.Route" = "Itinéraire";
+"WorkoutStats.TotalEnergy" = "Énergie totale";
+"WorkoutStats.BurnedEnergy" = "Énergie dépensée";
+"WorkoutStats.SpeedOverTime" = "Vitesse au fil du temps";
+"WorkoutStats.TopSpeed" = "Vitesse maximale";
+"WorkoutStats.AverageSpeed" = "Vitesse moyenne";
+"WorkoutStats.Speed" = "Vitesse";
+"WorkoutStats.EndTime" = "Heure de fin";
+"WorkoutStats.StartTime" = "Heure de départ";
+"WorkoutStats.Duration" = "Durée";
+"WorkoutStats.Time" = "Heure";
+"WorkoutStats.DescendingAltitude" = "Descendante";
+"WorkoutStats.AscendingAltitude" = "Montante";
+"WorkoutStats.Altitude" = "Altitude";
+"WorkoutStats.AltitudeOverTime" = "Altitude au fil du temps";
+
+// MARK: WorkoutStats
+
+"WorkoutStats.Distance" = "Distance";
+"AppleHealth.RecentlyRemovedWorkouts" = "Certains entraînements enregistrés dans cette application ont été récemment supprimés d'Apple Health, mais sont toujours enregistrés ici, vous pouvez les synchroniser à nouveau dans les paramètres ou les supprimer manuellement.";
+"AppleHealth.Remove.Error" = "Impossible de supprimer l'entraînement d'Apple Health, veuillez réessayer plus tard ou vérifier l'application Apple Health. Il est possible que l'entraînement n'ait pas été ajouté à Apple Health par OutRun, ce qui signifie que nous ne pouvons pas le modifier.";
+"AppleHealth.Remove" = "Retirer d'Apple Health";
+"AppleHealth.Add.Error" = "Impossible d'ajouter un entraînement à Apple Health, veuillez réessayer plus tard.";
+
+// MARK: Apple Health
+
+"AppleHealth.Add" = "Ajouter à Apple Health";
+"WorkoutList.Order.Descending" = "Descendant";
+"WorkoutList.Order" = "Ordre";
+"WorkoutList.SortBy" = "Trier par";
+"Workout.Race" = "Compétition";
+"WorkoutList.Filter.HasRoute" = "A un itinéraire";
+"WorkoutList.Filter.IsRace" = "Compétition";
+// others included in WorkoutStats or Workout
+"WorkoutList.Filter" = "Filtre";
+
+// MARK: WorkoutList
+
+"WorkoutList.Sort.Date" = "Date";
+"WorkoutEvent.Type.Unknown" = "Inconnu";
+"WorkoutEvent.Type.Segment" = "Segment";
+"WorkoutEvent.Type.Marker" = "Marqueur";
+"WorkoutEvent.Type.Lap" = "Manche";
+"WorkoutEvent.Type.AutoResume" = "Reprise auto";
+"WorkoutEvent.Type.Resume" = "Reprendre";
+"WorkoutEvent.Type.AutoPause" = "Pause auto";
+
+// MARK: WorkoutEvent
+
+"WorkoutEvent.Type.Pause" = "Pause";
+"Workout.Pauses" = "Pauses";
+"Workout.IsUserModified.Text" = "Cet entraînement a été modifié ou ajouté manuellement par une personne, de sorte que les données peuvent être inexactes ou même fausses.";
+"Workout.Comment" = "Commentaire";
+"Workout.Type.Running" = "Course à pied";
+"Workout.Type.Unknown" = "Inconnu";
+"Workout.Type.Hiking" = "Randonnée";
+"Workout.Type.Skating" = "Planche à roulettes";
+"Workout.Type.Cycling" = "Vélo";
+"Workout.Type.Walking" = "Marche";
+"Workout.Type" = "Type";
+"Workout.NewWorkout" = "Nouvel entraînement";
+"Workout.BurnedCalories" = "Calories brûlées";
+"Workout.AverageSpeed" = "Vitesse moyenne";
+"Workout.CurrentSpeed" = "Vitesse actuelle";
+"Workout.StartDate" = "Date de départ";
+"Workout.PauseDuration" = "Durée des pauses";
+"Workout.ActiveDuration" = "Durée active";
+"Workout.Duration" = "Durée";
+"Workout.Strokes" = "Coups de pédale";
+"Workout.Steps" = "Pas";
+"Workout.Distance" = "Distance";
+
+// MARK: Workout
+
+"Workout" = "Entraînement";
+
+// MARK: WorkoutController
+
+"WorkoutViewController.LoadingError" = "Une erreur s'est produite lors de la tentative d'affichage des statistiques sur cet entraînement, veuillez réessayer.";
+"NewWorkoutCompletion.Continue.Error" = "Malheureusement, votre entraînement n'a pas pu être poursuivi.";
+"Settings.Email.Error" = "Il semble qu'il n'y ait pas d'application de messagerie sur votre téléphone, ou iOS ne peut pas l'ouvrir. Vous pouvez toujours envoyer un courriel à support@tadris.de pour obtenir de l'aide en cas de problème concernant l'application.";
+"Settings.Email" = "Courriel";
+"NewWorkoutCompletion.Continue.Success" = "L'application continue maintenant d'enregistrer votre entraînement.";
+"NewWorkoutCompletion.Save.Error" = "Malheureusement, votre entraînement n'a pas pu être sauvegardé.";
+"NewWorkoutCompletion.Save.Success" = "Votre entraînement a été sauvegardé avec succès.";
+
+// MARK: NewWorkoutCompletion
+
+"NewWorkoutCompletion.Title" = "Entraînement terminé";
+"NewWorkoutAlert.EnterManually" = "Entrer manuellement";
+"NewWorkoutAlert.Message" = "Quel type d'entraînement voulez-vous enregistrer ?";
+
+// MARK: NewWorkoutAlert
+
+"NewWorkoutAlert.Title" = "Entraînement";
+
+// MARK: WorkoutListController
+
+"WorkoutListViewController.Headline" = "Vos entraînements";
+"NewWorkoutViewController.WorkoutBuilder.Error" = "Il y avait une erreur dans la logique censée construire l'entraînement.";
+"NewWorkoutViewController.Recenter" = "Recentrer";
+"NewWorkoutViewController.WaitingAlert.Message" = "Le signal GPS n'est pas suffisamment précis pour une qualité d'itinéraire suffisante, trouver un signal précis peut prendre de quelques secondes à une minute. S'il s'agit d'un phénomène courant dans votre région, essayez d'ajuster la précision nécessaire dans les paramètres.";
+"NewWorkoutViewController.WaitingAlert.Title" = "En attente du GPS";
+"NewWorkoutViewController.Discard.SaveInstead" = "Sauvegarder à la place";
+"NewWorkoutViewController.Discard.Message" = "Êtes-vous sûr·e de vouloir effacer votre entraînement ? Les données ne peuvent pas être récupérées.";
+"NewWorkoutViewController.Discard.Title" = "Effacer";
+"Discard" = "Effacer";
+"NewWorkoutViewController.Save.Message" = "Voulez-vous sauvegarder ou effacer l'enregistrement ?";
+"NewWorkoutViewController.Save.Title" = "Sauvegarder";
+"NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording" = "Arrêter l'enregistrement";
+"NewWorkoutViewController.Cancel.Error.Recording.Message" = "Vous ne pouvez pas fermer ce menu pendant l'enregistrement d'un entraînement. Voulez-vous arrêter l'entraînement ou continuer ?";
+
+// MARK: NewWorkoutViewController
+
+"NewWorkoutViewController.Cancel.Error.Recording.Title" = "Un entraînement est en train d'être enregistré";
+"NotSet" = "Non défini";
+"All" = "Tous";
+"Stop" = "Arrêter";
+"Start" = "Démarrer";
+"Close" = "Fermer";
+"Edit" = "Modifier";
+"Turn Off" = "Éteindre";
+"Try Again" = "Réessayer";
+"Open" = "Ouvrir";
+"Grant" = "Accorder";
+"Skip" = "Ignorer";
+"Finish" = "Terminer";
+"Next" = "Suivant";
+"No" = "Non";
+"Yes" = "Oui";
+"NoData.Message" = "Il n'y a malheureusement rien ici.";
+"NoDataAvailable" = "Aucune donnée disponible";
+"Okay" = "Okay";
+"Standard" = "Standard";
+"Done" = "Terminé";
+"Loading-DoNotClose" = "Chargement… Ne pas fermer";
+"Loading" = "Chargement…";
+"Delete" = "Supprimer";
+"Continue" = "Continuer";
+"Save" = "Enregistrer";
+"Cancel" = "Annuler";
+
+// MARK: General
+
+"OutRun" = "OutRun";
+"TabBar.Settings" = "Paramètres";
+// MARK: TabBar
+
+"TabBar.Timeline" = "Historique";

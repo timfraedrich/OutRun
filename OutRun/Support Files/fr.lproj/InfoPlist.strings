@@ -1,0 +1,9 @@
+
+
+
+"NSMotionUsageDescription" = "Cette application a besoin de capacités de suivi liées au mouvement pour enregistrer des données telles que les étapes d'un entraînement";
+"NSLocationWhenInUseUsageDescription" = "Cette application a besoin de votre emplacement pour suivre les entraînements";
+"NSLocationAlwaysUsageDescription" = "Cette application a besoin de votre emplacement pour suivre les entraînements";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Cette application a besoin de votre emplacement pour suivre les entraînements";
+"NSHealthUpdateUsageDescription" = "Cette application a besoin d'accéder à vos données de santé pour lire et éventuellement corriger les entraînements élaborés par cette application";
+"NSHealthShareUsageDescription" = "Cette application a besoin d'accéder à vos données de santé pour enregistrer les entraînements créés par cette application";

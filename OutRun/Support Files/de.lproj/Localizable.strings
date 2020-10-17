@@ -68,7 +68,7 @@
 "NewWorkoutViewController.WaitingAlert.Title" = "Warten auf GPS";
 "NewWorkoutViewController.WaitingAlert.Message" = "Das GPS-Signal ist nicht genau genug, um eine präzise Route aufzeichnen zu können, manchmal dauert dies ein paar Sekunden bis eine Minute. Sollte dies öfter auftreten, dort wo du deine Workouts aufnimmst, versuche die geforderte Genauigkeit in den Einstellungen anzupassen.";
 "NewWorkoutViewController.Recenter" = "Ausrichten";
-"NewWorkoutViewController.WorkoutBuilder.Error" = "Es gab einen Fehler in der Logik, die das Workout aufzeichnen soll";
+"NewWorkoutViewController.WorkoutBuilder.Error" = "Es gab einen Fehler in der Logik, die das Workout aufzeichnen soll.";
 
 // MARK: WorkoutListController
 
@@ -255,7 +255,7 @@
 "Settings.SourceCode" = "Quellcode ansehen";
 "Settings.SourceCode.Error" = "Der Link konnte nicht geöffnet werden, der er vom System zurückgewiesen wurde.";
 "Settings.AppInfo" = "App-Informationen";
-"Settings.AppVersion" = "App Version";
+"Settings.AppVersion" = "App-Version";
 "Settings.ReleaseStatus" = "Veröffentlichungs Status";
 
 // MARK: Apple Health Import List
@@ -304,7 +304,7 @@
 "Setup.Permission.Location" = "Standortberechtigung";
 "Setup.Permission.Location.Message" = "Wir brauchen Standortberechtigung, da wir die Routen zu deinen Workouts aufzeichnen müssen, um an wichtige Informationen wie die zurückgelegte Distanz zu kommen.";
 "Setup.Permission.Location.Restricted.Title" = "Standortabruf eingeschränkt";
-"Setup.Permission.Location.Restricted.Message" = "Wir können gerade nur deinen Standort abfragen während die App geöffnet ist. Für das Aufzeichnen von Workouts ist eine Erteilung von Aufzeichnen im Hintergrund jedoch empfehlenswert, so muss dein Handy nämlich nicht dauerhaft an und die app im Vordergrund geöffnet sein. Um uns immer Zugriff auf deinen Standort zu geben, musst du dies manuell in den Einstellungen festlegen. Um diese zu öffnen klicke auf 'Öffnen'";
+"Setup.Permission.Location.Restricted.Message" = "Wir können gerade nur deinen Standort abfragen während die App geöffnet ist. Für das Aufzeichnen von Workouts ist eine Erteilung von Aufzeichnen im Hintergrund jedoch empfehlenswert, so muss dein Handy nämlich nicht dauerhaft an und die App im Vordergrund geöffnet sein. Um uns immer Zugriff auf deinen Standort zu geben, musst du dies manuell in den Einstellungen festlegen. Um diese zu öffnen klicke auf „Öffnen“.";
 "Setup.Permission.Location.Error" = "Scheinbar hast du uns keine Berechtigung auf deinen Standort gegeben, dies ist jedoch für die Nutzung dieses Dienstes essentiell. Um uns Zugriff auf deinen Standort zu geben, musst du dies manuell in den Einstellungen festlegen und danach den Knopf wieder betätigen.";
 "Setup.Permission.AppleHealth" = "Health-Berechtigung";
 "Setup.Permission.AppleHealth.Message" = "Da du möchtest, dass wir deine Workouts und dein Gewicht mit Apple Health synchronisieren, brauchen wir die dafür nötige Berechtigung von dir.";
@@ -319,7 +319,7 @@
 "TerminationBackup.SaveAlert.Title" = "Workout gerettet";
 "TerminationBackup.SaveAlert.Message" = "Letztes mal als du ein Workout aufgezeichnet hast, hast du scheinbar die App geschlossen ohne zu speichern. Wir haben die Workoutdaten vor dem Beenden der App retten können, willst du das Workout speichern?";
 "TerminationBackup.Save.Error" = "Es tut uns leid, aber das Workout konnte nicht gespeichert werden.";
-"TerminationBackup.Save.Health.Error" = "Asu irgend einem Grund konnte das Workout nicht in Apple Health gespeichert werden.";
+"TerminationBackup.Save.Health.Error" = "Aus irgendeinem Grund konnte das Workout nicht in Apple Health gespeichert werden.";
 "TerminationBackup.LostAlert.Title" = "Workout verloren";
 "TerminationBackup.LostAlert.Message" = "Scheinbar hast du bei der letzten Aufzeichnung eines Workouts die App beendet, wir haben es nicht geschafft diese Daten zu retten.";
 
@@ -332,7 +332,7 @@
 
 "EditWorkoutController.SaveWorkout.Error" = "Das Workout konnte nicht gespeichert werden, bitte versuche es später erneut.";
 "EditWorkoutController.SaveWorkout.AppleHealth.Error" = "Das Workout konnte nicht zu Apple Health hinzugefügt werden.";
-"EditWorkoutController.AlterWorkout.AppleHealth.Error" = "Konnte das Workout nicht verändern. Es ist möglich, dass das Workout nicht von OutRun zu Apple Health hinzugefügt wurde, dann können wir es dort nicht bearbeiten. Das alte Workout ist immernoch in der Health app gespeichert, aber nicht mehr in dieser App verknüpft. Wenn die veränderte Version in Apple Health gespeichert werden soll, muss dies manuell durchgeführt werden";
+"EditWorkoutController.AlterWorkout.AppleHealth.Error" = "Konnte das Workout nicht verändern. Es ist möglich, dass das Workout nicht von OutRun zu Apple Health hinzugefügt wurde, dann können wir es dort nicht bearbeiten. Das alte Workout ist immer noch in der Health-App gespeichert, aber nicht mehr in dieser App verknüpft. Wenn die veränderte Version in Apple Health gespeichert werden soll, muss dies manuell durchgeführt werden.";
 "EditWorkoutController.NewWorkout" = "Neues Workout";
 "EditWorkoutController.EditWorkout" = "Bearbeiten";
 "EditWorkoutController.Info" = "Info";
@@ -348,7 +348,7 @@
 
 // MARK: ChangeLog
 
-"ChangeLog" = "Changelog";
+"ChangeLog" = "Änderungsprotokoll";
 "ChangeLog_1.2.2" = "Aufgrund einer Trademark Beschwerde, wird \"OutRun\" von nun an \"Out-Run\" in der UK heißen. Dieses Upadate hat den Hauptzweck, dieser Beschwerde folge zu leisten.\n\nZusätzlich enthält es folgende Fehlerbehebungen:\n\n- manchmal wurden Daten nicht ordentlich zu Apple Health hinzugefügt, dies sollte nun behoben sein\n- die Statistiken für Anstieg und Abstieg waren vertauscht und sind jetzt in der richtigen Reihenfolge\n- es gab ein paar Designfehler in der App aufgrund von Änderungen in iOS 14, es sollte Alles wieder normal aussehen\n\nSolltest du noch Fragen oder Feedback haben, dann schreib mir doch unter outrun@tadris.de.\n\nTim, der Developer.";
 "ShareManager.GPXError" = "Die App konnte keine GPX-Datei erstellen, bitte kontaktiere den Support.";
 
