@@ -156,20 +156,16 @@
 "WorkoutStats.Altitude" = "Altitude";
 "WorkoutStats.AscendingAltitude" = "Ascending";
 "WorkoutStats.DescendingAltitude" = "Descending";
-
 "WorkoutStats.Time" = "Time";
 "WorkoutStats.Duration" = "Duration";
 "WorkoutStats.StartTime" = "Start Time";
 "WorkoutStats.EndTime" = "End Time";
-
 "WorkoutStats.Speed" = "Speed";
 "WorkoutStats.AverageSpeed" = "Avg. Speed";
 "WorkoutStats.TopSpeed" = "Top Speed";
 "WorkoutStats.SpeedOverTime" = "Speed Over Time";
-
 "WorkoutStats.BurnedEnergy" = "Burned Energy";
 "WorkoutStats.TotalEnergy" = "Total Energy";
-
 "WorkoutStats.Route" = "Route";
 
 // MARK: Workout deletion
@@ -196,12 +192,10 @@
 // MARK: Settings
 
 "Settings" = "Settings";
-
 "Settings.UserSettings" = "User Settings";
 "Settings.Name" = "Name";
 "Settings.Weight" = "Weight";
 "Settings.UserSettings.Description" = "This App needs your weight to calculate an estimated value of burned energy during a workout. Providing your name is fully optional.";
-
 "Settings.AppleHealthPreferences" = "Apple Health Preferences";
 "Settings.AppleHealthPreferences.Message" = "If the Sync options are enabled the app tries to synchronise with Apple Health, so new data by this app is automatically saved to the Health App and if the weight in apple health changes it automatically gets adjusted here too.\n\nShould the 'Auto Import Workouts' option be enabled, the app tries to automatically import new workouts added by other apps into the local database.\n\n'Sync All Unsynced Workouts' synchronises all Workouts in this app, not already in synced, to Apple Health.";
 "Settings.SynchronizeWorkoutsWithAppleHealth" = "Sync Workouts";
@@ -212,7 +206,6 @@
 "Settings.SyncAll.Success" = "All unsynced workouts were successfully synced with Apple Health.";
 "Settings.SyncAll.Error" = "There was an error while trying to sync all unsynced workouts with Apple Health, some workouts may have not been synced.";
 "Settings.SyncAll.AllSyncedAlready" = "It appears that all workouts are already synced.";
-
 "Settings.DataPreferences" = "Data Preferences";
 "Settings.DataPreferences.Message" = "Backups in OutRun, probably unlike in most other apps, are just files, that you do not need special tools to insert into the app or transfer to another device. They also stay local (unless you save them in the cloud).\n\nWhen creating a backup you will be presented with a '.orbup' file that you can share to whatever other app you want to. Be aware, that the data inside of that file is not encrypted though, sending it to someone or uploading it to a service can compromise your privacy, so please keep that in mind.\n\nTo import a backup just select a '.orbup' file from wherever you previously saved it, the app will then import all the workouts contained in the backup, making sure there are no duplicates automatically.";
 "Settings.CreateBackup" = "Create Backup";
@@ -230,7 +223,6 @@
 "Settings.DeleteAll.Error.Message" = "There was an error while trying to delete your data in the app, some might still be there. Please try again later.";
 "Settings.DeleteAll.AppleHealth.Error.Title" = "Could not delete";
 "Settings.DeleteAll.AppleHealth.Error.Message" = "There was an error while trying to delete your data in Apple Health, some might still be there. You can delete remaining data inside the Apple Health app.";
-
 "Settings.UnitPreferences" = "Unit Preferences";
 "Settings.DistanceUnit" = "Distance Unit";
 "Settings.AltitudeUnit" = "Altitude Unit";
@@ -239,7 +231,6 @@
 "Settings.WeightUnit" = "Weight Unit";
 "Settings.UnitPick.Headline" = "Choose Unit";
 "Settings.UnitPick.Message" = "The chosen unit will be used to display data";
-
 "Settings.RecordingPreferences" = "Recording Preferences";
 "Settings.StandardWorkoutType" = "Standard Type";
 "Settings.StandardWorkoutType.Message" = "Whichever workout type you choose will be the standard for recording a new workout. You can still select a different type by long pressing the plus button or pressing the type label on the recording screen";
@@ -255,7 +246,6 @@
 "Settings.DisplayPace" = "Display Pace";
 "Settings.DisplayRollingSpeed" = "Display Rolling Speed";
 "Settings.RecordingPreferences.Message" = "Should you experience any kind of crashes or similar behaviour while recording a workout, you should try to turn 'Show Map' to off, because most of these crashes known where related to the map drawing too much power.\n\nIf 'Display Pace' is enabled instead of showing the speed the pace is shown. Should 'Display Rolling Speed' be on the speed or pace displayed are an average of the last kilometer, if not the current speed or the total pace are shown.";
-
 "Settings.Support" = "Support";
 "Settings.TermsOfService" = "Terms of Service";
 "Settings.PrivacyPolicy" = "Privacy Policy";
@@ -263,7 +253,6 @@
 "Settings.Email.Error" = "There seems to be no E-Mail app on your phone, or iOS cannot open it, you can still send an E-Mail to support@tadris.de for assistance with any problems regarding the app.";
 "Settings.SourceCode" = "View Source Code";
 "Settings.SourceCode.Error" = "The link could not be opened due to the system rejecting it.";
-
 "Settings.AppInfo" = "App Info";
 "Settings.AppVersion" = "App Version";
 "Settings.ReleaseStatus" = "Release Status";
@@ -288,17 +277,14 @@
 "Setup.Headline" = "welcome to";
 "Setup.Introduction" = "the running app that actually cares about your privacy, where you don't have to create a user account, or give sensitive data that then lies on a server in the middle of nowhere.\nBut more of that later for now let's just get started.";
 "Setup.StartButton" = "Let's go";
-
 "Setup.Feature.Route.Title" = "Accurate Tracking";
 "Setup.Feature.Route.Message" = "Record your running, walking or cycling workouts with the highest accuracy possible on your phone.";
 "Setup.Feature.Chart.Title" = "Detailed Statistics";
 "Setup.Feature.Chart.Message" = "Look at detailed statistics like top speed and your average pace after you finished your workout";
 "Setup.Feature.Lock.Title" = "Privacy Focused";
 "Setup.Feature.Lock.Message" = "Don't worry about your data, all of it stays on your device as long as you want it to.";
-
 "Setup.Formalities.Title" = "I guess let's start with the formalities";
 "Setup.Formalities.Message" = "This is the most boring part of the setup, so let's get it over with. If you don't want to read the policies (which we totally get) here is a really small summary: All your data is saved locally (with the exception of syncronization with Apple Health), so you stay in control of it and don't need to worry about any kind of leak or exploit.";
-
 "Setup.UserInfo.Title" = "But now let's talk about You";
 "Setup.UserInfo.Message" = "To enable some of the features in this app we need some basic information on you. Your weight for example is required to calculate the approximate energy burned in a workout. (To give us your name is totally optional)";
 "Setup.UserInfo.Username" = "Username";
@@ -307,26 +293,21 @@
 "Setup.UserInfo.PreferredSystem.Metric" = "Metric";
 "Setup.UserInfo.PreferredSystem.Imperial" = "Imperial";
 "Setup.UserInfo.Weight" = "Weight";
-
 "Setup.AppleHealth.Title" = "Want to sync with Apple Health?";
 "Setup.AppleHealth.Message" = "If you want your data to be stored in a central space Apple Health might be a good option since it's well intregated with iOS. The synchronization is totally optional though and it should be noted that if you choose to sync with Apple Health your data will possibly leave your phone and be stored on Apple Servers, more on that in the privacy policy. If you choose to enable Auto Import the app tries to import workouts added by other apps into the local database so you keep an overview over all your workouts.";
 "Setup.AppleHealth.SyncWorkouts" = "Sync Workouts";
 "Setup.AppleHealth.SyncWeight" = "Sync Weight";
 "Setup.AppleHealth.AutoImportWorkouts" = "Auto Import Workouts";
-
 "Setup.Permissions.Title" = "Now we just need your permission";
 "Setup.Permissions.Message" = "Since we want to provide our services to you we need access to some APIs like Location Services or if you want to sync with Apple Health also access to read and write to that service.";
-
 "Setup.Permission.Location" = "Location Permission";
 "Setup.Permission.Location.Message" = "We need your location to record the route and thereby also important information like distance of the workouts you record in this app.";
 "Setup.Permission.Location.Restricted.Title" = "Location Access Restricted";
 "Setup.Permission.Location.Restricted.Message" = "We can only access your location while this app is open right now. For tracking a workout it is advisable to give background location access, so your phone does not have to be on with the app open the entire time. To give us 'Always' access to your location you have to open your phone's settings and change it manually.";
 "Setup.Permission.Location.Error" = "It seems like you have not granted us the permission to record your location. Please note that this is required for our service to work. To change this setting you have to go into your phone's Settings and grant us permission. Afterwards press the button again. Do you want to open Settings?";
-
 "Setup.Permission.AppleHealth" = "Health Permission";
 "Setup.Permission.AppleHealth.Message" = "Since you want us to save your workouts/weight to Apple Health we require permission from you to read and write to the Apple Health Store regarding the synced categories.";
 "Setup.Permission.AppleHealth.Error" = "You seem to not have been allowing us to access every requested category from Apple Health. Do you want to try again or turn off syncronisation?";
-
 "Setup.Permission.Motion" = "Motion Access";
 "Setup.Permission.Motion.Message" = "For data like the steps you take during a workout this app needs access to motion and fitness data.";
 "Setup.Permission.Motion.Error" = "You have not given this app permission to motion and fitness related sensor data. To change that and give the app access to data like steps, you have to enable access in iOS Settings manually. Do you want to open Settings?";
@@ -378,16 +359,4 @@
 // MARK: ChangeLog
 
 "ChangeLog" = "Changelog";
-"ChangeLog_1.2.2" = "After receiving a trademark complaint \"OutRun\" will now be called \"Out-Run\" in the UK. This update has the main purpose of addressing this complaint.
-
-Additionally it contains the following bug fixes:
-
-- sometimes data was not added properly to Apple Health, this should now be fixed
-- ascending and descending altitude were swapped in the statistics, now they are in the right order
-- there have been some style issues because of changes in iOS 14, everything should look normally again
-
-And for this update nothing more changed.
-
-If you have any questions or feedback, feel free to reach out at outrun@tadris.de.
-
-Tim, the Developer.";
+"ChangeLog_1.2.2" = "After receiving a trademark complaint \"OutRun\" will now be called \"Out-Run\" in the UK. This update has the main purpose of addressing this complaint.\n\nAdditionally it contains the following bug fixes:\n\n- sometimes data was not added properly to Apple Health, this should now be fixed\n- ascending and descending altitude were swapped in the statistics, now they are in the right order\n- there have been some style issues because of changes in iOS 14, everything should look normally again\n\nAnd for this update nothing more changed.\n\nIf you have any questions or feedback, feel free to reach out at outrun@tadris.de.\n\nTim, the Developer.";
