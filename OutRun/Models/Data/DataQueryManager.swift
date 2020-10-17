@@ -27,7 +27,7 @@ enum DataQueryManager {
     // MARK: Fetch Location Degrees
     static func fetchLocationDegreesOfRoute(fromWorkoutID uuid: UUID, completion: @escaping (Bool, [CLLocationCoordinate2D]?) -> Void) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> [CLLocationCoordinate2D]? in
+        DataManager.dataStack.perform(asynchronous: { (transaction) -> [CLLocationCoordinate2D]? in
             
             do {
                 guard let tempWorkout = try transaction.fetchOne(From<Workout>().where(\.uuid == uuid)) else {
@@ -63,7 +63,7 @@ enum DataQueryManager {
     // MARK: Query backup data
     static func getBackupData(forWorkouts workouts: [Workout]? = nil, andEvents events: [Event]? = nil, completion: @escaping (Bool, Data?) -> Void, progressClosure: @escaping (Double) -> Void) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> Data? in
+        DataManager.dataStack.perform(asynchronous: { (transaction) -> Data? in
             do {
                 let queryWorkouts: [Workout] = try {
                     if workouts != nil {
@@ -129,7 +129,7 @@ enum DataQueryManager {
         
         DispatchQueue.main.async {
             do {
-                let count = try CoreStore.defaultStack.fetchCount(From<Workout>().where(\.healthKitUUID == uuid))
+                let count = try DataManager.dataStack.fetchCount(From<Workout>().where(\.healthKitUUID == uuid))
                 hasDuplicate = count != 0
             } catch {
                 print("[DataQueryManager] Failed to fetch count of duplicate health workouts")
@@ -144,7 +144,7 @@ enum DataQueryManager {
     
     static func getAllExistingHealthKitWorkoutUUIDs() -> [UUID] {
         do {
-            let workoutUUIDDicts = try CoreStore.defaultStack.queryAttributes(
+            let workoutUUIDDicts = try DataManager.dataStack.queryAttributes(
                 From<Workout>()
                     .select(NSDictionary.self, .attribute(\.healthKitUUID))
                     .where(\.healthKitUUID != nil)
@@ -168,7 +168,7 @@ enum DataQueryManager {
     
     static func queryAllWorkoutsWithoutAppleHealthReference(completion: @escaping (Bool, [Workout]) -> Void) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> [Workout] in
+        DataManager.dataStack.perform(asynchronous: { (transaction) -> [Workout] in
             
             do {
                 let workouts = try transaction.fetchAll(From<Workout>().where(\.healthKitUUID == nil))
@@ -181,7 +181,7 @@ enum DataQueryManager {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let tempWorkouts):
-                    let workouts = CoreStore.fetchExisting(tempWorkouts)
+                    let workouts = DataManager.dataStack.fetchExisting(tempWorkouts)
                     completion(true, workouts)
                 case .failure(let error):
                     completion(false, [])
@@ -193,7 +193,7 @@ enum DataQueryManager {
     
     static func queryStats(for workout: Workout, completion: @escaping (WorkoutStats?) -> Void) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> WorkoutStats? in
+        DataManager.dataStack.perform(asynchronous: { (transaction) -> WorkoutStats? in
             
             if let stats = workout.cachedStats {
                 return stats
@@ -245,7 +245,7 @@ enum DataQueryManager {
     
     static func queryStatsSeries<T: WorkoutSeriesDataSampleType>(for workout: Workout, sampleType: T.Type, dataPoint: @escaping (Workout, T) -> (time: TimeInterval, value: Double, unit: Unit), completion: @escaping (Bool, WorkoutStatsSeries?) -> Void) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> (WorkoutStatsSeries?) in
+        DataManager.dataStack.perform(asynchronous: { (transaction) -> (WorkoutStatsSeries?) in
             
             let tempWorkout = transaction.fetchExisting(workout)!
             guard let samples: [T] = {
@@ -340,7 +340,7 @@ enum DataQueryManager {
     
     static func querySectionedSampleSeries<T: WorkoutSeriesDataSampleType>(for workout: Workout, sampleType: T.Type, completion: @escaping (Bool, [(type: WorkoutStatsSeriesSection.SectionType, samples: [TempWorkoutSeriesDataSampleType])]) -> Void ) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> ([(type: WorkoutStatsSeriesSection.SectionType, samples: [TempWorkoutSeriesDataSampleType])]?) in
+        DataManager.dataStack.perform(asynchronous: { (transaction) -> ([(type: WorkoutStatsSeriesSection.SectionType, samples: [TempWorkoutSeriesDataSampleType])]?) in
             
             let tempWorkout = transaction.fetchExisting(workout)!
             guard let samples: [T] = {
@@ -426,7 +426,7 @@ enum DataQueryManager {
     
     static func fetchCount<Object: CoreStoreObject>(of: Object.Type) -> Int {
         do {
-            return try CoreStore.fetchCount(From<Object>())
+            return try DataManager.dataStack.fetchCount(From<Object>())
         } catch {
             print("[DataQueryManager] Failed to fetch count of \(Object.self)")
             return -1

@@ -36,15 +36,16 @@ struct DataManager {
         return nil
     }
     
+    public static var dataStack = DataStack(
+        OutRunV1.schema,
+        OutRunV2.schema,
+        OutRunV3.schema,
+        migrationChain: [OutRunV1.identifier, OutRunV2.identifier, OutRunV3.identifier]
+    )
+    
     // MARK: Setup
     static func setup(completion: @escaping () -> Void, migrationClosure: @escaping () -> ((Double) -> Void)) {
         
-        CoreStore.defaultStack = DataStack(
-            OutRunV1.schema,
-            OutRunV2.schema,
-            OutRunV3.schema,
-            migrationChain: [OutRunV1.identifier, OutRunV2.identifier, OutRunV3.identifier]
-        )
         let storage = SQLiteStore(
             fileName: "OutRun.sqlite",
             migrationMappingProviders: [
@@ -56,7 +57,7 @@ struct DataManager {
         
         self.storage = storage
         
-        if let migrationProgress = CoreStore.addStorage(storage, completion: { (result) in
+        if let migrationProgress = dataStack.addStorage(storage, completion: { (result) in
             switch result {
             case .success(let storage):
                 print("Successfully added storage:", storage)
@@ -100,7 +101,7 @@ struct DataManager {
         heartRates: [TempWorkoutHeartRateDataSample],
         completion: @escaping (Bool, Error?, Workout?) -> Void) {
         
-        CoreStore.perform(asynchronous: { (transaction) -> Workout in
+        dataStack.perform(asynchronous: { (transaction) -> Workout in
             
             let workout = transaction.create(Into<Workout>())
             workout.uuid .= UUID()
@@ -160,7 +161,7 @@ struct DataManager {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let tempWorkout):
-                    let workout = CoreStore.fetchExisting(tempWorkout)
+                    let workout = dataStack.fetchExisting(tempWorkout)
                     completion(true, nil, workout)
                 case .failure(let error):
                     completion(false, error, nil)
@@ -180,7 +181,7 @@ struct DataManager {
     
     static func saveWorkouts(for hkQueryObjects: [HKWorkoutQueryObject], completion: @escaping (Bool, Error?, [Workout]) -> Void) {
         
-        CoreStore.perform(asynchronous: { (transaction) -> [Workout] in
+        dataStack.perform(asynchronous: { (transaction) -> [Workout] in
             
             var tempWorkouts = [Workout]()
             
@@ -246,7 +247,7 @@ struct DataManager {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let tempWorkouts):
-                    let workouts = CoreStore.fetchExisting(tempWorkouts)
+                    let workouts = dataStack.fetchExisting(tempWorkouts)
                     completion(true, nil, workouts)
                 case .failure(let error):
                     completion(false, error, [])
@@ -261,7 +262,7 @@ struct DataManager {
         
         var workoutsToAddToAppleHealth = [Workout]()
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> [Workout] in
+        dataStack.perform(asynchronous: { (transaction) -> [Workout] in
             
             var returnWorkouts = [Workout]()
             
@@ -329,11 +330,11 @@ struct DataManager {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let tempWorkouts):
-                    let workouts = CoreStore.fetchExisting(tempWorkouts)
+                    let workouts = dataStack.fetchExisting(tempWorkouts)
                     
                     if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
                     
-                        let addWorkouts = CoreStore.fetchExisting(workoutsToAddToAppleHealth)
+                        let addWorkouts = dataStack.fetchExisting(workoutsToAddToAppleHealth)
                         addWorkouts.enumerated().forEach { (index, workout) in
                             
                             HealthStoreManager.saveHealthWorkout(
@@ -409,7 +410,7 @@ struct DataManager {
     // MARK: Alter Workout
     static func alterWorkout(workout: Workout, type: Workout.WorkoutType? = nil, start startDate: Date? = nil, end endDate: Date? = nil, distance: Double? = nil, steps: (Bool, Int?) /*= (false, nil)*/, isRace: Bool? = nil, comment: (Bool, String?) = (false, nil), completion: @escaping ((Bool, Error?, Workout?) -> Void)) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> Workout in
+        dataStack.perform(asynchronous: { (transaction) -> Workout in
             
             let workout = transaction.edit(workout)!
             
@@ -446,7 +447,7 @@ struct DataManager {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let workout):
-                    guard let workout = CoreStore.defaultStack.fetchExisting(workout) else {
+                    guard let workout = dataStack.fetchExisting(workout) else {
                         completion(false, nil, nil)
                         return
                     }
@@ -475,7 +476,7 @@ struct DataManager {
     
     static func saveEvents(_ tempEvents: [TempEvent], completion: @escaping (Bool, Error?, [Event]) -> Void) {
         
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> [Event] in
+        dataStack.perform(asynchronous: { (transaction) -> [Event] in
             
             var returnEvents = [Event]()
             
@@ -502,7 +503,7 @@ struct DataManager {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let events):
-                    let events = CoreStore.defaultStack.fetchExisting(events)
+                    let events = dataStack.fetchExisting(events)
                     completion(true, nil, events)
                 case .failure(let error):
                     completion(false, error, [])
@@ -517,7 +518,7 @@ struct DataManager {
         
         DispatchQueue.main.async {
             do {
-                let workoutUUIDDicts = try CoreStore.defaultStack.queryAttributes(
+                let workoutUUIDDicts = try dataStack.queryAttributes(
                     From<Workout>()
                         .select(NSDictionary.self, .attribute(\.uuid))
                         .where(\.uuid != nil)
@@ -540,7 +541,7 @@ struct DataManager {
                 saveWorkouts(tempWorkouts: importWorkouts, completion: { (workoutSuccess, workoutError, workouts) in
                     DispatchQueue.main.async {
                         do {
-                            let eventUUIDDicts = try CoreStore.defaultStack.queryAttributes(
+                            let eventUUIDDicts = try dataStack.queryAttributes(
                                 From<Event>()
                                     .select(NSDictionary.self, .attribute(\.uuid))
                                     .where(\.uuid != nil)
@@ -579,7 +580,7 @@ struct DataManager {
     // MARK: HealthKit Reference
     static func addHealthKitWorkoutUUID(forWorkout workout: Workout, uuid: UUID, completion: @escaping (Bool) -> Void) {
         var editFailed = false
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> Workout in
+        dataStack.perform(asynchronous: { (transaction) -> Workout in
             guard let wo = transaction.edit(workout) else {
                 print("Failed to edit Workout:", workout)
                 editFailed = true
@@ -602,7 +603,7 @@ struct DataManager {
     
     static func removeHealthKitWorkoutUUID(forWorkout workout: Workout, completion: @escaping (Bool) -> Void) {
         var editFailed = false
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> Workout in
+        dataStack.perform(asynchronous: { (transaction) -> Workout in
             guard let wo = transaction.edit(workout) else {
                 print("Failed to edit Workout:", workout)
                 editFailed = true
@@ -626,7 +627,7 @@ struct DataManager {
     static func removeAllHealthKitWorkoutUUIDs(completion: @escaping (Bool) -> Void) {
         DispatchQueue.main.async {
             do {
-                let workouts = try CoreStore.defaultStack.fetchAll(From<Workout>())
+                let workouts = try dataStack.fetchAll(From<Workout>())
                 
                 var removalFailed = false
                 
@@ -647,7 +648,7 @@ struct DataManager {
     }
     
     static func removeHealthKitReference(for uuid: UUID, completion: @escaping (Bool) -> Void) {
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> [Workout] in
+        dataStack.perform(asynchronous: { (transaction) -> [Workout] in
             
             do {
                 let workouts = try transaction.fetchAll(From<Workout>().where(\.healthKitUUID == uuid))
@@ -674,7 +675,7 @@ struct DataManager {
     
     // MARK: Delete Workout
     static func delete(workout: Workout, completion: @escaping (Bool) -> Void) {
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> Void in
+        dataStack.perform(asynchronous: { (transaction) -> Void in
             transaction.delete(workout)
             do {
                 try transaction.deleteAll(From<WorkoutRouteDataSample>().where(\.workout == workout))
@@ -696,7 +697,7 @@ struct DataManager {
     }
     
     static func deleteAll(completion: @escaping (Bool) -> Void) {
-        CoreStore.defaultStack.perform(asynchronous: { (transaction) -> Void in
+        dataStack.perform(asynchronous: { (transaction) -> Void in
             do {
                 try transaction.deleteAll(From<Workout>())
                 try transaction.deleteAll(From<WorkoutRouteDataSample>())
@@ -717,7 +718,7 @@ struct DataManager {
     }
     
     // MARK: Workout Monitor
-    static let workoutMonitor = CoreStore.monitorList(
+    static let workoutMonitor = dataStack.monitorList(
         From<Workout>()
             .orderBy(.descending(\.startDate))
             .where(Where<Workout>(true))

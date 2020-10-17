@@ -32,11 +32,11 @@ class CustomImageCache {
     }
     
     /// the disk storage as basis of the caching system
-    private let diskStorage: DiskStorage<UIImage>?
+    private let diskStorage: DiskStorage<String, UIImage>?
     /// the memory storage for faster access
-    private let memoryStorage: MemoryStorage<UIImage>?
+    private let memoryStorage: MemoryStorage<String, UIImage>?
     /// the hybrid storage comining the disk and memory storage
-    private let hybridStorage: HybridStorage<UIImage>?
+    private let hybridStorage: HybridStorage<String, UIImage>?
     
     /// Initiates the `CustomCache` object and tries to initiate the contained storage(s)
     init() {
@@ -55,8 +55,8 @@ class CustomImageCache {
         
         do {
             
-            let disk = try DiskStorage(config: diskConfig, transformer: TransformerFactory.forImage())
-            let memory = MemoryStorage<UIImage>(config: memoryConfig)
+            let disk = try DiskStorage<String, UIImage>(config: diskConfig, transformer: TransformerFactory.forImage())
+            let memory = MemoryStorage<String, UIImage>(config: memoryConfig)
             let hybrid = HybridStorage(memoryStorage: memory, diskStorage: disk)
             
             self.diskStorage = disk

@@ -8,11 +8,11 @@ target 'OutRun' do
   use_frameworks!
 
   # Pods for OutRun
-  pod 'SnapKit', '~> 5.0.0'
-  pod 'Charts'
-  pod 'CoreStore', '~> 6.3.1'
-  pod 'CoreGPX'
-  pod 'Cache'
+  pod 'SnapKit', '~> 5.0.1'
+  pod 'Charts', '~> 3.6.0'
+  pod 'CoreStore', '~> 7.3.0'
+  pod 'CoreGPX', '~> 0.8.1'
+  pod 'Cache', '~> 6.0.0'
   # pod 'JTAppleCalendar'
 
 end
