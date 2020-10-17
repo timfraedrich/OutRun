@@ -18,7 +18,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-"ChangeLog" = "Journal des modifications";
+"Changelog" = "Modifications";
 "ShareManager.GPXError" = "L'application n'a pas réussi à créer un fichier GPX, veuillez contacter l'assistance.";
 "ShareManager.BackupError" = "L'application n'a pas réussi à créer une sauvegarde, veuillez contacter le support.";
 "WorkoutShareAlert.OutRunBackup" = "Sauvegarde OutRun";

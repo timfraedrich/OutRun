@@ -277,7 +277,7 @@
 "MapView.MapType.Satellite" = "Satellit";
 "MapView.MapTypeAlert.Title" = "Kartentyp";
 "MapView.MapTypeAlert.Message" = "Bitte wähle einen Kartentyp zum Anzeigen.";
-"ChangeLog" = "Änderungsprotokoll";
+"Changelog" = "Änderungen";
 "ShareManager.GPXError" = "Die App konnte keine GPX-Datei erstellen, bitte kontaktiere den Support.";
 "ShareManager.BackupError" = "Die App konnte kein Backup erstellen, bitte kontaktiere den Support.";
 "WorkoutShareAlert.OutRunBackup" = "OutRun-Backup";
