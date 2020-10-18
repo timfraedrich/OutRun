@@ -37,3 +37,6 @@
 "Stop" = "Stoppen";
 "Start" = "Beginnen";
 "Close" = "Afsluiten";
+"NewWorkoutViewController.WaitingAlert.Message" = "Het GPS-signaal is niet precies genoeg voor een goede route kwaliteit, het vinden van een accuraat signaal kan enkele seconden tot een minuut duren. Wanneer dit een gebruikelijk fenomeen is waar je woont, pas dan de nauwkeurigheid aan in de instellingen";
+"NewWorkoutViewController.WaitingAlert.Title" = "Wachten op GPS";
+"NewWorkoutViewController.Discard.SaveInstead" = "Toch opslaan";
