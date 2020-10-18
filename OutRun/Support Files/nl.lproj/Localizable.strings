@@ -25,3 +25,15 @@
 "OutRun" = "OutRun";
 "TabBar.Settings" = "Instellingen";
 "TabBar.Timeline" = "Tijdlijn";
+"NewWorkoutViewController.Discard.Message" = "Weet je zeker dat je de training wilt verwijderen? De gegevens kunnen niet worden terug gehaald";
+"NewWorkoutViewController.Discard.Title" = "Verwijderen";
+"NewWorkoutViewController.Save.Message" = "Wil je de training opslaan of verwijderen?";
+"NewWorkoutViewController.Save.Title" = "Opslaan";
+"NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording" = "Stop opnamen";
+"NewWorkoutViewController.Cancel.Error.Recording.Message" = "Je kan dit menu niet afsluiten tijdens een training. Wil je de training stoppen of voortzetten?";
+"NewWorkoutViewController.Cancel.Error.Recording.Title" = "Training wordt opgenomen";
+"NotSet" = "Niet Ingesteld";
+"All" = "Alles";
+"Stop" = "Stoppen";
+"Start" = "Beginnen";
+"Close" = "Afsluiten";
