@@ -11,7 +11,7 @@
 "Next" = "Volgende";
 "No" = "Nee";
 "Yes" = "Ja";
-"NoData.Message" = "Er lijkt niks aanwezig te zijn";
+"NoData.Message" = "Er lijkt hier niets te zijn.";
 "NoDataAvailable" = "Geen Data Beschikbaar";
 "Okay" = "Oke";
 "Standard" = "Standaard";
@@ -55,7 +55,7 @@
 "NewWorkoutCompletion.Title" = "Afgewerkte Training";
 "NewWorkoutAlert.EnterManually" = "Handmatig Invoeren";
 "WorkoutListViewController.Headline" = "Uw trainingen";
-"Workout.RollingPace" = "Rol Tempo";
+"Workout.RollingPace" = "R. Tempo";
 "Workout.BurnedCalories" = "Verbrande Calorieën";
 "Workout.AverageSpeed" = "Gem. Snelheid";
 "Workout.CurrentSpeed" = "Huidige Snelheid";
