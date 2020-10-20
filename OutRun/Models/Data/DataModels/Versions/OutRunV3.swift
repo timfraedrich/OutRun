@@ -19,9 +19,8 @@
 //
 
 import CoreStore
-import Foundation
 
-enum OutRunV3 {
+enum OutRunV3: ORDataModel {
     
     static let identifier = "OutRunV3"
     static let schema = CoreStoreSchema(
@@ -41,7 +40,7 @@ enum OutRunV3 {
             OutRunV3.Event.identifier: [0x8bc19058de8406f1, 0x4c9ab406f7d1eb5c, 0x7c3d5afd97f2c925, 0xd53b84436cc6cdb0]
         ]
     )
-    static let mappingProvider = CustomSchemaMappingProvider(
+    static let mappingProvider: CustomSchemaMappingProvider? = CustomSchemaMappingProvider(
         from: OutRunV2.identifier,
         to: OutRunV3.identifier,
         entityMappings: [
@@ -79,6 +78,7 @@ enum OutRunV3 {
             .insertEntity(destinationEntity: OutRunV3.Event.identifier)
         ]
     )
+    static let migrationChain: [ORDataModel.Type] = [OutRunV1.self, OutRunV2.self, OutRunV3.self]
     
     // MARK: Workout
     class Workout: CoreStoreObject {
@@ -158,6 +158,7 @@ enum OutRunV3 {
         
     }
     
+    // MARK: Event
     class Event: CoreStoreObject {
         
         static let identifier = "Event"

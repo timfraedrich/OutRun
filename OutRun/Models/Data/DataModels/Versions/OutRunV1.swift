@@ -20,7 +20,7 @@
 
 import CoreStore
 
-enum OutRunV1 {
+enum OutRunV1: ORDataModel {
     
     static let identifier = "OutRunV1"
     static let schema = CoreStoreSchema(
@@ -34,6 +34,8 @@ enum OutRunV1 {
             OutRunV1.Workout.identifier: [0xc693e96b19a41fc7, 0x6efcd5a65d69bc94, 0x947466048287185e, 0x52c58ad8b3e00d36]
         ]
     )
+    static let mappingProvider: CustomSchemaMappingProvider? = nil
+    static let migrationChain: [ORDataModel.Type] = [OutRunV1.self]
     
     // MARK: Workout
     class Workout: CoreStoreObject {
