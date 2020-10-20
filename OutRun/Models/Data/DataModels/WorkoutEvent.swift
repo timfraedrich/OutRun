@@ -20,53 +20,34 @@
 
 import Foundation
 import HealthKit
+import CoreStore
 
-typealias WorkoutEvent = OutRunV3.WorkoutEvent
+typealias WorkoutEvent = OutRunV4.WorkoutEvent
 
 extension WorkoutEvent: CustomStringConvertible {
     
     var description: String {
-        return "WorkoutEvent(type: \(type.debugDescription), start: \(startDate.value), end: \(endDate.value)"
+        return "WorkoutEvent(type: \(eventType.value.debugDescription), timestamp: \(timestamp.value)"
     }
     
-    var type: WorkoutEventType {
-        return WorkoutEventType(rawValue: self.eventType.value)
-    }
-    
-    enum WorkoutEventType: CustomStringConvertible, CustomDebugStringConvertible {
-        case pause, autoPause, resume, autoResume, lap, marker, segment, unknown
+    enum WorkoutEventType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType {
+        case lap, marker, segment, unknown
         
         init(rawValue: Int) {
             switch rawValue {
             case 0:
-                self = .pause
-            case 1:
-                self = .autoPause
-            case 2:
-                self = .resume
-            case 3:
-                self = .autoResume
-            case 4:
                 self = .lap
-            case 5:
+            case 1:
                 self = .marker
-            case 6:
+            case 2:
                 self = .segment
             default:
                 self = .unknown
             }
         }
         
-        init(healthType: HKWorkoutEventType) {
+        init?(healthType: HKWorkoutEventType) {
             switch healthType {
-            case .pause:
-                self = .pause
-            case .motionPaused:
-                self = .autoPause
-            case .resume:
-                self = .resume
-            case .motionResumed:
-                self = .autoResume
             case .lap:
                 self = .lap
             case .marker:
@@ -74,26 +55,18 @@ extension WorkoutEvent: CustomStringConvertible {
             case .segment:
                 self = .segment
             default:
-                self = .unknown
+                return nil
             }
         }
         
         var rawValue: Int {
             switch self {
-            case .pause:
-                return 0
-            case .autoPause:
-                return 1
-            case .resume:
-                return 2
-            case .autoResume:
-                return 3
             case .lap:
-                return 4
+                return 0
             case .marker:
-                return 5
+                return 1
             case .segment:
-                return 6
+                return 2
             case .unknown:
                 return -1
             }
@@ -101,14 +74,6 @@ extension WorkoutEvent: CustomStringConvertible {
         
         var description: String {
             switch self {
-            case .pause:
-                return LS["WorkoutEvent.Type.Pause"]
-            case .autoPause:
-                return LS["WorkoutEvent.Type.AutoPause"]
-            case .resume:
-                return LS["WorkoutEvent.Type.Resume"]
-            case .autoResume:
-                return LS["WorkoutEvent.Type.AutoResume"]
             case .lap:
                 return LS["WorkoutEvent.Type.Lap"]
             case .marker:
@@ -122,14 +87,6 @@ extension WorkoutEvent: CustomStringConvertible {
         
         var debugDescription: String {
             switch self {
-            case .pause:
-                return "Pause"
-            case .autoPause:
-                return "Auto Pause"
-            case .resume:
-                return "Resume"
-            case .autoResume:
-                return "Auto Resume"
             case .lap:
                 return "Lap"
             case .marker:
@@ -143,14 +100,6 @@ extension WorkoutEvent: CustomStringConvertible {
         
         var healthKitType: HKWorkoutEventType? {
             switch self {
-            case .pause:
-                return .pause
-            case .autoPause:
-                return .motionPaused
-            case .resume:
-                return .resume
-            case .autoResume:
-                return .motionResumed
             case .lap:
                 return .lap
             case .marker:

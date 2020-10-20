@@ -23,13 +23,13 @@ import CoreStore
 
 enum DataModelValueGetters {
     
-    static func activeDuration(_ partialObject: PartialObject<Workout>) -> Double {
+    static func activeDuration(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
         let start = partialObject.value(for: { $0.startDate })
         let end = partialObject.value(for: { $0.endDate })
         let pauseDuration = partialObject.value(for: { $0.pauseDuration })
         return end.distance(to: start) - pauseDuration
     }
-    static func pauseDuration(_ partialObject: PartialObject<Workout>) -> Double {
+    static func pauseDuration(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
         var duration: Double = 0.0
         var pauseDate: Date?
         let events = partialObject.completeObject().workoutEvents.value
@@ -48,10 +48,10 @@ enum DataModelValueGetters {
         }
         return duration
     }
-    static func dayIdentifier(_ partialObject: PartialObject<Workout>) -> String {
+    static func dayIdentifier(_ partialObject: PartialObject<OutRunV3.Workout>) -> String {
         return CustomTimeFormatting.dayIdentifier(forDate: partialObject.value(for: { $0.startDate }))
     }
-    static func dimensionalAltitudes(_ partialObject: PartialObject<Workout>) -> (Double, Double) {
+    static func dimensionalAltitudes(_ partialObject: PartialObject<OutRunV3.Workout>) -> (Double, Double) {
         let altitudes = partialObject.completeObject().routeData.map { (sample) -> Double in return sample.altitude.value }
         var tempAscending: Double = 0
         var tempDescending: Double = 0
@@ -83,25 +83,25 @@ enum DataModelValueGetters {
         tempDescending.round()
         return (tempAscending, tempDescending)
     }
-    static func ascendingAltitude(_ partialObject: PartialObject<Workout>) -> Double {
+    static func ascendingAltitude(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
         return dimensionalAltitudes(partialObject).0
     }
-    static func descendingAltitude(_ partialObject: PartialObject<Workout>) -> Double {
+    static func descendingAltitude(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
         return dimensionalAltitudes(partialObject).1
     }
     
-    static func duration(_ partialObject: PartialObject<WorkoutEvent>) -> Double {
+    static func duration(_ partialObject: PartialObject<OutRunV3.WorkoutEvent>) -> Double {
         let start = partialObject.value(for: { $0.startDate })
         let end = partialObject.value(for: { $0.endDate })
         return end.distance(to: start)
     }
     
-    static func startDate(_ partialObject: PartialObject<Event>) -> Date? {
+    static func startDate(_ partialObject: PartialObject<OutRunV3.Event>) -> Date? {
         return partialObject.completeObject().workouts.min { (workout1, workout2) -> Bool in
                 return workout1.startDate.value > workout2.startDate.value
             }?.startDate.value
     }
-    static func endDate(_ partialObject: PartialObject<Event>) -> Date? {
+    static func endDate(_ partialObject: PartialObject<OutRunV3.Event>) -> Date? {
         return partialObject.completeObject().workouts.max { (workout1, workout2) -> Bool in
                 return workout1.endDate.value > workout2.endDate.value
             }?.endDate.value

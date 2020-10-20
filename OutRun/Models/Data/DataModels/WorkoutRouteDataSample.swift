@@ -21,7 +21,7 @@
 import Foundation
 import CoreLocation
 
-typealias WorkoutRouteDataSample = OutRunV3.WorkoutRouteDataSample
+typealias WorkoutRouteDataSample = OutRunV4.WorkoutRouteDataSample
 
 extension WorkoutRouteDataSample: CustomStringConvertible, WorkoutSeriesDataSampleType {
     

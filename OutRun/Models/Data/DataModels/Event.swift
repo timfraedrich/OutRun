@@ -20,7 +20,7 @@
 
 import Foundation
 
-typealias Event = OutRunV3.Event
+typealias Event = OutRunV4.Event
 
 extension Event: CustomStringConvertible {
     

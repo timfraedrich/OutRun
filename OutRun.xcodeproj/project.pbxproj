@@ -115,6 +115,7 @@
 		22B1DD99253F91F20093822B /* OutRunV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1DD96253F91F20093822B /* OutRunV1.swift */; };
 		22B1DD9A253F91F20093822B /* OutRunV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1DD97253F91F20093822B /* OutRunV2.swift */; };
 		22B1DD9B253F91F20093822B /* OutRunV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1DD98253F91F20093822B /* OutRunV3.swift */; };
+		22B1DDA4253F9D650093822B /* WorkoutPause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1DDA3253F9D650093822B /* WorkoutPause.swift */; };
 		22B1F13F22D61CF400C02973 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B1F14122D61CF400C02973 /* LaunchScreen.storyboard */; };
 		22B1F14922D6246800C02973 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22B1F14222D61D0F00C02973 /* Localizable.strings */; };
 		22B2A89D230D298F00EF8558 /* LabelledDiagramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */; };
@@ -297,6 +298,7 @@
 		22B1DD96253F91F20093822B /* OutRunV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutRunV1.swift; sourceTree = "<group>"; };
 		22B1DD97253F91F20093822B /* OutRunV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutRunV2.swift; sourceTree = "<group>"; };
 		22B1DD98253F91F20093822B /* OutRunV3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutRunV3.swift; sourceTree = "<group>"; };
+		22B1DDA3253F9D650093822B /* WorkoutPause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPause.swift; sourceTree = "<group>"; };
 		22B1F14622D61D3300C02973 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledDiagramView.swift; sourceTree = "<group>"; };
 		22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledTimeView.swift; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 				22B1DDA1253F9A4C0093822B /* Deprecated */,
 				22585C23240AE2110052E2CA /* Versions */,
 				22585C1F240AE0C70052E2CA /* Workout.swift */,
+				22B1DDA3253F9D650093822B /* WorkoutPause.swift */,
 				225AC6A1243F2700008D493D /* WorkoutEvent.swift */,
 				22585C21240AE1BC0052E2CA /* WorkoutRouteDataSample.swift */,
 				225AC6A3243F2710008D493D /* WorkoutHeartRateDataSample.swift */,
@@ -1227,6 +1230,7 @@
 				22BBDD3224D77C2B00225AE4 /* WorkoutBuilder+StepCounter.swift in Sources */,
 				227ED84E240FAC460083EE96 /* EditWorkoutView.swift in Sources */,
 				22E8969A23E6E6E40074D2BB /* TempDataTypes.swift in Sources */,
+				22B1DDA4253F9D650093822B /* WorkoutPause.swift in Sources */,
 				229FF498235C200F00EA220E /* SettingSection.swift in Sources */,
 				22B1DD83253F90700093822B /* SQLiteStore.swift in Sources */,
 				226E66C722DAF87D0015ECD4 /* WorkoutViewController.swift in Sources */,

@@ -96,10 +96,6 @@
 "Workout.Comment" = "Notiz";
 "Workout.IsUserModified.Text" = "Dieses Workout wurde von einer Person bearbeitet oder manuell hinzugefügt, die Daten können also ungenau oder sogar gefälscht sein.";
 "Workout.Pauses" = "Pausen";
-"WorkoutEvent.Type.Pause" = "Pause";
-"WorkoutEvent.Type.AutoPause" = "Auto Pause";
-"WorkoutEvent.Type.Resume" = "Fortfahren";
-"WorkoutEvent.Type.AutoResume" = "Auto Fortfahren";
 "WorkoutEvent.Type.Lap" = "Runde";
 "WorkoutEvent.Type.Marker" = "Markierung";
 "WorkoutEvent.Type.Segment" = "Segment";

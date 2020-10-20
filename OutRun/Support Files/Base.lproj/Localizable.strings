@@ -95,10 +95,6 @@
 "Workout.Comment" = "Comment";
 "Workout.IsUserModified.Text" = "This Workout was modified or manually added by a person, so the data might be inaccurate or even fake.";
 "Workout.Pauses" = "Pauses";
-"WorkoutEvent.Type.Pause" = "Pause";
-"WorkoutEvent.Type.AutoPause" = "Auto Pause";
-"WorkoutEvent.Type.Resume" = "Resume";
-"WorkoutEvent.Type.AutoResume" = "Auto Resume";
 "WorkoutEvent.Type.Lap" = "Lap";
 "WorkoutEvent.Type.Marker" = "Marker";
 "WorkoutEvent.Type.Segment" = "Segment";

@@ -201,10 +201,6 @@
 "WorkoutEvent.Type.Segment" = "Segment";
 "WorkoutEvent.Type.Marker" = "Marqueur";
 "WorkoutEvent.Type.Lap" = "Manche";
-"WorkoutEvent.Type.AutoResume" = "Reprise auto";
-"WorkoutEvent.Type.Resume" = "Reprendre";
-"WorkoutEvent.Type.AutoPause" = "Pause auto";
-"WorkoutEvent.Type.Pause" = "Pause";
 "Workout.Pauses" = "Pauses";
 "Workout.IsUserModified.Text" = "Cet entraînement a été modifié ou ajouté manuellement par une personne, de sorte que les données peuvent être inexactes ou même fausses.";
 "Workout.Comment" = "Commentaire";

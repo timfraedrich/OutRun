@@ -21,16 +21,11 @@
 import Foundation
 import CoreLocation
 import HealthKit
+import CoreStore
 
-typealias Workout = OutRunV3.Workout
+typealias Workout = OutRunV4.Workout
 
 extension Workout: CustomStringConvertible {
-    
-    var type: WorkoutType {
-        get {
-            return WorkoutType(rawValue: self.workoutType.value)
-        }
-    }
     
     private var tmpAddress: String {
         get {
@@ -54,64 +49,21 @@ extension Workout: CustomStringConvertible {
         return !self.heartRates.isEmpty
     }
     
-    var pauseRanges: [ClosedRange<TimeInterval>] {
-        let pauseEvents = self.workoutEvents.filter { (event) -> Bool in
-            [.autoPause, .pause].contains(event.type)
-        }
-        var resumeEvents = self.workoutEvents.filter { (event) -> Bool in
-            [.autoResume, .resume].contains(event.type)
-        }
-        var pauseRanges: [ClosedRange<TimeInterval>] = []
-        func interval(_ date: Date) -> TimeInterval {
-            return date.distance(to: self.startDate.value)
-        }
-        for pauseEvent in pauseEvents {
-            let pauseInterval = interval(pauseEvent.startDate.value)
-            
-            let endInterval: TimeInterval = {
-                if !resumeEvents.isEmpty {
-                    let resumeEvent = resumeEvents.removeFirst()
-                    return interval(resumeEvent.startDate.value)
-                } else {
-                    return interval(self.endDate.value)
-                }
-            }()
-            
-            guard pauseInterval < endInterval else {
-                continue
-            }
-            
-            let range = pauseInterval...endInterval
-            
-            pauseRanges.append(range)
-        }
-        return pauseRanges
-    }
-    
     var description: String {
-        
-        let measurementFormatter = MeasurementFormatter()
-        measurementFormatter.numberFormatter.roundingIncrement = 2
-        measurementFormatter.unitOptions = .naturalScale
         
         let distance = CustomMeasurementFormatting.string(forMeasurement: NSMeasurement(doubleValue: self.distance.value, unit: UnitLength.meters), type: .distance, rounding: .twoDigits)
         let duration = CustomMeasurementFormatting.string(forMeasurement: NSMeasurement(doubleValue: self.endDate.value.distance(to: self.startDate.value), unit: UnitDuration.seconds), type: .time, rounding: .twoDigits)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
-        let start = dateFormatter.string(from: startDate.value)
-        let end = dateFormatter.string(from: endDate.value)
-        
         guard let energyBurned = self.burnedEnergy.value else {
-            return "Workout(type: \(type.debugDescription), start: \(start), end: \(end), distance: \(distance), duration: \(duration))"
+            return "Workout(type: \(workoutType.value.debugDescription), start: \(startDate.value), end: \(endDate.value), distance: \(distance), duration: \(duration))"
         }
         
         let energy = CustomMeasurementFormatting.string(forMeasurement: NSMeasurement(doubleValue: energyBurned, unit: UnitEnergy.kilocalories), type: .energy, rounding: .wholeNumbers)
         
-        return "Workout(type: \(type.debugDescription), start: \(start), end: \(end), distance: \(distance), duration: \(duration), energyBurned: \(energy))"
+        return "Workout(type: \(workoutType.value.debugDescription), start: \(startDate.value), end: \(endDate.value), distance: \(distance), duration: \(duration), energyBurned: \(energy))"
     }
     
-    enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible {
+    enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType  {
         case running, walking, cycling, skating, hiking, unknown
         
         init(rawValue: Int) {

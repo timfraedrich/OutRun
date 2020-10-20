@@ -80,7 +80,7 @@ enum OutRunV4: ORDataModel {
         static let identifier = "Workout"
         
         let uuid = Value.Optional<UUID>("id")
-        let workoutType = Value.Required<OutRunV4.Workout.WorkoutType>("workoutType", initial: .unknown)
+        let workoutType = Value.Required<Workout.WorkoutType>("workoutType", initial: .unknown)
         let distance = Value.Required<Double>("distance", initial: -1)
         let steps = Value.Optional<Int>("steps")
         let startDate = Value.Required<Date>("startDate", initial: .init(timeIntervalSince1970: 0))
@@ -113,7 +113,7 @@ enum OutRunV4: ORDataModel {
         let uuid = Value.Optional<UUID>("id")
         let startDate = Value.Required<Date>("startDate", initial: .init(timeIntervalSince1970: 0))
         let endDate = Value.Required<Date>("endDate", initial: .init(timeIntervalSince1970: 0))
-        let pauseType = Value.Required<OutRunV4.WorkoutPause.WorkoutPauseType>("pauseType", initial: .manual)
+        let pauseType = Value.Required<WorkoutPause.WorkoutPauseType>("pauseType", initial: .manual)
         
         let workout = Relationship.ToOne<OutRunV4.Workout>("workout")
         
@@ -125,7 +125,7 @@ enum OutRunV4: ORDataModel {
         static let identifier = "WorkoutEvent"
         
         let uuid = Value.Optional<UUID>("id")
-        let eventType = Value.Required<WorkoutEventType>("eventType", initial: .unknown)
+        let eventType = Value.Required<WorkoutEvent.WorkoutEventType>("eventType", initial: .unknown)
         let timestamp = Value.Required<Date>("timestamp", initial: .init(timeIntervalSince1970: 0), renamingIdentifier: "startDate")
         
         let workout = Relationship.ToOne<OutRunV4.Workout>("workout")

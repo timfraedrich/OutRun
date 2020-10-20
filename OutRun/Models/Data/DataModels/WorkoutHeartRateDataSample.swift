@@ -20,7 +20,7 @@
 
 import Foundation
 
-typealias WorkoutHeartRateDataSample = OutRunV3.WorkoutHeartRateDataSample
+typealias WorkoutHeartRateDataSample = OutRunV4.WorkoutHeartRateDataSample
 
 extension WorkoutHeartRateDataSample: CustomStringConvertible, WorkoutSeriesDataSampleType {
     
