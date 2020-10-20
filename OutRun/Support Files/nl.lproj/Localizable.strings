@@ -19,7 +19,7 @@
 "Loading-DoNotClose" = "Laden... Niet Sluiten Alstublieft";
 "Loading" = "Laden...";
 "Delete" = "Verwijder";
-"Continue" = "Voortzetten";
+"Continue" = "Doorgaan";
 "Save" = "Opslaan";
 "Cancel" = "Annuleren";
 "OutRun" = "OutRun";
@@ -40,3 +40,15 @@
 "NewWorkoutViewController.WaitingAlert.Message" = "Het GPS-signaal is niet precies genoeg voor een goede route kwaliteit, het vinden van een accuraat signaal kan enkele seconden tot een minuut duren. Wanneer dit een gebruikelijk fenomeen is waar je woont, pas dan de nauwkeurigheid aan in de instellingen";
 "NewWorkoutViewController.WaitingAlert.Title" = "Wachten op GPS";
 "NewWorkoutViewController.Discard.SaveInstead" = "Toch opslaan";
+"NewWorkoutCompletion.Save.Success" = "Jouw training is succesvol opgeslagen";
+"WorkoutStats.DescendingAltitude" = "Afdaling";
+"WorkoutStats.AscendingAltitude" = "Beklimming";
+"WorkoutList.Order.Descending" = "Afdaling";
+"Workout.Comment" = "Reactie";
+"Workout.Race" = "Wedstrijd";
+"Workout.Type.Skating" = "Rolschaatsen";
+"NewWorkoutAlert.Message" = "Welke trainings soort wil je opnemen?";
+"NewWorkoutAlert.Title" = "Training";
+"AppleHealth.Add.Error" = "Kon de training niet toevoegen aan Apple Health, probeer opnieuw.";
+"NewWorkoutCompletion.Continue.Error" = "Helaas kon de training niet worden vervolgd";
+"NewWorkoutViewController.Recenter" = "Centreren";
