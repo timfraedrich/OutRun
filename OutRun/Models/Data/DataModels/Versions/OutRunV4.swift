@@ -38,7 +38,7 @@ enum OutRunV4: ORDataModel {
             OutRunV4.WorkoutPause.identifier: [0x89c52b63c97fb5c1, 0xa652377da0a883b8, 0x43cfd39627f2cc09, 0x33ce6792256451a7],
             OutRunV4.WorkoutEvent.identifier: [0xab96203b4ad8735, 0x83a3706df06897f9, 0x499ccfb06aa82a1f, 0xb3653fd2be428391],
             OutRunV4.WorkoutRouteDataSample.identifier: [0x8fb3f3add05348dc, 0xaf69cdd28c67537, 0xeda9c05c619958f, 0x62c61c5f0f6a8978],
-            OutRunV4.WorkoutHeartRateDataSample.identifier: [0x2d847ce2c9e2d59a, 0x93983df8613a51d3, 0x8c53679540e541, 0xbc184a9bacf65f72],
+            OutRunV4.WorkoutHeartRateDataSample.identifier: [0xe8260e997046484b, 0x9d918b9c9db17754, 0x8aebb7846be2bf3d, 0x5e25afd102fd1221],
             OutRunV4.Event.identifier: [0xa36fbda0ab520d10, 0x9ce68b9574d00cac, 0x8ebf7e6d9b4cf7d6, 0x3453773d7b64366]
         ]
     )
@@ -67,7 +67,22 @@ enum OutRunV4: ORDataModel {
                 }
             ),
             .copyEntity(sourceEntity: OutRunV3to4.WorkoutRouteDataSample.identifier, destinationEntity: OutRunV4.WorkoutRouteDataSample.identifier),
-            .copyEntity(sourceEntity: OutRunV3to4.WorkoutHeartRateDataSample.identifier, destinationEntity: OutRunV4.WorkoutHeartRateDataSample.identifier),
+            .transformEntity(
+                sourceEntity: OutRunV3to4.WorkoutHeartRateDataSample.identifier,
+                destinationEntity: OutRunV4.WorkoutHeartRateDataSample.identifier,
+                transformer: { (sourceObject: CustomSchemaMappingProvider.UnsafeSourceObject, createDestinationObject: () -> CustomSchemaMappingProvider.UnsafeDestinationObject) in
+                    
+                    let destinationObject = createDestinationObject()
+                    
+                    destinationObject["heartRate"] = Int(sourceObject["heartRate"] as! Double)
+                    
+                    destinationObject.enumerateAttributes { (attribute, sourceAttribute) in
+                        if let sourceAttribute = sourceAttribute, sourceAttribute.coreStoreDumpString != "heartRate" {
+                            destinationObject[attribute] = sourceObject[sourceAttribute]
+                        }
+                    }
+                }
+            ),
             .deleteEntity(sourceEntity: OutRunV3to4.Event.identifier),
             .insertEntity(destinationEntity: OutRunV4.Event.identifier)
         ]
@@ -79,29 +94,29 @@ enum OutRunV4: ORDataModel {
         
         static let identifier = "Workout"
         
-        let uuid = Value.Optional<UUID>("id")
-        let workoutType = Value.Required<Workout.WorkoutType>("workoutType", initial: .unknown)
-        let distance = Value.Required<Double>("distance", initial: -1)
-        let steps = Value.Optional<Int>("steps")
-        let startDate = Value.Required<Date>("startDate", initial: .init(timeIntervalSince1970: 0))
-        let endDate = Value.Required<Date>("endDate", initial: .init(timeIntervalSince1970: 0))
-        let burnedEnergy = Value.Optional<Double>("burnedEnergy")
-        let isRace = Value.Required<Bool>("isRace", initial: false)
-        let comment = Value.Optional<String>("comment")
-        let isUserModified = Value.Required<Bool>("isUserModified", initial: false)
-        let healthKitUUID = Value.Optional<UUID>("healthKitID")
+        let _uuid = Value.Optional<UUID>("id")
+        let _workoutType = Value.Required<Workout.WorkoutType>("workoutType", initial: .unknown)
+        let _distance = Value.Required<Double>("distance", initial: -1)
+        let _steps = Value.Optional<Int>("steps")
+        let _startDate = Value.Required<Date>("startDate", initial: .init(timeIntervalSince1970: 0))
+        let _endDate = Value.Required<Date>("endDate", initial: .init(timeIntervalSince1970: 0))
+        let _burnedEnergy = Value.Optional<Double>("burnedEnergy")
+        let _isRace = Value.Required<Bool>("isRace", initial: false)
+        let _comment = Value.Optional<String>("comment")
+        let _isUserModified = Value.Required<Bool>("isUserModified", initial: false)
+        let _healthKitUUID = Value.Optional<UUID>("healthKitID")
         
-        let ascend = Value.Required<Double>("ascendingAltitude", initial: 0)
-        let descend = Value.Required<Double>("descendingAltitude", initial: 0)
-        let activeDuration = Value.Required<Double>("activeDuration", initial: 0)
-        let pauseDuration = Value.Required<Double>("pauseDuration", initial: 0)
-        let dayIdentifier = Value.Required<String>("dayIdentifier", initial: "")
+        let _ascend = Value.Required<Double>("ascendingAltitude", initial: 0)
+        let _descend = Value.Required<Double>("descendingAltitude", initial: 0)
+        let _activeDuration = Value.Required<Double>("activeDuration", initial: 0)
+        let _pauseDuration = Value.Required<Double>("pauseDuration", initial: 0)
+        let _dayIdentifier = Value.Required<String>("dayIdentifier", initial: "")
         
-        let heartRates = Relationship.ToManyOrdered<OutRunV4.WorkoutHeartRateDataSample>("heartRates", inverse: { $0.workout })
-        let routeData = Relationship.ToManyOrdered<OutRunV4.WorkoutRouteDataSample>("routeData", inverse: { $0.workout })
-        let pauses = Relationship.ToManyOrdered<OutRunV4.WorkoutPause>("pauses", inverse: { $0.workout })
-        let workoutEvents = Relationship.ToManyOrdered<OutRunV4.WorkoutEvent>("workoutEvents", inverse: { $0.workout })
-        let events = Relationship.ToManyUnordered<OutRunV4.Event>("events", inverse: { $0.workouts })
+        let _heartRates = Relationship.ToManyOrdered<OutRunV4.WorkoutHeartRateDataSample>("heartRates", inverse: { $0.workout })
+        let _routeData = Relationship.ToManyOrdered<OutRunV4.WorkoutRouteDataSample>("routeData", inverse: { $0.workout })
+        let _pauses = Relationship.ToManyOrdered<OutRunV4.WorkoutPause>("pauses", inverse: { $0._workout })
+        let _workoutEvents = Relationship.ToManyOrdered<OutRunV4.WorkoutEvent>("workoutEvents", inverse: { $0._workout })
+        let _events = Relationship.ToManyUnordered<OutRunV4.Event>("events", inverse: { $0.workouts })
         
     }
     
@@ -110,12 +125,12 @@ enum OutRunV4: ORDataModel {
         
         static let identifier = "WorkoutPause"
         
-        let uuid = Value.Optional<UUID>("id")
-        let startDate = Value.Required<Date>("startDate", initial: .init(timeIntervalSince1970: 0))
-        let endDate = Value.Required<Date>("endDate", initial: .init(timeIntervalSince1970: 0))
-        let pauseType = Value.Required<WorkoutPause.WorkoutPauseType>("pauseType", initial: .manual)
+        let _uuid = Value.Optional<UUID>("id")
+        let _startDate = Value.Required<Date>("startDate", initial: .init(timeIntervalSince1970: 0))
+        let _endDate = Value.Required<Date>("endDate", initial: .init(timeIntervalSince1970: 0))
+        let _pauseType = Value.Required<WorkoutPause.WorkoutPauseType>("pauseType", initial: .manual)
         
-        let workout = Relationship.ToOne<OutRunV4.Workout>("workout")
+        let _workout = Relationship.ToOne<OutRunV4.Workout>("workout")
         
     }
     
@@ -124,11 +139,11 @@ enum OutRunV4: ORDataModel {
         
         static let identifier = "WorkoutEvent"
         
-        let uuid = Value.Optional<UUID>("id")
-        let eventType = Value.Required<WorkoutEvent.WorkoutEventType>("eventType", initial: .unknown)
-        let timestamp = Value.Required<Date>("timestamp", initial: .init(timeIntervalSince1970: 0), renamingIdentifier: "startDate")
+        let _uuid = Value.Optional<UUID>("id")
+        let _eventType = Value.Required<WorkoutEvent.WorkoutEventType>("eventType", initial: .unknown)
+        let _timestamp = Value.Required<Date>("timestamp", initial: .init(timeIntervalSince1970: 0), renamingIdentifier: "startDate")
         
-        let workout = Relationship.ToOne<OutRunV4.Workout>("workout")
+        let _workout = Relationship.ToOne<OutRunV4.Workout>("workout")
         
     }
     
@@ -137,17 +152,17 @@ enum OutRunV4: ORDataModel {
         
         static let identifier = "WorkoutRouteDataSample"
         
-        let uuid = Value.Optional<UUID>("id")
-        let timestamp = Value.Required<Date>("timestamp", initial: .init(timeIntervalSince1970: 0))
-        let latitude = Value.Required<Double>("latitude", initial: -1)
-        let longitude = Value.Required<Double>("longitude", initial: -1)
-        let altitude = Value.Required<Double>("altitude", initial: -1)
-        let horizontalAccuracy = Value.Required<Double>("horizontalAccuracy", initial: 0)
-        let verticalAccuracy = Value.Required<Double>("verticalAccuracy", initial: 0)
-        let speed = Value.Required<Double>("speed", initial: -1)
-        let direction = Value.Required<Double>("direction", initial: -1)
+        let _uuid = Value.Optional<UUID>("id")
+        let _timestamp = Value.Required<Date>("timestamp", initial: .init(timeIntervalSince1970: 0))
+        let _latitude = Value.Required<Double>("latitude", initial: -1)
+        let _longitude = Value.Required<Double>("longitude", initial: -1)
+        let _altitude = Value.Required<Double>("altitude", initial: -1)
+        let _horizontalAccuracy = Value.Required<Double>("horizontalAccuracy", initial: 0)
+        let _verticalAccuracy = Value.Required<Double>("verticalAccuracy", initial: 0)
+        let _speed = Value.Required<Double>("speed", initial: -1)
+        let _direction = Value.Required<Double>("direction", initial: -1)
         
-        let workout = Relationship.ToOne<OutRunV4.Workout>("workout")
+        let _workout = Relationship.ToOne<OutRunV4.Workout>("workout")
         
     }
     
@@ -156,11 +171,11 @@ enum OutRunV4: ORDataModel {
         
         static let identifier = "WorkoutHeartRateSample"
         
-        let uuid = Value.Optional<UUID>("id")
-        let heartRate = Value.Required<Double>("heartRate", initial: 0)
-        let timestamp = Value.Required<Date>("timestamp", initial: .init(timeIntervalSince1970: 0))
+        let _uuid = Value.Optional<UUID>("id")
+        let _heartRate = Value.Required<Int>("heartRate", initial: 0)
+        let _timestamp = Value.Required<Date>("timestamp", initial: .init(timeIntervalSince1970: 0))
         
-        let workout = Relationship.ToOne<OutRunV4.Workout>("workout")
+        let _workout = Relationship.ToOne<OutRunV4.Workout>("workout")
         
     }
     
@@ -169,13 +184,13 @@ enum OutRunV4: ORDataModel {
         
         static let identifier = "Event"
         
-        let uuid = Value.Optional<UUID>("id")
-        let title = Value.Required<String>("eventTitle", initial: "")
-        let comment = Value.Optional<String>("comment")
-        let startDate = Value.Optional<Date>("startDate")
-        let endDate = Value.Optional<Date>("endDate")
+        let _uuid = Value.Optional<UUID>("id")
+        let _title = Value.Required<String>("eventTitle", initial: "")
+        let _comment = Value.Optional<String>("comment")
+        let _startDate = Value.Optional<Date>("startDate")
+        let _endDate = Value.Optional<Date>("endDate")
         
-        let workouts = Relationship.ToManyOrdered<OutRunV4.Workout>("workouts")
+        let _workouts = Relationship.ToManyOrdered<OutRunV4.Workout>("workouts")
         
     }
     
