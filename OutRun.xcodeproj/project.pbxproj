@@ -70,11 +70,17 @@
 		2273943C233BF6EA00176A07 /* WorkoutMapImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2273943B233BF6EA00176A07 /* WorkoutMapImageManager.swift */; };
 		2273943E233BF81800176A07 /* CustomImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2273943D233BF81800176A07 /* CustomImageCache.swift */; };
 		22739440233BFE2E00176A07 /* WorkoutMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2273943F233BFE2E00176A07 /* WorkoutMapViewController.swift */; };
+		227C690725423294000458BC /* OREventInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227C690625423294000458BC /* OREventInterface.swift */; };
 		227ED84C240FAA9B0083EE96 /* WorkoutActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227ED84B240FAA9B0083EE96 /* WorkoutActionView.swift */; };
 		227ED84E240FAC460083EE96 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227ED84D240FAC460083EE96 /* EditWorkoutView.swift */; };
 		227ED850240FB15B0083EE96 /* TextStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227ED84F240FB15B0083EE96 /* TextStatsView.swift */; };
 		227EE7662349577F000C0D67 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EE7652349577F000C0D67 /* SettingsViewController.swift */; };
 		228187F42393990900400135 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228187F32393990900400135 /* UILabel.swift */; };
+		22834F6A25421D0F00057FEB /* ORWorkoutInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22834F6925421D0F00057FEB /* ORWorkoutInterface.swift */; };
+		22834F73254220FC00057FEB /* ORWorkoutPauseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22834F72254220FC00057FEB /* ORWorkoutPauseInterface.swift */; };
+		22834F772542236000057FEB /* ORWorkoutEventInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22834F762542236000057FEB /* ORWorkoutEventInterface.swift */; };
+		22834F8225422D8200057FEB /* ORWorkoutHeartRateDataSampleInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22834F8125422D8200057FEB /* ORWorkoutHeartRateDataSampleInterface.swift */; };
+		22834F8625422E6900057FEB /* ORWorkoutRouteDataSampleInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22834F8525422E6900057FEB /* ORWorkoutRouteDataSampleInterface.swift */; };
 		2287753E234A3DF60078CE12 /* TextInputSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2287753D234A3DF60078CE12 /* TextInputSetting.swift */; };
 		22877540234A527C0078CE12 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2287753F234A527C0078CE12 /* UITextField.swift */; };
 		22877542234A73060078CE12 /* LS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22877541234A73060078CE12 /* LS.swift */; };
@@ -253,11 +259,17 @@
 		2273943B233BF6EA00176A07 /* WorkoutMapImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageManager.swift; sourceTree = "<group>"; };
 		2273943D233BF81800176A07 /* CustomImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageCache.swift; sourceTree = "<group>"; };
 		2273943F233BFE2E00176A07 /* WorkoutMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapViewController.swift; sourceTree = "<group>"; };
+		227C690625423294000458BC /* OREventInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OREventInterface.swift; sourceTree = "<group>"; };
 		227ED84B240FAA9B0083EE96 /* WorkoutActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutActionView.swift; sourceTree = "<group>"; };
 		227ED84D240FAC460083EE96 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		227ED84F240FB15B0083EE96 /* TextStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStatsView.swift; sourceTree = "<group>"; };
 		227EE7652349577F000C0D67 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		228187F32393990900400135 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		22834F6925421D0F00057FEB /* ORWorkoutInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORWorkoutInterface.swift; sourceTree = "<group>"; };
+		22834F72254220FC00057FEB /* ORWorkoutPauseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORWorkoutPauseInterface.swift; sourceTree = "<group>"; };
+		22834F762542236000057FEB /* ORWorkoutEventInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORWorkoutEventInterface.swift; sourceTree = "<group>"; };
+		22834F8125422D8200057FEB /* ORWorkoutHeartRateDataSampleInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORWorkoutHeartRateDataSampleInterface.swift; sourceTree = "<group>"; };
+		22834F8525422E6900057FEB /* ORWorkoutRouteDataSampleInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORWorkoutRouteDataSampleInterface.swift; sourceTree = "<group>"; };
 		2287753D234A3DF60078CE12 /* TextInputSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputSetting.swift; sourceTree = "<group>"; };
 		2287753F234A527C0078CE12 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		22877541234A73060078CE12 /* LS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LS.swift; sourceTree = "<group>"; };
@@ -519,6 +531,19 @@
 				225AC6A7243FA088008D493D /* HealthQueryManager.swift */,
 			);
 			path = HealthKit;
+			sourceTree = "<group>";
+		};
+		22834F7025421F0300057FEB /* ORDataInterfaces */ = {
+			isa = PBXGroup;
+			children = (
+				22834F6925421D0F00057FEB /* ORWorkoutInterface.swift */,
+				22834F72254220FC00057FEB /* ORWorkoutPauseInterface.swift */,
+				22834F762542236000057FEB /* ORWorkoutEventInterface.swift */,
+				22834F8525422E6900057FEB /* ORWorkoutRouteDataSampleInterface.swift */,
+				22834F8125422D8200057FEB /* ORWorkoutHeartRateDataSampleInterface.swift */,
+				227C690625423294000458BC /* OREventInterface.swift */,
+			);
+			path = ORDataInterfaces;
 			sourceTree = "<group>";
 		};
 		2298D20C234543B900344989 /* DataModels */ = {
@@ -914,6 +939,7 @@
 				22BD1F3D247462FF00415A06 /* ApplicationStateObserver.swift */,
 				228BD38F23EB51910019C322 /* BackupDocumentPickerDelegate.swift */,
 				22CBE0D52448652C0009D9A7 /* BigStatView.swift */,
+				22834F7025421F0300057FEB /* ORDataInterfaces */,
 				22B1DD8E253F91090093822B /* DataModel */,
 				22F23F3E2422C44200838B87 /* KeyboardAvoidanceSetting.swift */,
 				22AB2FB8233CD0EB002EF0DE /* LabelledDiagramViewDelegate.swift */,
@@ -1087,6 +1113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				227C690725423294000458BC /* OREventInterface.swift in Sources */,
 				22A6ED6923E18119006A3DD0 /* TabBarController.swift in Sources */,
 				2250D11A239A70F700DE31A3 /* StartScreenFeatureView.swift in Sources */,
 				22CBE0D8244865500009D9A7 /* StatView.swift in Sources */,
@@ -1122,6 +1149,7 @@
 				226E9A4B23F01E6E00992815 /* Date.swift in Sources */,
 				229FF4A1235C7F6300EA220E /* CustomMeasurementFormatting.swift in Sources */,
 				22003DFE23A9779D00EBCD05 /* SetupView.swift in Sources */,
+				22834F772542236000057FEB /* ORWorkoutEventInterface.swift in Sources */,
 				2248A45222F08E66000F82BB /* DetailViewController.swift in Sources */,
 				22CBE0D2244861D40009D9A7 /* StatsView.swift in Sources */,
 				22F0000B234A1DF8008CFAD2 /* SwitchSetting.swift in Sources */,
@@ -1146,6 +1174,7 @@
 				2252DEF42393973D00DF914D /* StartScreenViewController.swift in Sources */,
 				22739440233BFE2E00176A07 /* WorkoutMapViewController.swift in Sources */,
 				22015319231663E300BD79AF /* UIViewController.swift in Sources */,
+				22834F8225422D8200057FEB /* ORWorkoutHeartRateDataSampleInterface.swift in Sources */,
 				228187F42393990900400135 /* UILabel.swift in Sources */,
 				22FEA0B324CDE31E0007CA9C /* DebugController.swift in Sources */,
 				227EE7662349577F000C0D67 /* SettingsViewController.swift in Sources */,
@@ -1173,6 +1202,7 @@
 				22D299372402BDE400F3F6B8 /* TimeIntervalPickerSetting.swift in Sources */,
 				229186332367909D00929885 /* PolicyViewController.swift in Sources */,
 				22AB2FB1233CA201002EF0DE /* WorkoutMapViewDelegate.swift in Sources */,
+				22834F73254220FC00057FEB /* ORWorkoutPauseInterface.swift in Sources */,
 				22FEA09224CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift in Sources */,
 				22B6CF7622CA0B13002D2FB0 /* UIView.swift in Sources */,
 				221436BF2443746B0010D82B /* Event.swift in Sources */,
@@ -1189,10 +1219,12 @@
 				22A0FAF324D8D4B7000292DF /* WorkoutCompletionActionHandler.swift in Sources */,
 				22B1DD86253F90AC0093822B /* Array+String.swift in Sources */,
 				22D043B422DD300E00154EB8 /* WorkoutListViewController.swift in Sources */,
+				22834F6A25421D0F00057FEB /* ORWorkoutInterface.swift in Sources */,
 				227ED850240FB15B0083EE96 /* TextStatsView.swift in Sources */,
 				22219983243A21AD00ADAE24 /* WorkoutListSortViewController.swift in Sources */,
 				22A0B72C245B078100E1AB68 /* WorkoutStatsSeries.swift in Sources */,
 				221436BD244371570010D82B /* DataModelValueGetters.swift in Sources */,
+				22834F8625422E6900057FEB /* ORWorkoutRouteDataSampleInterface.swift in Sources */,
 				22AB2FB5233CC849002EF0DE /* UISegmentedControl.swift in Sources */,
 				2209E53924DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift in Sources */,
 				22D043B222DCCE2700154EB8 /* DataManager.swift in Sources */,
