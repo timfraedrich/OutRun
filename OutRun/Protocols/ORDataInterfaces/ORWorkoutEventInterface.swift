@@ -30,6 +30,6 @@ protocol ORWorkoutEventInterface: AnyObject {
     /// The `Date` the workout event happened at.
     var timestamp: Date { get }
     /// A reference to the `Workout` this workout event is associated with.
-    var workout: ORWorkoutInterface { get }
+    var workout: ORWorkoutInterface? { get }
     
 }

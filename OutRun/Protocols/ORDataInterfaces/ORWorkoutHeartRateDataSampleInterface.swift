@@ -30,6 +30,6 @@ protocol ORWorkoutHeartRateDataSampleInterface: AnyObject {
     /// The `Date` the heart rate sample was recoreded at.
     var timestamp: Date { get }
     /// A reference to the `Workout` this heart rate sample is associated with.
-    var workout: ORWorkoutInterface { get }
+    var workout: ORWorkoutInterface? { get }
     
 }

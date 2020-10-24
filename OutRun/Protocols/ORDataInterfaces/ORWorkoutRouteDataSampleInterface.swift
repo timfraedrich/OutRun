@@ -42,6 +42,6 @@ protocol ORWorkoutRouteDataSampleInterface: AnyObject {
     /// The direction the device was moving in at the time.
     var direction: Double { get }
     /// A reference to the `Workout` this route data sample is associated with.
-    var workout: ORWorkoutInterface { get }
+    var workout: ORWorkoutInterface? { get }
     
 }

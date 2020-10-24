@@ -32,6 +32,6 @@ protocol ORWorkoutPauseInterface: AnyObject {
     /// The type of the pause. For more see `WorkoutPause.WorkoutPauseType`.
     var pauseType: WorkoutPause.WorkoutPauseType { get }
     /// A reference to the `Workout` this pause is associated with.
-    var workout: ORWorkoutInterface { get }
+    var workout: ORWorkoutInterface? { get }
     
 }
