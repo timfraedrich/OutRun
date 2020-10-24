@@ -22,7 +22,22 @@ import Foundation
 import CoreStore
 import CoreLocation
 
-enum DataQueryManager {
+extension DataManager {
+    
+    /**
+     Queries the count for workouts with the given `UUID` returning whether it has duplicates in the database.
+     - parameter uuid: the `UUID` of the workout being checked for duplicates
+     - returns: `true` if the queried count is anything other than 0 meaning there are workouts with the given `UUID` present in the database.
+     */
+    public static func workoutHasDuplicate(uuid: UUID) -> Bool {
+        
+        if let count = try? dataStack.fetchCount(From<Workout>().where(\._uuid == uuid)) {
+            return count != 0
+        }
+        
+        return false
+        
+    }
     
     // MARK: Fetch Location Degrees
     static func fetchLocationDegreesOfRoute(fromWorkoutID uuid: UUID, completion: @escaping (Bool, [CLLocationCoordinate2D]?) -> Void) {

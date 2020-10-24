@@ -17,7 +17,7 @@
 		2209E53924DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2209E53824DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift */; };
 		2213137D23B4110700881806 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213137C23B4110700881806 /* PermissionManager.swift */; };
 		221436B72442368E0010D82B /* NewWorkoutControllerActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436B62442368E0010D82B /* NewWorkoutControllerActionButton.swift */; };
-		221436B924432B390010D82B /* DataQueryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436B824432B390010D82B /* DataQueryManager.swift */; };
+		221436B924432B390010D82B /* DataManager+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436B824432B390010D82B /* DataManager+Query.swift */; };
 		221436BB244356A90010D82B /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436BA244356A90010D82B /* Array.swift */; };
 		221436BD244371570010D82B /* DataModelValueGetters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436BC244371570010D82B /* DataModelValueGetters.swift */; };
 		221436BF2443746B0010D82B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436BE2443746B0010D82B /* Event.swift */; };
@@ -93,6 +93,7 @@
 		2291863A23679AA300929885 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2291863C23679AA300929885 /* InfoPlist.strings */; };
 		2298D2142345524C00344989 /* WorkoutBuilderTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2298D2132345524C00344989 /* WorkoutBuilderTypeView.swift */; };
 		2298D2162345553F00344989 /* HealthStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2298D2152345553F00344989 /* HealthStoreManager.swift */; };
+		229D4C1F2544CBBA00427913 /* DataManager+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229D4C1E2544CBBA00427913 /* DataManager+Error.swift */; };
 		229FF498235C200F00EA220E /* SettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229FF497235C200F00EA220E /* SettingSection.swift */; };
 		229FF49A235C228100EA220E /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229FF499235C228100EA220E /* SettingsModel.swift */; };
 		229FF49E235C32D000EA220E /* SelectionSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229FF49D235C32D000EA220E /* SelectionSetting.swift */; };
@@ -209,7 +210,7 @@
 		2209E53824DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+AltitudeManagement.swift"; sourceTree = "<group>"; };
 		2213137C23B4110700881806 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		221436B62442368E0010D82B /* NewWorkoutControllerActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWorkoutControllerActionButton.swift; sourceTree = "<group>"; };
-		221436B824432B390010D82B /* DataQueryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataQueryManager.swift; sourceTree = "<group>"; };
+		221436B824432B390010D82B /* DataManager+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataManager+Query.swift"; sourceTree = "<group>"; };
 		221436BA244356A90010D82B /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		221436BC244371570010D82B /* DataModelValueGetters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelValueGetters.swift; sourceTree = "<group>"; };
 		221436BE2443746B0010D82B /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -289,6 +290,7 @@
 		2291863B23679AA300929885 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2298D2132345524C00344989 /* WorkoutBuilderTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutBuilderTypeView.swift; sourceTree = "<group>"; };
 		2298D2152345553F00344989 /* HealthStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthStoreManager.swift; sourceTree = "<group>"; };
+		229D4C1E2544CBBA00427913 /* DataManager+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataManager+Error.swift"; sourceTree = "<group>"; };
 		229FF497235C200F00EA220E /* SettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSection.swift; sourceTree = "<group>"; };
 		229FF499235C228100EA220E /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		229FF49D235C32D000EA220E /* SelectionSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionSetting.swift; sourceTree = "<group>"; };
@@ -885,7 +887,8 @@
 			children = (
 				2298D20C234543B900344989 /* DataModels */,
 				22D043B122DCCE2700154EB8 /* DataManager.swift */,
-				221436B824432B390010D82B /* DataQueryManager.swift */,
+				229D4C1E2544CBBA00427913 /* DataManager+Error.swift */,
+				221436B824432B390010D82B /* DataManager+Query.swift */,
 				22B2A8A2230D350000EF8558 /* RelativeMeasurement.swift */,
 				22E8969923E6E6E40074D2BB /* TempDataTypes.swift */,
 				2273943D233BF81800176A07 /* CustomImageCache.swift */,
@@ -1168,6 +1171,7 @@
 				2298D2142345524C00344989 /* WorkoutBuilderTypeView.swift in Sources */,
 				22CBB44D2303FF5100DDA2E0 /* DistanceStatsView.swift in Sources */,
 				22AD5C3A233631C8001C7311 /* WorkoutBuilderReadinessIndicationView.swift in Sources */,
+				229D4C1F2544CBBA00427913 /* DataManager+Error.swift in Sources */,
 				22558389242E94AE0043432F /* LoadingView.swift in Sources */,
 				22B4929E2544BC03000BF622 /* WorkoutHeartRateDataSample+ORWorkoutHeartRateDataSampleInterface.swift in Sources */,
 				22B2A89D230D298F00EF8558 /* LabelledDiagramView.swift in Sources */,
@@ -1186,7 +1190,7 @@
 				2248A45222F08E66000F82BB /* DetailViewController.swift in Sources */,
 				22CBE0D2244861D40009D9A7 /* StatsView.swift in Sources */,
 				22F0000B234A1DF8008CFAD2 /* SwitchSetting.swift in Sources */,
-				221436B924432B390010D82B /* DataQueryManager.swift in Sources */,
+				221436B924432B390010D82B /* DataManager+Query.swift in Sources */,
 				224AF62A237624E80047CBDE /* CustomTimeFormatting.swift in Sources */,
 				2256492523FA776100E4A986 /* EditWorkoutController.swift in Sources */,
 				22CBB4532303FF8200DDA2E0 /* EnergyStatsView.swift in Sources */,
