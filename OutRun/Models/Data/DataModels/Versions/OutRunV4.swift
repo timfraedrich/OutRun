@@ -112,11 +112,11 @@ enum OutRunV4: ORDataModel {
         let _pauseDuration = Value.Required<Double>("pauseDuration", initial: 0)
         let _dayIdentifier = Value.Required<String>("dayIdentifier", initial: "")
         
-        let _heartRates = Relationship.ToManyOrdered<OutRunV4.WorkoutHeartRateDataSample>("heartRates", inverse: { $0.workout })
-        let _routeData = Relationship.ToManyOrdered<OutRunV4.WorkoutRouteDataSample>("routeData", inverse: { $0.workout })
+        let _heartRates = Relationship.ToManyOrdered<OutRunV4.WorkoutHeartRateDataSample>("heartRates", inverse: { $0._workout })
+        let _routeData = Relationship.ToManyOrdered<OutRunV4.WorkoutRouteDataSample>("routeData", inverse: { $0._workout })
         let _pauses = Relationship.ToManyOrdered<OutRunV4.WorkoutPause>("pauses", inverse: { $0._workout })
         let _workoutEvents = Relationship.ToManyOrdered<OutRunV4.WorkoutEvent>("workoutEvents", inverse: { $0._workout })
-        let _events = Relationship.ToManyUnordered<OutRunV4.Event>("events", inverse: { $0.workouts })
+        let _events = Relationship.ToManyUnordered<OutRunV4.Event>("events", inverse: { $0._workouts })
         
     }
     
