@@ -136,7 +136,7 @@ extension Workout: ORWorkoutInterface {
     }
     
     var events: [OREventInterface] {
-        return self._events.value
+        return Array(self._events.value)
     }
     
 }
