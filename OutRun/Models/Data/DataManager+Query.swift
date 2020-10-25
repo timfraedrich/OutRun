@@ -39,6 +39,21 @@ extension DataManager {
         
     }
     
+    /**
+     Queries the count for events with the given `UUID` returning whether it has duplicates in the database.
+     - parameter uuid: the `UUID` of the event being checked for duplicates
+     - returns: `true` if the queried count is anything other than 0 meaning there are events with the given `UUID` present in the database.
+     */
+    public static func eventHasDuplicate(uuid: UUID) -> Bool {
+        
+        if let count = try? dataStack.fetchCount(From<Event>().where(\._uuid == uuid)) {
+            return count != 0
+        }
+        
+        return false
+        
+    }
+    
     // MARK: Fetch Location Degrees
     static func fetchLocationDegreesOfRoute(fromWorkoutID uuid: UUID, completion: @escaping (Bool, [CLLocationCoordinate2D]?) -> Void) {
         

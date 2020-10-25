@@ -71,7 +71,7 @@ extension DataManager {
         /// Not all objects could be valided, only the ones that could be, were saved to the database.
         case notAllValid
         /// There was an error while trying to insert the objects into the database.
-        case dataBaseError(error: CoreStoreError)
+        case databaseError(error: CoreStoreError)
     
         var debugDescription: String {
             switch self {
@@ -79,10 +79,36 @@ extension DataManager {
                 return "Not all data sets provided could be saved to the database."
             case .notAllValid:
                 return "Not all objects could be valided, only the ones that could be, were saved to the database."
-            case .dataBaseError(let error):
+            case .databaseError(let error):
                 return "There was an error while trying to insert the objects into the database:\n\(error.debugDescription)"
             }
         }
+    }
+    
+    enum UpdateError: Error, CustomDebugStringConvertible {
+        
+        /// This workout was not saved to the database yet, so it cannot be altered.
+        case notSaved
+        /// The provided data set is equal to the one saved in the database.
+        case notAltered
+        /// The object could not be validated.
+        case notValid
+        /// There was an error while trying to update the workout.
+        case databaseError(error: CoreStoreError)
+        
+        var debugDescription: String {
+            switch self {
+            case .notSaved:
+                return "This workout was not saved to the database yet, so it cannot be altered."
+            case .notAltered:
+                return "The provided data set is equal to the one saved in the database."
+            case .notValid:
+                return "The object could not be validated."
+            case .databaseError(let error):
+                return "There was an error while trying to update the workout:\n\(error)"
+            }
+        }
+        
     }
     
 }
