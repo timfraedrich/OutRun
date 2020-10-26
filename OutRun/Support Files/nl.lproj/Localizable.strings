@@ -115,3 +115,4 @@
 "Workout.Type" = "Soort";
 "Workout.NewWorkout" = "Nieuwe Training";
 "Workout.TotalPace" = "Totale Tempo";
+"Settings.UserSettings.Description" = "Deze app heeft je gewicht nodig om een inschatting te maken van de verbrande calorieën tijdens een training. Het invullen van je naam is volledig optioneel";
