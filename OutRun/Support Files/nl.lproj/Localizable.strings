@@ -116,3 +116,14 @@
 "Workout.NewWorkout" = "Nieuwe Training";
 "Workout.TotalPace" = "Totale Tempo";
 "Settings.UserSettings.Description" = "Deze app heeft je gewicht nodig om een inschatting te maken van de verbrande calorieën tijdens een training. Het invullen van je naam is volledig optioneel";
+"Settings" = "Instellingen";
+"WorkoutMapController.Headline" = "Uw Route";
+"WorkoutBuilder.Status.AutoPaused" = "automatische pauze";
+"WorkoutBuilder.Status.Paused" = "onderbroken";
+"WorkoutBuilder.Status.Recording" = "opname";
+"WorkoutBuilder.Status.Ready" = "klaar";
+"WorkoutBuilder.Status.Waiting" = "wachten";
+"WorkoutDeletion.Error.AppleHealth.Message" = "Er was een Error terwijl je probeerde de training te verwijderen uit Apple Health, je kunt deze nog steeds verwijderen in de Apple Health app.";
+"WorkoutDeletion.Error.Message" = "Er was een Error tijdens de poging om de training uit de app te verwijderen.";
+"WorkoutList.Order" = "Bestel";
+"NewWorkoutViewController.WorkoutBuilder.Error" = "Er was een fout in de logica die verondersteld wordt de training te construeren.";
