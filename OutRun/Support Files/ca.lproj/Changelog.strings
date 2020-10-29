@@ -1,1 +1,4 @@
 
+
+
+"Changelog_1.2.2" = "Després de rebre una reclamació sobre marques comercials, \"OutRun\" ara es dirà \"Out-Run\" al Regne Unit. Aquesta actualització té com a objectiu principal abordar aquesta reclamació.\n\nA més, conté les següents correccions d'errors:\n\n- de vegades les dades no s’afegien correctament a Apple Health, ara s’hauria de solucionar\n- les altures ascendents i descendents es van canviar a les estadístiques, ara estan en l'ordre correcte\n- Hi ha hagut alguns problemes d'estil a causa de canvis a iOS 14, tot hauria de tornar a semblar amb normalitat\n\nI per a aquesta actualització no va canviar res més.\n\nSi teniu cap pregunta o comentari, no dubteu a posar-vos en contacte amb outrun@tadris.de.\n\nTim, el desenvolupador.";
