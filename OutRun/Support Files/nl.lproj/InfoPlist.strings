@@ -1,1 +1,9 @@
 
+
+
+"NSMotionUsageDescription" = "Deze app heeft bewegingsgerelateerde traceermogelijkheden nodig om gegevens zoals stappen tijdens een training vast te leggen";
+"NSLocationWhenInUseUsageDescription" = "Deze app heeft uw locatie nodig om trainingen te volgen";
+"NSLocationAlwaysUsageDescription" = "Deze app heeft uw locatie nodig om trainingen te volgen";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Deze app heeft uw locatie nodig om trainingen te volgen";
+"NSHealthUpdateUsageDescription" = "Deze app heeft toegang nodig tot uw gezondheidsgegevens om te kunnen lezen en eventuele correcte trainingen die door deze app zijn opgebouwd";
+"NSHealthShareUsageDescription" = "Deze app heeft toegang nodig tot uw gezondheidsgegevens om de door deze app geconstrueerde trainingen op te slaan";
