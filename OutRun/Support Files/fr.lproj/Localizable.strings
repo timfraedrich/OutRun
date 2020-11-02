@@ -43,7 +43,7 @@
 "TerminationBackup.LostAlert.Title" = "Entraînement perdu";
 "TerminationBackup.Save.Health.Error" = "Pour une raison quelconque, l'entraînement n'a pas pu être enregistré dans Apple Health.";
 "TerminationBackup.Save.Error" = "Nous sommes désolés, l'entraînement n'a pas pu être enregistré.";
-"TerminationBackup.SaveAlert.Message" = "La dernière fois que vous avez recodé un entraînement, vous semblez avoir quitté cette application sans l'enregistrer. Nous avons pu enregistrer les données avant l'arrêt de l'application, voulez-vous l'enregistrer maintenant ?";
+"TerminationBackup.SaveAlert.Message" = "La dernière fois que vous avez enregistré un entraînement, vous semblez avoir quitté cette application sans l'avoir sauvegardée. Nous avons pu sauvegarder les données avant que l'application ne soit arrêtée, voulez-vous les sauvegarder maintenant ?";
 "TerminationBackup.SaveAlert.Title" = "Entraînement sauvé";
 "Setup.Permission.Motion.Error" = "Vous n'avez pas autorisé cette application à accéder aux données de capteur liées aux mouvements. Pour changer cela et donner à l'application l'accès aux données telles que les pas, vous devez activer manuellement l'accès dans les paramètres iOS. Voulez-vous ouvrir les paramètres ?";
 "Setup.Permission.Motion.Message" = "Pour des données telles que les pas que vous faites pendant un entraînement, cette application doit accéder aux données de mouvement et de fitness.";
