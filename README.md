@@ -24,6 +24,7 @@ OutRun has a rich feature set centered around customisation and privacy. The lis
 You want to make this app even better? No problem! There are lots of ways you can contribute even if you cannot code yourself:
 
 * **Share this project.** The simplest way of contributing is by sharing this project with your friends and family. Once more people see that it exists, it is more likely to get support and people interested and capable of adding to it.
+* **Join the beta.** Sometimes features need to be tested before being rolled out to all users, that is where beta testers come in. They receive early and sometimes unstable versions of the app and test them thoroughly, to make sure that others get a more polished product. You can join [here](https://testflight.apple.com/join/kDqNWBAi).
 * **Report Issues.** If you see some parts of the app not working as expected, if you want to give any kind of feedback or if you just have a question you can submit an issue on the [issue page](https://github.com/timfraedrich/OutRun/issues) of this project.
 * **Write Code.** And then there is the standard way of contributing to an open-source project. You can always write code that advances the app. To see how to contribute look at the [Contribution Guidelines](https://github.com/timfraedrich/OutRun/blob/dev/CONTRIBUTING.md).
 * **Translate.** Last but definitely not least there is translation which is an integral part to make this project available to more people in more countries. For more information on contributing read the following section.
