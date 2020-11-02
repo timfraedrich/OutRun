@@ -39,6 +39,10 @@ So far the following languages are supported:
 | English  | [![en translation status](https://hosted.weblate.org/widgets/outrun/en/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/en/) |
 | German   | [![de translation status](https://hosted.weblate.org/widgets/outrun/de/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/de/) |
 | French   | [![fr translation status](https://hosted.weblate.org/widgets/outrun/fr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fr/) |
+| Dutch    | [![nl translation status](https://hosted.weblate.org/widgets/outrun/nl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/nl/) |
+| Spanish  | [![es translation status](https://hosted.weblate.org/widgets/outrun/es/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/es/) |
+| Catalan  | [![ca translation status](https://hosted.weblate.org/widgets/outrun/ca/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/ca/) |
+| Danish   | [![da translation status](https://hosted.weblate.org/widgets/outrun/da/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/da/) |
 
 If you want to add languages or improve already translated ones you can do this [here](https://hosted.weblate.org/engage/outrun/).
 

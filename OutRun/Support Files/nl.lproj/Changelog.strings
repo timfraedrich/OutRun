@@ -1,4 +1,21 @@
-
-
+//
+//  Changelog.strings
+//
+//  OutRun
+//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
 "Changelog_1.2.2" = "Na het ontvangen van een merkklacht \"OutRun\" zal nu in het Verenigd Koninkrijk \"Out-Run\" worden genoemd. Deze update heeft als belangrijkste doel deze klacht te behandelen.\n\nDaarnaast bevat het de volgende bug fixes:\n\n- soms werden gegevens niet goed toegevoegd aan Apple Health, dit moet nu worden opgelost\n- de stijgende en dalende hoogte werden in de statistieken omgewisseld, nu staan ze in de juiste volgorde.\n- er zijn wat stijl problemen geweest door veranderingen in iOS 14, alles moet er weer normaal uitzien.\n\nEn voor deze update is er niets meer veranderd.\n\nAls u vragen of feedback heeft, dan kunt u zich wenden tot outrun@tadris.de.\n\nTim, de ontwikkelaar.";

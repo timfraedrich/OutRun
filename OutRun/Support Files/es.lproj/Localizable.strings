@@ -1,5 +1,22 @@
-
-
+//
+//  Localizable.strings
+//
+//  OutRun
+//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
 "Settings.AppleHealthPreferences.Message" = "Si las opciones de sincronización están habilitadas, la aplicación intenta sincronizarse con Apple Health, por lo que los datos nuevos de esta aplicación se guardan automáticamente en la aplicación Health y si el peso en Apple Health cambia, también se ajusta automáticamente aquí.\n\nSi la opción 'Importar automáticamente entrenamientos' está habilitada, la aplicación intenta importar automáticamente nuevos entrenamientos agregados por otras aplicaciones a la base de datos local.\n\n'Sincronizar todos los entrenamientos no sincronizados' sincroniza todos los entrenamientos de esta aplicación, que aún no están sincronizados, con Apple Health.";
 "Changelog" = "Registro de cambios";
