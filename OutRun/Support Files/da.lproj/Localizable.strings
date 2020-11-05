@@ -28,7 +28,7 @@
 "WorkoutEvent.Type.Pause" = "Holdepause";
 "Workout.Race" = "Kapløb";
 "NewWorkoutViewController.Recenter" = "Centrer igen";
-"Changelog" = "Changelog";
+"Changelog" = "Ændringslog";
 "ShareManager.GPXError" = "Appen kunne ikke oprette en GPX-fil, kontakt support.";
 "ShareManager.BackupError" = "Appen kunne ikke oprette en sikkerhedskopi, kontakt support.";
 "WorkoutShareAlert.GPXExport" = "GPX fil";
