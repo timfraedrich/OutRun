@@ -1,5 +1,5 @@
 //
-//  [FILENAME]
+//  WorkoutHeartRateDataSample+ORWorkoutHeartRateDataSampleInterface.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -23,7 +23,7 @@ import CoreStore
 
 extension DataManager {
     
-    /// An enumeration of possible errors comming up during the setup of data management.
+    /// An enumeration of possible errors coming up during the setup of data management.
     enum SetupError: Error, CustomDebugStringConvertible {
         
         /// CoreStore failed to add the SQLiteStorage to the DataStack.
@@ -41,7 +41,7 @@ extension DataManager {
         }
     }
     
-    /// An enumeration of possible errors comming up during the saving process of an object by the `DataManager`.
+    /// An enumeration of possible errors coming up during the saving process of an object by the `DataManager`.
     enum SaveError: Error, CustomDebugStringConvertible {
         
         /// The object already exists inside the database.
@@ -63,7 +63,7 @@ extension DataManager {
         }
     }
     
-    /// An enumeration of possible errors comming up during the saving process of multiple objects by the `DataManager`.
+    /// An enumeration of possible errors coming up during the saving process of multiple objects by the `DataManager`.
     enum SaveMultipleError: Error, CustomDebugStringConvertible {
         
         /// Not all data sets provided could be saved to the database.
@@ -85,6 +85,7 @@ extension DataManager {
         }
     }
     
+    /// An enumeration of possible errors coming up during the updating process of multiple objects by the `DataManager`.
     enum UpdateError: Error, CustomDebugStringConvertible {
         
         /// This workout was not saved to the database yet, so it cannot be altered.
@@ -106,6 +107,25 @@ extension DataManager {
                 return "The object could not be validated."
             case .databaseError(let error):
                 return "There was an error while trying to update the workout:\n\(error)"
+            }
+        }
+        
+    }
+    
+    /// An enumeration of possible errors coming up during the updating process of multiple objects by the `DataManager`.
+    enum DeleteError: Error, CustomDebugStringConvertible {
+        
+        /// This workout was not saved to the database yet, so it cannot be deleted.
+        case notSaved
+        /// There was an error while trying to delete the workout.
+        case databaseError(error: CoreStoreError)
+        
+        var debugDescription: String {
+            switch self {
+            case .notSaved:
+                return "This workout was not saved to the database yet, so it cannot be deleted."
+            case .databaseError(let error):
+                return "There was an error while trying to delete the workout:\n\(error)"
             }
         }
         

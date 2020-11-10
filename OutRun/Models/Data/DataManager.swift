@@ -23,7 +23,10 @@ import CoreStore
 import CoreLocation
 import HealthKit
 
+/// A structure holding static instances and methods for database management and manipulation
 struct DataManager {
+    
+    // MARK: - Database setup
     
     /// static optional instance of the local storage holding the workout data
     private static var storage: SQLiteStore?
@@ -114,6 +117,8 @@ struct DataManager {
         }
     }
     
+    // MARK: - Workout
+    
     /**
      This function saves a workout to the database.
      - parameter object: the data set to be saved to the database
@@ -181,7 +186,7 @@ struct DataManager {
         let filteredObjects = objects.filter { (object) -> Bool in
             if object is Workout {
                 return false
-            } else if let uuid = object.uuid, workoutHasDuplicate(uuid: uuid) {
+            } else if let uuid = object.uuid, objectHasDuplicate(uuid: uuid, objectType: Workout.self) {
                 return false
             }
             return true
@@ -309,7 +314,7 @@ struct DataManager {
         }
         
         // check for uuid {
-        if object.uuid == nil {
+        guard let uuid = object.uuid else {
             completion(false, .notSaved, nil)
             return
         }
@@ -318,7 +323,7 @@ struct DataManager {
         
         dataStack.perform(asynchronous: { (transaction) -> Workout? in
             
-            if let workoutObject = try? transaction.fetchOne(From<Workout>().where(\._uuid == object.uuid)), let workout = transaction.edit(workoutObject) {
+            if let workout = transaction.edit(queryObject(from: uuid, transaction: transaction) as Workout?) {
                 
                 workout._uuid .= object.uuid ?? UUID()
                 workout._workoutType .= object.workoutType
@@ -401,6 +406,8 @@ struct DataManager {
         }
     }
     
+    // MARK: - Event
+    
     /**
      Saves an event to the database.
      - parameter object: the data set to be saved to the database
@@ -464,7 +471,7 @@ struct DataManager {
         let filteredObjects = objects.filter { (object) -> Bool in
             if object is Event {
                 return false
-            } else if let uuid = object.uuid, eventHasDuplicate(uuid: uuid) {
+            } else if let uuid = object.uuid, objectHasDuplicate(uuid: uuid, objectType: Event.self) {
                 return false
             }
             return true
@@ -496,6 +503,7 @@ struct DataManager {
                         .where({
                             Where<Workout>(workoutUUIDs.containsOptional($0.uuid))
                         })
+                        .orderBy(.ascending(\._startDate))
                 ) {
                     event._workouts .= workouts
                 }
@@ -510,14 +518,160 @@ struct DataManager {
             switch result {
             case .success(let tempEvents):
                 let events = dataStack.fetchExisting(tempEvents)
-                completion(true, nil, events)
+                
+                if events.count == objects.count {
+                    completion(true, nil, events)
+                } else if events.count == filteredObjects.count {
+                    completion(true, .notAllSaved, events)
+                } else {
+                    // last case: workouts.count must be equal to validatedObjects.count
+                    completion(true, .notAllValid, events)
+                }
             case .failure(let error):
                 completion(false, .databaseError(error: error), [])
             }
         }
     }
     
-    // TODO: alter event; delete all
+    /**
+     This function updates an event from a data set referencing the event with its universally unique identifier.
+     - parameter object: the data set containing all updates
+     - parameter completion: the closure being perfomed upon finishing the updating process
+     - parameter success: indicates the success of the operation
+     - parameter error: gives more detailed information on an error if one occured
+     - parameter event: holds the `Event` if updating it succeeded
+     - warning: Objects of type `Event` will be rejected, because all objects of that type must already hold the provided data.
+     */
+    public static func updateEvent(object: OREventInterface, completion: @escaping (_ success: Bool, _ error: DataManager.UpdateError?, _ event: Event?) -> Void) {
+        
+        let completion: (Bool, DataManager.UpdateError?, Event?) -> Void = { success, error, event in
+            DispatchQueue.main.async {
+                completion(success, error, event)
+            }
+        }
+        
+        // check for Workout class
+        if object is Event {
+            completion(false, .notAltered, nil)
+            return
+        }
+        
+        // check for uuid {
+        guard let uuid = object.uuid else {
+            completion(false, .notSaved, nil)
+            return
+        }
+        
+        // Todo: Validation
+        
+        dataStack.perform(asynchronous: { (transaction) -> Event? in
+            
+            if let event = transaction.edit(queryObject(from: uuid, transaction: transaction) as Event?) {
+                
+                event._uuid .= object.uuid ?? UUID()
+                event._title .= object.title
+                event._comment .= object.comment
+                event._startDate .= object.startDate
+                event._endDate .= object.endDate
+                
+                for workoutObject in object.workouts {
+                    
+                    guard !(workoutObject is Workout), let uuid = workoutObject.uuid, let workout = transaction.edit(queryObject(from: uuid) as Workout?), !workout._events.contains(event) else {
+                        continue
+                    }
+                    
+                    var set = workout._events.value
+                    set.insert(event)
+                    workout._events .= set
+                    
+                }
+                
+                return event
+                
+            } else {
+                return nil
+            }
+            
+        }) { (result) in
+            switch result {
+            case .success(let tempEvent):
+                if let tempEvent = tempEvent, let event = dataStack.fetchExisting(tempEvent) {
+                    completion(true, nil, event)
+                } else {
+                    completion(false, .databaseError(error: CoreStoreError.persistentStoreNotFound(entity: Workout.self)), nil)
+                }
+            case .failure(let error):
+                completion(false, .databaseError(error: error), nil)
+            }
+        }
+        
+    }
+    
+    // MARK: - Delete
+    
+    /**
+     This function deletes an `ORDataType` object from the database.
+     - parameter object: the object being deleted
+     - parameter completion: the closure being perfomed upon finishing the deletion process
+     - parameter success: indicates the success of the operation
+     - parameter error: gives more detailed information on an error if one occured
+     */
+    public static func deleteObject<ObjectType: ORDataType>(object: ObjectType, completion: @escaping (_ success: Bool, _ error: DataManager.DeleteError?) -> Void) {
+        
+        dataStack.perform(asynchronous: { (transaction) -> Void in
+            
+            transaction.delete(object)
+            
+        }) { (result) in
+            switch result {
+            case .success(_):
+                completion(true, nil)
+            case .failure(let error):
+                completion(false, .databaseError(error: error))
+            }
+        }
+        
+    }
+    
+    /**
+     This function deletes all data objects in the database.
+     - parameter completion: the closure being perfomed upon finishing the deletion process
+     - parameter success: indicates the success of the operation
+     - parameter error: gives more detailed information on an error if one occured
+     */
+    public static func deleteAll(completion: @escaping (_ success: Bool, _ error: DataManager.DeleteError?) -> Void) {
+        
+        var deletionError: CoreStoreError?
+        
+        dataStack.perform(asynchronous: { (transaction) -> Void in
+            
+            do {
+                try transaction.deleteAll(From<Workout>())
+                try transaction.deleteAll(From<WorkoutPause>())
+                try transaction.deleteAll(From<WorkoutEvent>())
+                try transaction.deleteAll(From<WorkoutRouteDataSample>())
+                try transaction.deleteAll(From<WorkoutHeartRateDataSample>())
+                try transaction.deleteAll(From<Event>())
+            } catch {
+                deletionError = error as? CoreStoreError
+            }
+            
+        }) { (result) in
+            switch result {
+            case .success(_):
+                if let error = deletionError {
+                    completion(true, .databaseError(error: error))
+                } else {
+                    completion(true, nil)
+                }
+            case .failure(let error):
+                completion(false, .databaseError(error: error))
+            }
+        }
+            
+    }
+    
+    // MARK: - Monitoring
     
     /// A `CoreStore.ListMonitor` to observe changes in the database and refresh the `WorkoutListViewController`
     public static let workoutMonitor = dataStack.monitorList(
