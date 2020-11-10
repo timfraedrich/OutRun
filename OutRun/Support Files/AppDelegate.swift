@@ -37,54 +37,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let launchScreen = storyboard.instantiateViewController(withIdentifier: "launchScreen")
         
         setRootViewController(for: launchScreen) {
-            
-            DataManager.setup(completion: {
-                
-                let controller: UIViewController = {
-                    if UserPreferences.isSetUp.value {
-                        return TabBarController()
-                    } else {
-                        return StartScreenViewController()
-                    }
-                }()
-                
-                self.setRootViewController(for: controller, withSmoothTransition: true) {
-                    self.checkPermissionStatus(controller: controller) {
-                        self.checkForTerminationWorkout(controller: controller) {
-                            if UserPreferences.isSetUp.value {
-                                HealthObserver.setupObservers()
-                                
-                                if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
+            DataManager.setup(
+                completion: { error in
+                    
+                    let controller: UIViewController = {
+                        if UserPreferences.isSetUp.value {
+                            return TabBarController()
+                        } else {
+                            return StartScreenViewController()
+                        }
+                    }()
+                    
+                    self.setRootViewController(for: controller, withSmoothTransition: true) {
+                        self.checkPermissionStatus(controller: controller) {
+                            self.checkForTerminationWorkout(controller: controller) {
+                                if UserPreferences.isSetUp.value {
+                                    HealthObserver.setupObservers()
                                     
-                                    if let changeLog = Config.changeLogs[Config.version] {
-                                        let changeLogController = ChangeLogViewController()
-                                        changeLogController.changeLog = changeLog
-                                        changeLogController.modalPresentationStyle = .overFullScreen
-                                        changeLogController.modalTransitionStyle = .crossDissolve
+                                    if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
                                         
-                                        controller.present(changeLogController, animated: true)
+                                        if let changeLog = Config.changeLogs[Config.version] {
+                                            let changeLogController = ChangeLogViewController()
+                                            changeLogController.changeLog = changeLog
+                                            changeLogController.modalPresentationStyle = .overFullScreen
+                                            changeLogController.modalTransitionStyle = .crossDissolve
+                                            
+                                            controller.present(changeLogController, animated: true)
+                                        }
+                                        
+                                        AppDelegate.lastVersion.value = Config.version
+                                        
+                                    } else if AppDelegate.lastVersion.value == nil {
+                                        AppDelegate.lastVersion.value = Config.version
                                     }
-                                    
-                                    AppDelegate.lastVersion.value = Config.version
-                                    
-                                } else if AppDelegate.lastVersion.value == nil {
-                                    AppDelegate.lastVersion.value = Config.version
                                 }
                             }
                         }
                     }
+                    
+                },
+                migration: { progress in
+                    
+                    let progressController = ProgressViewController()
+                    self.setRootViewController(for: progressController, withSmoothTransition: true)
+                    
+                    progress.setProgressHandler { (progress) in
+                        progressController.setProgress(progress.fractionCompleted)
+                    }
+                    
                 }
-                
-            }, migrationClosure: {
-                
-                let progressController = ProgressViewController()
-                self.setRootViewController(for: progressController, withSmoothTransition: true)
-                
-                return { newProgressValue in
-                    progressController.setProgress(newProgressValue)
-                }
-                
-            })
+            )
             
         }
         
@@ -180,7 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         action: { _ in
                                             
                                             DataManager.saveWorkout(
-                                                tempWorkout: tempWorkout,
+                                                object: tempWorkout,
                                                 completion: { (success, error, workout) in
                                                     
                                                     guard let workout = workout, success else {

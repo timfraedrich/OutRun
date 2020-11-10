@@ -52,7 +52,7 @@ struct DataManager {
      - parameter migration: the closure being called on the event of a migration happening, including a `Progress` object indicating the progress of the migration
      - warning: If this method fails it does so in a fatal error, the app will crash as a result.
      */
-    public static func setup(dataModel: ORDataModel.Type, completion: @escaping (DataManager.SetupError?) -> Void, migration: @escaping (Progress) -> Void) {
+    public static func setup(dataModel: ORDataModel.Type = OutRunV4.self, completion: @escaping (DataManager.SetupError?) -> Void, migration: @escaping (Progress) -> Void) {
         
         
         let completion: (DataManager.SetupError?) -> Void = { error in
