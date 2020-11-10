@@ -75,8 +75,8 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
             mainloop: for workout in workouts where !workout.workoutEvents.isEmpty {
                 
                 let workout = transaction.edit(workout)!
-                workout.ascend .= 0 // NEEDS COMPUTATION
-                workout.descend .= 0 // NEEDS COMPUTATION
+                workout.ascend .= 0 // ToDo: NEEDS COMPUTATION
+                workout.descend .= 0 // ToDo: NEEDS COMPUTATION
                 workout.dayIdentifier .= CustomTimeFormatting.dayIdentifier(forDate: workout.startDate.value)
                 
                 // handling of events

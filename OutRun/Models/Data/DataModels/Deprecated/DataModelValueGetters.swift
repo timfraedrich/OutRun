@@ -34,10 +34,10 @@ enum DataModelValueGetters {
         var pauseDate: Date?
         let events = partialObject.completeObject().workoutEvents.value
         events.enumerated().forEach { (index, event) in
-            if (event.type == .pause || event.type == .autoPause), pauseDate == nil {
+            if (event.eventType.value == 0 || event.eventType.value == 1), pauseDate == nil {
                 pauseDate = event.startDate.value
                 
-            } else if (event.type == .resume || event.type == .autoResume), let pause = pauseDate {
+            } else if (event.eventType.value == 2 || event.eventType.value == 3), let pause = pauseDate {
                 duration += event.startDate.value.distance(to: pause)
                 pauseDate = nil
             }
