@@ -27,17 +27,29 @@ extension WorkoutRouteDataSample: CustomStringConvertible, WorkoutSeriesDataSamp
     
     var description: String {
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
-        let dateString = dateFormatter.string(from: timestamp.value as Date)
+        var desc = "RouteDataSample("
         
-        return "RouteDataSample(latitude: \(latitude), longitude: \(longitude), altitude: \(altitude), direction: \(direction), speed: \(speed), timeStamp: \(dateString))"
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+        
+        return desc + "latitude: \(latitude), longitude: \(longitude), altitude: \(altitude), direction: \(direction), speed: \(speed), timeStamp: \(timestamp))"
     }
     
     var clLocation: CLLocation? {
         
-        let coordinate = CLLocationCoordinate2D(latitude: self.latitude.value, longitude: self.longitude.value)
-        let location = CLLocation(coordinate: coordinate, altitude: self.altitude.value, horizontalAccuracy: 0, verticalAccuracy: 0, course: self.direction.value, speed: self.speed.value, timestamp: timestamp.value)
+        let location = CLLocation(
+            coordinate: CLLocationCoordinate2D(
+                latitude: latitude,
+                longitude: longitude
+            ),
+            altitude: altitude,
+            horizontalAccuracy: horizontalAccuracy,
+            verticalAccuracy: verticalAccuracy,
+            course: direction,
+            speed: speed,
+            timestamp: timestamp
+        )
         
         return location
     }

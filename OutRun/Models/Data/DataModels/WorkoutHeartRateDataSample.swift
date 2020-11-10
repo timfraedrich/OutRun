@@ -25,7 +25,14 @@ typealias WorkoutHeartRateDataSample = OutRunV4.WorkoutHeartRateDataSample
 extension WorkoutHeartRateDataSample: CustomStringConvertible, WorkoutSeriesDataSampleType {
     
     var description: String {
-        return "WorkoutHeartRateDataSample(heartRate: \(heartRate.value), timestamp: \(timestamp.value)"
+        
+        var desc = "WorkoutHeartRateDataSample("
+        
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+        
+        return desc + "heartRate: \(heartRate), timestamp: \(timestamp)"
     }
     
 }

@@ -27,7 +27,13 @@ typealias WorkoutEvent = OutRunV4.WorkoutEvent
 extension WorkoutEvent: CustomStringConvertible {
     
     var description: String {
-        return "WorkoutEvent(type: \(eventType.value.debugDescription), timestamp: \(timestamp.value)"
+        var desc = "WorkoutEvent("
+            
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+        
+        return desc + "type: \(eventType.debugDescription), timestamp: \(timestamp)"
     }
     
     enum WorkoutEventType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType {

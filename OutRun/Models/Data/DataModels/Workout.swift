@@ -51,16 +51,19 @@ extension Workout: CustomStringConvertible {
     
     var description: String {
         
-        let distance = CustomMeasurementFormatting.string(forMeasurement: NSMeasurement(doubleValue: self.distance.value, unit: UnitLength.meters), type: .distance, rounding: .twoDigits)
-        let duration = CustomMeasurementFormatting.string(forMeasurement: NSMeasurement(doubleValue: self.endDate.value.distance(to: self.startDate.value), unit: UnitDuration.seconds), type: .time, rounding: .twoDigits)
+        var desc = "Workout("
         
-        guard let energyBurned = self.burnedEnergy.value else {
-            return "Workout(type: \(workoutType.value.debugDescription), start: \(startDate.value), end: \(endDate.value), distance: \(distance), duration: \(duration))"
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
         }
         
-        let energy = CustomMeasurementFormatting.string(forMeasurement: NSMeasurement(doubleValue: energyBurned, unit: UnitEnergy.kilocalories), type: .energy, rounding: .wholeNumbers)
+        desc += "type: \(workoutType.debugDescription), start: \(startDate), end: \(endDate), distance: \(distance) m, activeDuration: \(activeDuration) s, pauseDuration: \(pauseDuration) s, pauses: \(pauses.count), events: \(events.count), heartRates: \(heartRates.count)"
         
-        return "Workout(type: \(workoutType.value.debugDescription), start: \(startDate.value), end: \(endDate.value), distance: \(distance), duration: \(duration), energyBurned: \(energy))"
+        if let energy = burnedEnergy {
+            desc += " burnedEnergy: \(energy) kcal"
+        }
+        
+        return desc + ")"
     }
     
     enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType  {

@@ -26,11 +26,17 @@ typealias WorkoutPause = OutRunV4.WorkoutPause
 extension WorkoutPause: CustomStringConvertible {
     
     var description: String {
-        return "WorkoutPause(" + (uuid.value != nil ? "uuid: \(uuid.value!), " : "") + "start: \(startDate.value), end: \(endDate.value), duration: \(duration))"
+        var desc = "WorkoutPause("
+            
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+            
+        return desc + "start: \(startDate), end: \(endDate), duration: \(duration))"
     }
     
     var duration: TimeInterval {
-        return startDate.value.distance(to: endDate.value)
+        return startDate.distance(to: endDate)
     }
     
     enum WorkoutPauseType: RawRepresentable, ImportableAttributeType {

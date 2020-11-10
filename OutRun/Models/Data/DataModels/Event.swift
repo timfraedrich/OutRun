@@ -25,7 +25,14 @@ typealias Event = OutRunV4.Event
 extension Event: CustomStringConvertible {
     
     var description: String {
-        return "WorkoutEvent(title: \(title.value))"
+        
+        var desc = "WorkoutEvent("
+        
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+        
+        return desc + "title: \(title))"
     }
     
 }
