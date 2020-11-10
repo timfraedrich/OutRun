@@ -11,6 +11,7 @@
 		22003DFE23A9779D00EBCD05 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22003DFD23A9779D00EBCD05 /* SetupView.swift */; };
 		22015319231663E300BD79AF /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22015318231663E300BD79AF /* UIViewController.swift */; };
 		2201531B231677BC00BD79AF /* BurnedEnergyCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201531A231677BC00BD79AF /* BurnedEnergyCalculator.swift */; };
+		2204A1DD255ACB1100906CFE /* ORDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204A1DC255ACB1100906CFE /* ORDataType.swift */; };
 		2207B75623128F8A00BA71B5 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B75523128F8A00BA71B5 /* CLLocation.swift */; };
 		2207B76523145AFD00BA71B5 /* DeleteWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B76423145AFD00BA71B5 /* DeleteWorkoutView.swift */; };
 		22096CF423F0A4AD00D03EC8 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22096CF323F0A4AD00D03EC8 /* FloatingButton.swift */; };
@@ -205,6 +206,7 @@
 		22003DFD23A9779D00EBCD05 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		22015318231663E300BD79AF /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		2201531A231677BC00BD79AF /* BurnedEnergyCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BurnedEnergyCalculator.swift; sourceTree = "<group>"; };
+		2204A1DC255ACB1100906CFE /* ORDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORDataType.swift; sourceTree = "<group>"; };
 		2207B75523128F8A00BA71B5 /* CLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
 		2207B76423145AFD00BA71B5 /* DeleteWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteWorkoutView.swift; sourceTree = "<group>"; };
 		22096CF323F0A4AD00D03EC8 /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
@@ -681,6 +683,7 @@
 			children = (
 				22B1DD8A253F90FD0093822B /* ORDataModel.swift */,
 				22B1DD89253F90FD0093822B /* ORIntermediateDataModel.swift */,
+				2204A1DC255ACB1100906CFE /* ORDataType.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -1159,6 +1162,7 @@
 				22B492A12544BC53000BF622 /* Event+OREventInterface.swift in Sources */,
 				22AB2FB7233CC925002EF0DE /* UIImage.swift in Sources */,
 				22ACA7C324D97703005DFB4E /* ORBaseBanner.swift in Sources */,
+				2204A1DD255ACB1100906CFE /* ORDataType.swift in Sources */,
 				222632AA24B24B980017517E /* ClearSettingsViewController.swift in Sources */,
 				22AB2FB3233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift in Sources */,
 				22B1DD8B253F90FD0093822B /* ORIntermediateDataModel.swift in Sources */,
