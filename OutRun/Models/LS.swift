@@ -44,7 +44,7 @@ struct LS {
             return localizedString.replacingOccurrences(of: "OutRun", with: "Out-Run")
         }
         
-        return ""
+        return localizedString
     }
     
     /// Enumeration of possible localised string source types referring to different string tables in the project.
