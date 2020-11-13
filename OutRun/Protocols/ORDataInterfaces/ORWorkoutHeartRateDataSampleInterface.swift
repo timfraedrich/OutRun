@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing of heart rate samples connected to a workout.
-protocol ORWorkoutHeartRateDataSampleInterface: AnyObject {
+protocol ORWorkoutHeartRateDataSampleInterface {
     
     /// The universally unique identifier used to identify a `WorkoutHeartRateSample` in the data base. If `nil` the heart rate sample might not be saved yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }
@@ -31,5 +31,14 @@ protocol ORWorkoutHeartRateDataSampleInterface: AnyObject {
     var timestamp: Date { get }
     /// A reference to the `Workout` this heart rate sample is associated with.
     var workout: ORWorkoutInterface? { get }
+    
+}
+
+extension ORWorkoutHeartRateDataSampleInterface {
+    
+    var uuid: UUID? { throwOnAccess() }
+    var heartRate: Int { throwOnAccess() }
+    var timestamp: Date { throwOnAccess() }
+    var workout: ORWorkoutInterface? { throwOnAccess() }
     
 }

@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing of route data samples connected to a workout.
-protocol ORWorkoutRouteDataSampleInterface: AnyObject {
+protocol ORWorkoutRouteDataSampleInterface {
     
     /// The universally unique identifier used to identify a `WorkoutRouteDataSample` in the data base. If `nil` the route data sample might not be saved yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }
@@ -43,5 +43,20 @@ protocol ORWorkoutRouteDataSampleInterface: AnyObject {
     var direction: Double { get }
     /// A reference to the `Workout` this route data sample is associated with.
     var workout: ORWorkoutInterface? { get }
+    
+}
+
+extension ORWorkoutRouteDataSampleInterface {
+    
+    var uuid: UUID? { throwOnAccess() }
+    var timestamp: Date { throwOnAccess() }
+    var latitude: Double { throwOnAccess() }
+    var longitude: Double { throwOnAccess() }
+    var altitude: Double { throwOnAccess() }
+    var horizontalAccuracy: Double { throwOnAccess() }
+    var verticalAccuracy: Double { throwOnAccess() }
+    var speed: Double { throwOnAccess() }
+    var direction: Double { throwOnAccess() }
+    var workout: ORWorkoutInterface? { throwOnAccess() }
     
 }

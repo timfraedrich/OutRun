@@ -55,3 +55,19 @@ public func threadSafeSyncReturn<ReturnType>(thread: DispatchQueue = .main, _ cl
     return returnValue!
     
 }
+
+/**
+ This function can be used to intentionally throw a fatal error when a specific property is accessed.
+ 
+ Usage Example:
+ ```
+ var property: PropertyType? {
+     throwOnAccess()
+ }
+ ```
+ 
+ - warning: Make sure to only adopt this method if necessary; the function will do exactly as told and crash the app upon access which can lead to unexpected behaviour in production
+ */
+public func throwOnAccess<ReturnType>() -> ReturnType {
+    fatalError("\nThrowing because of illegal access: check for proper implementation of all protocols")
+}

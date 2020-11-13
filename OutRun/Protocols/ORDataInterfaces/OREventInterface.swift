@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing events.
-protocol OREventInterface: AnyObject {
+protocol OREventInterface {
     
     /// The universally unique identifier used to identify a `Event` in the data base. If `nil` the event might not be saved yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }
@@ -35,5 +35,16 @@ protocol OREventInterface: AnyObject {
     var endDate: Date? { get }
     /// A reference to the `Workout`s associated with this event.
     var workouts: [ORWorkoutInterface] { get }
+    
+}
+
+extension OREventInterface {
+    
+    var uuid: UUID? { throwOnAccess() }
+    var title: String { throwOnAccess() }
+    var comment: String? { throwOnAccess() }
+    var startDate: Date? { throwOnAccess() }
+    var endDate: Date? { throwOnAccess() }
+    var workouts: [ORWorkoutInterface] { throwOnAccess() }
     
 }
