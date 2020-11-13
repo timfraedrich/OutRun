@@ -92,74 +92,77 @@ enum WorkoutMapImageManager {
             return
         }
         
-        DataQueryManager.fetchLocationDegreesOfRoute(fromWorkoutID: uuid) { (success, degrees) in
-            if success {
-                
-                processQueue.async {
+        DataManager.asyncLocationCoordinatesQuery(
+            for: ORPrimitive<Workout>(uuid: uuid),
+            completion: { success, error, coordinates in
+                if success {
                     
-                    guard let degrees = degrees, degrees.count > 0 else {
-                        completion(false, nil)
-                        return
-                    }
-                    
-                    let route = MKPolyline(coordinates: degrees, count: degrees.count)
-                    
-                    let mapSnapshotOptions = MKMapSnapshotter.Options()
-                    mapSnapshotOptions.region = MKCoordinateRegion(route.boundingMapRect.insetBy(dx: route.boundingMapRect.width * -0.1, dy: route.boundingMapRect.height * -0.1))
-                    mapSnapshotOptions.scale = UIScreen.main.scale
-                    mapSnapshotOptions.size = request.size.rawSize
-                    mapSnapshotOptions.showsBuildings = true
-                    mapSnapshotOptions.showsPointsOfInterest = false
-                    mapSnapshotOptions.mapType = .standard
-                    if #available(iOS 13.0, *) {
-                        mapSnapshotOptions.traitCollection = UITraitCollection(userInterfaceStyle: imageUsesDarkMode ? .dark : .light)
-                    }
-                    
-                    let snapshotter = MKMapSnapshotter(options: mapSnapshotOptions)
-                    
-                    snapshotter.start(with: snapshotQueue, completionHandler: { snapshot, error in
-                        if error == nil, let snapshot = snapshot {
-                            let image = snapshot.image
-                            
-                            UIGraphicsBeginImageContextWithOptions(request.size.rawSize, true, 0)
-                            image.draw(at: CGPoint.zero)
-                            
-                            let context = UIGraphicsGetCurrentContext()
-                            context!.setLineWidth(3.0)
-                            context!.setLineCap(.round)
-                            context!.setStrokeColor(UIColor.accentColor.cgColor)
-                            context!.move(to: snapshot.point(for: degrees[0]))
-                            for i in 0...(degrees.count - 1) {
-                                context!.addLine(to: snapshot.point(for: degrees[i]))
-                                context!.move(to: snapshot.point(for: degrees[i]))
-                            }
-                            context!.strokePath()
-                            let resultImage = UIGraphicsGetImageFromCurrentImageContext()
-                            UIGraphicsEndImageContext()
-                            
-                            if let image = resultImage, let id = request.cacheIdentifier(forDarkAppearance: imageUsesDarkMode) {
-                                CustomImageCache.mapImageCache.set(mapImage: image, for: id)
-                            }
-                            
-                            DispatchQueue.main.async {
+                    processQueue.async {
+                        
+                        guard coordinates.count > 1 else {
+                            completion(false, nil)
+                            return
+                        }
+                        
+                        let route = MKPolyline(coordinates: coordinates, count: coordinates.count)
+                        
+                        let mapSnapshotOptions = MKMapSnapshotter.Options()
+                        mapSnapshotOptions.region = MKCoordinateRegion(route.boundingMapRect.insetBy(dx: route.boundingMapRect.width * -0.1, dy: route.boundingMapRect.height * -0.1))
+                        mapSnapshotOptions.scale = UIScreen.main.scale
+                        mapSnapshotOptions.size = request.size.rawSize
+                        mapSnapshotOptions.showsBuildings = true
+                        mapSnapshotOptions.showsPointsOfInterest = false
+                        mapSnapshotOptions.mapType = .standard
+                        if #available(iOS 13.0, *) {
+                            mapSnapshotOptions.traitCollection = UITraitCollection(userInterfaceStyle: imageUsesDarkMode ? .dark : .light)
+                        }
+                        
+                        let snapshotter = MKMapSnapshotter(options: mapSnapshotOptions)
+                        
+                        snapshotter.start(with: snapshotQueue, completionHandler: { snapshot, error in
+                            if error == nil, let snapshot = snapshot {
+                                let image = snapshot.image
                                 
-                                completion(true, resultImage)
+                                UIGraphicsBeginImageContextWithOptions(request.size.rawSize, true, 0)
+                                image.draw(at: CGPoint.zero)
                                 
-                                if Config.isDarkModeEnabled != imageUsesDarkMode {
-                                    self.requestQueue.add(request)
+                                let context = UIGraphicsGetCurrentContext()
+                                context!.setLineWidth(3.0)
+                                context!.setLineCap(.round)
+                                context!.setStrokeColor(UIColor.accentColor.cgColor)
+                                context!.move(to: snapshot.point(for: coordinates[0]))
+                                for i in 0...(coordinates.count - 1) {
+                                    context!.addLine(to: snapshot.point(for: coordinates[i]))
+                                    context!.move(to: snapshot.point(for: coordinates[i]))
+                                }
+                                context!.strokePath()
+                                let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+                                UIGraphicsEndImageContext()
+                                
+                                if let image = resultImage, let id = request.cacheIdentifier(forDarkAppearance: imageUsesDarkMode) {
+                                    CustomImageCache.mapImageCache.set(mapImage: image, for: id)
                                 }
                                 
+                                DispatchQueue.main.async {
+                                    
+                                    completion(true, resultImage)
+                                    
+                                    if Config.isDarkModeEnabled != imageUsesDarkMode {
+                                        self.requestQueue.add(request)
+                                    }
+                                    
+                                }
+                                
+                            } else {
+                                completion(false, nil)
                             }
-                            
-                        } else {
-                            completion(false, nil)
-                        }
-                    })
+                        })
+                    }
+                } else {
+                    completion(false, nil)
                 }
-            } else {
-                completion(false, nil)
             }
-        }
+        )
         
     }
     

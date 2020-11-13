@@ -23,6 +23,8 @@ import CoreStore
 
 extension DataManager {
     
+    // MARK: - Manipulation Errors
+    
     /// An enumeration of possible errors coming up during the setup of data management.
     enum SetupError: Error, CustomDebugStringConvertible {
         
@@ -126,6 +128,30 @@ extension DataManager {
                 return "This workout was not saved to the database yet, so it cannot be deleted."
             case .databaseError(let error):
                 return "There was an error while trying to delete the workout:\n\(error)"
+            }
+        }
+        
+    }
+    
+    // MARK: - Query Errors
+    
+    enum LocationQueryError: Error, CustomDebugStringConvertible {
+        
+        /// The specified `ORWorkoutInterface` object was not yet saved to the database, no query on it can be performed.
+        case notSaved
+        /// The specified workout does not have any route data
+        case noRouteData
+        /// There was an error while trying to query locations from the workout.
+        case databaseError(error: CoreStoreError)
+        
+        var debugDescription: String {
+            switch self {
+            case .notSaved:
+                return "The specified `ORWorkoutInterface` object was not yet saved to the database, no query on it can be performed."
+            case .noRouteData:
+                return "The specified workout does not have any route data"
+            case .databaseError(let error):
+                return "There was an error while trying to query locations from the workout:\n\(error)"
             }
         }
         
