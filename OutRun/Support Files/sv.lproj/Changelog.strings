@@ -1,0 +1,4 @@
+
+
+
+"Changelog_1.2.2" = "Efter att ha fått ett varumärke klagomål\" OutRun \"kommer nu att kallas\" out-Run \" i Storbritannien. Den här uppdateringen har huvudsyftet med att ta itu med detta klagomål.\n\nDessutom innehåller följande buggfixar:\n\n- ibland data inte har lagts ordentligt till Apple hälsa, bör detta nu fastställas\n- stigande och fallande höjd byttes i statistiken, nu är de i rätt ordning\n- det har varit några stilproblem på grund av förändringar i iOS 14, allt ska se normalt igen\n\nOch för den här uppdateringen förändrades inget mer.\n\nOm du har några frågor eller feedback, gärna nå ut på outrun@tadris.de. - herr talman!\n\nTim, utvecklaren.";

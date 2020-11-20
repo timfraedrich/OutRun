@@ -1,0 +1,45 @@
+
+
+
+"NewWorkoutViewController.WorkoutBuilder.Error" = "Treenin suunnittelussa oli virhe.";
+"NewWorkoutViewController.WaitingAlert.Message" = "GPS-signaali ei ole riittävän tarkka riittävän reitin laadun saavuttamiseksi, tarkan signaalin löytäminen voi viedä pari sekuntia minuuttiin. Jos tämä on yleinen ilmiö, jossa asut, yritä säätää tarvittavaa tarkkuutta asetuksissa.";
+"NewWorkoutViewController.Discard.SaveInstead" = "Tallenna sen sijaan";
+"NewWorkoutViewController.Discard.Message" = "Oletko varma, että haluat hylätä harjoituksen? Tietoja ei voi palauttaa.";
+"NewWorkoutViewController.Discard.Title" = "Hylätä";
+"NewWorkoutViewController.Save.Message" = "Haluatko tallentaa tai hylätä harjoituksen?";
+"NewWorkoutViewController.Save.Title" = "Tallentaa";
+"NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording" = "Lopeta tallennus";
+"NewWorkoutViewController.Cancel.Error.Recording.Message" = "Et voi sulkea tätä valikkoa tallennettaessa harjoitusta. Haluatko lopettaa harjoituksen tai jatkaa?";
+"NewWorkoutViewController.Cancel.Error.Recording.Title" = "Harjoitus on tallennettu";
+"NotSet" = "Ei Asetettu";
+"All" = "Kaikki";
+"Stop" = "Lopettaa";
+"Start" = "Aloittaa";
+"Close" = "Sulje";
+"Discard" = "Hylätä";
+"Edit" = "Muokkaa";
+"Turn Off" = "sammuttaa";
+"Try Again" = "Yritä Uudelleen";
+"Open" = "Avata";
+"Grant" = "Myöntää";
+"Skip" = "Ohittaa";
+"Finish" = "Valmis";
+"Next" = "Seuraava";
+"No" = "Ei";
+"Yes" = "Kyllä";
+"NoData.Message" = "Täällä ei näytä olevan mitään.";
+"NoDataAvailable" = "Tietoja Ei Ole Saatavilla";
+"Okay" = "Okei";
+"Standard" = "Standardi";
+"Done" = "Tehdä";
+"Loading-DoNotClose" = "Lastaus... Älä Sulje";
+"Loading" = "Lastaus...";
+"Delete" = "Poistaa";
+"Continue" = "Jatkaa";
+"Save" = "Tallentaa";
+"Cancel" = "Peruuttaa";
+"OutRun" = "OutRun";
+"TabBar.Settings" = "Asetus";
+"TabBar.Timeline" = "Aikajana";
+"NewWorkoutViewController.Recenter" = "Uudelleen Keskus";
+"NewWorkoutViewController.WaitingAlert.Title" = "Odotetaan GPS: ää";

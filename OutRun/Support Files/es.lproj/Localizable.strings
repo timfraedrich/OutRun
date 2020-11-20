@@ -18,13 +18,13 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-"Settings.AppleHealthPreferences.Message" = "Si las opciones de sincronización están habilitadas, la aplicación intenta sincronizarse con Apple Health, por lo que los datos nuevos de esta aplicación se guardan automáticamente en la aplicación Health y si el peso en Apple Health cambia, también se ajusta automáticamente aquí.\n\nSi la opción 'Importar automáticamente entrenamientos' está habilitada, la aplicación intenta importar automáticamente nuevos entrenamientos agregados por otras aplicaciones a la base de datos local.\n\n'Sincronizar todos los entrenamientos no sincronizados' sincroniza todos los entrenamientos de esta aplicación, que aún no están sincronizados, con Apple Health.";
+"Settings.AppleHealthPreferences.Message" = "Si las opciones de sincronización están habilitadas, la aplicación intenta sincronizarse con Apple Health, por lo que los datos nuevos de esta aplicación se guardan automáticamente en la aplicación Health y si el peso en Apple Health cambia, también se ajusta automáticamente aquí.\n\nSi la opción 'Auto-importar entrenamientos' está habilitada, la aplicación intenta importar automáticamente nuevos entrenamientos agregados por otras aplicaciones a la base de datos local.\n\n'Sincronizar todos los entrenamientos' sincroniza todos los entrenamientos de esta aplicación, que aún no están sincronizados, con Apple Health.";
 "Changelog" = "Registro de cambios";
 "ShareManager.GPXError" = "La aplicación no pudo crear un archivo GPX, por favor póngase en contacto con el soporte técnico.";
 "ShareManager.BackupError" = "La aplicación no pudo crear una copia de seguridad, por favor póngase en contacto con el soporte técnico.";
 "WorkoutShareAlert.OutRunBackup" = "Copia de seguridad de OutRun";
 "WorkoutShareAlert.GPXExport" = "Archivo GPX";
-"WorkoutShareAlert.Message" = "Por favor, elija cómo exportar su entrenamiento de las siguientes opciones. Si usted siente que falta una opción no dude en comunicarse y sugerirlo.";
+"WorkoutShareAlert.Message" = "Por favor, elija cómo exportar su entrenamiento. Si le gustara alguna opción adicional, no dude en comunicarse y sugerirlo.";
 "WorkoutShareAlert.Title" = "Exporta tu entrenamiento";
 "MapView.MapTypeAlert.Message" = "Elija el tipo de mapa que desea que se muestre.";
 "MapView.MapTypeAlert.Title" = "Tipo de mapa";
@@ -59,7 +59,7 @@
 "Setup.Permission.Location" = "Permiso de ubicación";
 "Setup.Permissions.Message" = "Dado que queremos brindarle nuestros servicios, necesitamos acceso a algunas API como Servicios de ubicación o, si desea sincronizar con Apple Health, también acceder para leer y escribir en ese servicio.";
 "Setup.Permissions.Title" = "Ahora solo necesitamos tu permiso";
-"Setup.AppleHealth.AutoImportWorkouts" = "Importación automática de entrenamientos";
+"Setup.AppleHealth.AutoImportWorkouts" = "Auto-importar entrenamientos";
 "Setup.AppleHealth.SyncWeight" = "Sincronizar el peso";
 "Setup.AppleHealth.SyncWorkouts" = "Sincronizar entrenamientos";
 "Setup.AppleHealth.Message" = "Si desea que sus datos se almacenen en un espacio central, Apple Health podría ser una buena opción, ya que está bien integrado con iOS. Sin embargo, la sincronización es totalmente opcional y debe tenerse en cuenta que si elige sincronizar con Apple Health, es posible que sus datos salgan de su teléfono y se almacenen en los servidores de Apple, más sobre eso en la política de privacidad. Si eliges habilitar la importación automática, la aplicación intenta importar los entrenamientos agregados por otras aplicaciones a la base de datos local para que puedas tener una visión general de todos tus entrenamientos.";
@@ -102,8 +102,8 @@
 "Settings.PrivacyPolicy" = "Política de privacidad";
 "Settings.TermsOfService" = "Condiciones de servicio";
 "Settings.Support" = "Soporte";
-"Settings.RecordingPreferences.Message" = "Si experimenta algún tipo de bloqueo o comportamiento similar mientras graba un entrenamiento, debe intentar desactivar \"Mostrar mapa\", ya que la mayoría de estos bloqueos se sabe que están relacionados con el uso excesivo de energía del mapa.\n\nSi 'Mostrar ritmo' está habilitado en lugar de mostrar la velocidad, se muestra el ritmo. Si 'Display Rolling Speed' está en la velocidad o el ritmo mostrado son un promedio del último kilómetro, si no se muestra la velocidad actual o el ritmo total.";
-"Settings.DisplayRollingSpeed" = "Mostrar velocidad de rodadura";
+"Settings.RecordingPreferences.Message" = "Si experimenta algún tipo de bloqueo o comportamiento similar mientras graba un entrenamiento, debe intentar desactivar \"Mostrar mapa\", ya que la mayoría de estos bloqueos se sabe que están relacionados con el uso excesivo de energía del mapa.\n\nSi 'Mostrar ritmo' está habilitado en lugar de mostrar la velocidad, se muestra el ritmo. Si 'Ritmo/vel. del último kilómetro' está activado, entonces la velocidad o el ritmo mostrado es un promedio del último kilómetro. Si está desactivado se muestra la velocidad actual o el ritmo total.";
+"Settings.DisplayRollingSpeed" = "Ritmo/vel. del último kilómetro";
 "Settings.DisplayPace" = "Mostrar ritmo";
 "Settings.GPSAccuracy.Off" = "Apagado (no recomendado)";
 "Settings.GPSAccuracy.LastResort" = "Último recurso";
@@ -144,10 +144,10 @@
 "Settings.DataPreferences" = "Preferencias de datos";
 "Settings.SyncAll.AllSyncedAlready" = "Parece que todos los entrenamientos ya están sincronizados.";
 "Settings.SyncAll.Error" = "Se produjo un error al intentar sincronizar todos los entrenamientos no sincronizados con Apple Health. Es posible que algunos entrenamientos no se hayan sincronizado.";
-"Settings.SyncAll.Success" = "Todos los entrenamientos no sincronizados se sincronizaron correctamente con Apple Health.";
-"Settings.SyncAll" = "Sincronizar todos los entrenamientos no sincronizados";
+"Settings.SyncAll.Success" = "Todos los entrenamientos no sincronizados ahora están correctamente sincronizados con Apple Health.";
+"Settings.SyncAll" = "Sincronizar todos los entrenamientos";
 "Settings.ImportFromAppleHealth" = "Importar desde Apple Health";
-"Settings.AutoImportHealthWorkouts" = "Importación automática de entrenamientos";
+"Settings.AutoImportHealthWorkouts" = "Auto-importar entrenamientos";
 "Settings.SynchronizeWeightWithAppleHealth" = "Sincronizar el peso";
 "Settings.SynchronizeWorkoutsWithAppleHealth" = "Sincronizar entrenamientos";
 "Settings.AppleHealthPreferences" = "Preferencias de Apple Health";
@@ -217,9 +217,9 @@
 "Workout.Type" = "Tipo";
 "Workout.NewWorkout" = "Nuevo entrenamiento";
 "Workout.TotalPace" = "Ritmo total";
-"Workout.RollingPace" = "Ritmo circulando";
+"Workout.RollingPace" = "Ritmo km";
 "Workout.BurnedCalories" = "Calorías quemadas";
-"Workout.AverageSpeed" = "Vel. Promedio";
+"Workout.AverageSpeed" = "Vel. promedio";
 "Workout.CurrentSpeed" = "Velocidad actual";
 "Workout.StartDate" = "Fecha de inicio";
 "Workout.PauseDuration" = "Duración de la pausa";
@@ -238,7 +238,7 @@
 "NewWorkoutAlert.EnterManually" = "Introducir manualmente";
 "NewWorkoutAlert.Message" = "¿Qué tipo de entrenamiento quieres grabar?";
 "NewWorkoutAlert.Title" = "Entrenamiento";
-"WorkoutListViewController.Headline" = "Tus entrenamientos";
+"WorkoutListViewController.Headline" = "Entrenamientos";
 "NewWorkoutViewController.WorkoutBuilder.Error" = "Hubo un error en la lógica que se supone que construye el entrenamiento.";
 "NewWorkoutViewController.Recenter" = "Re-centrar";
 "NewWorkoutViewController.WaitingAlert.Message" = "La señal GPS no es lo suficientemente precisa para una calidad de ruta suficiente, encontrar una señal precisa puede tardar un par de segundos a un minuto. Si este es un fenómeno común donde vives, intenta ajustar la precisión necesaria en la configuración.";
