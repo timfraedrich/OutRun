@@ -1,0 +1,9 @@
+
+
+
+"NSMotionUsageDescription" = "Den här appen behöver rörelserelaterade spårningsfunktioner för att spela in data som steg under ett träningspass";
+"NSLocationWhenInUseUsageDescription" = "Denna app behöver din plats för att spåra träning";
+"NSLocationAlwaysUsageDescription" = "Denna app behöver din plats för att spåra träning";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Denna app behöver din plats för att spåra träning";
+"NSHealthUpdateUsageDescription" = "Denna app behöver tillgång till dina hälsodata för att läsa och eventuella korrekta träningspass konstruerade av den här appen";
+"NSHealthShareUsageDescription" = "Denna app behöver tillgång till dina hälsodata för att spara träning som konstruerats av denna app";
