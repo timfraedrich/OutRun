@@ -41,6 +41,10 @@ import Foundation
  */
 public func threadSafeSyncReturn<ReturnType>(thread: DispatchQueue = .main, _ closure: @escaping () -> ReturnType) -> ReturnType {
     
+    guard Thread.current != Thread.main else {
+        return closure()
+    }
+    
     var returnValue: ReturnType?
     
     let dispatchGroup = DispatchGroup()
@@ -48,6 +52,7 @@ public func threadSafeSyncReturn<ReturnType>(thread: DispatchQueue = .main, _ cl
     
     thread.async {
         returnValue = closure()
+        dispatchGroup.leave()
     }
     
     dispatchGroup.wait()
