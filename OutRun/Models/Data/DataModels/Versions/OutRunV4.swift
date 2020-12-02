@@ -34,7 +34,7 @@ enum OutRunV4: ORDataModel {
             Entity<OutRunV4.Event>(OutRunV4.Event.identifier)
         ],
         versionLock: [
-            OutRunV4.Workout.identifier: [0x236fcba032b81ba9, 0xa776b92c815cdcc0, 0x123af15289e50cd9, 0x9766946e390e574f],
+            OutRunV4.Workout.identifier: [0x444d1aab795ccbda, 0xa658e0bda7a25532, 0x64717ba1bab265ff, 0x4c16c8b02b5443e2],
             OutRunV4.WorkoutPause.identifier: [0x89c52b63c97fb5c1, 0xa652377da0a883b8, 0x43cfd39627f2cc09, 0x33ce6792256451a7],
             OutRunV4.WorkoutEvent.identifier: [0xab96203b4ad8735, 0x83a3706df06897f9, 0x499ccfb06aa82a1f, 0xb3653fd2be428391],
             OutRunV4.WorkoutRouteDataSample.identifier: [0x8fb3f3add05348dc, 0xaf69cdd28c67537, 0xeda9c05c619958f, 0x62c61c5f0f6a8978],
@@ -105,6 +105,7 @@ enum OutRunV4: ORDataModel {
         let _comment = Value.Optional<String>("comment")
         let _isUserModified = Value.Required<Bool>("isUserModified", initial: false)
         let _healthKitUUID = Value.Optional<UUID>("healthKitID")
+        let _finishedRecording = Value.Required<Bool>("finishedRecording", initial: true)
         
         let _ascend = Value.Required<Double>("ascendingAltitude", initial: 0)
         let _descend = Value.Required<Double>("descendingAltitude", initial: 0)

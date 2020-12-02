@@ -34,7 +34,7 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
             Entity<OutRunV3to4.Event>(OutRunV3to4.Event.identifier)
         ],
         versionLock: [
-            OutRunV3to4.Workout.identifier: [0x236fcba032b81ba9, 0xa776b92c815cdcc0, 0x123af15289e50cd9, 0x9766946e390e574f],
+            OutRunV3to4.Workout.identifier: [0x444d1aab795ccbda, 0xa658e0bda7a25532, 0x64717ba1bab265ff, 0x4c16c8b02b5443e2],
             OutRunV3to4.WorkoutPause.identifier: [0x89c52b63c97fb5c1, 0xa652377da0a883b8, 0x43cfd39627f2cc09, 0x33ce6792256451a7],
             OutRunV3to4.WorkoutEvent.identifier: [0xc8b4bcf7f34100da, 0x67200344c2f3739d, 0xa56af4887eeceff8, 0xd8b0a9428219090],
             OutRunV3to4.WorkoutRouteDataSample.identifier: [0x8fb3f3add05348dc, 0xaf69cdd28c67537, 0xeda9c05c619958f, 0x62c61c5f0f6a8978],
