@@ -75,10 +75,17 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
             mainloop: for workout in workouts where !workout.workoutEvents.isEmpty {
                 
                 let workout = transaction.edit(workout)!
-                workout.ascend .= 0 // ToDo: NEEDS COMPUTATION
-                workout.descend .= 0 // ToDo: NEEDS COMPUTATION
                 workout.dayIdentifier .= CustomTimeFormatting.dayIdentifier(forDate: workout.startDate.value)
                 
+                // MARK: - Intermediate Mapping: Elevation
+                
+                let altitudes = workout.routeData.map { (sample) -> Double in return sample.altitude.value }
+                let elevationData = Computation.computeElevationData(from: altitudes)
+                
+                workout.ascend .= elevationData.ascending
+                workout.descend .= elevationData.descending
+                
+                // MARK: - Intermediate Mapping: Events
                 // handling of events
                 var tempEvents = workout.workoutEvents.value
                 
@@ -151,6 +158,7 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
                 // pauses done!
                 // old workout events for pause or resume events will be deleted in migration automatically
                 
+                // MARK: - Intermediate Mapping: Durations
                 // settings now computable active and pause duration
                 
                 var pauseDuration: TimeInterval = 0
@@ -194,6 +202,7 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
         let comment = Value.Optional<String>("comment")
         let isUserModified = Value.Required<Bool>("isUserModified", initial: false)
         let healthKitUUID = Value.Optional<UUID>("healthKitID")
+        let finishedRecording = Value.Required<Bool>("finishedRecording", initial: true)
         
         // MARK: NOTE: Needs to be set in intermediate migration actions
         let ascend = Value.Required<Double>("ascendingAltitude", initial: 0)
