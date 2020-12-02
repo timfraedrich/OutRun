@@ -50,26 +50,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     
                     self.setRootViewController(for: controller, withSmoothTransition: true) {
                         self.checkPermissionStatus(controller: controller) {
-                            self.checkForTerminationWorkout(controller: controller) {
-                                if UserPreferences.isSetUp.value {
-                                    HealthObserver.setupObservers()
+                            if UserPreferences.isSetUp.value {
+                                HealthObserver.setupObservers()
+                                
+                                if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
                                     
-                                    if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
+                                    if let changeLog = Config.changeLogs[Config.version] {
+                                        let changeLogController = ChangeLogViewController()
+                                        changeLogController.changeLog = changeLog
+                                        changeLogController.modalPresentationStyle = .overFullScreen
+                                        changeLogController.modalTransitionStyle = .crossDissolve
                                         
-                                        if let changeLog = Config.changeLogs[Config.version] {
-                                            let changeLogController = ChangeLogViewController()
-                                            changeLogController.changeLog = changeLog
-                                            changeLogController.modalPresentationStyle = .overFullScreen
-                                            changeLogController.modalTransitionStyle = .crossDissolve
-                                            
-                                            controller.present(changeLogController, animated: true)
-                                        }
-                                        
-                                        AppDelegate.lastVersion.value = Config.version
-                                        
-                                    } else if AppDelegate.lastVersion.value == nil {
-                                        AppDelegate.lastVersion.value = Config.version
+                                        controller.present(changeLogController, animated: true)
                                     }
+                                    
+                                    AppDelegate.lastVersion.value = Config.version
+                                    
+                                } else if AppDelegate.lastVersion.value == nil {
+                                    AppDelegate.lastVersion.value = Config.version
                                 }
                             }
                         }
@@ -104,166 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ApplicationStateObservation.stateChanged(to: .foreground)
     }
 
-    func applicationWillTerminate(_ application: UIApplication) {
-        
-        self.tryToSaveRecodingWorkout()
-        
-    }
-    
-    func tryToSaveRecodingWorkout() {
-        
-        if let workoutBuilder = WorkoutBuilder.currentlyActive {
-            
-            print("[AppDelegate] Trying to save workout before termination...")
-            WorkoutBuilder.didSaveWorkoutOnTermination.value = true
-            
-            if let snapshot = workoutBuilder.createSnapshot() {
-                
-                do {
-                    
-                    let workoutData = try JSONEncoder().encode(snapshot)
-                    
-                    WorkoutBuilder.termWorkoutData.value = workoutData
-                    WorkoutBuilder.termWorkoutSaveSuccess.value = true
-                    
-                    print("[AppDelegate] Successfully saved workout before termination:", snapshot)
-                    
-                } catch {
-                    
-                    WorkoutBuilder.termWorkoutSaveSuccess.value = false
-                    
-                    print("[AppDelegate] Error: Was not able to encode termination workout data")
-                    
-                }
-                
-            } else {
-                
-                print("[AppDelegate] Was not able to initiate workout to save before termination")
-                
-            }
-            
-        }
-        
-    }
-    
-    func checkForTerminationWorkout(controller: UIViewController, completion: (() -> Void)? = nil) {
-        
-        let safeCompletion: () -> Void = {
-            DispatchQueue.main.async {
-                completion?()
-            }
-        }
-        
-        if WorkoutBuilder.didSaveWorkoutOnTermination.value {
-            if WorkoutBuilder.termWorkoutSaveSuccess.value {
-                
-                if let workoutData = WorkoutBuilder.termWorkoutData.value {
-                    
-                    do {
-                        let tempWorkout = try JSONDecoder().decode(TempWorkout.self, from: workoutData)
-                        print("Saved workout on last termination:\n\(tempWorkout)")
-                        
-                        DispatchQueue.main.async {
-                            let alert = UIAlertController(
-                                title: LS["TerminationBackup.SaveAlert.Title"],
-                                message: LS["TerminationBackup.SaveAlert.Message"],
-                                preferredStyle: .alert,
-                                options: [
-                                    (
-                                        title: LS["Cancel"],
-                                        style: .destructive,
-                                        action: { _ in
-                                            safeCompletion()
-                                        }
-                                    ),
-                                    (
-                                        title: LS["Save"],
-                                        style: .default,
-                                        action: { _ in
-                                            
-                                            DataManager.saveWorkout(
-                                                object: tempWorkout,
-                                                completion: { (success, error, workout) in
-                                                    
-                                                    guard let workout = workout, success else {
-                                                        print("Error: Termination Workout could not be saved:", error ?? "no error")
-                                                        controller.displayError(withMessage: LS["TerminationBackup.Save.Error"], dismissAction: { _ in
-                                                                safeCompletion()
-                                                            }
-                                                        )
-                                                        return
-                                                    }
-                                                    
-                                                    if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
-                                                    
-                                                        HealthStoreManager.saveHealthWorkout(forWorkout: workout, completion: { (success, healthWorkout) in
-                                                            guard success else {
-                                                                controller.displayError(withMessage: LS["TerminationBackup.Save.Health.Error"], dismissAction: { _ in
-                                                                        safeCompletion()
-                                                                    }
-                                                                )
-                                                                return
-                                                            }
-                                                            safeCompletion()
-                                                        })
-                                                        
-                                                    }
-                                                    
-                                                    let workoutController = WorkoutViewController()
-                                                    workoutController.workout = workout
-                                                    controller.present(workoutController, animated: true)
-                                                    
-                                                }
-                                            )
-                                            
-                                    }
-                                    )
-                                ]
-                            )
-                            controller.present(alert, animated: true)
-                        }
-                    } catch {
-                        print("Error: could not decode termination workout data")
-                        safeCompletion()
-                    }
-                    
-                } else {
-                    print("Error: failed to get access to workout saved on last termination")
-                    safeCompletion()
-                }
-                
-            } else {
-                
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(
-                        title: LS["TerminationBackup.LostAlert.Title"],
-                        message: LS["TerminationBackup.LostAlert.Message"],
-                        preferredStyle: .alert,
-                        options: [
-                            (
-                                title: LS["Okay"],
-                                style: .default,
-                                action: nil
-                            )
-                        ],
-                        dismissAction: {
-                            safeCompletion()
-                        }
-                    )
-                    controller.present(alert, animated: true)
-                }
-                
-            }
-            
-            // clear term data
-            WorkoutBuilder.didSaveWorkoutOnTermination.delete()
-            WorkoutBuilder.termWorkoutSaveSuccess.delete()
-            WorkoutBuilder.termWorkoutData.delete()
-            
-        } else {
-            safeCompletion()
-        }
-    }
+    func applicationWillTerminate(_ application: UIApplication) {}
     
     func checkPermissionStatus(controller: UIViewController, completion: (() -> Void)? = nil) {
         
