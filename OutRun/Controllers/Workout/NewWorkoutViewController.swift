@@ -22,7 +22,7 @@ import UIKit
 import MapKit
 import SnapKit
 
-class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuilderDelegate, UIGestureRecognizerDelegate {
+class NewWorkoutViewController: MapViewControllerWithContainerView, WorkoutBuilderDelegate, UIGestureRecognizerDelegate {
     
     var type: Workout.WorkoutType = Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value)
     lazy var builder: WorkoutBuilder = WorkoutBuilder(workoutType: self.type, delegate: self)
