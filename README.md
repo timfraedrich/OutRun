@@ -37,13 +37,17 @@ So far the following languages are supported:
 
 | Language | Translation Status |
 |----------|--------------------|
-| English  | [![en translation status](https://hosted.weblate.org/widgets/outrun/en/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/en/) |
-| German   | [![de translation status](https://hosted.weblate.org/widgets/outrun/de/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/de/) |
-| French   | [![fr translation status](https://hosted.weblate.org/widgets/outrun/fr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fr/) |
-| Dutch    | [![nl translation status](https://hosted.weblate.org/widgets/outrun/nl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/nl/) |
-| Spanish  | [![es translation status](https://hosted.weblate.org/widgets/outrun/es/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/es/) |
 | Catalan  | [![ca translation status](https://hosted.weblate.org/widgets/outrun/ca/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/ca/) |
+| Czech    | [![cs translation status](https://hosted.weblate.org/widgets/outrun/cs/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/cs/) |
 | Danish   | [![da translation status](https://hosted.weblate.org/widgets/outrun/da/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/da/) |
+| Dutch    | [![nl translation status](https://hosted.weblate.org/widgets/outrun/nl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/nl/) |
+| English  | [![en translation status](https://hosted.weblate.org/widgets/outrun/en/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/en/) |
+| Finnish  | [![fi translation status](https://hosted.weblate.org/widgets/outrun/fi/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fi/) |
+| French   | [![fr translation status](https://hosted.weblate.org/widgets/outrun/fr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fr/) |
+| German   | [![de translation status](https://hosted.weblate.org/widgets/outrun/de/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/de/) |
+| Italian  | [![it translation status](https://hosted.weblate.org/widgets/outrun/it/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/it/) |
+| Spanish  | [![es translation status](https://hosted.weblate.org/widgets/outrun/es/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/es/) |
+| Swedish  | [![sv translation status](https://hosted.weblate.org/widgets/outrun/sv/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/sv/) |
 
 If you want to add languages or improve already translated ones you can do this [here](https://hosted.weblate.org/engage/outrun/).
 

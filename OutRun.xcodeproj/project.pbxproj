@@ -320,6 +320,18 @@
 		22C1107F24532C69009ACE81 /* WorkoutMapImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageRequest.swift; sourceTree = "<group>"; };
 		22C1108124532DBA009ACE81 /* WorkoutMapImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageSize.swift; sourceTree = "<group>"; };
 		22C1108324532E36009ACE81 /* WorkoutMapImageQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageQueue.swift; sourceTree = "<group>"; };
+		22C2EAE8257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAE9257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAEA257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22C2EAEB257FA12400DBBBBB /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAEC257FA12400DBBBBB /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAED257FA12400DBBBBB /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22C2EAEE257FA12D00DBBBBB /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAEF257FA12D00DBBBBB /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAF0257FA12E00DBBBBB /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22C2EAF1257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAF2257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAF3257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Changelog.strings; sourceTree = "<group>"; };
 		22CBB4492303F8D000DDA2E0 /* WorkoutHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeaderView.swift; sourceTree = "<group>"; };
 		22CBB44C2303FF5100DDA2E0 /* DistanceStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceStatsView.swift; sourceTree = "<group>"; };
 		22CBB44E2303FF6800DDA2E0 /* TimeStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStatsView.swift; sourceTree = "<group>"; };
@@ -978,6 +990,10 @@
 				es,
 				nl,
 				da,
+				it,
+				sv,
+				fi,
+				cs,
 			);
 			mainGroup = 22B6CF4A22CA0814002D2FB0;
 			productRefGroup = 22B6CF5422CA0814002D2FB0 /* Products */;
@@ -1225,6 +1241,10 @@
 				22A7EC6B25508F4F00474B2B /* es */,
 				22A7EC6E25508F6000474B2B /* nl */,
 				22A7EC7125508F6A00474B2B /* da */,
+				22C2EAE8257FA10F00DBBBBB /* it */,
+				22C2EAEB257FA12400DBBBBB /* sv */,
+				22C2EAEE257FA12D00DBBBBB /* fi */,
+				22C2EAF1257FA13700DBBBBB /* cs */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1247,6 +1267,10 @@
 				22A7EC6C25508F4F00474B2B /* es */,
 				22A7EC6F25508F6000474B2B /* nl */,
 				22A7EC7225508F6A00474B2B /* da */,
+				22C2EAE9257FA10F00DBBBBB /* it */,
+				22C2EAEC257FA12400DBBBBB /* sv */,
+				22C2EAEF257FA12D00DBBBBB /* fi */,
+				22C2EAF2257FA13700DBBBBB /* cs */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1261,6 +1285,10 @@
 				22A7EC6D25508F4F00474B2B /* es */,
 				22A7EC7025508F6000474B2B /* nl */,
 				22A7EC7325508F6A00474B2B /* da */,
+				22C2EAEA257FA10F00DBBBBB /* it */,
+				22C2EAED257FA12400DBBBBB /* sv */,
+				22C2EAF0257FA12E00DBBBBB /* fi */,
+				22C2EAF3257FA13700DBBBBB /* cs */,
 			);
 			name = Changelog.strings;
 			sourceTree = "<group>";
