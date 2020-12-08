@@ -34,6 +34,8 @@ class MapViewControllerWithContainerView: DetailViewController {
     let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .backgroundColor
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        view.layer.cornerRadius = 25
         return view
     }()
     
