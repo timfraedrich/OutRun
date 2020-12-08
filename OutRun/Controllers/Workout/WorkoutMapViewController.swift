@@ -21,7 +21,7 @@
 import UIKit
 import MapKit
 
-class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiagramViewDelegate {
+class WorkoutMapViewController: MapViewControllerWithContainerView, LabelledDiagramViewDelegate {
     
     var workout: Workout?
     var stats: WorkoutStats?
