@@ -102,7 +102,11 @@ extension DataManager {
                 completion(false, .databaseError(error: error), [])
             }
         }
-        
+    }
+    
+    public static func fetchCount<ObjectType: ORDataType>(of _: ObjectType.Type) -> Int {
+        let count = try? dataStack.fetchCount(From<ObjectType>())
+        return count ?? 0
     }
     
 }

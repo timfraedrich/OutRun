@@ -42,23 +42,23 @@ class DebugController: SettingsViewController {
                         ),
                         TitleSubTitleSetting(
                             title: "Workouts",
-                            subTitle: String(DataQueryManager.fetchCount(of: Workout.self))
+                            subTitle: String(DataManager.fetchCount(of: Workout.self))
                         ),
                         TitleSubTitleSetting(
                             title: "RouteDataSamples",
-                            subTitle: String(DataQueryManager.fetchCount(of: WorkoutRouteDataSample.self))
+                            subTitle: String(DataManager.fetchCount(of: WorkoutRouteDataSample.self))
                         ),
                         TitleSubTitleSetting(
                             title: "WorkoutEvents",
-                            subTitle: String(DataQueryManager.fetchCount(of: WorkoutEvent.self))
+                            subTitle: String(DataManager.fetchCount(of: WorkoutEvent.self))
                         ),
                         TitleSubTitleSetting(
                             title: "HeartRateDataSamples",
-                            subTitle: String(DataQueryManager.fetchCount(of: WorkoutHeartRateDataSample.self))
+                            subTitle: String(DataManager.fetchCount(of: WorkoutHeartRateDataSample.self))
                         ),
                         TitleSubTitleSetting(
                             title: "Events",
-                            subTitle: String(DataQueryManager.fetchCount(of: Event.self))
+                            subTitle: String(DataManager.fetchCount(of: Event.self))
                         )
                     ]
                 ),
