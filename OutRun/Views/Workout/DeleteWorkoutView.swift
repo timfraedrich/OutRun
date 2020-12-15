@@ -44,8 +44,7 @@ class DeleteWorkoutView: WorkoutActionView {
                         DispatchQueue.main.async {
                             
                             func deleteWorkout() {
-                                DataManager.delete(workout: self.workout) { success in
-                                    
+                                DataManager.deleteObject(object: self.workout) { (success, error) in
                                     self.controller.endLoading(completion: {
                                         
                                         if success {
@@ -54,13 +53,13 @@ class DeleteWorkoutView: WorkoutActionView {
                                             }
                                             controller.close()
                                         } else {
-                                            self.controller.displayError(withMessage: LS["WorkoutDeletion.Error.Message"])
+                                            self.controller.displayError(withMessage: LS["WorkoutDeletion.Error.Message"] + "\n\n\(error?.debugDescription)")
                                         }
                                     })
                                 }
                             }
                             
-                            if self.workout.healthKitUUID.value != nil {
+                            if self.workout.healthKitUUID != nil {
                                 
                                 let appleHealthAlert = UIAlertController(
                                     title: LS["WorkoutDeletion.AppleHealth.Title"],

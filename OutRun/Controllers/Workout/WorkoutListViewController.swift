@@ -233,11 +233,11 @@ class WorkoutListViewController: UITableViewController, ListSectionObserver, Tab
         var fetchClause: FetchClause {
             switch self {
             case .day(let desc):
-                return OrderBy<Workout>(desc ? .descending(\.startDate) : .ascending(\.startDate))
+                return OrderBy<Workout>(desc ? .descending(\._startDate) : .ascending(\._startDate))
             case .distance(let desc):
-                return OrderBy<Workout>(desc ? .descending(\.distance) : .ascending(\.distance))
+                return OrderBy<Workout>(desc ? .descending(\._distance) : .ascending(\._distance))
             case .duration(let desc):
-                return OrderBy<Workout>(desc ? .descending(\.activeDuration) : .ascending(\.activeDuration))
+                return OrderBy<Workout>(desc ? .descending(\._activeDuration) : .ascending(\._activeDuration))
             }
         }
         
@@ -269,9 +269,9 @@ class WorkoutListViewController: UITableViewController, ListSectionObserver, Tab
         var fetchClause: Where<Workout> {
             switch self {
             case .isRace:
-                return Where<Workout>(\.isRace == true)
+                return Where<Workout>(\._isRace == true)
             case .type(let type):
-                return Where<Workout>(\.workoutType == type.rawValue)
+                return Where<Workout>({ Where<Workout>($0._workoutType == type) })
             }
         }
     }

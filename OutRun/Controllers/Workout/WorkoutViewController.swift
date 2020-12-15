@@ -47,8 +47,8 @@ class WorkoutViewController: DetailViewController {
     
     override func viewDidLoad() {
         
-        self.headline = workout?.type.description ?? "ERROR"
-        self.dateLabel.text = (CustomTimeFormatting.dayString(forDate: workout?.startDate.value ?? .init(timeIntervalSince1970: 0)).uppercased() ) + (workout?.isRace.value ?? false ? " - " + LS["Workout.Race"] : "").uppercased()
+        self.headline = workout?.workoutType.description ?? "ERROR"
+        self.dateLabel.text = (CustomTimeFormatting.dayString(forDate: workout?.startDate ?? .init(timeIntervalSince1970: 0)).uppercased() ) + (workout?.isRace ?? false ? " - " + LS["Workout.Race"] : "").uppercased()
         super.viewDidLoad()
         
         headlineContainerView.addSubview(dateLabel)

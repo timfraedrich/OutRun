@@ -39,14 +39,14 @@ class WorkoutListCell: UITableViewCell, MKMapViewDelegate, ApplicationStateObser
         return view
     }()
     
-    lazy var headerView: UIView = WorkoutListHeader(dayIdentifier: workout.dayIdentifier.value)
+    lazy var headerView: UIView = WorkoutListHeader(dayIdentifier: workout.dayIdentifier)
     
     lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .foregroundColor
         view.layer.cornerRadius = 25
         view.clipsToBounds = true
-        if self.workout.isRace.value {
+        if self.workout.isRace {
             view.layer.borderColor = UIColor.accentColor.withAlphaComponent(0.5).cgColor
             view.layer.borderWidth = 4
         }
@@ -160,7 +160,7 @@ class WorkoutListCell: UITableViewCell, MKMapViewDelegate, ApplicationStateObser
     }
     
     func setup() {
-        self.typeLabel.text = workout.type.description.uppercased()
+        self.typeLabel.text = workout.workoutType.description.uppercased()
         
         self.loadLabels()
         
@@ -172,7 +172,7 @@ class WorkoutListCell: UITableViewCell, MKMapViewDelegate, ApplicationStateObser
     }
     
     func loadImage() {
-        let request = WorkoutMapImageRequest(workoutUUID: workout.uuid.value, size: .list) { (success, image) in
+        let request = WorkoutMapImageRequest(workoutUUID: workout.uuid, size: .list) { (success, image) in
             if let image = image {
                 self.mapImageView.image = image
             } else {
@@ -184,12 +184,12 @@ class WorkoutListCell: UITableViewCell, MKMapViewDelegate, ApplicationStateObser
     
     func loadLabels() {
         
-        let distanceMeasurement = NSMeasurement(doubleValue: workout.distance.value, unit: UnitLength.meters)
+        let distanceMeasurement = NSMeasurement(doubleValue: workout.distance, unit: UnitLength.meters)
         let distanceString = CustomMeasurementFormatting.string(forMeasurement: distanceMeasurement, type: .distance, rounding: .wholeNumbers)
         let attributedDistanceString = WorkoutListCell.attributedStringWithBigNumbers(withString: distanceString, fontSize: 36)
         self.distanceLabel.attributedText = attributedDistanceString
         
-        let durationMeasurement = NSMeasurement(doubleValue: workout.activeDuration.value, unit: UnitDuration.seconds)
+        let durationMeasurement = NSMeasurement(doubleValue: workout.activeDuration, unit: UnitDuration.seconds)
         let timeString = CustomMeasurementFormatting.string(forMeasurement: durationMeasurement, type: .time, rounding: .wholeNumbers)
         let attributedTimeString = WorkoutListCell.attributedStringWithBigNumbers(withString: timeString, fontSize: 24)
         self.durationLabel.attributedText = attributedTimeString
@@ -220,7 +220,7 @@ class WorkoutListCell: UITableViewCell, MKMapViewDelegate, ApplicationStateObser
                 self.circleView.layer.borderColor = UIColor.accentColor.cgColor
                 self.mapImageView.image = nil
                 self.loadImage()
-                if workout.isRace.value {
+                if workout.isRace {
                     self.containerView.layer.borderColor = UIColor.accentColor.withAlphaComponent(0.5).cgColor
                 }
             }

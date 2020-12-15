@@ -71,34 +71,32 @@ class WorkoutStats {
         
         self.workout = workout
         
-        self.type = workout.type
+        self.type = workout.workoutType
         
         self.hasWorkoutEvents = !workout.workoutEvents.isEmpty
         self.hasRouteSamples = !workout.routeData.isEmpty
         self.hasHeartRateData = !workout.heartRates.isEmpty
-        self.hasEnergyValue = workout.burnedEnergy.value != nil
+        self.hasEnergyValue = workout.burnedEnergy != nil
         
-        self.distance = NSMeasurement(doubleValue: workout.distance.value, unit: UnitLength.meters)
-        self.steps = workout.steps.value != nil ? NSMeasurement(doubleValue: Double(workout.steps.value!), unit: UnitCount.count) : nil
+        self.distance = NSMeasurement(doubleValue: workout.distance, unit: UnitLength.meters)
+        self.steps = workout.steps != nil ? NSMeasurement(doubleValue: Double(workout.steps!), unit: UnitCount.count) : nil
         
-        self.startDate = workout.startDate.value
-        self.endDate = workout.endDate.value
-        self.activeDuration = NSMeasurement(doubleValue: workout.activeDuration.value, unit: UnitDuration.seconds)
-        self.pauseDuration = NSMeasurement(doubleValue: workout.pauseDuration.value, unit: UnitDuration.seconds)
+        self.startDate = workout.startDate
+        self.endDate = workout.endDate
+        self.activeDuration = NSMeasurement(doubleValue: workout.activeDuration, unit: UnitDuration.seconds)
+        self.pauseDuration = NSMeasurement(doubleValue: workout.pauseDuration, unit: UnitDuration.seconds)
         
         self.averageSpeed = NSMeasurement(doubleValue: activeDuration.doubleValue != 0 ? (distance.doubleValue / activeDuration.doubleValue) : 0, unit: UnitSpeed.metersPerSecond)
         
-        self.burnedEnergy = hasEnergyValue ? NSMeasurement(doubleValue: workout.burnedEnergy.value ?? 0, unit: UnitEnergy.kilocalories) : nil
+        self.burnedEnergy = hasEnergyValue ? NSMeasurement(doubleValue: workout.burnedEnergy ?? 0, unit: UnitEnergy.kilocalories) : nil
         
         if hasRouteSamples {
             
-            self.ascendingAltitude = NSMeasurement(doubleValue: workout.ascendingAltitude.value, unit: UnitLength.meters)
-            self.descendingAltitude = NSMeasurement(doubleValue: workout.descendingAltitude.value, unit: UnitLength.meters)
+            self.ascendingAltitude = NSMeasurement(doubleValue: workout.ascend, unit: UnitLength.meters)
+            self.descendingAltitude = NSMeasurement(doubleValue: workout.descend, unit: UnitLength.meters)
             
             self.topSpeed = {
-                if let speed = (workout.routeData.max { (first, second) -> Bool in
-                    return first.speed.value < second.speed.value
-                })?.speed.value {
+                if let speed = (workout.routeData.max { $0.speed < $1.speed })?.speed {
                     return NSMeasurement(doubleValue: speed, unit: UnitSpeed.metersPerSecond)
                 } else {
                     return nil

@@ -348,7 +348,7 @@ class SettingsModel {
                                         func deleteData(completion: (() -> Void)? = nil) {
                                             DispatchQueue.main.async {
                                                 _ = controller.startLoading {
-                                                    DataManager.deleteAll { (success) in
+                                                    DataManager.deleteAll { (success, error) in
                                                         if success {
                                                             UserPreferences.reset()
                                                             

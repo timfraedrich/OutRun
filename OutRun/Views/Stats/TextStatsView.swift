@@ -35,17 +35,15 @@ class TextStatsView: UIView {
         self.workout = workout
         super.init(frame: .zero)
         
-        DispatchQueue.main.async {
-            let comment = workout.comment.value
-            let modified = LS["Workout.IsUserModified.Text"]
-            
-            if workout.isUserModified.value && comment != nil {
-                self.commentLabel.text = comment! + "\n\n" + modified
-            } else if workout.isUserModified.value {
-                self.commentLabel.text = modified
-            } else {
-                self.commentLabel.text = comment
-            }
+        let comment = workout.comment
+        let modified = LS["Workout.IsUserModified.Text"]
+        
+        if workout.isUserModified && comment != nil {
+            self.commentLabel.text = comment! + "\n\n" + modified
+        } else if workout.isUserModified {
+            self.commentLabel.text = modified
+        } else {
+            self.commentLabel.text = comment
         }
         
         let headerView = WorkoutHeaderView(title: LS["Workout.Comment"])

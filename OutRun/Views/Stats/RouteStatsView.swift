@@ -96,7 +96,7 @@ class RouteStatsView: UIView, ApplicationStateObserver {
     }
     
     func loadImage() {
-        let request = WorkoutMapImageRequest(workoutUUID: workout.uuid.value, size: .stats, highPriority: true) { (success, image) in
+        let request = WorkoutMapImageRequest(workoutUUID: workout.uuid, size: .stats, highPriority: true) { (success, image) in
             if let image = image {
                 self.mapImageView.image = image
             } else {

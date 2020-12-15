@@ -41,13 +41,13 @@ class EditWorkoutController: SettingsViewController {
         super.viewDidLoad()
         
         if let workout = workout {
-            self.workoutType = workout.type
-            self.distance = workout.distance.value / 1000
-            self.steps = workout.steps.value
-            self.startDate = workout.startDate.value
-            self.duration = workout.endDate.value.distance(to: workout.startDate.value)
-            self.isRace = workout.isRace.value
-            self.comment = workout.comment.value
+            self.workoutType = workout.workoutType
+            self.distance = workout.distance / 1000
+            self.steps = workout.steps
+            self.startDate = workout.startDate
+            self.duration = workout.endDate.distance(to: workout.startDate.value)
+            self.isRace = workout.isRace
+            self.comment = workout.comment
             self.addItem.isEnabled = true
             self.pauseResumeEvents = workout.workoutEvents.filter({ (event) -> Bool in
                 [.pause, .autoPause, .resume, .autoResume].contains(event.type)

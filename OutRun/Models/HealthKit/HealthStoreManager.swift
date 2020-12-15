@@ -289,7 +289,7 @@ enum HealthStoreManager {
         }
         
         DispatchQueue.main.async {
-            guard let targetUUID = workout.healthKitUUID.value else {
+            guard let targetUUID = workout.healthKitUUID else {
                 safeCompletion(false)
                 return
             }
