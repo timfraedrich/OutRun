@@ -36,22 +36,4 @@ extension WorkoutRouteDataSample: CustomStringConvertible, WorkoutSeriesDataSamp
         return desc + "latitude: \(latitude), longitude: \(longitude), altitude: \(altitude), direction: \(direction), speed: \(speed), timeStamp: \(timestamp))"
     }
     
-    var clLocation: CLLocation? {
-        
-        let location = CLLocation(
-            coordinate: CLLocationCoordinate2D(
-                latitude: latitude,
-                longitude: longitude
-            ),
-            altitude: altitude,
-            horizontalAccuracy: horizontalAccuracy,
-            verticalAccuracy: verticalAccuracy,
-            course: direction,
-            speed: speed,
-            timestamp: timestamp
-        )
-        
-        return location
-    }
-    
 }

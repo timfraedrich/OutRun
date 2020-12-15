@@ -29,4 +29,19 @@ extension CLLocation {
         return CLLocation(coordinate: coordinate, altitude: altitude ?? self.altitude, horizontalAccuracy: horizontalAccuracy ?? self.horizontalAccuracy, verticalAccuracy: verticalAccuracy ?? self.verticalAccuracy, course: course ?? self.course, speed: speed ?? self.speed, timestamp: timeStamp ?? self.timestamp)
     }
     
+    convenience init?(workout: ORWorkoutRouteDataSampleInterface) {
+        self.init(
+            coordinate: CLLocationCoordinate2D(
+                latitude: workout.latitude,
+                longitude: workout.longitude
+            ),
+            altitude: workout.altitude,
+            horizontalAccuracy: workout.horizontalAccuracy,
+            verticalAccuracy: workout.verticalAccuracy,
+            course: workout.direction,
+            speed: workout.speed,
+            timestamp: workout.timestamp
+        )
+    }
+    
 }

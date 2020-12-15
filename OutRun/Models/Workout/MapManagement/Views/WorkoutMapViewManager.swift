@@ -20,21 +20,16 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 enum WorkoutMapViewManager {
     
     static func setupRoute(forWorkout workout: Workout, mapView: MKMapView, customEdgePadding: UIEdgeInsets = UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20), completion: @escaping () -> Void) {
         var route = MKPolyline()
-        var locations = [CLLocationCoordinate2D]()
-        
-        workout.routeData.value.forEach { (sample) in
-            
-            guard let coordinate = sample.clLocation?.coordinate else {
-                return
-            }
-            locations.append(coordinate)
-        }
-        route = MKPolyline(coordinates: locations, count: locations.count)
+        let coordinates = workout.routeData.map({ (sample) -> CLLocationCoordinate2D in
+            CLLocationCoordinate2D(latitude: sample.latitude, longitude: sample.longitude)
+        })
+        route = MKPolyline(coordinates: coordinates, count: coordinates.count)
         mapView.delegate = WorkoutMapViewDelegate.standard
         mapView.addOverlay(route)
         mapView.setVisibleMapRect(route.boundingMapRect, edgePadding: customEdgePadding, animated: true)
