@@ -209,7 +209,7 @@
 "Settings.Contribution" = "Contribution";
 "Settings.Contribution.Maintainers" = "Maintainers";
 "Settings.Contribution.CodeContributors" = "Code Contributors";
-"Settings.Contribution.Translators" = "Translators"
+"Settings.Contribution.Translators" = "Translators";
 "Settings.AppVersion" = "App Version";
 "Settings.ReleaseStatus" = "Release Status";
 "ImportList.Title" = "Import";
