@@ -46,7 +46,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         
         let settingsController = SettingsViewController()
         settingsController.settingsModelClosure = {
-            return SettingsModel.custom
+            return SettingsModel.main
         }
         let settings = NavigationController(rootViewController: settingsController)
         let settingsTabBarItem = UITabBarItem(

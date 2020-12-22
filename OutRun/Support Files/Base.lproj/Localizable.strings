@@ -206,6 +206,10 @@
 "Settings.SourceCode" = "View Source Code";
 "Settings.SourceCode.Error" = "The link could not be opened due to the system rejecting it.";
 "Settings.AppInfo" = "App Info";
+"Settings.Contribution" = "Contribution";
+"Settings.Contribution.Maintainers" = "Maintainers";
+"Settings.Contribution.CodeContributors" = "Code Contributors";
+"Settings.Contribution.Translators" = "Translators"
 "Settings.AppVersion" = "App Version";
 "Settings.ReleaseStatus" = "Release Status";
 "ImportList.Title" = "Import";

@@ -1,0 +1,40 @@
+{
+    
+    "maintainers" : [
+        {
+            "name": "Tim Fraedrich",
+            "url": "https://github.com/timfraedrich"
+        }
+    ],
+    
+    "contributors" : [
+        {
+            "name" : "arthurpereira",
+            "url" : "https://github.com/arthurpereira"
+        },
+        {
+            "name" : "Jake Swedenburg",
+            "url" : "https://github.com/jswedenburg"
+        }
+    ],
+    
+    "translators" : [
+        {
+            "name" : "Harm Hilvers",
+            "url" : "https://hosted.weblate.org/user/harmhilvers"
+        },
+        {
+            "name" : "isametry",
+            "url" : "https://hosted.weblate.org/user/isametry"
+        },
+        {
+            "name" : "J. Lavoie",
+            "url" : "https://hosted.weblate.org/user/Edanas"
+        },
+        {
+            "name" : "mondstern",
+            "url" : "https://codeberg.org/mondstern"
+        }
+    ]
+    
+}
