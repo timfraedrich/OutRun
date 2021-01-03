@@ -38,6 +38,7 @@ So far the following languages are supported:
 | Language | Translation Status |
 |----------|--------------------|
 | Catalan  | [![ca translation status](https://hosted.weblate.org/widgets/outrun/ca/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/ca/) |
+| Croatian | [![hr translation status](https://hosted.weblate.org/widgets/outrun/hr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/hr/) |
 | Czech    | [![cs translation status](https://hosted.weblate.org/widgets/outrun/cs/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/cs/) |
 | Danish   | [![da translation status](https://hosted.weblate.org/widgets/outrun/da/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/da/) |
 | Dutch    | [![nl translation status](https://hosted.weblate.org/widgets/outrun/nl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/nl/) |
