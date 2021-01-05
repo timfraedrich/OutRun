@@ -181,6 +181,7 @@ class EditWorkoutController: SettingsViewController {
             
             let endDate = self.startDate.addingTimeInterval(self.duration)
             let distanceInMeters = (self.distance ?? 0) * 1000
+            let weightBeforeWorkout = getWeightBeforeWorkout(for: workout.type, with: distanceInMeters)
             
             DataManager.alterWorkout(
                 workout: workout,
@@ -190,7 +191,8 @@ class EditWorkoutController: SettingsViewController {
                 distance: distanceInMeters != workout.distance.value ? distanceInMeters : nil,
                 steps: self.steps != workout.steps.value ? (true, self.steps) : (false, nil),
                 isRace: self.isRace != workout.isRace.value ? self.isRace : nil,
-                comment: self.comment != workout.comment.value ? (true, self.comment) : (false, nil)
+                comment: self.comment != workout.comment.value ? (true, self.comment) : (false, nil),
+                weightBeforeWorkout: weightBeforeWorkout > 0 ? weightBeforeWorkout : nil
             ) { (success, error, workout) in
                 
                 guard let workout = workout, error == nil else {
@@ -273,6 +275,12 @@ class EditWorkoutController: SettingsViewController {
             }
         }
         
+    }
+
+    func getWeightBeforeWorkout(for type: Workout.WorkoutType, with distance: Double) -> Double {
+        guard let weight = UserPreferences.weight.value else { return 0.0 }
+        let burnedCalories = BurnedEnergyCalculator.calculateBurnedCalories(for: type, distance: distance, weight: weight)
+        return BurnedEnergyCalculator.calculeWeightBeforeWorkout(for: type, distance: distance, burnedCal: burnedCalories.doubleValue)
     }
     
     func showWorkoutController(workout: Workout) {

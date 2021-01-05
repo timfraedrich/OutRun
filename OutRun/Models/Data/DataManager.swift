@@ -408,7 +408,7 @@ struct DataManager {
     }
     
     // MARK: Alter Workout
-    static func alterWorkout(workout: Workout, type: Workout.WorkoutType? = nil, start startDate: Date? = nil, end endDate: Date? = nil, distance: Double? = nil, steps: (Bool, Int?) /*= (false, nil)*/, isRace: Bool? = nil, comment: (Bool, String?) = (false, nil), completion: @escaping ((Bool, Error?, Workout?) -> Void)) {
+    static func alterWorkout(workout: Workout, type: Workout.WorkoutType? = nil, start startDate: Date? = nil, end endDate: Date? = nil, distance: Double? = nil, steps: (Bool, Int?) /*= (false, nil)*/, isRace: Bool? = nil, comment: (Bool, String?) = (false, nil), weightBeforeWorkout: Double? = nil, completion: @escaping ((Bool, Error?, Workout?) -> Void)) {
         
         dataStack.perform(asynchronous: { (transaction) -> Workout in
             
@@ -439,6 +439,12 @@ struct DataManager {
             
             if startDate != nil || endDate != nil || distance != nil || steps.0 {
                 workout.isUserModified .= true
+            }
+
+            guard let weightBeforeWorkout = weightBeforeWorkout else { return workout }
+
+            if UserPreferences.weight.value != nil {
+                workout.burnedEnergy .= BurnedEnergyCalculator.calculateBurnedCalories(for: workout.type, distance: workout.distance.value, weight: weightBeforeWorkout).doubleValue
             }
             
             return workout
