@@ -35,4 +35,15 @@ class BurnedEnergyCalculator {
         let measurement = NSMeasurement(doubleValue: burnedCal, unit: UnitEnergy.kilocalories)
         return measurement
     }
+
+    static func calculeWeightBeforeWorkout(for type: Workout.WorkoutType, distance: Double, burnedCal: Double) -> Double {
+
+        /// burnedCal = kilometers * type.METSpeedMultiplier * weight
+        /// (kilometers * type.METSpeedMultiplier)weight = burnedCal
+        /// weight = burnedCal/(kilometers * type.METSpeedMultiplier)
+
+        let kilometers = distance / 1000
+        let weight = burnedCal / (kilometers * type.METSpeedMultiplier)
+        return weight
+    }
 }
