@@ -111,8 +111,12 @@ extension Workout: CustomStringConvertible {
         return "Workout(type: \(type.debugDescription), start: \(start), end: \(end), distance: \(distance), duration: \(duration), energyBurned: \(energy))"
     }
     
-    enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible {
+    enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible, CaseIterable {
         case running, walking, cycling, skating, hiking, unknown
+
+        static var allCases: [OutRunV3.Workout.WorkoutType] {
+            return [.running, .walking, .cycling, skating, .hiking]
+        }
         
         init(rawValue: Int) {
             switch rawValue {
