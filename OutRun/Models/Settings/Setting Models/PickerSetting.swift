@@ -37,9 +37,9 @@ class PickerSetting<Object: CustomStringConvertible>: InputViewSetting, UIPicker
         self.possibleValues = possibleValues
         
         super.init(title: title)
-        
-        if let firstValue = possibleValues.first {
-            self.setDateString(for: firstValue)
+
+        if let initialValue = possibleValues.safeValue(for: selectedIndex) {
+            self.setDateString(for: initialValue)
         }
         
         self.dummyTextField.inputView = picker
