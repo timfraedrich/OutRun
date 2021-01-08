@@ -281,3 +281,7 @@
 "OutRun" = "OutRun";
 "TabBar.Settings" = "Paramètres";
 "TabBar.Timeline" = "Historique";
+"Settings.Contribution.Translators" = "Traducteurs";
+"Settings.Contribution.CodeContributors" = "Contributeurs au code source";
+"Settings.Contribution.Maintainers" = "Mainteneurs";
+"Settings.Contribution" = "Contribution";
