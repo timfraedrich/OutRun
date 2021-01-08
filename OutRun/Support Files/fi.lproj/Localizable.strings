@@ -264,3 +264,7 @@
 "NewWorkoutAlert.Message" = "Millainen harjoitus haluat tallentaa?";
 "NewWorkoutAlert.Title" = "Harjoitus";
 "WorkoutListViewController.Headline" = "Harjoitukset";
+"Settings.Contribution.Translators" = "Kääntäjät";
+"Settings.Contribution.CodeContributors" = "Koodin avustajat";
+"Settings.Contribution.Maintainers" = "lläpitäjät";
+"Settings.Contribution" = "Osallistuminen";
