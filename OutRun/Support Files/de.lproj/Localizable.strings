@@ -283,3 +283,7 @@
 "WorkoutShareAlert.Message" = "Bitte wähle aus den folgenden Optionen, wie dein Workout exportiert werden soll. Solltest du eine Export-Option vermissen, melde dich doch und schlage diese vor.";
 "WorkoutShareAlert.Title" = "Exportiere dein Workout";
 "WorkoutList.Filter.HasRoute" = "Hat Route";
+"Settings.Contribution.CodeContributors" = "Entwickler";
+"Settings.Contribution.Maintainers" = "Hauptentwickler";
+"Settings.Contribution" = "Mitwirkungen";
+"Settings.Contribution.Translators" = "Übersetzer";
