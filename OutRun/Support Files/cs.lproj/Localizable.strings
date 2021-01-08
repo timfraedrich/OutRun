@@ -264,3 +264,7 @@
 "Workout.NewWorkout" = "Nový trénink";
 "Workout.TotalPace" = "Celk. tempo";
 "Workout.RollingPace" = "Akt. tempo";
+"Settings.Contribution.Translators" = "Překladatelé";
+"Settings.Contribution.CodeContributors" = "Přispěvatelé kódu";
+"Settings.Contribution.Maintainers" = "Správci";
+"Settings.Contribution" = "Příspěvek";
