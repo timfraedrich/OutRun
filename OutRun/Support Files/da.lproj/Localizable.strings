@@ -281,3 +281,7 @@
 "OutRun" = "OutRun";
 "TabBar.Settings" = "Indstillinger";
 "TabBar.Timeline" = "Tidslinje";
+"Settings.Contribution.Translators" = "Oversættere";
+"Settings.Contribution.CodeContributors" = "Kodebidragydere";
+"Settings.Contribution.Maintainers" = "Vedligeholdere";
+"Settings.Contribution" = "Bidrag";
