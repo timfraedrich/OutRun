@@ -281,3 +281,7 @@
 "Settings.AppleHealthPreferences" = "Apple Gezondheid-voorkeuren";
 "Settings.Weight" = "Gewicht";
 "Settings.UserSettings" = "Gebruikersinstellingen";
+"Settings.Contribution.Translators" = "Vertalers";
+"Settings.Contribution.CodeContributors" = "Code-bijdragers";
+"Settings.Contribution.Maintainers" = "Onderhouders";
+"Settings.Contribution" = "Bijdrage";
