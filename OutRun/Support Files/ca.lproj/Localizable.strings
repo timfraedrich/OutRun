@@ -281,3 +281,7 @@
 "WorkoutStats.Distance" = "Distància";
 "AppleHealth.RecentlyRemovedWorkouts" = "Algunes sessions d'entrenament desats en aquesta aplicació s'han eliminat recentment d'Apple Health, però encara es guarden aquí; els pots tornar a sincronitzar a Configuració o suprimir-los manualment.";
 "AppleHealth.Remove.Error" = "No s'ha pogut eliminar l'entrenament d'Apple Health. Torna-ho a provar més tard o consulta l'aplicació Apple Health. És possible que OutRun no hagi afegit l'entrenament a Apple Health, així que no el podem modificar.";
+"Settings.Contribution.Translators" = "Traductors";
+"Settings.Contribution.CodeContributors" = "Col·laboradors de codi";
+"Settings.Contribution.Maintainers" = "Mantenidors";
+"Settings.Contribution" = "Contribució";
