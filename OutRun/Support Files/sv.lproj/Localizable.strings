@@ -264,3 +264,7 @@
 "ImportList.ImportAll" = "Importera Alla";
 "ImportList.Error.FetchFailed.Message" = "Det fanns ett fel när man försökte hämta träningspass från Apple Health.";
 "Settings.ReleaseStatus" = "Frigöringsstatus";
+"Settings.Contribution.Translators" = "Översättare";
+"Settings.Contribution.CodeContributors" = "Kod bidragsgivare";
+"Settings.Contribution.Maintainers" = "Underhållare";
+"Settings.Contribution" = "Bidrag";
