@@ -1,0 +1,8 @@
+
+
+"NSMotionUsageDescription" = "Ta aplikacja wymaga funkcji śledzenia ruchu, aby rejestrować dane, takie jak kroki podczas treningu";
+"NSLocationWhenInUseUsageDescription" = "Ta aplikacja potrzebuje Twojej lokalizacji, aby śledzić treningi";
+"NSLocationAlwaysUsageDescription" = "Ta aplikacja potrzebuje Twojej lokalizacji, aby śledzić treningi";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Ta aplikacja potrzebuje Twojej lokalizacji, aby śledzić treningi";
+"NSHealthUpdateUsageDescription" = "Ta aplikacja wymaga dostępu do danych zdrowotnych, aby odczytać i możliwe prawidłowe treningi skonstruowane przez tę aplikację";
+"NSHealthShareUsageDescription" = "Ta aplikacja wymaga dostępu do danych zdrowotnych, aby zapisywać treningi skonstruowane przez tę aplikację";
