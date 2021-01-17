@@ -38,6 +38,7 @@ So far the following languages are supported:
 | Language | Translation Status |
 |----------|--------------------|
 | Catalan  | [![ca translation status](https://hosted.weblate.org/widgets/outrun/ca/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/ca/) |
+| Croatian | [![hr translation status](https://hosted.weblate.org/widgets/outrun/hr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/hr/) |
 | Czech    | [![cs translation status](https://hosted.weblate.org/widgets/outrun/cs/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/cs/) |
 | Danish   | [![da translation status](https://hosted.weblate.org/widgets/outrun/da/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/da/) |
 | Dutch    | [![nl translation status](https://hosted.weblate.org/widgets/outrun/nl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/nl/) |
@@ -46,6 +47,7 @@ So far the following languages are supported:
 | French   | [![fr translation status](https://hosted.weblate.org/widgets/outrun/fr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fr/) |
 | German   | [![de translation status](https://hosted.weblate.org/widgets/outrun/de/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/de/) |
 | Italian  | [![it translation status](https://hosted.weblate.org/widgets/outrun/it/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/it/) |
+| Polish   | [![pl translation status](https://hosted.weblate.org/widgets/outrun/pl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/pl/) |
 | Spanish  | [![es translation status](https://hosted.weblate.org/widgets/outrun/es/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/es/) |
 | Swedish  | [![sv translation status](https://hosted.weblate.org/widgets/outrun/sv/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/sv/) |
 
