@@ -596,15 +596,15 @@ class SettingsModel {
                 
                 return [
                     SettingSection(
-                        title: "Settings.Contribution.Maintainers",
+                        title: LS["Settings.Contribution.Maintainers"],
                         settings: Contribution.maintainers.map({ setting(for: $0) })
                     ),
                     SettingSection(
-                        title: "Settings.Contribution.CodeContributors",
+                        title: LS["Settings.Contribution.CodeContributors"],
                         settings: Contribution.contributors.map({ setting(for: $0) })
                     ),
                     SettingSection(
-                        title: "Settings.Contribution.Translators",
+                        title: LS["Settings.Contribution.Translators"],
                         settings: Contribution.translators.map({ setting(for: $0) })
                     )
                 ]
