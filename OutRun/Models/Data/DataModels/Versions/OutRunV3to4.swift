@@ -79,79 +79,34 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
                 
                 // MARK: - Intermediate Mapping: Elevation
                 
-                let altitudes = workout.routeData.map { (sample) -> Double in return sample.altitude.value }
-                let elevationData = Computation.computeElevationData(from: altitudes)
+                let elevationData = Computation.computeElevationData(
+                    from: workout.routeData.map { $0.altitude.value }
+                )
                 
                 workout.ascend .= elevationData.ascending
                 workout.descend .= elevationData.descending
                 
                 // MARK: - Intermediate Mapping: Events
-                // handling of events
-                var tempEvents = workout.workoutEvents.value
                 
-                // validation -> pauses are not taken to next version if this fails
-                
-                // date range
-                if tempEvents.contains(where: { (event) -> Bool in
-                    event.startDate.value < workout.startDate.value || event.startDate.value > workout.endDate.value
-                }) {
-                   continue
+                let events = workout.workoutEvents.value.map {
+                    (type: $0.eventType.value, date: $0.startDate.value)
                 }
                 
-                // starts with pause (manual pause == 0; automatic pause == 1)
-                if ![nil, 0, 1].contains(tempEvents.first?.eventType.value) {
-                    continue
-                }
+                let pauseData = Computation.calculateAndValidatePauses(from: events, workoutStart: workout.startDate.value, workoutEnd: workout.endDate.value)
                 
-                // shouldnt contain more resume than pause objects
-                let pauseCount = tempEvents.filter { (event) -> Bool in [0, 1].contains(event.eventType.value)}.count
-                let resumeCount = tempEvents.filter { (event) -> Bool in [2, 3].contains(event.eventType.value)}.count
-                if pauseCount < resumeCount {
-                    continue
-                }
+                if let pauseData = pauseData {
                 
-                // pause objects can be build from the data
-                var pauseData: [(start: Date, end: Date, type: Int)] = []
-                for (index, pauseEvent) in tempEvents.enumerated() where [0, 1].contains(pauseEvent.eventType.value) {
-                    if let resumeEvent = tempEvents.safeValue(for: index + 1), resumeEvent.eventType.value == pauseEvent.eventType.value + 2 {
-                        pauseData.append((start: pauseEvent.startDate.value, end: resumeEvent.startDate.value, type: pauseEvent.eventType.value))
-                    } else if index == tempEvents.count - 1 {
-                        pauseData.append((start: pauseEvent.startDate.value, end: workout.endDate.value, type: pauseEvent.eventType.value))
-                    } else {
-                        continue mainloop
-                    }
-                    
-                    // check for overlaps
-                    let dataPoint = pauseData.last!
-                    let range = dataPoint.start...dataPoint.end
-                    
-                    for otherDataPoint in pauseData.dropLast() {
+                    // now converting raw data to objects and adding them to the workout model
+                    for dataPoint in pauseData {
                         
-                        // check for duplicate
-                        if dataPoint == otherDataPoint {
-                            continue mainloop
-                        }
-                        
-                        // check for overlap
-                        let otherRange = otherDataPoint.start...otherDataPoint.end
-                        if range.overlaps(otherRange) {
-                            continue mainloop
-                        }
+                        let pause = transaction.create(Into<OutRunV3to4.WorkoutPause>())
+                        pause.uuid .= UUID()
+                        pause.startDate .= dataPoint.start
+                        pause.endDate .= dataPoint.end
+                        pause.pauseType .= dataPoint.type
+                        pause.workout .= workout
                         
                     }
-                }
-                
-                
-                
-                // now converting raw data to objects and adding them to the workout model
-                for dataPoint in pauseData {
-                    
-                    let pause = transaction.create(Into<OutRunV3to4.WorkoutPause>())
-                    pause.uuid .= UUID()
-                    pause.startDate .= dataPoint.start
-                    pause.endDate .= dataPoint.end
-                    pause.pauseType .= dataPoint.type
-                    pause.workout .= workout
                     
                 }
                 
@@ -161,14 +116,23 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
                 // MARK: - Intermediate Mapping: Durations
                 // settings now computable active and pause duration
                 
-                var pauseDuration: TimeInterval = 0
-                pauseData.forEach { (dataPoint) in
-                    pauseDuration += dataPoint.start.distance(to: dataPoint.end)
+                if let pauseData = pauseData {
+                    
+                    let durationData = Computation.calculateDurationData(
+                        from: workout.startDate.value,
+                        end: workout.endDate.value,
+                        pauses: pauseData.map { (start: $0.start, end: $0.end) }
+                    )
+                    
+                    workout.activeDuration .= durationData.activeDuration
+                    workout.pauseDuration .= durationData.pauseDuration
+                    
+                } else {
+                    
+                    workout.activeDuration .= workout.startDate.value.distance(to: workout.endDate.value)
+                    workout.pauseDuration .= 0
+                    
                 }
-                var activeDuration: TimeInterval = workout.startDate.value.distance(to: workout.endDate.value) - pauseDuration
-                
-                workout.activeDuration .= activeDuration
-                workout.pauseDuration .= pauseDuration
                 
             }
             
