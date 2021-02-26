@@ -58,7 +58,7 @@ class LabelledTimeView: UIView, SmallStatView {
     }
     
     private func setValue(_ date: Date?) {
-        self.timeLabel.text = date != nil ? CustomTimeFormatting.timeString(forDate: date!) : "--"
+        self.timeLabel.text = date != nil ? CustomDateFormatting.timeString(forDate: date!) : "--"
     }
     
     required init?(coder aDecoder: NSCoder) {

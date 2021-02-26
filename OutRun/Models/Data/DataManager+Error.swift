@@ -1,5 +1,5 @@
 //
-//  WorkoutHeartRateDataSample+ORWorkoutHeartRateDataSampleInterface.swift
+//  DataManager+Error.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -135,6 +135,7 @@ extension DataManager {
     
     // MARK: - Query Errors
     
+    /// An enumeration of possible errors coming up during the query process of route location data
     enum LocationQueryError: Error, CustomDebugStringConvertible {
         
         /// The specified `ORWorkoutInterface` object was not yet saved to the database, no query on it can be performed.
@@ -153,6 +154,15 @@ extension DataManager {
             case .databaseError(let error):
                 return "There was an error while trying to query locations from the workout:\n\(error)"
             }
+        }
+        
+    }
+    
+    /// An enumeration of possible errors coming up during the query process of backup data
+    enum BackupQueryError: Error, CustomDebugStringConvertible {
+            
+        var debugDescription: String {
+            return ""
         }
         
     }

@@ -58,7 +58,7 @@ class DatePickerSetting: InputViewSetting {
     }
     
     func setDateString(for date: Date) {
-        self.tableViewCell.detailTextLabel?.text = CustomTimeFormatting.fullDateString(forDate: date)
+        self.tableViewCell.detailTextLabel?.text = CustomDateFormatting.fullDateString(forDate: date)
     }
     
     @objc func newDateSelected(datePicker: UIDatePicker) {

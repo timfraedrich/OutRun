@@ -59,7 +59,7 @@ class WorkoutListHeader: UIView {
     }
     
     convenience init(dayIdentifier: String) {
-        self.init(title: CustomTimeFormatting.dayString(forIdentifier: dayIdentifier) ?? "ERROR")
+        self.init(title: CustomDateFormatting.dayString(forIdentifier: dayIdentifier) ?? "ERROR")
     }
     
     required init?(coder aDecoder: NSCoder) {

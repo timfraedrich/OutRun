@@ -27,20 +27,6 @@ typealias Workout = OutRunV4.Workout
 
 extension Workout: CustomStringConvertible {
     
-    private var tmpAddress: String {
-        get {
-            return String(format: "%p", unsafeBitCast(self, to: Int.self))
-        }
-    }
-    private static var _stats = [String:WorkoutStats]()
-    var cachedStats: WorkoutStats? {
-        get {
-            return Workout._stats[tmpAddress] ?? nil
-        } set(newValue) {
-            Workout._stats[tmpAddress] = newValue
-        }
-    }
-    
     var hasRouteData: Bool {
         return !self.routeData.isEmpty
     }
@@ -66,7 +52,7 @@ extension Workout: CustomStringConvertible {
         return desc + ")"
     }
     
-    enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType  {
+    enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType, Codable {
         case running, walking, cycling, skating, hiking, unknown
         
         init(rawValue: Int) {

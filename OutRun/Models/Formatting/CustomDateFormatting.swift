@@ -1,5 +1,5 @@
 //
-//  CustomTimeFormatting.swift
+//  CustomDateFormatting.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,7 +20,7 @@
 
 import Foundation
 
-class CustomTimeFormatting {
+class CustomDateFormatting {
     
     static var dayIDFormat = "yyyyMMdd"
     

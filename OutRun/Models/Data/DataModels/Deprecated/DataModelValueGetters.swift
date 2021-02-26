@@ -49,7 +49,7 @@ enum DataModelValueGetters {
         return duration
     }
     static func dayIdentifier(_ partialObject: PartialObject<OutRunV3.Workout>) -> String {
-        return CustomTimeFormatting.dayIdentifier(forDate: partialObject.value(for: { $0.startDate }))
+        return CustomDateFormatting.dayIdentifier(forDate: partialObject.value(for: { $0.startDate }))
     }
     static func dimensionalAltitudes(_ partialObject: PartialObject<OutRunV3.Workout>) -> (Double, Double) {
         let altitudes = partialObject.completeObject().routeData.map { (sample) -> Double in return sample.altitude.value }

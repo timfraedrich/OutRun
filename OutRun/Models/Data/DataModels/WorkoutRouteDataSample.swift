@@ -37,3 +37,23 @@ extension WorkoutRouteDataSample: CustomStringConvertible, WorkoutSeriesDataSamp
     }
     
 }
+
+// MARK: - TempValueConvertible
+
+extension WorkoutRouteDataSample: TempValueConvertible {
+    
+    var asTemp: TempWorkoutRouteDataSample {
+        TempWorkoutRouteDataSample(
+            uuid: self.uuid,
+            timestamp: self.timestamp,
+            latitude: self.latitude,
+            longitude: self.longitude,
+            altitude: self.altitude,
+            horizontalAccuracy: self.horizontalAccuracy,
+            verticalAccuracy: self.verticalAccuracy,
+            speed: self.speed,
+            direction: self.direction
+        )
+    }
+    
+}

@@ -45,3 +45,22 @@ extension CLLocation {
     }
     
 }
+
+// MARK: - TempValueConvertible
+
+extension CLLocation: TempValueConvertible {
+    
+    var asTemp: TempWorkoutRouteDataSample {
+        TempWorkoutRouteDataSample(
+            uuid: nil,
+            timestamp: self.timestamp,
+            latitude: self.coordinate.latitude,
+            longitude: self.coordinate.longitude,
+            altitude: self.altitude,
+            horizontalAccuracy: self.horizontalAccuracy,
+            verticalAccuracy: self.verticalAccuracy,
+            speed: self.speed,
+            direction: self.course
+        )
+    }
+}

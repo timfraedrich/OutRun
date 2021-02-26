@@ -1,5 +1,5 @@
 //
-//  DataQueryManager.swift
+//  DataManager+Query.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -23,6 +23,8 @@ import CoreStore
 import CoreLocation
 
 extension DataManager {
+    
+    // MARK: - General
     
     /**
      Queries the an object comforming to `ORDataType` with the provided `UUID` from the database.
@@ -63,6 +65,18 @@ extension DataManager {
     }
     
     /**
+     Fetches the count of saved objects of a specific `ORObjectType` inside the database.
+     - parameter of: the kind of `ORObjectType` to fetch the count of
+     - returns: the number of counted objects as an `Int`
+     */
+    public static func fetchCount<ObjectType: ORDataType>(of _: ObjectType.Type) -> Int {
+        let count = try? dataStack.fetchCount(From<ObjectType>())
+        return count ?? 0
+    }
+    
+    // MARK: - Workout Route
+    
+    /**
      Queries the route of a workout and converts each route sample into the corresponding `CLLocationDegrees`.
      - parameter workout: the object the route is going to be queried from, any `ORWorkoutInterface` will be accepted
      - parameter completion: the closure being called upon completion of the query
@@ -70,7 +84,7 @@ extension DataManager {
      - parameter error: provides more detail on a query failure if one occured
      - parameter coordinates: the queried array of `CLLocationCoordinate2D`
      */
-    public static func asyncLocationCoordinatesQuery(for workout: ORWorkoutInterface, completion: @escaping (_ success: Bool, _ error: LocationQueryError?, _ coordinates: [CLLocationCoordinate2D]) -> Void) {
+    public static func asyncLocationCoordinatesQuery(for workout: ORWorkoutInterface, completion: @escaping (_ error: LocationQueryError?, _ coordinates: [CLLocationCoordinate2D]) -> Void) {
         
         var error: LocationQueryError?
         
@@ -97,16 +111,26 @@ extension DataManager {
         }) { (result) in
             switch result {
             case .success(let coordinates):
-                completion(error == nil, error, coordinates)
+                completion(error, coordinates)
             case .failure(let error):
-                completion(false, .databaseError(error: error), [])
+                completion(.databaseError(error: error), [])
             }
         }
     }
     
-    public static func fetchCount<ObjectType: ORDataType>(of _: ObjectType.Type) -> Int {
-        let count = try? dataStack.fetchCount(From<ObjectType>())
-        return count ?? 0
+    // MARK: - Backup
+    
+    /**
+     Queries the data required to create a backup.
+     - parameter workouts:
+     - parameter completion:
+     - parameter progress
+     */
+    public static func queryBackupData(for workouts: [ORWorkoutInterface]? = nil, completion: @escaping (_ error: Error?, _ data: Data?) -> Void, progress: @escaping (Float) -> Void) {
+        
+        
+        
+        
     }
     
 }

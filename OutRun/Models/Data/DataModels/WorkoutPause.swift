@@ -39,7 +39,7 @@ extension WorkoutPause: CustomStringConvertible {
         return startDate.distance(to: endDate)
     }
     
-    enum WorkoutPauseType: RawRepresentable, ImportableAttributeType {
+    enum WorkoutPauseType: RawRepresentable, ImportableAttributeType, Codable {
         
         typealias RawValue = Int
         

@@ -36,7 +36,7 @@ extension WorkoutEvent: CustomStringConvertible {
         return desc + "type: \(eventType.debugDescription), timestamp: \(timestamp)"
     }
     
-    enum WorkoutEventType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType {
+    enum WorkoutEventType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType, Codable {
         case lap, marker, segment, unknown
         
         init(rawValue: Int) {

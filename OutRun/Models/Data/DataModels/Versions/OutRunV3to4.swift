@@ -75,7 +75,7 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
             mainloop: for workout in workouts where !workout.workoutEvents.isEmpty {
                 
                 let workout = transaction.edit(workout)!
-                workout.dayIdentifier .= CustomTimeFormatting.dayIdentifier(forDate: workout.startDate.value)
+                workout.dayIdentifier .= CustomDateFormatting.dayIdentifier(forDate: workout.startDate.value)
                 
                 // MARK: - Intermediate Mapping: Elevation
                 

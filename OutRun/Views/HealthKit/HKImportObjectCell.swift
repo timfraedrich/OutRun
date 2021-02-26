@@ -102,8 +102,8 @@ class HKImportObjectCell: UITableViewCell {
             make.left.greaterThanOrEqualTo(timeLabel).offset(10)
         }
         
-        dateLabel.text = CustomTimeFormatting.dayString(forDate: queryObject.startDate).uppercased()
-        timeLabel.text = CustomTimeFormatting.timeString(forDate: queryObject.startDate)
+        dateLabel.text = CustomDateFormatting.dayString(forDate: queryObject.startDate).uppercased()
+        timeLabel.text = CustomDateFormatting.timeString(forDate: queryObject.startDate)
         typeLabel.text = queryObject.type.description.uppercased()
         durationLabel.text = CustomMeasurementFormatting.string(forMeasurement: queryObject.duration, type: .time, rounding: .wholeNumbers)
         distanceLabel.text = CustomMeasurementFormatting.string(forMeasurement: queryObject.distance, type: .distance, rounding: .oneDigit)
