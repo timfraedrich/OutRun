@@ -45,22 +45,34 @@ enum TempV3 {
                 from: locations.map { $0.altitude }
             )
             
-            var pauseObjects: [(start: Date, end: Date)]
-            for workoutEvent in workoutEvents where workoutEvent.eventType < 4 {
-                
+            let pauseObjects = Computation.calculateAndValidatePauses(
+                from: workoutEvents.map { (type: $0.eventType, date: $0.startDate) },
+                workoutStart: startDate,
+                workoutEnd: endDate
+            ) ?? []
+            
+            let pauses = pauseObjects.map { (start, end, type) -> TempWorkoutPause in
+                TempWorkoutPause(
+                    uuid: nil,
+                    startDate: start,
+                    endDate: end,
+                    pauseType: .init(rawValue: type)
+                )
             }
             
             let durations = Computation.calculateDurationData(
                 from: startDate,
                 end: endDate,
-                pauses: pauseObjects
+                pauses: pauseObjects.map { (start: $0.start, end: $0.end) }
             )
+            
+            let events = workoutEvents.filter { $0.eventType > 3 }.map { $0.asTemp }
             
             return TempWorkout(
                 uuid: uuid,
                 workoutType: .init(rawValue: workoutType),
                 distance: distance,
-                steps: nil,
+                steps: steps,
                 startDate: startDate,
                 endDate: endDate,
                 burnedEnergy: burnedEnergy,
@@ -72,12 +84,12 @@ enum TempV3 {
                 ascend: elevation.ascending,
                 descend: elevation.descending,
                 activeDuration: durations.activeDuration,
-                pauseDuration: 0,
+                pauseDuration: durations.pauseDuration,
                 dayIdentifier: CustomDateFormatting.dayIdentifier(forDate: startDate),
-                heartRates: [],
+                heartRates: heartRates.map { $0.asTemp },
                 routeData: locations.map { $0.asTemp },
-                pauses: [],
-                workoutEvents: []
+                pauses: pauses,
+                workoutEvents: events
             )
         }
     }
@@ -91,6 +103,16 @@ enum TempV3 {
         
         var asTemp: TempWorkoutEvent {
             
+            if eventType > 3 {
+                print("Conversion from TempV3.WorkoutEvent to TempWorkoutEvent invalid: eventType too high")
+                fatalError()
+            }
+            
+            return TempWorkoutEvent(
+                uuid: uuid,
+                eventType: .init(rawValue: eventType - 3),
+                timestamp: startDate
+            )
         }
     }
     
@@ -128,7 +150,11 @@ enum TempV3 {
         let timestamp: Date
         
         var asTemp: TempWorkoutHeartRateDataSample {
-            
+            return TempWorkoutHeartRateDataSample(
+                uuid: uuid,
+                heartRate: heartRate,
+                timestamp: timestamp
+            )
         }
     }
     
@@ -142,7 +168,14 @@ enum TempV3 {
         let workouts: [UUID]
         
         var asTemp: TempEvent {
-            
+            return TempEvent(
+                uuid: uuid,
+                title: title,
+                comment: comment,
+                startDate: startDate,
+                endDate: endDate,
+                workouts: workouts
+            )
         }
     }
     

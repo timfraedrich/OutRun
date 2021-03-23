@@ -104,7 +104,6 @@
 		22A0B72C245B078100E1AB68 /* WorkoutStatsSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B72B245B078100E1AB68 /* WorkoutStatsSeries.swift */; };
 		22A0B72E245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B72D245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift */; };
 		22A0B732245B18B500E1AB68 /* WorkoutSeriesDataSampleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B731245B18B500E1AB68 /* WorkoutSeriesDataSampleType.swift */; };
-		22A0B734245B341800E1AB68 /* TempWorkoutSeriesDataSampleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B733245B341800E1AB68 /* TempWorkoutSeriesDataSampleType.swift */; };
 		22A0FAF324D8D4B7000292DF /* WorkoutCompletionActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0FAF224D8D4B7000292DF /* WorkoutCompletionActionHandler.swift */; };
 		22A5D02625C1A45100C30786 /* TempValueConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5D02525C1A45100C30786 /* TempValueConvertible.swift */; };
 		22A5D02A25C1A54B00C30786 /* TempV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5D02925C1A54B00C30786 /* TempV1.swift */; };
@@ -310,7 +309,6 @@
 		22A0B72B245B078100E1AB68 /* WorkoutStatsSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStatsSeries.swift; sourceTree = "<group>"; };
 		22A0B72D245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStatsSeriesSection.swift; sourceTree = "<group>"; };
 		22A0B731245B18B500E1AB68 /* WorkoutSeriesDataSampleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSeriesDataSampleType.swift; sourceTree = "<group>"; };
-		22A0B733245B341800E1AB68 /* TempWorkoutSeriesDataSampleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempWorkoutSeriesDataSampleType.swift; sourceTree = "<group>"; };
 		22A0FAF224D8D4B7000292DF /* WorkoutCompletionActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCompletionActionHandler.swift; sourceTree = "<group>"; };
 		22A5D02525C1A45100C30786 /* TempValueConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempValueConvertible.swift; sourceTree = "<group>"; };
 		22A5D02925C1A54B00C30786 /* TempV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempV1.swift; sourceTree = "<group>"; };
@@ -1039,7 +1037,6 @@
 				22CBE0D3244864970009D9A7 /* SmallStatView.swift */,
 				22CBE0D72448654F0009D9A7 /* StatView.swift */,
 				226E9A4823F00C0F00992815 /* TabBarSelectionObserver.swift */,
-				22A0B733245B341800E1AB68 /* TempWorkoutSeriesDataSampleType.swift */,
 				2230925A24D6F37100A3F636 /* WorkoutBuilder */,
 				22A0B731245B18B500E1AB68 /* WorkoutSeriesDataSampleType.swift */,
 			);
@@ -1210,7 +1207,6 @@
 				2250D11A239A70F700DE31A3 /* StartScreenFeatureView.swift in Sources */,
 				22CBE0D8244865500009D9A7 /* StatView.swift in Sources */,
 				2229056A24DDD81F0052ACFF /* WorkoutCompletionBanner.swift in Sources */,
-				22A0B734245B341800E1AB68 /* TempWorkoutSeriesDataSampleType.swift in Sources */,
 				2273943C233BF6EA00176A07 /* WorkoutMapImageManager.swift in Sources */,
 				22B492A12544BC53000BF622 /* Event+OREventInterface.swift in Sources */,
 				22A5D02625C1A45100C30786 /* TempValueConvertible.swift in Sources */,

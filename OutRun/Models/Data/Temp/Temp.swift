@@ -25,7 +25,7 @@ import HealthKit
 typealias TempWorkout = TempV4.Workout
 extension TempWorkout: ORWorkoutInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == Self {
+    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkout {
         
         let temp = object.asTemp
         
@@ -55,10 +55,26 @@ extension TempWorkout: ORWorkoutInterface {
     }
 }
 
-typealias TempWorkoutEvent = TempV4.WorkoutEvent
-extension TempWorkoutEvent {
+typealias TempWorkoutPause = TempV4.WorkoutPause
+extension TempWorkoutPause: ORWorkoutPauseInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == Self {
+    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutPause {
+        
+        let temp = object.asTemp
+        
+        self.init(
+            uuid: temp.uuid,
+            startDate: temp.startDate,
+            endDate: temp.endDate,
+            pauseType: temp.pauseType
+        )
+    }
+}
+
+typealias TempWorkoutEvent = TempV4.WorkoutEvent
+extension TempWorkoutEvent: ORWorkoutEventInterface {
+    
+    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutEvent {
         
         let temp = object.asTemp
         
@@ -71,9 +87,9 @@ extension TempWorkoutEvent {
 }
 
 typealias TempWorkoutRouteDataSample = TempV4.WorkoutRouteDataSample
-extension TempWorkoutRouteDataSample {
+extension TempWorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == Self {
+    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutRouteDataSample {
         
         let temp = object.asTemp
         
@@ -108,39 +124,36 @@ extension TempWorkoutRouteDataSample {
 }
 
 typealias TempWorkoutHeartRateDataSample = TempV4.WorkoutHeartRateDataSample
-extension TempWorkoutHeartRateDataSample: TempWorkoutSeriesDataSampleType {
+extension TempWorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface {
     
-    init?<T>(sample: T) where T : WorkoutSeriesDataSampleType {
-        if let sample = sample as? WorkoutHeartRateDataSample {
-            self.init(heartRateSample: sample)
-        } else {
-            return nil
-        }
-    }
-    
-    init(heartRateSample: WorkoutHeartRateDataSample) {
+    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutHeartRateDataSample {
+        
+        let temp = object.asTemp
+        
         self.init(
-            uuid: heartRateSample.uuid.value,
-            heartRate: heartRateSample.heartRate.value,
-            timestamp: heartRateSample.timestamp.value
+            uuid: temp.uuid,
+            heartRate: temp.heartRate,
+            timestamp: temp.timestamp
         )
+        
     }
     
 }
 
 typealias TempEvent = TempV4.Event
-extension TempEvent {
+extension TempEvent: OREventInterface {
     
-    init(event: Event) {
+    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempEvent {
+        
+        let temp = object.asTemp
+        
         self.init(
-            uuid: event.uuid.value,
-            title: event.title.value,
-            comment: event.comment.value,
-            startDate: event.startDate.value,
-            endDate: event.endDate.value,
-            workouts: event.workouts.compactMap({ (workout) -> UUID? in
-                return workout.uuid.value
-            })
+            uuid: temp.uuid,
+            title: temp.title,
+            comment: temp.comment,
+            startDate: temp.startDate,
+            endDate: temp.endDate,
+            workouts: temp.workouts
         )
     }
     

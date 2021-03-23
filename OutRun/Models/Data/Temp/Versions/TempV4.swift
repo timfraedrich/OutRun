@@ -22,7 +22,7 @@ import Foundation
 
 enum TempV4 {
     
-    class Workout: Codable {
+    class Workout: Codable, TempValueConvertible {
         
         let uuid: UUID?
         let workoutType: OutRunV4.Workout.WorkoutType
@@ -72,9 +72,13 @@ enum TempV4 {
             self.pauses = pauses
             self.workoutEvents = workoutEvents
         }
+        
+        var asTemp: TempWorkout {
+            return self
+        }
     }
 
-    class WorkoutPause: ORWorkoutPauseInterface, Codable {
+    class WorkoutPause: Codable, TempValueConvertible {
         
         let uuid: UUID?
         let startDate: Date
@@ -87,9 +91,13 @@ enum TempV4 {
             self.endDate = endDate
             self.pauseType = pauseType
         }
+        
+        var asTemp: TempWorkoutPause {
+            return self
+        }
     }
 
-    class WorkoutEvent: Codable {
+    class WorkoutEvent: Codable, TempValueConvertible {
         
         let uuid: UUID?
         let eventType: OutRunV4.WorkoutEvent.WorkoutEventType
@@ -100,9 +108,13 @@ enum TempV4 {
             self.eventType = eventType
             self.timestamp = timestamp
         }
+        
+        var asTemp: TempWorkoutEvent {
+            return self
+        }
     }
     
-    class WorkoutRouteDataSample: Codable {
+    class WorkoutRouteDataSample: Codable, TempValueConvertible {
         
         let uuid: UUID?
         let timestamp: Date
@@ -125,9 +137,13 @@ enum TempV4 {
             self.speed = speed
             self.direction = direction
         }
+        
+        var asTemp: TempWorkoutRouteDataSample {
+            return self
+        }
     }
     
-    class WorkoutHeartRateDataSample: Codable {
+    class WorkoutHeartRateDataSample: Codable, TempValueConvertible {
         
         let uuid: UUID?
         let heartRate: Double
@@ -138,9 +154,13 @@ enum TempV4 {
             self.heartRate = heartRate
             self.timestamp = timestamp
         }
+        
+        var asTemp: TempWorkoutHeartRateDataSample {
+            return self
+        }
     }
     
-    class Event: Codable {
+    class Event: Codable, TempValueConvertible {
 
         let uuid: UUID?
         let title: String
@@ -156,6 +176,10 @@ enum TempV4 {
             self.startDate = startDate
             self.endDate = endDate
             self.workouts = workouts
+        }
+        
+        var asTemp: TempEvent {
+            return self
         }
     }
     

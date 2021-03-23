@@ -20,49 +20,76 @@
 
 import Foundation
 
-typealias Backup = BackupV3
+typealias Backup = BackupV4
 
-struct BackupV1: Codable {
+protocol BackupProtocol: Codable {
+    
+    static var versionCode: String { get }
+    
+}
+
+struct BackupV1: BackupProtocol {
     
     static let versionCode = "V1"
     
     let date: Date
-    let version: String = BackupV1.versionCode
+    let version: String
     let workoutData: [TempV1.Workout]
     
     init(workouts: [TempV1.Workout]) {
         self.date = Date()
+        self.version = BackupV1.versionCode
         self.workoutData = workouts
     }
     
 }
 
-struct BackupV2: Codable {
+struct BackupV2: BackupProtocol {
     
     static let versionCode = "V2"
     
     let date: Date
-    let version: String = BackupV2.versionCode
+    let version: String
     let workoutData: [TempV2.Workout]
     
     init(workouts: [TempV2.Workout]) {
         self.date = Date()
+        self.version = BackupV2.versionCode
         self.workoutData = workouts
     }
     
 }
 
-struct BackupV3: Codable {
+struct BackupV3: BackupProtocol {
     
     static let versionCode = "V3"
     
     let date: Date
-    let version: String = BackupV3.versionCode
+    let version: String
     let workoutData: [TempV3.Workout]
     let eventData: [TempV3.Event]
     
     init(workouts: [TempV3.Workout], events: [TempV3.Event]) {
         self.date = Date()
+        self.version = BackupV3.versionCode
+        self.workoutData = workouts
+        self.eventData = events
+    }
+    
+}
+
+struct BackupV4: BackupProtocol {
+    
+    static let versionCode = "V4"
+    
+    let date: Date
+    let version: String
+    let workoutData: [TempV4.Workout]
+    let eventData: [TempV4.Event]
+    
+    init(workouts: [TempV4.Workout], events: [TempV4.Event]) {
+        self.date = Date()
+        self.version = BackupV3.versionCode
         self.workoutData = workouts
         self.eventData = events
     }
