@@ -23,9 +23,7 @@ import MobileCoreServices
 
 class BackupDocumentPickerDelegate: NSObject, UIDocumentPickerDelegate {
     
-    static var standard = BackupDocumentPickerDelegate()
-    
-    var currentController: UIViewController?
+    private var viewController: UIViewController
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         
@@ -33,28 +31,24 @@ class BackupDocumentPickerDelegate: NSObject, UIDocumentPickerDelegate {
             return
         }
         
-        let closure = self.currentController?.startLoading(asProgress: true, title: LS["Loading"], message: LS["Settings.ImportBackupData.Message"])
+        _ = viewController.startLoading(title: LS["Loading"], message: LS["Settings.ImportBackupData.Message"])
         
-        BackupManager.insertBackup(url: url, completion: { (success, workouts, events) in
+        BackupManager.insertBackup(from: url, completion: { (success, workouts, events) in
             print("was able to read and load backup:", success)
-            
-            guard let controller = self.currentController else {
-                return
-            }
             
             controller.endLoading {
                 if success {
-                    controller.displayInfoAlert(withMessage: LS["Settings.ImportBackupData.Success"])
+                    self.viewController.displayInfoAlert(withMessage: LS["Settings.ImportBackupData.Success"])
                 } else {
-                    controller.displayError(withMessage: LS["Settings.ImportBackupData.Error"])
+                    self.viewController.displayError(withMessage: LS["Settings.ImportBackupData.Error"])
                 }
-            }
-        }, progressClosure: { newProgress in
-            if let closure = closure {
-                closure(newProgress, nil)
             }
         })
         
+    }
+    
+    init(on controller: UIViewController) {
+        self.viewController = controller
     }
     
 }

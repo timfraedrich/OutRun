@@ -326,8 +326,7 @@ class SettingsModel {
                         selectAction: { (setting, controller, cell) in
                             let picker = UIDocumentPickerViewController(documentTypes: ["de.tadris.orbup"], in: .import)
                             picker.modalPresentationStyle = .formSheet
-                            picker.delegate = BackupDocumentPickerDelegate.standard
-                            BackupDocumentPickerDelegate.standard.currentController = controller
+                            picker.delegate = BackupDocumentPickerDelegate(on: controller)
                             controller.present(picker, animated: true)
                         }
                     ),
