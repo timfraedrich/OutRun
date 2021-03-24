@@ -274,6 +274,6 @@
 "WorkoutShareAlert.Message" = "Please choose how to export your workout from the options below. If you feel like an option is missing feel free to reach out and suggest it.";
 "WorkoutShareAlert.GPXExport" = "GPX File";
 "WorkoutShareAlert.OutRunBackup" = "OutRun Backup";
-"ShareManager.BackupError" = "The app failed to create a backup, please contact the support.";
-"ShareManager.GPXError" = "The app failed to create a GPX file, please contact the support.";
+"ExportManager.BackupError" = "The app failed to create a backup, please contact the support.";
+"ExportManager.GPXError" = "The app failed to create a GPX file, please contact the support.";
 "Changelog" = "Changelog";

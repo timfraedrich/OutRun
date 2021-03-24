@@ -20,9 +20,11 @@
 
 import UIKit
 
+typealias UIAlertActionTuple = (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?)
+
 extension UIAlertController {
     
-    convenience init(title: String, message: String? = nil, preferredStyle: UIAlertController.Style, options: [(title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?)], dismissAction: (() -> Void)? = nil) {
+    convenience init(title: String, message: String? = nil, preferredStyle: UIAlertController.Style, options: [UIAlertActionTuple], dismissAction: (() -> Void)? = nil) {
         
         self.init(title: title, message: message, preferredStyle: preferredStyle)
         

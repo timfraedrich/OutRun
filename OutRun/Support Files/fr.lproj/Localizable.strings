@@ -19,8 +19,8 @@
 //
 
 "Changelog" = "Modifications";
-"ShareManager.GPXError" = "L'application n'a pas réussi à créer un fichier GPX, veuillez contacter l'assistance.";
-"ShareManager.BackupError" = "L'application n'a pas réussi à créer une sauvegarde, veuillez contacter le support.";
+"ExportManager.GPXError" = "L'application n'a pas réussi à créer un fichier GPX, veuillez contacter l'assistance.";
+"ExportManager.BackupError" = "L'application n'a pas réussi à créer une sauvegarde, veuillez contacter le support.";
 "WorkoutShareAlert.OutRunBackup" = "Sauvegarde OutRun";
 "WorkoutShareAlert.GPXExport" = "Fichier GPX";
 "WorkoutShareAlert.Message" = "Veuillez choisir comment exporter votre entraînement parmi les options ci-dessous. Si vous pensez qu'une option manque, n'hésitez pas à nous contacter et à la suggérer.";

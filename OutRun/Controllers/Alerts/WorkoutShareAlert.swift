@@ -28,7 +28,7 @@ class WorkoutShareAlert: UIAlertController {
             title: LS["WorkoutShareAlert.OutRunBackup"],
             style: .default,
             action: { action in
-                ShareManager.exportBackupAlertAction(forWorkouts: [workout], controller: controller)
+                ExportManager.exportBackupAlertAction(forWorkouts: [workout], controller: controller)
             }
         )
         
@@ -36,7 +36,7 @@ class WorkoutShareAlert: UIAlertController {
             title: LS["WorkoutShareAlert.GPXExport"],
             style: .default,
             action: { action in
-                ShareManager.exportGPXAlertAction(for: workout, on: controller)
+                ExportManager.exportGPXAlertAction(for: workout, on: controller)
             }
         )
         

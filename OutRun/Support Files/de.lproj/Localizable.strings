@@ -274,8 +274,8 @@
 "MapView.MapTypeAlert.Title" = "Kartentyp";
 "MapView.MapTypeAlert.Message" = "Bitte wähle einen Kartentyp zum Anzeigen.";
 "Changelog" = "Änderungen";
-"ShareManager.GPXError" = "Die App konnte keine GPX-Datei erstellen, bitte kontaktiere den Support.";
-"ShareManager.BackupError" = "Die App konnte kein Backup erstellen, bitte kontaktiere den Support.";
+"ExportManager.GPXError" = "Die App konnte keine GPX-Datei erstellen, bitte kontaktiere den Support.";
+"ExportManager.BackupError" = "Die App konnte kein Backup erstellen, bitte kontaktiere den Support.";
 "WorkoutShareAlert.OutRunBackup" = "OutRun-Backup";
 "WorkoutShareAlert.GPXExport" = "GPX-Datei";
 "WorkoutShareAlert.Message" = "Bitte wähle aus den folgenden Optionen, wie dein Workout exportiert werden soll. Solltest du eine Export-Option vermissen, melde dich doch und schlage diese vor.";

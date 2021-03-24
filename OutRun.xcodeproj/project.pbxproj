@@ -29,7 +29,7 @@
 		222199812439F93C00ADAE24 /* UnitConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222199802439F93C00ADAE24 /* UnitConversion.swift */; };
 		22219983243A21AD00ADAE24 /* WorkoutListSortViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22219982243A21AD00ADAE24 /* WorkoutListSortViewController.swift */; };
 		222632AA24B24B980017517E /* ClearSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222632A924B24B980017517E /* ClearSettingsViewController.swift */; };
-		222632AC24B24FF80017517E /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222632AB24B24FF80017517E /* ShareManager.swift */; };
+		222632AC24B24FF80017517E /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222632AB24B24FF80017517E /* ExportManager.swift */; };
 		2226A3BD240BF9AD00FF7A94 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2226A3BC240BF9AD00FF7A94 /* ProgressViewController.swift */; };
 		2226A3BF240C441700FF7A94 /* TextViewSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2226A3BE240C441700FF7A94 /* TextViewSetting.swift */; };
 		2226A3C1240C483400FF7A94 /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2226A3C0240C483400FF7A94 /* UITextView.swift */; };
@@ -230,7 +230,7 @@
 		222199802439F93C00ADAE24 /* UnitConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitConversion.swift; sourceTree = "<group>"; };
 		22219982243A21AD00ADAE24 /* WorkoutListSortViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListSortViewController.swift; sourceTree = "<group>"; };
 		222632A924B24B980017517E /* ClearSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearSettingsViewController.swift; sourceTree = "<group>"; };
-		222632AB24B24FF80017517E /* ShareManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareManager.swift; sourceTree = "<group>"; };
+		222632AB24B24FF80017517E /* ExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportManager.swift; sourceTree = "<group>"; };
 		2226A3BC240BF9AD00FF7A94 /* ProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		2226A3BE240C441700FF7A94 /* TextViewSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewSetting.swift; sourceTree = "<group>"; };
 		2226A3C0240C483400FF7A94 /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
@@ -924,7 +924,7 @@
 				221436B824432B390010D82B /* DataManager+Query.swift */,
 				2298D20C234543B900344989 /* DataModels */,
 				22B2A8A2230D350000EF8558 /* RelativeMeasurement.swift */,
-				222632AB24B24FF80017517E /* ShareManager.swift */,
+				222632AB24B24FF80017517E /* ExportManager.swift */,
 				22A5D02325C1A42D00C30786 /* Temp */,
 				222199802439F93C00ADAE24 /* UnitConversion.swift */,
 				22FD3252255F319E007719C9 /* ORPrimitive.swift */,
@@ -1370,7 +1370,7 @@
 				22A5D02E25C1A57600C30786 /* TempV2.swift in Sources */,
 				22B1DD8C253F90FD0093822B /* ORDataModel.swift in Sources */,
 				22B492952544B6D5000BF622 /* WorkoutPause+ORWorkoutPauseInterface.swift in Sources */,
-				222632AC24B24FF80017517E /* ShareManager.swift in Sources */,
+				222632AC24B24FF80017517E /* ExportManager.swift in Sources */,
 				22B6CF5722CA0814002D2FB0 /* AppDelegate.swift in Sources */,
 				22FEA0A724CDA3FF0007CA9C /* ClosedRange.swift in Sources */,
 				2230925C24D6F39700A3F636 /* WorkoutBuilderComponent.swift in Sources */,

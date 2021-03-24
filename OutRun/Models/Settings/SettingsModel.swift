@@ -317,7 +317,7 @@ class SettingsModel {
                         title: LS["Settings.CreateBackup"],
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
-                            ShareManager.exportBackupAlertAction(controller: controller)
+                            ExportManager.exportBackupAlertAction(controller: controller)
                         }
                     ),
                     TitleSetting(

@@ -1,5 +1,5 @@
 //
-//  ShareManager.swift
+//  ExportManager.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -21,7 +21,84 @@
 import Foundation
 import CoreGPX
 
-enum ShareManager {
+public class ExportManager {
+    
+    /// An enumeration of types workouts can be exported as.
+    public enum ExportTypes: CaseIterable {
+        
+        /// OutRun-Backup file
+        case orbup
+        /// GPX-File
+        case gpx
+        
+        /// A string representation of the export type.
+        public var title: String {
+            switch self {
+            case .orbup:
+                return LS["WorkoutShareAlert.OutRunBackup"]
+            case .gpx:
+                return LS["WorkoutShareAlert.GPXExport"]
+            }
+        }
+        
+        /**
+         A function performing the action needed for the export.
+         - parameter completion: indicating the success and pointing to an optional URL where the file to share will be located
+         */
+        fileprivate func performExport(completion: (Bool, URL) -> Void) {
+            switch self {
+            case .orbup:
+                break
+            case .gpx:
+                break
+            }
+        }
+        
+    }
+    
+    public static func createShareAlert() -> UIAlertController {
+        
+        var exportOptions: [UIAlertActionTuple]
+        
+        for type in ExportTypes.allCases {
+            
+            exportOptions.append((
+                title: type.title,
+                style: .default,
+                action: { action in
+                    ExportManager.exportBackupAlertAction(forWorkouts: [workout], controller: controller)
+                }
+            ))
+            
+        }
+        
+        let orBackupOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) =
+        
+        let gpxOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
+            title: ,
+            style: .default,
+            action: { action in
+                ExportManager.exportGPXAlertAction(for: workout, on: controller)
+            }
+        )
+        
+        let cancel: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
+            title: LS["Cancel"],
+            style: .cancel,
+            action: nil
+        )
+        
+        self.init(
+            title: LS["WorkoutShareAlert.Title"],
+            message: LS["WorkoutShareAlert.Message"],
+            preferredStyle: .actionSheet,
+            options: [
+                orBackupOption,
+                gpxOption,
+                cancel
+            ]
+        )
+    }
     
     /// A funtion displaying the iOS share menu on top of the given controller for a file at the given directory (provided it exists); if `shouldDeleteFileAfter` is set to true, the file at the given path will get deleted once the menu is dismissed, this might be useful if the file is saved at the temporary directory
     static func displayShareMenu(forFileAt url: URL?, on controller: UIViewController, shouldDeleteFileAfter shouldDelete: Bool = true) {
@@ -36,7 +113,7 @@ enum ShareManager {
                 do {
                     try FileManager.default.removeItem(at: url)
                 } catch {
-                    print("[ShareManager] Deletion of (\(url)) failed")
+                    print("[ExportManager] Deletion of (\(url)) failed")
                 }
             }
         }
@@ -89,18 +166,18 @@ enum ShareManager {
                 try root.outputToFile(saveAt: directoryUrl, fileName: fileName)
                 completion(true, fullURL)
             } catch {
-                print("[ShareManager] Failed to save GPX file")
+                print("[ExportManager] Failed to save GPX file")
                 completion(false, nil)
             }
         }
     }
     
     static func exportGPXAlertAction(for workout: Workout, on controller: UIViewController) {
-        ShareManager.createGPXFile(for: workout) { (success, url) in
+        ExportManager.createGPXFile(for: workout) { (success, url) in
             if let url = url {
-                ShareManager.displayShareMenu(forFileAt: url, on: controller)
+                ExportManager.displayShareMenu(forFileAt: url, on: controller)
             } else {
-                controller.displayError(withMessage: LS["ShareManager.GPX.Error"])
+                controller.displayError(withMessage: LS["ExportManager.GPX.Error"])
             }
         }
     }
@@ -109,19 +186,19 @@ enum ShareManager {
         let alertProgressClosure = controller.startLoading(asProgress: true, title: LS["Loading"], message: LS["Settings.ExportBackupData.Message"])
         
         BackupManager.createBackup(
-            forWorkouts: workouts,
+            for: workouts,
             completion: { (success, url) in
                 controller.endLoading {
                     if url != nil {
-                        ShareManager.displayShareMenu(forFileAt: url, on: controller)
+                        ExportManager.displayShareMenu(forFileAt: url, on: controller)
                     } else {
-                        controller.displayError(withMessage: LS["ShareManager.Backup.Error"])
+                        controller.displayError(withMessage: LS["ExportManager.Backup.Error"])
                     }
                 }
             },
-            progressClosure: { progressValue in
+            progress: { progressValue in
                 DispatchQueue.main.async {
-                    alertProgressClosure?(progressValue, nil)
+                    alertProgressClosure?(Double(progressValue), nil)
                 }
             }
         )
