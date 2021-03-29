@@ -45,10 +45,18 @@ public class ExportManager {
          A function performing the action needed for the export.
          - parameter completion: indicating the success and pointing to an optional URL where the file to share will be located
          */
-        fileprivate func performExport(completion: (Bool, URL) -> Void) {
+        fileprivate func performExport(for workouts: [ORWorkoutInterface], completion: @escaping (Bool, [URL]) -> Void, progress: ((Float) -> Void)? = nil) {
             switch self {
             case .orbup:
-                break
+                
+                BackupManager.createBackup(
+                    for: workouts,
+                    completion: { success, url in
+                        completion(success, [url].filterNil())
+                    },
+                    progress: progress ?? { _ in }
+                )
+                
             case .gpx:
                 break
             }
@@ -56,7 +64,7 @@ public class ExportManager {
         
     }
     
-    public static func createShareAlert() -> UIAlertController {
+    public static func displayShareAlert(for workouts: [ORWorkoutInterface], on controller: UIViewController) {
         
         var exportOptions: [UIAlertActionTuple]
         
@@ -75,7 +83,7 @@ public class ExportManager {
         let orBackupOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) =
         
         let gpxOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
-            title: ,
+            title: LS["Cancle"],
             style: .default,
             action: { action in
                 ExportManager.exportGPXAlertAction(for: workout, on: controller)
@@ -101,19 +109,19 @@ public class ExportManager {
     }
     
     /// A funtion displaying the iOS share menu on top of the given controller for a file at the given directory (provided it exists); if `shouldDeleteFileAfter` is set to true, the file at the given path will get deleted once the menu is dismissed, this might be useful if the file is saved at the temporary directory
-    static func displayShareMenu(forFileAt url: URL?, on controller: UIViewController, shouldDeleteFileAfter shouldDelete: Bool = true) {
+    static func displayShareMenu(forFilesAt urls: [URL], on controller: UIViewController, shouldDeleteFileAfter shouldDelete: Bool = true) {
         
-        guard let url = url else {
-            return
-        }
-        let objectsToShare = [url]
-        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        guard !urls.isEmpty else { return }
+        
+        let activityVC = UIActivityViewController(activityItems: urls, applicationActivities: nil)
         activityVC.completionWithItemsHandler = { (type, completed, returnedItems, activityError) in
             if shouldDelete {
                 do {
-                    try FileManager.default.removeItem(at: url)
+                    for url in urls {
+                        try FileManager.default.removeItem(at: url)
+                    }
                 } catch {
-                    print("[ExportManager] Deletion of (\(url)) failed")
+                    print("[ExportManager] Deletion of file failed:", error.localizedDescription)
                 }
             }
         }
@@ -121,7 +129,14 @@ public class ExportManager {
         controller.present(activityVC, animated: true)
     }
     
-    private static func createGPXFile(for workout: Workout, completion: @escaping (Bool, URL?) -> Void) {
+    private static func createGPXFile(for workouts: [ORWorkoutInterface], completion: @escaping (Bool, [URL]) -> Void) {
+        
+        for workout in workouts {
+            
+            
+            
+        }
+        
         DataQueryManager.querySectionedSampleSeries(for: workout, sampleType: WorkoutRouteDataSample.self) { (success, sections) in
             
             guard success, !sections.isEmpty, let sections = sections as? [(type: WorkoutStatsSeriesSection.SectionType, samples: [TempWorkoutRouteDataSample])] else {
