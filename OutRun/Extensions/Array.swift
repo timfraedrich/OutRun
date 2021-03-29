@@ -20,10 +20,48 @@
 
 import Foundation
 
+// MARK: Array
+
 extension Array {
     
     func safeValue(for index: Int) -> Array.Element? {
         return self.indices.contains(index) ? self[index] : nil
+    }
+    
+    func filterNil<ValueType>() -> Array<ValueType> where Element == Optional<ValueType> {
+        return self.compactMap { return $0 }
+    }
+    
+}
+
+// MARK: Array<String>
+
+extension Array where Element == String {
+    
+    /**
+     A function converting an `Array` of `String`s into a `Dictionary<String, String>` that has each element except the last as a key with the following element as the value
+     - note: This is used in conjunction with `CoreStore` to form a `CoreStore.MigrationChain` from an `Array`
+     */
+    public func asConsequtiveDictionary() -> Dictionary<String, String> {
+        
+        let keysWithValues = self.dropLast().enumerated().map { (index, element) -> (String, String) in
+            (element, self[index + 1])
+        }
+        return Dictionary(uniqueKeysWithValues: keysWithValues)
+        
+    }
+    
+}
+
+// MARK: Array<Equatable>
+
+extension Array where Element: Equatable {
+    
+    func containsOptional(_ element: Element?) -> Bool {
+        if let element = element {
+            return self.contains(element)
+        }
+        return false
     }
     
 }
