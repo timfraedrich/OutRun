@@ -21,17 +21,24 @@
 import UIKit
 
 extension Sequence {
-    func groupBy<U : Comparable>(keyFunc: (Iterator.Element) -> U) -> [(U,[Iterator.Element])] {
-        var tupArr: [(U,[Iterator.Element])] = []
-        for el in self {
-            let key = keyFunc(el)
-            if tupArr.last?.0 == key {
-                tupArr[tupArr.endIndex-1].1.append(el)
-            }
-            else {
-                tupArr.append((key,[el]))
+    
+    func groupBy<GroupingType : Comparable>(keyFunc: (Iterator.Element) -> GroupingType) -> Dictionary<GroupingType, [Iterator.Element]> {
+        
+        var dictionary: Dictionary<GroupingType, [Iterator.Element]> = [:]
+        
+        for element in self {
+            let key = keyFunc(element)
+            
+            if dictionary.keys.contains(key) {
+                var newValue = dictionary[key] ?? []
+                newValue.append(element)
+                dictionary.updateValue(newValue, forKey: key)
+            } else {
+                dictionary.updateValue([element], forKey: key)
             }
         }
-        return tupArr
+        
+        return dictionary
     }
+    
 }
