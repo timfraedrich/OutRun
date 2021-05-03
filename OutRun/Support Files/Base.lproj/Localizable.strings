@@ -285,3 +285,4 @@
 "ShareManager.BackupError" = "The app failed to create a backup, please contact the support.";
 "ShareManager.GPXError" = "The app failed to create a GPX file, please contact the support.";
 "Changelog" = "Changelog";
+"Keep" = "Keep";
