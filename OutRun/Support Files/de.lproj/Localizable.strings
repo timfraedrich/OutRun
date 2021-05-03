@@ -260,7 +260,7 @@
 "TerminationBackup.Save.Error" = "Es tut uns leid, aber das Workout konnte nicht gespeichert werden.";
 "TerminationBackup.Save.Health.Error" = "Aus irgendeinem Grund konnte das Workout nicht in Apple Health gespeichert werden.";
 "TerminationBackup.LostAlert.Title" = "Workout verloren";
-"TerminationBackup.LostAlert.Message" = "Scheinbar hast du bei der letzten Aufzeichnung eines Workouts die App beendet, wir haben es nicht geschafft diese Daten zu retten.";
+"TerminationBackup.LostAlert.Message" = "Scheinbar hast du bei der letzten Aufzeichnung eines Workouts die Anwendung beendet, wir haben es nicht geschafft diese Daten zu retten.";
 "Today" = "Heute";
 "Yesterday" = "Gestern";
 "EditWorkoutController.SaveWorkout.Error" = "Das Workout konnte nicht gespeichert werden, bitte versuche es später erneut.";
