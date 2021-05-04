@@ -41,11 +41,23 @@ public class ExportManager {
             }
         }
         
+        /// A string describing what might have gone wrong while exporting to the specific type.
+        fileprivate var errorMessage: String {
+            switch self {
+            case .orbup:
+                return LS["ExportManager.Backup.Error"]
+            case .gpx:
+                return LS["ExportManager.GPX.Error"]
+            }
+        }
+        
         /**
          A function performing the action needed for the export.
-         - parameter completion: indicating the success and pointing to an optional URL where the file to share will be located
+         - parameter completion: a closure to be performed when the export is finished
+         - parameter success: indicating the success of the export
+         - parameter urls: a list pointing to the files to be exported
          */
-        fileprivate func performExport(for workouts: [ORWorkoutInterface], completion: @escaping (Bool, [URL]) -> Void, progress: ((Float) -> Void)? = nil) {
+        fileprivate func performExport(for workouts: [ORWorkoutInterface], completion: @escaping (_ success: Bool, _ urls: [URL]) -> Void) {
             switch self {
             case .orbup:
                 
@@ -54,62 +66,73 @@ public class ExportManager {
                     completion: { success, url in
                         completion(success, [url].filterNil())
                     },
-                    progress: progress ?? { _ in }
+                    progress: { _ in }
                 )
                 
             case .gpx:
-                break
+                
+                ExportManager.createGPXFiles(
+                    for: workouts,
+                    completion: { (success, urls) in
+                        completion(success, urls)
+                    }
+                )
+                
             }
         }
         
     }
     
-    public static func displayShareAlert(for workouts: [ORWorkoutInterface], on controller: UIViewController) {
+    /**
+     A function displaying a custom share alert to export workout data to different formats.
+     - parameter workouts: the workouts that are supposed to be shared
+     - parameter controller: the `UIViewController` the alert is supposed to be shown on
+     */
+    static func displayShareAlert(for workouts: [ORWorkoutInterface], on controller: UIViewController) {
         
-        var exportOptions: [UIAlertActionTuple]
+        var alertOptions: [UIAlertActionTuple]
         
         for type in ExportTypes.allCases {
             
-            exportOptions.append((
+            alertOptions.append((
                 title: type.title,
                 style: .default,
-                action: { action in
-                    ExportManager.exportBackupAlertAction(forWorkouts: [workout], controller: controller)
+                action: { _ in
+                    
+                    _ = controller.startLoading {
+                        type.performExport(for: workouts) { (success, files) in
+                            controller.endLoading {
+                                displayShareMenu(for: files, on: controller)
+                            }
+                        }
+                    }
+                    
                 }
             ))
             
         }
         
-        let orBackupOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) =
-        
-        let gpxOption: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
-            title: LS["Cancle"],
-            style: .default,
-            action: { action in
-                ExportManager.exportGPXAlertAction(for: workout, on: controller)
-            }
-        )
-        
-        let cancel: (title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) = (
+        alertOptions.append((
             title: LS["Cancel"],
             style: .cancel,
             action: nil
-        )
+        ))
         
-        self.init(
+        let alert = UIAlertController(
             title: LS["WorkoutShareAlert.Title"],
             message: LS["WorkoutShareAlert.Message"],
             preferredStyle: .actionSheet,
-            options: [
-                orBackupOption,
-                gpxOption,
-                cancel
-            ]
+            options: alertOptions
         )
+        
+        controller.present(alert, animated: true)
     }
     
-    /// A funtion displaying the iOS share menu on top of the given controller for a file at the given directory (provided it exists); if `shouldDeleteFileAfter` is set to true, the file at the given path will get deleted once the menu is dismissed, this might be useful if the file is saved at the temporary directory
-    static func displayShareMenu(forFilesAt urls: [URL], on controller: UIViewController, shouldDeleteFileAfter shouldDelete: Bool = true) {
+    /** A funtion displaying the iOS share menu on top of the given controller for files at the given directory.
+     - parameter urls: the urls pointing to the files to be shared
+     - parameter shoudlDeleteAfter: a boolean indicating if the files are supposed to be deleted once the menu is dismissed, this might be useful if the files are saved at a temporary directory
+     */
+    private static func displayShareMenu(for urls: [URL], on controller: UIViewController, shouldDeleteAfter shouldDelete: Bool = true) {
         
         guard !urls.isEmpty else { return }
         
@@ -129,7 +152,17 @@ public class ExportManager {
         controller.present(activityVC, animated: true)
     }
     
-    private static func createGPXFile(for workouts: [ORWorkoutInterface], completion: @escaping (Bool, [URL]) -> Void) {
+    /**
+     A function transforming workout route data to GPX files.
+     - parameter workouts: the workouts that are supposed to be converted
+     - parameter completion: a closure being performed upon completion
+     - parameter success: a boolean indicating the success of the operation
+     - parameter urls: a list of urls pointing to the created files
+     */
+    private static func createGPXFiles(for workouts: [ORWorkoutInterface], completion: @escaping (_ success: Bool, _ urls: [URL]) -> Void) {
+        
+        var urls = [URL]()
+        var count = 0
         
         for workout in workouts {
             
@@ -185,38 +218,6 @@ public class ExportManager {
                 completion(false, nil)
             }
         }
-    }
-    
-    static func exportGPXAlertAction(for workout: Workout, on controller: UIViewController) {
-        ExportManager.createGPXFile(for: workout) { (success, url) in
-            if let url = url {
-                ExportManager.displayShareMenu(forFileAt: url, on: controller)
-            } else {
-                controller.displayError(withMessage: LS["ExportManager.GPX.Error"])
-            }
-        }
-    }
-    
-    static func exportBackupAlertAction(forWorkouts workouts: [Workout]? = nil, controller: UIViewController) {
-        let alertProgressClosure = controller.startLoading(asProgress: true, title: LS["Loading"], message: LS["Settings.ExportBackupData.Message"])
-        
-        BackupManager.createBackup(
-            for: workouts,
-            completion: { (success, url) in
-                controller.endLoading {
-                    if url != nil {
-                        ExportManager.displayShareMenu(forFileAt: url, on: controller)
-                    } else {
-                        controller.displayError(withMessage: LS["ExportManager.Backup.Error"])
-                    }
-                }
-            },
-            progress: { progressValue in
-                DispatchQueue.main.async {
-                    alertProgressClosure?(Double(progressValue), nil)
-                }
-            }
-        )
     }
     
 }
