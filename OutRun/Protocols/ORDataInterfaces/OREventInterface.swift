@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing events.
-public protocol OREventInterface {
+protocol OREventInterface {
     
     /// The universally unique identifier used to identify a `Event` in the data base. If `nil` the event might not be saved yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }

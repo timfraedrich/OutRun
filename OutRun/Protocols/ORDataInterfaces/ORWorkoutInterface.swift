@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing of objects holding workout data.
-public protocol ORWorkoutInterface {
+protocol ORWorkoutInterface {
     
     /// The universally unique identifier used to identify a `Workout` in the data base and when transferring it from somewhere else. If `nil` the workout might not be saved inside the database yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }
