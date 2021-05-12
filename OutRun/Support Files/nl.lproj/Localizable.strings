@@ -60,7 +60,7 @@
 "NewWorkoutCompletion.Save.Success" = "Je training is succesvol opgeslagen.";
 "WorkoutStats.DescendingAltitude" = "Afdaling";
 "WorkoutStats.AscendingAltitude" = "Beklimming";
-"WorkoutList.Order.Descending" = "Afdaling";
+"WorkoutList.Order.Descending" = "Dalend";
 "Workout.Comment" = "Reactie";
 "Workout.Race" = "Wedstrijd";
 "Workout.Type.Skating" = "Rolschaatsen";
@@ -142,7 +142,7 @@
 "WorkoutBuilder.Status.Waiting" = "wachten";
 "WorkoutDeletion.Error.AppleHealth.Message" = "Er ging iets mis terwijl je probeerde de training te verwijderen uit Apple Gezondheid. Je kunt deze nog steeds verwijderen in de Apple Gezondheid-app.";
 "WorkoutDeletion.Error.Message" = "Er ging iets mis tijdens de poging om de training uit de app te verwijderen.";
-"WorkoutList.Order" = "Bestel";
+"WorkoutList.Order" = "Volgorde";
 "NewWorkoutViewController.WorkoutBuilder.Error" = "Er deed zich een fout voor in de logica die gebruikt wordt om de training te construeren.";
 "Changelog" = "Veranderingen";
 "EditWorkoutController.Info" = "Informatie";
