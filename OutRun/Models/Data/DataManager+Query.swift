@@ -128,7 +128,61 @@ extension DataManager {
      */
     public static func queryBackupData(for workouts: [ORWorkoutInterface]? = nil, completion: @escaping (_ error: Error?, _ data: Data?) -> Void, progress: @escaping (Float) -> Void) {
         
-        
+        dataStack.perform(asynchronous: { (transaction) -> Data? in
+            do {
+                let queryWorkouts: [Workout] = try {
+                    if workouts != nil {
+                        let workouts = transaction.fetchExisting(workouts!)
+                        return workouts
+                    }
+                    return try transaction.fetchAll(From<Workout>())
+                }()
+                
+                let queryEvents: [Event] = try {
+                    if let events = events {
+                        return events
+                    }
+                    return try transaction.fetchAll(From<Event>())
+                }()
+                
+                let totalCount = Double(queryWorkouts.count + queryEvents.count)
+                
+                let tempWorkouts = queryWorkouts.enumerated().map { (index, workout) -> TempWorkout in
+                    let progress = Double(index + 1) / totalCount
+                    progressClosure(progress)
+                    return TempWorkout(workout: workout)
+                }
+                
+                let tempEvents = queryEvents.enumerated().map { (index, event) -> TempEvent in
+                    let progress = Double(queryWorkouts.count + index + 1) / totalCount
+                    progressClosure(progress)
+                    return TempEvent(event: event)
+                }
+                
+                let backup = Backup(workouts: tempWorkouts, events: tempEvents)
+                
+                let json = try JSONEncoder().encode(backup)
+                return json
+            } catch {
+                print("[DataQueryManager] Failed to convert workouts to data")
+                return nil
+            }
+            
+        }) { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let data):
+                    guard let data = data else {
+                        completion(false, nil)
+                        return
+                    }
+                    completion(true, data)
+                case .failure(let error):
+                    completion(false, nil)
+                    print("[DataQueryManager] Failed to perform transaction to convert workouts to data:", error)
+                }
+            }
+        }
         
         
     }
