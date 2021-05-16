@@ -36,3 +36,28 @@ extension WorkoutHeartRateDataSample: CustomStringConvertible, WorkoutSeriesData
     }
     
 }
+
+// MARK: - ORWorkoutHeartRateDataSampleInterface
+
+extension WorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface {
+    
+    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    var heartRate: Int { threadSafeSyncReturn { self._heartRate.value } }
+    var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
+    var workout: ORWorkoutInterface? { self._workout.value }
+    
+}
+
+// MARK: - TempValueConvertible
+
+extension WorkoutHeartRateDataSample: TempValueConvertible {
+    
+    var asTemp: TempWorkoutHeartRateDataSample {
+        TempWorkoutHeartRateDataSample(
+            uuid: uuid,
+            heartRate: heartRate,
+            timestamp: timestamp
+        )
+    }
+    
+}

@@ -43,13 +43,19 @@ enum TempV4 {
         let pauseDuration: Double
         let dayIdentifier: String
         
-        let heartRates: [TempV4.WorkoutHeartRateDataSample]
-        let routeData: [TempV4.WorkoutRouteDataSample]
-        let pauses: [TempV4.WorkoutPause]
-        let workoutEvents: [TempV4.WorkoutEvent]
+        let _heartRates: [TempV4.WorkoutHeartRateDataSample]
+        let _routeData: [TempV4.WorkoutRouteDataSample]
+        let _pauses: [TempV4.WorkoutPause]
+        let _workoutEvents: [TempV4.WorkoutEvent]
         // events are not stored inside workout objects, instead the UUID of a workout is stored in the TempEvent object
         
-        init(uuid: UUID?, workoutType: OutRunV4.Workout.WorkoutType, distance: Double, steps: Int?, startDate: Date, endDate: Date, burnedEnergy: Double?, isRace: Bool, comment: String?, isUserModified: Bool, healthKitUUID: UUID?, finishedRecording: Bool, ascend: Double, descend: Double, activeDuration: Double, pauseDuration: Double, dayIdentifier: String, heartRates: [WorkoutHeartRateDataSample], routeData: [WorkoutRouteDataSample], pauses: [TempV4.WorkoutPause], workoutEvents: [WorkoutEvent]) {
+        var heartRates: [ORWorkoutHeartRateDataSampleInterface] { _heartRates }
+        var routeData: [ORWorkoutRouteDataSampleInterface] { _routeData }
+        var pauses: [ORWorkoutPauseInterface] { _pauses }
+        var workoutEvents: [ORWorkoutEventInterface] { _workoutEvents }
+        var events: [OREventInterface] { throwOnAccess() }
+        
+        init(uuid: UUID?, workoutType: OutRunV4.Workout.WorkoutType, distance: Double, steps: Int?, startDate: Date, endDate: Date, burnedEnergy: Double?, isRace: Bool, comment: String?, isUserModified: Bool, healthKitUUID: UUID?, finishedRecording: Bool, ascend: Double, descend: Double, activeDuration: Double, pauseDuration: Double, dayIdentifier: String, heartRates: [TempV4.WorkoutHeartRateDataSample], routeData: [TempV4.WorkoutRouteDataSample], pauses: [TempV4.WorkoutPause], workoutEvents: [TempV4.WorkoutEvent]) {
             self.uuid = uuid
             self.workoutType = workoutType
             self.distance = distance
@@ -67,10 +73,10 @@ enum TempV4 {
             self.activeDuration = activeDuration
             self.pauseDuration = pauseDuration
             self.dayIdentifier = dayIdentifier
-            self.heartRates = heartRates
-            self.routeData = routeData
-            self.pauses = pauses
-            self.workoutEvents = workoutEvents
+            self._heartRates = heartRates
+            self._routeData = routeData
+            self._pauses = pauses
+            self._workoutEvents = workoutEvents
         }
         
         var asTemp: TempWorkout {
@@ -146,10 +152,10 @@ enum TempV4 {
     class WorkoutHeartRateDataSample: Codable, TempValueConvertible {
         
         let uuid: UUID?
-        let heartRate: Double
+        let heartRate: Int
         let timestamp: Date
 
-        init(uuid: UUID?, heartRate: Double, timestamp: Date) {
+        init(uuid: UUID?, heartRate: Int, timestamp: Date) {
             self.uuid = uuid
             self.heartRate = heartRate
             self.timestamp = timestamp

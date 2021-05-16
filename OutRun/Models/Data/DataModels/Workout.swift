@@ -175,3 +175,64 @@ extension Workout: CustomStringConvertible {
     }
     
 }
+
+// MARK: - ORWorkoutInterface
+
+extension Workout: ORWorkoutInterface {
+    
+    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    var workoutType: Workout.WorkoutType { threadSafeSyncReturn { self._workoutType.value } }
+    var distance: Double { threadSafeSyncReturn { self._distance.value } }
+    var steps: Int? { threadSafeSyncReturn { self._steps.value } }
+    var startDate: Date { threadSafeSyncReturn { self._startDate.value } }
+    var endDate: Date { threadSafeSyncReturn { self._endDate.value } }
+    var burnedEnergy: Double? { threadSafeSyncReturn { self._burnedEnergy.value } }
+    var isRace: Bool { threadSafeSyncReturn { self._isRace.value } }
+    var comment: String? { threadSafeSyncReturn { self._comment.value } }
+    var isUserModified: Bool { threadSafeSyncReturn { self._isUserModified.value } }
+    var healthKitUUID: UUID? { threadSafeSyncReturn { self._healthKitUUID.value } }
+    var finishedRecording: Bool { threadSafeSyncReturn { self._finishedRecording.value } }
+    var ascend: Double { threadSafeSyncReturn { self._ascend.value } }
+    var descend: Double { threadSafeSyncReturn { self._descend.value } }
+    var activeDuration: Double { threadSafeSyncReturn { self._activeDuration.value } }
+    var pauseDuration: Double { threadSafeSyncReturn { self._pauseDuration.value } }
+    var dayIdentifier: String { threadSafeSyncReturn { self._dayIdentifier.value } }
+    var heartRates: [ORWorkoutHeartRateDataSampleInterface] { self._heartRates.value }
+    var routeData: [ORWorkoutRouteDataSampleInterface] { self._routeData.value }
+    var pauses: [ORWorkoutPauseInterface] { self._pauses.value }
+    var workoutEvents: [ORWorkoutEventInterface] { self._workoutEvents.value }
+    var events: [OREventInterface] {  Array(self._events.value) }
+    
+}
+
+// MARK: - TempValueConvertible
+
+extension Workout: TempValueConvertible {
+    
+    var asTemp: TempWorkout {
+        return TempWorkout(
+            uuid: uuid,
+            workoutType: workoutType,
+            distance: distance,
+            steps: steps,
+            startDate: startDate,
+            endDate: endDate,
+            burnedEnergy: burnedEnergy,
+            isRace: isRace,
+            comment: comment,
+            isUserModified: isUserModified,
+            healthKitUUID: healthKitUUID,
+            finishedRecording: finishedRecording,
+            ascend: ascend,
+            descend: descend,
+            activeDuration: activeDuration,
+            pauseDuration: pauseDuration,
+            dayIdentifier: dayIdentifier,
+            heartRates: _heartRates.value.map { $0.asTemp },
+            routeData: _routeData.value.map { $0.asTemp },
+            pauses: _pauses.value.map { $0.asTemp },
+            workoutEvents: _workoutEvents.value.map { $0.asTemp }
+        )
+    }
+    
+}

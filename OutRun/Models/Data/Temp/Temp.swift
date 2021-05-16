@@ -47,10 +47,10 @@ extension TempWorkout: ORWorkoutInterface {
             activeDuration: temp.activeDuration,
             pauseDuration: temp.pauseDuration,
             dayIdentifier: temp.dayIdentifier,
-            heartRates: temp.heartRates,
-            routeData: temp.routeData,
-            pauses: temp.pauses,
-            workoutEvents: temp.workoutEvents
+            heartRates: temp._heartRates,
+            routeData: temp._routeData,
+            pauses: temp._pauses,
+            workoutEvents: temp._workoutEvents
         )
     }
 }

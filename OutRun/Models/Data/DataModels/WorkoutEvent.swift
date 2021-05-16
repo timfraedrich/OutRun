@@ -119,3 +119,30 @@ extension WorkoutEvent: CustomStringConvertible {
     }
     
 }
+
+// MARK: - ORWorkoutEventInterface
+
+extension WorkoutEvent: ORWorkoutEventInterface {
+    
+    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    var eventType: WorkoutEventType { threadSafeSyncReturn { self._eventType.value } }
+    var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
+    var workout: ORWorkoutInterface? { self._workout.value }
+    
+}
+
+// MARK: - TempValueConvertible
+
+extension WorkoutEvent: TempValueConvertible {
+    
+    var asTemp: TempWorkoutEvent {
+        TempWorkoutEvent(
+            uuid: uuid,
+            eventType: eventType,
+            timestamp: timestamp
+        )
+    }
+    
+}
+
+

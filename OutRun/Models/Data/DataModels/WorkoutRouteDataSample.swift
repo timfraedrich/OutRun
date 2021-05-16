@@ -38,21 +38,38 @@ extension WorkoutRouteDataSample: CustomStringConvertible, WorkoutSeriesDataSamp
     
 }
 
+// MARK: - ORWorkoutRouteDataSampleInterface
+
+extension WorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
+    
+    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
+    var latitude: Double { threadSafeSyncReturn { self._latitude.value } }
+    var longitude: Double { threadSafeSyncReturn { self._longitude.value } }
+    var altitude: Double { threadSafeSyncReturn { self._altitude.value } }
+    var horizontalAccuracy: Double { threadSafeSyncReturn { self._horizontalAccuracy.value } }
+    var verticalAccuracy: Double { threadSafeSyncReturn { self._verticalAccuracy.value } }
+    var speed: Double { threadSafeSyncReturn { self._speed.value } }
+    var direction: Double { threadSafeSyncReturn { self._direction.value } }
+    var workout: ORWorkoutInterface? { threadSafeSyncReturn { self._workout.value } }
+    
+}
+
 // MARK: - TempValueConvertible
 
 extension WorkoutRouteDataSample: TempValueConvertible {
     
     var asTemp: TempWorkoutRouteDataSample {
         TempWorkoutRouteDataSample(
-            uuid: self.uuid,
-            timestamp: self.timestamp,
-            latitude: self.latitude,
-            longitude: self.longitude,
-            altitude: self.altitude,
-            horizontalAccuracy: self.horizontalAccuracy,
-            verticalAccuracy: self.verticalAccuracy,
-            speed: self.speed,
-            direction: self.direction
+            uuid: uuid,
+            timestamp: timestamp,
+            latitude: latitude,
+            longitude: longitude,
+            altitude: altitude,
+            horizontalAccuracy: horizontalAccuracy,
+            verticalAccuracy: verticalAccuracy,
+            speed: speed,
+            direction: direction
         )
     }
     

@@ -29,12 +29,11 @@ enum BackupManager {
      - parameter completion: a closure providing the status of success of the operation and an optional url to the created file
      - parameter success: indicates the success of the completion
      - parameter url: points to the saved backup file
-     - parameter progress: a closure providing the current status of creating the backup as a Float value ranging from 0 to 1
      */
-    public static func createBackup(for workouts: [ORWorkoutInterface]? = nil, completion: @escaping (_ success: Bool, _ url: URL?) -> Void, progress: @escaping (Float) -> Void) {
+    public static func createBackup(for inclusionType: BackupDataInclusionType, completion: @escaping (_ success: Bool, _ url: URL?) -> Void) {
         
         DataManager.queryBackupData(
-            for: workouts,
+            for: inclusionType,
             completion: { (error, data) in
                 
                 guard let data = data else {
@@ -53,8 +52,7 @@ enum BackupManager {
                     completion(false, nil)
                 }
                 
-            },
-            progress: progress
+            }
         )
         
     }
@@ -149,6 +147,16 @@ enum BackupManager {
         
         completion(false, [], [])
         return
+    }
+    
+    /// An enumeration describing the possible cases of including database objects in a backup.
+    enum BackupDataInclusionType {
+        /// Every object in the database will be included.
+        case all
+        /// Only the provided workouts (if represented through a valid ORWorkoutInterface) will be included, their attached events will be disgarded.
+        case someWorkouts([ORWorkoutInterface])
+        /// The provided events and their corresponding workouts will be included.
+        case someEvents([OREventInterface])
     }
     
 }

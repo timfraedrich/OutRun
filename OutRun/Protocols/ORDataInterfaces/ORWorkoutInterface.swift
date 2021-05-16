@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing of objects holding workout data.
-protocol ORWorkoutInterface {
+protocol ORWorkoutInterface/*: ORDataInterface*/ {
     
     /// The universally unique identifier used to identify a `Workout` in the data base and when transferring it from somewhere else. If `nil` the workout might not be saved inside the database yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }
@@ -45,6 +45,8 @@ protocol ORWorkoutInterface {
     var isUserModified: Bool { get }
     /// The universally unique identifier provided by Apple Health and attached to the workout if it was imported from or saved to the HealthStore. If `nil` there is no known reference to the workout in Apple Health.
     var healthKitUUID: UUID? { get }
+    /// A boolean indicating whether the workout recording has been finished yet.
+    var finishedRecording: Bool { get }
     /// The height gained during the workout in meters.
     var ascend: Double { get }
     /// The height lossed during the workout in meters.
@@ -65,31 +67,5 @@ protocol ORWorkoutInterface {
     var workoutEvents: [ORWorkoutEventInterface] { get }
     /// A reference to `Event`s associated with this workout.
     var events: [OREventInterface] { get }
-    
-}
-
-extension ORWorkoutInterface {
-    
-    var uuid: UUID? { throwOnAccess() }
-    var workoutType: Workout.WorkoutType { throwOnAccess() }
-    var distance: Double { throwOnAccess() }
-    var steps: Int? { throwOnAccess() }
-    var startDate: Date { throwOnAccess() }
-    var endDate: Date { throwOnAccess() }
-    var burnedEnergy: Double? { throwOnAccess() }
-    var isRace: Bool { throwOnAccess() }
-    var comment: String? { throwOnAccess() }
-    var isUserModified: Bool { throwOnAccess() }
-    var healthKitUUID: UUID? { throwOnAccess() }
-    var ascend: Double { throwOnAccess() }
-    var descend: Double { throwOnAccess() }
-    var activeDuration: Double { throwOnAccess() }
-    var pauseDuration: Double { throwOnAccess() }
-    var dayIdentifier: String { throwOnAccess() }
-    var heartRates: [ORWorkoutHeartRateDataSampleInterface] { throwOnAccess() }
-    var routeData: [ORWorkoutRouteDataSampleInterface] { throwOnAccess() }
-    var pauses: [ORWorkoutPauseInterface] { throwOnAccess() }
-    var workoutEvents: [ORWorkoutEventInterface] { throwOnAccess() }
-    var events: [OREventInterface] { throwOnAccess() }
     
 }

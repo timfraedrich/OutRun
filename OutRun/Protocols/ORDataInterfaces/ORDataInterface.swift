@@ -1,5 +1,5 @@
 //
-//  WorkoutHeartRateDataSample+ORWorkoutHeartRateDataSampleInterface.swift
+//  ORDataInterface.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,29 +20,10 @@
 
 import Foundation
 
-// Note: For documentation see ORWorkoutHeartRateDataSampleInterface.
-extension WorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface {
+/// A protocol to unify the identification of database objects.
+protocol ORDataInterface {
     
-    var uuid: UUID? {
-        threadSafeSyncReturn { () -> UUID? in
-            return self._uuid.value
-        }
-    }
-    
-    var heartRate: Int {
-        threadSafeSyncReturn { () -> Int in
-            return self._heartRate.value
-        }
-    }
-    
-    var timestamp: Date {
-        threadSafeSyncReturn { () -> Date in
-            return self._timestamp.value
-        }
-    }
-    
-    var workout: ORWorkoutInterface? {
-        return self._workout.value
-    }
+    /// The universally unique identifier used to identify the object in the data base. If `nil` the object might not be saved yet, a UUID will be asigned once saved.
+    var uuid: UUID? { get }
     
 }

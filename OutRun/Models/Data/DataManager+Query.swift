@@ -27,8 +27,8 @@ extension DataManager {
     // MARK: - General
     
     /**
-     Queries the an object comforming to `ORDataType` with the provided `UUID` from the database.
-     - parameter uuid: the `UUID` of the workout that is supposed to be returned; if `nil` this function will return immediately with no value
+     Queries an object comforming to `ORDataType` with the provided `UUID` from the database.
+     - parameter uuid: the `UUID` of the object that is supposed to be returned; if `nil` this function will return immediately with no value
      - parameter transaction: an optional `AsynchronousDataTransaction` to be provided if the workout needs to be queried during a tranaction; if `nil` the object will be queried from the `DataManager.dataStack`
      - returns: the wanted `ORDataType` object if one could be found in the database; if the object could not be found, this function will return `nil`
      */
@@ -40,6 +40,18 @@ extension DataManager {
         
         let object = try? (transaction as FetchableSource? ?? dataStack).fetchOne(From<ObjectType>().where(\._uuid == uuid))
         return object
+        
+    }
+    
+    /**
+     Queries an object comforming to `ORDataType` with the provided object's uuid from the database.
+     - parameter anyObject: any object representing the wanted database object to be returned
+     - parameter transaction: an optional `AsynchronousDataTransaction` to be provided if the workout needs to be queried during a tranaction; if `nil` the object will be queried from the `DataManager.dataStack`
+     - returns: the wanted `ORDataType` object if one could be found in the database; if the object could not be found, this function will return `nil`
+     */
+    public static func queryObject<ObjectType: ORDataType>(from anyObject: ORDataInterface, transaction: AsynchronousDataTransaction? = nil) -> ObjectType? {
+        
+        return queryObject(from: anyObject.uuid, transaction: transaction)
         
     }
     
@@ -122,49 +134,54 @@ extension DataManager {
     
     /**
      Queries the data required to create a backup.
-     - parameter workouts:
-     - parameter completion:
-     - parameter progress
+     - parameter inclusionType: the type of data that is supposed to be included in the backup
+     - parameter completion: a closure providing the queried data and an optional error if something went wrong
      */
-    public static func queryBackupData(for workouts: [ORWorkoutInterface]? = nil, completion: @escaping (_ error: Error?, _ data: Data?) -> Void, progress: @escaping (Float) -> Void) {
+    public static func queryBackupData(for inclusionType: BackupManager.BackupDataInclusionType, completion: @escaping (_ error: BackupQueryError?, _ data: Data?) -> Void) {
+        
+        var fetchSucceeded = false
         
         dataStack.perform(asynchronous: { (transaction) -> Data? in
+            
             do {
-                let queryWorkouts: [Workout] = try {
-                    if workouts != nil {
-                        let workouts = transaction.fetchExisting(workouts!)
-                        return workouts
-                    }
-                    return try transaction.fetchAll(From<Workout>())
-                }()
                 
-                let queryEvents: [Event] = try {
-                    if let events = events {
-                        return events
-                    }
-                    return try transaction.fetchAll(From<Event>())
-                }()
+                let tempWorkouts: [TempWorkout]
+                let tempEvents: [TempEvent]
                 
-                let totalCount = Double(queryWorkouts.count + queryEvents.count)
-                
-                let tempWorkouts = queryWorkouts.enumerated().map { (index, workout) -> TempWorkout in
-                    let progress = Double(index + 1) / totalCount
-                    progressClosure(progress)
-                    return TempWorkout(workout: workout)
+                switch inclusionType {
+                case .all:
+                    tempWorkouts = try transaction.fetchAll(From<Workout>()).map { $0.asTemp }
+                    tempEvents = try transaction.fetchAll(From<Event>()).map { $0.asTemp }
+                    
+                case .someWorkouts(let includedWorkouts):
+                    tempWorkouts = includedWorkouts.compactMap({ workoutRep -> Workout? in
+                        queryObject(from: workoutRep, transaction: transaction)
+                    }).map { $0.asTemp }
+                    tempEvents = []
+                    
+                case .someEvents(let includedEvents):
+                    var workouts = [Workout]()
+                    let events = includedEvents.compactMap({ eventRep -> Event? in
+                        let event: Event? = queryObject(from: eventRep, transaction: transaction)
+                        if let event = event {
+                            for workout in event._workouts.value where !workouts.contains(workout) {
+                                workouts.append(workout)
+                            }
+                        }
+                        return event
+                    })
+                    tempWorkouts = workouts.map { $0.asTemp }
+                    tempEvents = events.map { $0.asTemp }
                 }
                 
-                let tempEvents = queryEvents.enumerated().map { (index, event) -> TempEvent in
-                    let progress = Double(queryWorkouts.count + index + 1) / totalCount
-                    progressClosure(progress)
-                    return TempEvent(event: event)
-                }
+                fetchSucceeded = true
                 
                 let backup = Backup(workouts: tempWorkouts, events: tempEvents)
                 
                 let json = try JSONEncoder().encode(backup)
                 return json
+                
             } catch {
-                print("[DataQueryManager] Failed to convert workouts to data")
                 return nil
             }
             
@@ -173,13 +190,12 @@ extension DataManager {
                 switch result {
                 case .success(let data):
                     guard let data = data else {
-                        completion(false, nil)
+                        completion(fetchSucceeded ? .encodeFailed : .fetchFailed, nil)
                         return
                     }
-                    completion(true, data)
+                    completion(nil, data)
                 case .failure(let error):
-                    completion(false, nil)
-                    print("[DataQueryManager] Failed to perform transaction to convert workouts to data:", error)
+                    completion(.databaseError(error: error), nil)
                 }
             }
         }

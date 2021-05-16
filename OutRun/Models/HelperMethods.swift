@@ -1,5 +1,5 @@
 //
-//  [FILENAME]
+//  HelperMethods.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>

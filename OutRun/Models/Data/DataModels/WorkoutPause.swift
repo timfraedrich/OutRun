@@ -66,3 +66,30 @@ extension WorkoutPause: CustomStringConvertible {
     }
     
 }
+
+// MARK: - ORWorkoutPauseInterface
+
+extension WorkoutPause: ORWorkoutPauseInterface {
+    
+    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    var startDate: Date { threadSafeSyncReturn { self._startDate.value } }
+    var endDate: Date { threadSafeSyncReturn { self._endDate.value } }
+    var pauseType: WorkoutPauseType { threadSafeSyncReturn { self._pauseType.value } }
+    var workout: ORWorkoutInterface? { self._workout.value }
+    
+}
+
+// MARK: - TempValueConvertible
+
+extension WorkoutPause: TempValueConvertible {
+    
+    var asTemp: TempWorkoutPause {
+        TempWorkoutPause(
+            uuid: uuid,
+            startDate: startDate,
+            endDate: endDate,
+            pauseType: pauseType
+        )
+    }
+    
+}

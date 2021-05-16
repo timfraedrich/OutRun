@@ -36,3 +36,33 @@ extension Event: CustomStringConvertible {
     }
     
 }
+
+// MARK: OREventInterface
+
+extension Event: OREventInterface {
+    
+    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    var title: String { threadSafeSyncReturn { self._title.value } }
+    var comment: String? { threadSafeSyncReturn { self._comment.value } }
+    var startDate: Date? { threadSafeSyncReturn { self._startDate.value } }
+    var endDate: Date? { threadSafeSyncReturn { self._endDate.value } }
+    var workouts: [ORWorkoutInterface] { self._workouts.value }
+    
+}
+
+// MARK: TempValueConvertible
+
+extension Event: TempValueConvertible {
+    
+    var asTemp: TempEvent {
+        TempEvent(
+            uuid: uuid,
+            title: title,
+            comment: comment,
+            startDate: startDate,
+            endDate: endDate,
+            workouts: workouts.compactMap { $0.uuid }
+        )
+    }
+    
+}

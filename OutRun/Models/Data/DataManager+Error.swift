@@ -160,9 +160,23 @@ extension DataManager {
     
     /// An enumeration of possible errors coming up during the query process of backup data
     enum BackupQueryError: Error, CustomDebugStringConvertible {
+        
+        /// Fetching all objects to be included in the backup failed.
+        case fetchFailed
+        /// Encoding the backup object to JSON format failed.
+        case encodeFailed
+        /// There was an error while querying the objects to be included in the backup.
+        case databaseError(error: CoreStoreError)
             
         var debugDescription: String {
-            return ""
+            switch self {
+            case .fetchFailed:
+                return "Fetching all objects to be included in the backup failed."
+            case .encodeFailed:
+                return "Encoding the backup object to JSON format failed."
+            case .databaseError(let error):
+                return "There was an error while querying the objects to be included in the backup:\n\(error)"
+            }
         }
         
     }
