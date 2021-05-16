@@ -72,9 +72,9 @@ enum HealthObserver {
         previousWorkoutObserverAnchor = anchor
         
         if UserPreferences.automaticallyImportNewHealthWorkouts.value && !samples.isEmpty {
-            let queryObjects = samples.compactMap { (sample) -> HKWorkoutQueryObject? in
+            let queryObjects = samples.compactMap { (sample) -> HealthWorkout? in
                 if let sample = sample as? HKWorkout, DataQueryManager.checkForDuplicateHealthWorkout(withUUID: sample.uuid) {
-                    return HKWorkoutQueryObject(sample)
+                    return HealthWorkout(sample)
                 }
                 return nil
             }

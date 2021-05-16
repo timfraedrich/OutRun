@@ -41,8 +41,6 @@ extension WorkoutPause: CustomStringConvertible {
     
     enum WorkoutPauseType: RawRepresentable, ImportableAttributeType, Codable {
         
-        typealias RawValue = Int
-        
         case manual
         case automatic
         

@@ -22,7 +22,7 @@ import UIKit
 
 class HKImportObjectCell: UITableViewCell {
     
-    let queryObject: HKWorkoutQueryObject
+    let queryObject: HealthWorkout
     
     let containerView: UIView = {
         let view = UIView()
@@ -55,7 +55,7 @@ class HKImportObjectCell: UITableViewCell {
         textAlignment: .right
     )
     
-    init(queryObject: HKWorkoutQueryObject) {
+    init(queryObject: HealthWorkout) {
         
         self.queryObject = queryObject
         

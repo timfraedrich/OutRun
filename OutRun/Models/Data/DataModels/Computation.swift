@@ -23,12 +23,18 @@ import Foundation
 /// A static class to standardise the computation of data properties across the app
 class Computation {
     
+    typealias DurationTouple = (activeDuration: TimeInterval, pauseDuration: TimeInterval)
+    typealias ElevationTouple = (ascending: Double, descending: Double)
+    typealias EventTouple = (type: Int, date: Date)
+    typealias PauseTouple = (start: Date, end: Date, type: Int)
+    typealias RawPauseTouple = (start: Date, end: Date)
+    
     /**
      Computes the elevation changes (ascending and descending) from altitudes of a workouts route
      - parameter altitudes: the provided elevations from the route data samples
      - returns: the calculated ascending and descending altitude in a touple of two values
      */
-    static func computeElevationData(from altitudes: [Double]) -> (ascending: Double, descending:  Double) {
+    static func computeElevationData(from altitudes: [Double]) -> ElevationTouple {
         
         var tempAscending: Double = 0
         var tempDescending: Double = 0
@@ -78,7 +84,7 @@ class Computation {
      - parameter pauses: an array of tuples representing the start and end dates of pause objects
      - returns: the calculated active and pause duration in a tuple of two values
      */
-    static func calculateDurationData(from start: Date, end: Date, pauses: [(start: Date, end: Date)] = []) -> (activeDuration: TimeInterval, pauseDuration: TimeInterval) {
+    static func calculateDurationData(from start: Date, end: Date, pauses: [RawPauseTouple] = []) -> DurationTouple {
         
         let totalDuration = start.distance(to: end)
         var pauseDuration: TimeInterval = 0
@@ -99,7 +105,7 @@ class Computation {
      - parameter workoutEnd: the start date of the workout to which the pauses are linked
      - returns: the calculated pause objects; if `nil` the validation failed
      */
-    static func calculateAndValidatePauses(from events: [(type: Int, date: Date)], workoutStart: Date, workoutEnd: Date) -> [(start: Date, end: Date, type: Int)]? {
+    static func calculateAndValidatePauses(from events: [EventTouple], workoutStart: Date, workoutEnd: Date) -> [PauseTouple]? {
         
         // validation -> pauses are not taken to next version if this fails
         

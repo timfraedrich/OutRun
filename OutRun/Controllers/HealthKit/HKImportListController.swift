@@ -22,7 +22,7 @@ import UIKit
 
 class HKImportListController: UITableViewController {
     
-    var queriedObjects: [HKWorkoutQueryObject] = [] {
+    var queriedObjects: [HealthWorkout] = [] {
         didSet {
             self.noDataLabel.isHidden = !(self.queriedObjects.count == 0)
         }

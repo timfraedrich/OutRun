@@ -24,9 +24,9 @@ import HealthKit
 enum HealthQueryManager {
     
     // MARK: Query External Health Workouts
-    static func queryExternalWorkouts(completion: @escaping (Bool, [HKWorkoutQueryObject]) -> Void) {
+    static func queryExternalWorkouts(completion: @escaping (Bool, [HealthWorkout]) -> Void) {
         
-        let safeCompletion: (Bool, [HKWorkoutQueryObject]) -> Void = { (success, queryObjects) in
+        let safeCompletion: (Bool, [HealthWorkout]) -> Void = { (success, queryObjects) in
             DispatchQueue.main.async {
                 completion(success, queryObjects)
             }
@@ -102,7 +102,7 @@ enum HealthQueryManager {
     }
     
     // MARK: Query Steps and Attatch to Query Object
-    static func getAndAttatchSteps(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
+    static func getAndAttatchSteps(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
         let stepsQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeRouteType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, stepsSamples, _, _, error) in
@@ -125,7 +125,7 @@ enum HealthQueryManager {
     }
     
     // MARK: Query Route and Attatch to Query Object
-    static func getAndAttatchRoute(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
+    static func getAndAttatchRoute(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
         let routeObjectQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeRouteType, predicate: predicate, anchor: nil, limit: 1) { (query, routeSamples, _, _, error) in
@@ -156,7 +156,7 @@ enum HealthQueryManager {
     }
     
     // MARK: Query Heart Rates and Attach to Query Object
-    static func getAndAttachHeartRate(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
+    static func getAndAttachHeartRate(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
         let heartRateQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeHeartRate, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, heartRateSamples, _, _, error) in
