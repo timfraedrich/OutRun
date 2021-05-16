@@ -317,7 +317,7 @@ class SettingsModel {
                         title: LS["Settings.CreateBackup"],
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
-                            ExportManager.exportBackupAlertAction(controller: controller)
+                            ExportManager.displayShareAlert(for: <#T##[ORWorkoutInterface]#>, on: <#T##UIViewController#>)
                         }
                     ),
                     TitleSetting(

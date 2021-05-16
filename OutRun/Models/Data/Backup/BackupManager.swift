@@ -23,6 +23,8 @@ import UIKit
 
 enum BackupManager {
     
+    typealias DataInclusionType = ExportManager.DataInclusionType
+    
     /**
      Creates a backup and saves it to a file providing it for export.
      - parameter workouts: the workouts being saved into the backup; if `nil` all workouts inside the database will be used
@@ -30,7 +32,7 @@ enum BackupManager {
      - parameter success: indicates the success of the completion
      - parameter url: points to the saved backup file
      */
-    public static func createBackup(for inclusionType: BackupDataInclusionType, completion: @escaping (_ success: Bool, _ url: URL?) -> Void) {
+    public static func createBackup(for inclusionType: DataInclusionType, completion: @escaping (_ success: Bool, _ url: URL?) -> Void) {
         
         DataManager.queryBackupData(
             for: inclusionType,
@@ -147,16 +149,6 @@ enum BackupManager {
         
         completion(false, [], [])
         return
-    }
-    
-    /// An enumeration describing the possible cases of including database objects in a backup.
-    enum BackupDataInclusionType {
-        /// Every object in the database will be included.
-        case all
-        /// Only the provided workouts (if represented through a valid ORWorkoutInterface) will be included, their attached events will be disgarded.
-        case someWorkouts([ORWorkoutInterface])
-        /// The provided events and their corresponding workouts will be included.
-        case someEvents([OREventInterface])
     }
     
 }

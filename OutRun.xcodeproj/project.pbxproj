@@ -44,7 +44,6 @@
 		2230925F24D6F6A700A3F636 /* WorkoutBuilder+Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2230925E24D6F6A700A3F636 /* WorkoutBuilder+Status.swift */; };
 		2230926124D7081A00A3F636 /* WorkoutBuilder+LocationManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2230926024D7081A00A3F636 /* WorkoutBuilder+LocationManagement.swift */; };
 		2230926324D7573C00A3F636 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2230926224D7573C00A3F636 /* Double.swift */; };
-		223EEF3824B1243500554126 /* WorkoutShareAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223EEF3724B1243500554126 /* WorkoutShareAlert.swift */; };
 		2248A45222F08E66000F82BB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A45122F08E66000F82BB /* DetailViewController.swift */; };
 		224AF62A237624E80047CBDE /* CustomDateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224AF629237624E80047CBDE /* CustomDateFormatting.swift */; };
 		2250D11A239A70F700DE31A3 /* StartScreenFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2250D119239A70F700DE31A3 /* StartScreenFeatureView.swift */; };
@@ -243,7 +242,6 @@
 		2230926024D7081A00A3F636 /* WorkoutBuilder+LocationManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+LocationManagement.swift"; sourceTree = "<group>"; };
 		2230926224D7573C00A3F636 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		223C2E0B25252F1B00D4B13D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		223EEF3724B1243500554126 /* WorkoutShareAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutShareAlert.swift; sourceTree = "<group>"; };
 		2248A45122F08E66000F82BB /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		224AF629237624E80047CBDE /* CustomDateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDateFormatting.swift; sourceTree = "<group>"; };
 		2250D119239A70F700DE31A3 /* StartScreenFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenFeatureView.swift; sourceTree = "<group>"; };
@@ -505,7 +503,6 @@
 			isa = PBXGroup;
 			children = (
 				223034BC246C3A4A00FCE030 /* WorkoutTypeAlert.swift */,
-				223EEF3724B1243500554126 /* WorkoutShareAlert.swift */,
 			);
 			path = Alerts;
 			sourceTree = "<group>";
@@ -1275,7 +1272,6 @@
 				229FF49A235C228100EA220E /* SettingsModel.swift in Sources */,
 				227ED84C240FAA9B0083EE96 /* WorkoutActionView.swift in Sources */,
 				22FC085623AFF3FC00184E4B /* PermissionButton.swift in Sources */,
-				223EEF3824B1243500554126 /* WorkoutShareAlert.swift in Sources */,
 				2298D2162345553F00344989 /* HealthStoreManager.swift in Sources */,
 				22834F7A2542239800057FEB /* HelperMethods.swift in Sources */,
 				22D070BA23FC3079007B1744 /* DatePickerSetting.swift in Sources */,

@@ -52,7 +52,8 @@ extension Workout: CustomStringConvertible {
         return desc + ")"
     }
     
-    enum WorkoutType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType, Codable {
+    enum WorkoutType: CaseIterable, CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType, Codable {
+        
         case running, walking, cycling, skating, hiking, unknown
         
         init(rawValue: Int) {

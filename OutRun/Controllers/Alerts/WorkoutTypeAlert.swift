@@ -34,13 +34,7 @@ class WorkoutTypeAlert: UIAlertController {
             )
         }
         
-        var options: [(title: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?)] = [
-            typeOption(for: .running),
-            typeOption(for: .walking),
-            typeOption(for: .hiking),
-            typeOption(for: .cycling),
-            typeOption(for: .skating)
-        ]
+        var options = Workout.WorkoutType.allCases.map { typeOption(for: $0) }
         
         if let manualAction = manualAction {
             options.append(

@@ -51,28 +51,36 @@ public class ExportManager {
             }
         }
         
+        static func exportTypes(for inclusionType: DataInclusionType) -> [ExportTypes] {
+            switch inclusionType {
+            case .all, .someEvents(_):
+                return [.orbup]
+            case .someWorkouts(_):
+                return ExportTypes.allCases
+            }
+        }
+        
         /**
          A function performing the action needed for the export.
          - parameter completion: a closure to be performed when the export is finished
          - parameter success: indicating the success of the export
          - parameter urls: a list pointing to the files to be exported
          */
-        fileprivate func performExport(for workouts: [ORWorkoutInterface], completion: @escaping (_ success: Bool, _ urls: [URL]) -> Void) {
+        fileprivate func performExport(for inclusionType: DataInclusionType, completion: @escaping (_ success: Bool, _ urls: [URL]) -> Void) {
             switch self {
             case .orbup:
                 
                 BackupManager.createBackup(
-                    for: workouts,
+                    for: inclusionType,
                     completion: { success, url in
                         completion(success, [url].filterNil())
-                    },
-                    progress: { _ in }
+                    }
                 )
                 
             case .gpx:
                 
                 ExportManager.createGPXFiles(
-                    for: workouts,
+                    for: inclusionType,
                     completion: { (success, urls) in
                         completion(success, urls)
                     }
@@ -88,11 +96,11 @@ public class ExportManager {
      - parameter workouts: the workouts that are supposed to be shared
      - parameter controller: the `UIViewController` the alert is supposed to be shown on
      */
-    static func displayShareAlert(for workouts: [ORWorkoutInterface], on controller: UIViewController) {
+    static func displayShareAlert(for inclusionType: DataInclusionType, on controller: UIViewController) {
         
         var alertOptions: [UIAlertActionTuple]
         
-        for type in ExportTypes.allCases {
+        for type in ExportTypes.exportTypes(for: inclusionType) {
             
             alertOptions.append((
                 title: type.title,
@@ -100,7 +108,7 @@ public class ExportManager {
                 action: { _ in
                     
                     _ = controller.startLoading {
-                        type.performExport(for: workouts) { (success, files) in
+                        type.performExport(for: inclusionType) { (success, files) in
                             controller.endLoading {
                                 displayShareMenu(for: files, on: controller)
                             }
@@ -159,17 +167,25 @@ public class ExportManager {
      - parameter success: a boolean indicating the success of the operation
      - parameter urls: a list of urls pointing to the created files
      */
-    private static func createGPXFiles(for workouts: [ORWorkoutInterface], completion: @escaping (_ success: Bool, _ urls: [URL]) -> Void) {
+    private static func createGPXFiles(for inclusionType: DataInclusionType, completion: @escaping (_ success: Bool, _ urls: [URL]) -> Void) {
         
         var urls = [URL]()
         var count = 0
         
-        for workout in workouts {
+        switch inclusionType {
+        case .someWorkouts(let workouts):
             
+            for workout in workouts {
+                
+                // TODO: implement
+                
+            }
             
-            
+        default:
+            fatalError("[ExportManager] Trying to create GPX files from incompatiple DataInclusionType: \(inclusionType)")
         }
         
+        /*
         DataQueryManager.querySectionedSampleSeries(for: workout, sampleType: WorkoutRouteDataSample.self) { (success, sections) in
             
             guard success, !sections.isEmpty, let sections = sections as? [(type: WorkoutStatsSeriesSection.SectionType, samples: [TempWorkoutRouteDataSample])] else {
@@ -217,7 +233,17 @@ public class ExportManager {
                 print("[ExportManager] Failed to save GPX file")
                 completion(false, nil)
             }
-        }
+        }*/
+    }
+    
+    /// An enumeration describing the possible cases of including database objects in an export.
+    enum DataInclusionType {
+        /// Every object in the database will be included.
+        case all
+        /// Only the provided workouts (if represented through a valid ORWorkoutInterface) will be included, their attached events will be disgarded.
+        case someWorkouts([ORWorkoutInterface])
+        /// The provided events and their corresponding workouts will be included.
+        case someEvents([OREventInterface])
     }
     
 }

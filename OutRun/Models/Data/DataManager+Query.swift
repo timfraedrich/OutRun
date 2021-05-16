@@ -137,7 +137,7 @@ extension DataManager {
      - parameter inclusionType: the type of data that is supposed to be included in the backup
      - parameter completion: a closure providing the queried data and an optional error if something went wrong
      */
-    public static func queryBackupData(for inclusionType: BackupManager.BackupDataInclusionType, completion: @escaping (_ error: BackupQueryError?, _ data: Data?) -> Void) {
+    public static func queryBackupData(for inclusionType: ExportManager.DataInclusionType, completion: @escaping (_ error: BackupQueryError?, _ data: Data?) -> Void) {
         
         var fetchSucceeded = false
         
@@ -201,6 +201,22 @@ extension DataManager {
         }
         
         
+    }
+    
+    // MARK: - HealthKit
+    
+    /**
+     Queries the uuids corresponding to HealthKit workouts imported from or saved to AppleHealth and associated with workouts saved in the app.
+     - note: This function should only be used on the main thread
+     */
+    public static func queryExistingHealthUUIDs() -> [UUID] {
+        
+        return (try? dataStack.queryAttributes(
+            From<Workout>()
+                .select(NSDictionary.self, .attribute(\._healthKitUUID))
+                .where(\._healthKitUUID != nil))
+                .compactMap { UUID(uuidString: $0.first?.value as? String ?? "") }
+        ) ?? []
     }
     
 }

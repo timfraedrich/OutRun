@@ -20,10 +20,16 @@
 
 import Foundation
 
-/// A structure used to represent
-struct ORPrimitive<Reference> {
+/// A structure used to represent any database object just by it's uuid; accessing any different variable will result in a fatal error.
+struct ORPrimitive<Reference>: ORDataInterface {
     
-    let uuid: UUID
+    var uuid: UUID? { _uuid }
+    
+    let _uuid: UUID
+    
+    init(uuid: UUID) {
+        self._uuid = uuid
+    }
     
 }
 

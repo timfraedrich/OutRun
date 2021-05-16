@@ -152,7 +152,7 @@ enum TempV3 {
         var asTemp: TempWorkoutHeartRateDataSample {
             return TempWorkoutHeartRateDataSample(
                 uuid: uuid,
-                heartRate: heartRate,
+                heartRate: Int(heartRate),
                 timestamp: timestamp
             )
         }

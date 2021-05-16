@@ -36,7 +36,7 @@ enum HealthQueryManager {
         
             if success {
                 
-                let existingHKWorkouts = DataQueryManager.getAllExistingHealthKitWorkoutUUIDs()
+                let existingHKWorkouts = DataManager.queryExistingHealthUUIDs()
                 let set = Set(existingHKWorkouts)
                 
                 let existingPredicate = HKQuery.predicateForObjects(with: set)
@@ -61,7 +61,7 @@ enum HealthQueryManager {
                     
                     DispatchQueue.main.async {
                         
-                        var queryObjects = [HKWorkoutQueryObject]()
+                        var queryObjects = [HealthWorkout]()
                         var count = 0
                         
                         func completeIfAppropriate() {
@@ -141,7 +141,7 @@ enum HealthQueryManager {
             let routeQuery = HKWorkoutRouteQuery(route: route) { (query, locations, success, error) in
                 
                 guard let locs = locations?.compactMap({ (location) -> TempWorkoutRouteDataSample? in
-                    return TempWorkoutRouteDataSample(clLocation: location)
+                    return TempWorkoutRouteDataSample(from: location)
                 }), locations != [] else {
                     completion()
                     return
