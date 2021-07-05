@@ -83,13 +83,13 @@ class MeasurementUserPreference<UnitType> where UnitType: Unit {
         }
     }
     
-    func convert(fromValue value: Double, toPrefered: Bool, rounded: Bool = true) -> Double {
+    func convert(fromValue value: Double, toPreferred: Bool, rounded: Bool = true) -> Double {
         guard let standardUnit = self.standardValue else {
             return -1
         }
-        let preferedUnit = self.safeValue
-        let sourceUnit = toPrefered ? standardUnit : preferedUnit
-        let targetUnit = toPrefered ? preferedUnit : standardUnit
+        let preferredUnit = self.safeValue
+        let sourceUnit = toPreferred ? standardUnit : preferredUnit
+        let targetUnit = toPreferred ? preferredUnit : standardUnit
         let value = UnitConversion.conversion(of: value, from: sourceUnit, to: targetUnit)
         return rounded ? ((value * 100).rounded() / 100) : value
     }

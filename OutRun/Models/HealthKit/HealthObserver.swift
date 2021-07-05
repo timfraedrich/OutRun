@@ -80,8 +80,8 @@ enum HealthObserver {
             }
             var count = 0
             queryObjects.forEach { (queryObject) in
-                HealthQueryManager.getAndAttatchRoute(to: queryObject) {
-                    HealthQueryManager.getAndAttatchSteps(to: queryObject) {
+                HealthQueryManager.getAndAttachRoute(to: queryObject) {
+                    HealthQueryManager.getAndAttachSteps(to: queryObject) {
                         // not fully implemented yet
                         //HealthQueryManager.getAndAttachHeartRate(to: queryObject) {
                             count += 1

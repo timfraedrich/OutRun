@@ -72,7 +72,7 @@ class SettingsViewController: UITableViewController {
         
         if var keyboardAvoidingSetting = setting as? KeyboardAvoidanceSetting {
             keyboardAvoidingSetting.registerForKeyboardAvoidanceClosure = { cell in
-                self.cellShouldBeVisisble = cell
+                self.cellShouldBeVisible = cell
             }
         }
         
@@ -107,13 +107,13 @@ class SettingsViewController: UITableViewController {
         }
     }
     
-    public var cellShouldBeVisisble: UITableViewCell?
+    public var cellShouldBeVisible: UITableViewCell?
     private var formerContentOffset: CGPoint?
     
     @objc private func keyboardWillShow(_ notification: Notification) {
         self.formerContentOffset = self.tableView.contentOffset
 
-        if let cell = self.cellShouldBeVisisble, let indexPath = self.tableView.indexPath(for: cell), let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
+        if let cell = self.cellShouldBeVisible, let indexPath = self.tableView.indexPath(for: cell), let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
             let offsetHeight = keyboardHeight - self.view.safeAreaInsets.bottom
             self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: offsetHeight, right: 0)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
@@ -133,7 +133,7 @@ class SettingsViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    /// NOTE: This function is supposed to be overridded
+    /// NOTE: This function is supposed to be overridden
     func notifyOfPresentation(_ settingsViewController: SettingsViewController) {}
     
 }

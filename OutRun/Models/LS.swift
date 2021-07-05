@@ -20,7 +20,7 @@
 
 import Foundation
 
-/// A struct containg only static subscripts and needed enumerations to enable easier localisation.
+/// A struct containing only static subscripts and needed enumerations to enable easier localisation.
 struct LS {
     
     /**
@@ -34,7 +34,7 @@ struct LS {
         let errorValue = "NIL"
         var localizedString = Bundle.main.localizedString(forKey: key, value: errorValue, table: sourceType.tableName)
         
-        // falling back on base language if string for key is not availabe
+        // falling back on base language if string for key is not available
         if localizedString == "NIL" {
             localizedString = sourceType.fallbackBundle.localizedString(forKey: key, value: errorValue, table: sourceType.tableName)
         }

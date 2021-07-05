@@ -36,7 +36,7 @@ class BurnedEnergyCalculator {
         return measurement
     }
 
-    static func calculeWeightBeforeWorkout(for type: Workout.WorkoutType, distance: Double, burnedCal: Double) -> Double {
+    static func calculateWeightBeforeWorkout(for type: Workout.WorkoutType, distance: Double, burnedCal: Double) -> Double {
 
         /// burnedCal = kilometers * type.METSpeedMultiplier * weight
         /// (kilometers * type.METSpeedMultiplier)weight = burnedCal
