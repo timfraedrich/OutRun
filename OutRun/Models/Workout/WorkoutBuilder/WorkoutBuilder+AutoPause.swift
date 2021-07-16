@@ -68,7 +68,7 @@ extension WorkoutBuilder {
         }
         
         /**
-         Initialises an `AutoPause` object with the provided datesif the start is earlier than the end
+         Initialises an `AutoPause` object with the provided dates if the start is earlier than the end
          - parameter start: the start date of the automatic pause
          - parameter end: the end date of the automatic pause
          */

@@ -92,7 +92,7 @@ extension WorkoutBuilder {
         /// the data collected by the altimeter consisting of an array of timestamps and their relative altitudes
         private var altitudeData: [(timestamp: Date, relativeAltitude: Double)] = []
         
-        /// an instance of `CMAltimeter` to measure releative altitude changes
+        /// an instance of `CMAltimeter` to measure relative altitude changes
         private let altimeter = CMAltimeter()
         
         /**

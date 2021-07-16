@@ -26,7 +26,7 @@ enum Config {
     static var releaseStatus: ReleaseStatus {
         if Config.isDebug || Config.isRunOnSimulator {
             return ReleaseStatus.debug
-        } else if /*Config.hasMobileProvision &&*/ Config.hasSanboxReceipt {
+        } else if /*Config.hasMobileProvision &&*/ Config.hasSandboxReceipt {
             return ReleaseStatus.beta
         } else {
             return ReleaseStatus.release
@@ -75,13 +75,13 @@ enum Config {
         #endif
     }
     
-    /// A boolean indicating wheather the app bundle contains a certain file generated when building and packaging an App for App Store Connect
+    /// A boolean indicating whether the app bundle contains a certain file generated when building and packaging an App for App Store Connect
     static var hasMobileProvision: Bool {
         return (Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") != nil)
     }
     
     /// A boolean indicating whether or not the receipt provided through by the App Store was generated for a sandbox / non-release environment; in other words: it indicates if the app was downloaded through another way than the App Store
-    static var hasSanboxReceipt: Bool {
+    static var hasSandboxReceipt: Bool {
         return Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
     }
     

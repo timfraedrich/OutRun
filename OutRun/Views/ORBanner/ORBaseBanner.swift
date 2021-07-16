@@ -83,7 +83,7 @@ public class ORBaseBanner: UIView {
     /**
      Initialises the `ORBaseBanner` with a modified content view
      - parameter customise: a block being called with reference to this `ORBaseBanner` and the content view of it; this should be used to customise the content view
-     - note: Views added to the content view inside the customise block should have propper constraints set up or the content view should be assigned a frame
+     - note: Views added to the content view inside the customise block should have proper constraints set up or the content view should be assigned a frame
      */
     public init(customise: ((ORBaseBanner, UIView) -> Void)? = nil, isDismissable: Bool = true) {
         
@@ -202,7 +202,7 @@ public class ORBaseBanner: UIView {
         }
         
         self.isSuspended = true
-        self.cancleAutoDismiss()
+        self.cancelAutoDismiss()
         
         self.animate(animations: {
             
@@ -292,7 +292,7 @@ public class ORBaseBanner: UIView {
         return CGPoint(x: self.spacing, y: self.spacing + (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0))
     }
     
-    /// The start frame of the banner, being the first and last postion of the banner in the display process
+    /// The start frame of the banner, being the first and last position of the banner in the display process
     private var calculatedStartFrame: CGRect {
         return CGRect(origin: self.calculatedStartOrigin, size: self.calculatedSize)
     }
@@ -327,9 +327,9 @@ public class ORBaseBanner: UIView {
     }
     
     /**
-     Cancles perviously scheduled auto dismisses
+     Cancels previously scheduled auto dismisses
      */
-    private func cancleAutoDismiss() {
+    private func cancelAutoDismiss() {
         
         NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(dismiss), object: nil)
         

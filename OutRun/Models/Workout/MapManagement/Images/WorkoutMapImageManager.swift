@@ -35,7 +35,7 @@ enum WorkoutMapImageManager {
     private static let processQueue = DispatchQueue(label: "processQueue", qos: .userInitiated)
     private static let snapshotQueue = DispatchQueue(label: "snapshotQueue")
     
-    /// A funtion for the execution of a WorkoutMapImageRequest, adding it to the running WorkoutMapImageQueue. If cached this method directly executes the closure, not rendering the image again.
+    /// A function for the execution of a WorkoutMapImageRequest, adding it to the running WorkoutMapImageQueue. If cached this method directly executes the closure, not rendering the image again.
     ///
     /// - Parameter request: An instance of WorkoutMapImageRequest indicating the type of image being requested
     public static func execute(_ request: WorkoutMapImageRequest) {
@@ -58,7 +58,7 @@ enum WorkoutMapImageManager {
         internalStatus = .suspended
     }
     
-    /// A Funtion resuming the rendering process of new map images after it was suspended by `suspendRenderProcess()`.
+    /// A Function resuming the rendering process of new map images after it was suspended by `suspendRenderProcess()`.
     public static func resumeRenderProcess() {
         processQueue.resume()
         snapshotQueue.resume()

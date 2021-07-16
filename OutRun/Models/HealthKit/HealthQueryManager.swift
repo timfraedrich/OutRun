@@ -77,8 +77,8 @@ enum HealthQueryManager {
                                 return
                             }
                             queryObjects.append(queryObject)
-                            HealthQueryManager.getAndAttatchRoute(to: queryObject) {
-                                HealthQueryManager.getAndAttatchSteps(to: queryObject) {
+                            HealthQueryManager.getAndAttachRoute(to: queryObject) {
+                                HealthQueryManager.getAndAttachSteps(to: queryObject) {
                                     // not fully implemented
                                     //HealthQueryManager.getAndAttachHeartRate(to: queryObject) {
                                         count += 1
@@ -101,8 +101,8 @@ enum HealthQueryManager {
         }
     }
     
-    // MARK: Query Steps and Attatch to Query Object
-    static func getAndAttatchSteps(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
+    // MARK: Query Steps and Attach to Query Object
+    static func getAndAttachSteps(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
         let stepsQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeRouteType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, stepsSamples, _, _, error) in
@@ -124,8 +124,8 @@ enum HealthQueryManager {
         
     }
     
-    // MARK: Query Route and Attatch to Query Object
-    static func getAndAttatchRoute(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
+    // MARK: Query Route and Attach to Query Object
+    static func getAndAttachRoute(to queryObject: HKWorkoutQueryObject, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
         let routeObjectQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeRouteType, predicate: predicate, anchor: nil, limit: 1) { (query, routeSamples, _, _, error) in

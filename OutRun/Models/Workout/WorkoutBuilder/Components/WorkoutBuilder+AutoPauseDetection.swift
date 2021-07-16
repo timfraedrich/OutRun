@@ -30,7 +30,7 @@ extension WorkoutBuilder {
         /**
          Updates the AutoPauseDetection instance with new values during a recording
          - parameter timestamp: the exact date when the data provided was received
-         - parameter workoutType: the workout type of the current workout being recorded used for further analysis of the cenario and to discard auto pause detection when appropriate
+         - parameter workoutType: the workout type of the current workout being recorded used for further analysis of the scenario and to discard auto pause detection when appropriate
          - parameter speed: the speed at the provided moment in meters per second
         */
         public func update(timestamp: Date, workoutType: Workout.WorkoutType, speed: Double) {

@@ -32,7 +32,7 @@ extension URL {
             
         } catch {
             
-            print("Failed to calculate size of file at \(self.absoluteString) because an error occured:", error)
+            print("Failed to calculate size of file at \(self.absoluteString) because an error occurred:", error)
             return nil
             
         }

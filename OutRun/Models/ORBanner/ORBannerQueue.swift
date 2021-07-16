@@ -69,7 +69,7 @@ public class ORBannerQueue {
     }
     
     /**
-     Removes an `ORBaseBanner` from the queu
+     Removes an `ORBaseBanner` from the queue
      - parameter banner: The banner being removed from the queue
      */
     public func remove(_ banner: ORBaseBanner) {
@@ -83,7 +83,7 @@ public class ORBannerQueue {
     }
     
     /**
-     Displayes (or resumes) the next banner after removing the current banner from the queue
+     Displays (or resumes) the next banner after removing the current banner from the queue
      */
     public func displayNext() {
         

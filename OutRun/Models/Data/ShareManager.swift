@@ -23,7 +23,7 @@ import CoreGPX
 
 enum ShareManager {
     
-    /// A funtion displaying the iOS share menu on top of the given controller for a file at the given directory (provided it exists); if `shouldDeleteFileAfter` is set to true, the file at the given path will get deleted once the menu is dismissed, this might be useful if the file is saved at the temporary directory
+    /// A function displaying the iOS share menu on top of the given controller for a file at the given directory (provided it exists); if `shouldDeleteFileAfter` is set to true, the file at the given path will get deleted once the menu is dismissed, this might be useful if the file is saved at the temporary directory
     static func displayShareMenu(forFileAt url: URL?, on controller: UIViewController, shouldDeleteFileAfter shouldDelete: Bool = true) {
         
         guard let url = url else {

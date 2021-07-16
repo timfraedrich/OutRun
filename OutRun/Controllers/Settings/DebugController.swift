@@ -99,8 +99,8 @@ class DebugController: SettingsViewController {
                             subTitle: String(Config.hasMobileProvision)
                         ),
                         TitleSubTitleSetting(
-                            title: "hasSanboxReceipt",
-                            subTitle: String(Config.hasSanboxReceipt)
+                            title: "hasSandboxReceipt",
+                            subTitle: String(Config.hasSandboxReceipt)
                         )
                     ]
                 )

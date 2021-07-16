@@ -24,7 +24,7 @@ import UIKit
 extension WorkoutBuilder {
     
     /**
-     Enumaration of the different kind of status the `WorkoutBuilder` can take on
+     Enumeration of the different kind of status the `WorkoutBuilder` can take on
      */
     enum Status {
         

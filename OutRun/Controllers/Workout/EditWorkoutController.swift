@@ -79,7 +79,7 @@ class EditWorkoutController: SettingsViewController {
                         TextInputSetting(
                             title: LS["Workout.Distance"],
                             textFieldText: {
-                                let value = UserPreferences.distanceMeasurementType.convert(fromValue: self.distance ?? 0, toPrefered: true)
+                                let value = UserPreferences.distanceMeasurementType.convert(fromValue: self.distance ?? 0, toPreferred: true)
                                 return CustomNumberFormatting.string(from: value, fractionDigits: 2)
                             }(),
                             keyboardType: .decimalPad,
@@ -88,7 +88,7 @@ class EditWorkoutController: SettingsViewController {
                                 guard let distance = CustomNumberFormatting.number(from: newValue) else {
                                     return
                                 }
-                                let newValue = UserPreferences.distanceMeasurementType.convert(fromValue: distance, toPrefered: false, rounded: false)
+                                let newValue = UserPreferences.distanceMeasurementType.convert(fromValue: distance, toPreferred: false, rounded: false)
                                 self.distance = newValue
                                 self.validateData()
                             }
@@ -280,7 +280,7 @@ class EditWorkoutController: SettingsViewController {
     func getWeightBeforeWorkout(for type: Workout.WorkoutType, with distance: Double) -> Double {
         guard let weight = UserPreferences.weight.value else { return 0.0 }
         let burnedCalories = BurnedEnergyCalculator.calculateBurnedCalories(for: type, distance: distance, weight: weight)
-        return BurnedEnergyCalculator.calculeWeightBeforeWorkout(for: type, distance: distance, burnedCal: burnedCalories.doubleValue)
+        return BurnedEnergyCalculator.calculateWeightBeforeWorkout(for: type, distance: distance, burnedCal: burnedCalories.doubleValue)
     }
     
     func showWorkoutController(workout: Workout) {

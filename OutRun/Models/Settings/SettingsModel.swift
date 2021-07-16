@@ -112,7 +112,7 @@ class SettingsModel {
                         guard let weight = UserPreferences.weight.value else  {
                             return nil
                         }
-                        let value = UserPreferences.weightMeasurementType.convert(fromValue: weight, toPrefered: true)
+                        let value = UserPreferences.weightMeasurementType.convert(fromValue: weight, toPreferred: true)
                         return CustomNumberFormatting.string(from: value, fractionDigits: 2)
                     },
                     textFieldPlaceholder: { LS["Settings.Weight"] },
@@ -123,7 +123,7 @@ class SettingsModel {
                             setting.refresh()
                             return
                         }
-                        let weightValue = UserPreferences.weightMeasurementType.convert(fromValue: newValue, toPrefered: false)
+                        let weightValue = UserPreferences.weightMeasurementType.convert(fromValue: newValue, toPreferred: false)
                         UserPreferences.weight.value = weightValue
                         setting.refresh()
                         

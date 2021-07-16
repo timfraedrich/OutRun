@@ -217,7 +217,7 @@ enum HealthStoreManager {
         }
     }
     
-    // MARK: Attatch Route To Health Workout
+    // MARK: Attach Route To Health Workout
     static func attachRoute(to hkWorkout: HKWorkout, with workout: TempWorkout) {
         
         let locations = workout.locations.compactMap { (sample) -> CLLocation? in
@@ -238,7 +238,7 @@ enum HealthStoreManager {
         
     }
     
-    // MARK: Attatch Heart Rates To Health Workout
+    // MARK: Attach Heart Rates To Health Workout
     static func attachHeartRates(to hkWorkout: HKWorkout, with workout: TempWorkout) {
         
         func add(_ samples: [HKSample]) {
@@ -495,7 +495,7 @@ enum HealthStoreManager {
         
     }
     
-    // MARK: Sync All Unsycned Workouts With Apple Health
+    // MARK: Sync All Unsynced Workouts With Apple Health
     /// Function to sync all unsynced workouts with the health store, completion returning the success state and the state if all workouts have been synced already
     static func syncAllUnsyncedWorkoutsWithAppleHealth(completion: @escaping (Bool, Bool?) -> Void) {
         

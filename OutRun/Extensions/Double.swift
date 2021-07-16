@@ -23,7 +23,7 @@ import Foundation
 extension Double {
     
     /**
-     Rounds this value to a specified decimal place using the specifed `FloatingPointRoundingRule`
+     Rounds this value to a specified decimal place using the specified `FloatingPointRoundingRule`
      - parameter decimalPlaces: the maximum number of decimal places the value should have
      - parameter rule: the rule by which the value will be rounded
      */
@@ -33,7 +33,7 @@ extension Double {
     }
     
     /**
-     Returns this value rounded to a specified decimal place using the specifed `FloatingPointRoundingRule`
+     Returns this value rounded to a specified decimal place using the specified `FloatingPointRoundingRule`
      - parameter decimalPlaces: the maximum number of decimal places the value should have
      - parameter rule: the rule by which the value will be rounded
      - returns: the rounded value
