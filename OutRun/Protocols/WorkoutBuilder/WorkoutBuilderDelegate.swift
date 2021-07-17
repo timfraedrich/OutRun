@@ -21,7 +21,7 @@
 import Foundation
 import CoreLocation
 
-protocol WorkoutBuilderDelegate: class {
+protocol WorkoutBuilderDelegate: AnyObject {
     
     func didUpdate(distanceMeasurement: NSMeasurement)
     func didUpdate(durationMeasurement: NSMeasurement)
