@@ -76,3 +76,56 @@ public func threadSafeSyncReturn<ReturnType>(thread: DispatchQueue = .main, _ cl
 public func throwOnAccess<ReturnType>() -> ReturnType {
     fatalError("\nThrowing because of illegal access: check for proper implementation of all protocols")
 }
+
+/**
+ This function can be used to create a closure being performed on the main thread from another one.
+ 
+ Usage Example:
+ ```
+ let safeCompletion = safeClosure(from: completion)
+ ```
+ 
+ - parameter closure: the closure that is supposed to be performed on the main thread
+ */
+public func safeClosure<Parameter>(from closure: (Parameter) -> Void) -> ((Parameter) -> Void) {
+    return { parameter in
+        DispatchQueue.main.async {
+            closure(parameter)
+        }
+    }
+}
+/**
+ This function can be used to create a closure being performed on the main thread from another one.
+ 
+ Usage Example:
+ ```
+ let safeCompletion = safeClosure(from: completion)
+ ```
+ 
+ - parameter closure: the closure that is supposed to be performed on the main thread
+ */
+public func safeClosure<Parameter1, Parameter2>(from closure: (Parameter1, Parameter2) -> Void) -> ((Parameter1, Parameter2) -> Void) {
+    return { parameter1, parameter2 in
+        DispatchQueue.main.async {
+            closure(parameter1, parameter2)
+        }
+    }
+}
+
+/**
+ This function can be used to create a closure being performed on the main thread from another one.
+ 
+ Usage Example:
+ ```
+ let safeCompletion = safeClosure(from: completion)
+ ```
+ 
+ - parameter closure: the closure that is supposed to be performed on the main thread
+ */
+public func safeClosure<Parameter1, Parameter2, Parameter3>(from closure: (Parameter1, Parameter2, Parameter3) -> Void) -> ((Parameter1, Parameter2, Parameter3) -> Void) {
+    return { parameter1, parameter2, parameter3 in
+        DispatchQueue.main.async {
+            closure(parameter1, parameter2, parameter3)
+        }
+    }
+}

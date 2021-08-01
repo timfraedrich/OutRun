@@ -46,4 +46,10 @@ extension Double {
         
     }
     
+    /// Creates a new value, rounded to the closest possible representation if the provided value was not `nil`.
+    init?(_ optional: Int?) {
+        guard let value = optional else { return nil }
+        self.init(value)
+    }
+    
 }

@@ -56,8 +56,8 @@
 		2259A0292368D6EB00F70F96 /* HealthWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259A0282368D6EB00F70F96 /* HealthWorkout.swift */; };
 		225AC6A2243F2700008D493D /* WorkoutEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A1243F2700008D493D /* WorkoutEvent.swift */; };
 		225AC6A4243F2710008D493D /* WorkoutHeartRateDataSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A3243F2710008D493D /* WorkoutHeartRateDataSample.swift */; };
-		225AC6A6243F9CC3008D493D /* HealthObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A5243F9CC3008D493D /* HealthObserver.swift */; };
-		225AC6A8243FA088008D493D /* HealthQueryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A7243FA088008D493D /* HealthQueryManager.swift */; };
+		225AC6A6243F9CC3008D493D /* HealthStoreManager+Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A5243F9CC3008D493D /* HealthStoreManager+Observer.swift */; };
+		225AC6A8243FA088008D493D /* HealthStoreManager+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */; };
 		22623BFF22DFB811004065C6 /* WorkoutListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22623BFE22DFB811004065C6 /* WorkoutListHeader.swift */; };
 		22623C0122DFBB71004065C6 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22623C0022DFBB71004065C6 /* Sequence.swift */; };
 		226404B5237617560018F1F8 /* HKImportListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226404B4237617560018F1F8 /* HKImportListController.swift */; };
@@ -176,6 +176,7 @@
 		22DBFBE3234939F100DE6E92 /* UserPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DBFBE2234939F100DE6E92 /* UserPreference.swift */; };
 		22DDD31A243B935C00FA262E /* ChangeLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DDD319243B935C00FA262E /* ChangeLogViewController.swift */; };
 		22E5056E25C96A7800DC9AC1 /* HKWorkoutEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E5056D25C96A7800DC9AC1 /* HKWorkoutEvent.swift */; };
+		22E5F415266689ED00D4B985 /* HealthStoreManager+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E5F414266689ED00D4B985 /* HealthStoreManager+Error.swift */; };
 		22E8969A23E6E6E40074D2BB /* Temp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E8969923E6E6E40074D2BB /* Temp.swift */; };
 		22E8969C23E9A2B80074D2BB /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E8969B23E9A2B80074D2BB /* BackupManager.swift */; };
 		22EE6E972311EFC0001D47CF /* WorkoutBuilderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EE6E962311EFC0001D47CF /* WorkoutBuilderDelegate.swift */; };
@@ -254,8 +255,8 @@
 		2259A0282368D6EB00F70F96 /* HealthWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthWorkout.swift; sourceTree = "<group>"; };
 		225AC6A1243F2700008D493D /* WorkoutEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutEvent.swift; sourceTree = "<group>"; };
 		225AC6A3243F2710008D493D /* WorkoutHeartRateDataSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeartRateDataSample.swift; sourceTree = "<group>"; };
-		225AC6A5243F9CC3008D493D /* HealthObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthObserver.swift; sourceTree = "<group>"; };
-		225AC6A7243FA088008D493D /* HealthQueryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthQueryManager.swift; sourceTree = "<group>"; };
+		225AC6A5243F9CC3008D493D /* HealthStoreManager+Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Observer.swift"; sourceTree = "<group>"; };
+		225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Query.swift"; sourceTree = "<group>"; };
 		22623BFE22DFB811004065C6 /* WorkoutListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListHeader.swift; sourceTree = "<group>"; };
 		22623C0022DFBB71004065C6 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		226404B4237617560018F1F8 /* HKImportListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKImportListController.swift; sourceTree = "<group>"; };
@@ -375,6 +376,7 @@
 		22DBFBE2234939F100DE6E92 /* UserPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreference.swift; sourceTree = "<group>"; };
 		22DDD319243B935C00FA262E /* ChangeLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeLogViewController.swift; sourceTree = "<group>"; };
 		22E5056D25C96A7800DC9AC1 /* HKWorkoutEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKWorkoutEvent.swift; sourceTree = "<group>"; };
+		22E5F414266689ED00D4B985 /* HealthStoreManager+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Error.swift"; sourceTree = "<group>"; };
 		22E8969923E6E6E40074D2BB /* Temp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temp.swift; sourceTree = "<group>"; };
 		22E8969B23E9A2B80074D2BB /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		22EE6E962311EFC0001D47CF /* WorkoutBuilderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutBuilderDelegate.swift; sourceTree = "<group>"; };
@@ -544,8 +546,9 @@
 			children = (
 				2259A0282368D6EB00F70F96 /* HealthWorkout.swift */,
 				2298D2152345553F00344989 /* HealthStoreManager.swift */,
-				225AC6A5243F9CC3008D493D /* HealthObserver.swift */,
-				225AC6A7243FA088008D493D /* HealthQueryManager.swift */,
+				225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */,
+				225AC6A5243F9CC3008D493D /* HealthStoreManager+Observer.swift */,
+				22E5F414266689ED00D4B985 /* HealthStoreManager+Error.swift */,
 			);
 			path = HealthKit;
 			sourceTree = "<group>";
@@ -1186,13 +1189,14 @@
 				222632AA24B24B980017517E /* ClearSettingsViewController.swift in Sources */,
 				22AB2FB3233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift in Sources */,
 				22B1DD8B253F90FD0093822B /* ORIntermediateDataModel.swift in Sources */,
-				225AC6A8243FA088008D493D /* HealthQueryManager.swift in Sources */,
+				225AC6A8243FA088008D493D /* HealthStoreManager+Query.swift in Sources */,
 				22CBB4552303FF8F00DDA2E0 /* RouteStatsView.swift in Sources */,
 				223034BD246C3A4A00FCE030 /* WorkoutTypeAlert.swift in Sources */,
 				2213137D23B4110700881806 /* PermissionManager.swift in Sources */,
 				221F56EB2345D87C00706E2E /* UIAlertController.swift in Sources */,
 				2227C644234B6EF400CFE31A /* Config.swift in Sources */,
 				22BBDD3A24D7916D00225AE4 /* WorkoutBuilder+LiveUpdates.swift in Sources */,
+				22E5F415266689ED00D4B985 /* HealthStoreManager+Error.swift in Sources */,
 				22CBB44A2303F8D000DDA2E0 /* WorkoutHeaderView.swift in Sources */,
 				22B2A8A1230D331000EF8558 /* WorkoutStats.swift in Sources */,
 				2298D2142345524C00344989 /* WorkoutBuilderTypeView.swift in Sources */,
@@ -1203,7 +1207,7 @@
 				22B2A89D230D298F00EF8558 /* LabelledDiagramView.swift in Sources */,
 				22B1DD99253F91F20093822B /* OutRunV1.swift in Sources */,
 				22CFE03F23AEFDE500F5E111 /* SetupSegementedControlView.swift in Sources */,
-				225AC6A6243F9CC3008D493D /* HealthObserver.swift in Sources */,
+				225AC6A6243F9CC3008D493D /* HealthStoreManager+Observer.swift in Sources */,
 				22CBB4512303FF7200DDA2E0 /* SpeedStatsView.swift in Sources */,
 				22FEA0AF24CDD7B50007CA9C /* DiskStorage.swift in Sources */,
 				2230925F24D6F6A700A3F636 /* WorkoutBuilder+Status.swift in Sources */,

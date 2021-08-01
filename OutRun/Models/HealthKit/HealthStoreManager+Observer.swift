@@ -1,5 +1,5 @@
 //
-//  HealthObserver.swift
+//  HealthStoreManager+Observer.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -21,7 +21,7 @@
 import Foundation
 import HealthKit
 
-enum HealthObserver {
+extension HealthStoreManager {
     
     // MARK: Workout Observer
     
@@ -172,7 +172,7 @@ enum HealthObserver {
                 if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
                     
                     let workoutObserver = HKAnchoredObjectQuery(
-                        type: HealthStoreManager.objectTypeWorkoutType,
+                        type: HealthStoreManager.HealthType.Workout,
                         predicate: nil,
                         anchor: previousWorkoutObserverAnchor,
                         limit: HKObjectQueryNoLimit,
@@ -186,7 +186,7 @@ enum HealthObserver {
                 if UserPreferences.synchronizeWeightWithAppleHealth.value {
                     
                     let weightObserver = HKAnchoredObjectQuery(
-                        type: HealthStoreManager.objectTypeBodyMass,
+                        type: HealthStoreManager.HealthType.BodyMass,
                         predicate: nil,
                         anchor: previousWeightObserverAnchor,
                         limit: HKObjectQueryNoLimit,

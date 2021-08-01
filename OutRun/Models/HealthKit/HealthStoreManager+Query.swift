@@ -1,5 +1,5 @@
 //
-//  HealthQueryManager.swift
+//  HealthStoreManager+Query.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -21,7 +21,7 @@
 import Foundation
 import HealthKit
 
-enum HealthQueryManager {
+extension HealthStoreManager {
     
     // MARK: Query External Health Workouts
     static func queryExternalWorkouts(completion: @escaping (Bool, [HealthWorkout]) -> Void) {
@@ -41,13 +41,9 @@ enum HealthQueryManager {
                 
                 let existingPredicate = HKQuery.predicateForObjects(with: set)
                 let notExistingPredicate = NSCompoundPredicate(notPredicateWithSubpredicate: existingPredicate)
-                let workoutPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [
-                    HKSampleQuery.predicateForWorkouts(with: .walking),
-                    HKSampleQuery.predicateForWorkouts(with: .running),
-                    HKSampleQuery.predicateForWorkouts(with: .cycling),
-                    HKSampleQuery.predicateForWorkouts(with: .hiking),
-                    HKSampleQuery.predicateForWorkouts(with: .skatingSports)
-                ])
+                let workoutPredicate = NSCompoundPredicate(
+                    orPredicateWithSubpredicates: Workout.WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
+                )
                 let queryPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notExistingPredicate, workoutPredicate])
                 
                 let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
@@ -105,7 +101,7 @@ enum HealthQueryManager {
     static func getAndAttatchSteps(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
-        let stepsQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeRouteType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, stepsSamples, _, _, error) in
+        let stepsQuery = HKAnchoredObjectQuery(type: HealthStoreManager.HealthType.RouteType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, stepsSamples, _, _, error) in
             
             guard let stepsSamples = stepsSamples as? [HKQuantitySample] else {
                 completion()
@@ -128,7 +124,7 @@ enum HealthQueryManager {
     static func getAndAttatchRoute(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
-        let routeObjectQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeRouteType, predicate: predicate, anchor: nil, limit: 1) { (query, routeSamples, _, _, error) in
+        let routeObjectQuery = HKAnchoredObjectQuery(type: HealthStoreManager.HealthType.RouteType, predicate: predicate, anchor: nil, limit: 1) { (query, routeSamples, _, _, error) in
             
             guard let route = routeSamples?.first(where: { (sample) -> Bool in
                 sample is HKWorkoutRoute
@@ -159,7 +155,7 @@ enum HealthQueryManager {
     static func getAndAttachHeartRate(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
         
         let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
-        let heartRateQuery = HKAnchoredObjectQuery(type: HealthStoreManager.objectTypeHeartRate, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, heartRateSamples, _, _, error) in
+        let heartRateQuery = HKAnchoredObjectQuery(type: HealthStoreManager.HealthType.HeartRate, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, heartRateSamples, _, _, error) in
             
             guard let heartRateSamples = heartRateSamples, !heartRateSamples.isEmpty else {
                 completion()
@@ -196,7 +192,7 @@ enum HealthQueryManager {
                 }
                 
                 if #available(iOS 13.0, *) {
-                    let query = HKQuantitySeriesSampleQuery(quantityType: HealthStoreManager.objectTypeHeartRate, predicate: predicate) { (query, quantity, dateInterval, sample, done, error) in
+                    let query = HKQuantitySeriesSampleQuery(quantityType: HealthStoreManager.HealthType.HeartRate, predicate: predicate) { (query, quantity, dateInterval, sample, done, error) in
                         processQuantity(query: query, quantity: quantity, date: dateInterval?.start, done: done, error: error)
                     }
                     HealthStoreManager.healthStore.execute(query)
@@ -232,7 +228,7 @@ enum HealthQueryManager {
     static func queryMostRecentWeightSample() {
         
         let query = HKSampleQuery(
-            sampleType: HealthStoreManager.objectTypeBodyMass,
+            sampleType: HealthStoreManager.HealthType.BodyMass,
             predicate: nil,
             limit: 1,
             sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]

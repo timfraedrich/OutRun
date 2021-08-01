@@ -21,46 +21,66 @@
 import HealthKit
 import CoreLocation
 
-enum HealthStoreManager {
+class HealthStoreManager {
     
-    static let healthStore = HKHealthStore()
+    /// A reference to the `HKHealthStore`, the central database and API of HealthKit.
+    private static let healthStore = HKHealthStore()
     
-    static let objectTypeWorkoutType = HKObjectType.workoutType()
-    static let objectTypeActiveEnergyBurned = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-    static let objectTypeDistanceWalkingRunning = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
-    static let objectTypeDistanceCycling = HKObjectType.quantityType(forIdentifier: .distanceCycling)!
-    static let objectTypeRouteType = HKObjectType.seriesType(forIdentifier: HKWorkoutRouteTypeIdentifier)!
-    static let objectTypeBodyMass = HKObjectType.quantityType(forIdentifier: .bodyMass)!
-    static let objectTypeHeartRate = HKObjectType.quantityType(forIdentifier: .heartRate)!
-    static let objectTypeStepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+    // MARK: - Constants
     
-    static let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-    
-    static let requestedTypes = Set([
-        objectTypeWorkoutType,
-        objectTypeActiveEnergyBurned,
-        objectTypeDistanceWalkingRunning,
-        objectTypeDistanceCycling,
-        objectTypeRouteType,
-        objectTypeBodyMass,
-        // not fully implemented yet
-        /*
-        objectTypeHeartRate,
-        */
-        objectTypeStepCount
-    ])
-    
-    static func gainAuthorization(completion: @escaping (Bool) -> Void) {
+    /// A class containing static instances of `HKSampleType` for reference to HealthKit objects.
+    public class HealthType {
         
+        static let Workout = HKObjectType.workoutType()
+        static let ActiveEnergyBurned = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+        static let DistanceWalkingRunning = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        static let DistanceCycling = HKObjectType.quantityType(forIdentifier: .distanceCycling)!
+        static let Route = HKObjectType.seriesType(forIdentifier: HKWorkoutRouteTypeIdentifier)!
+        static let BodyMass = HKObjectType.quantityType(forIdentifier: .bodyMass)!
+        static let HeartRate = HKObjectType.quantityType(forIdentifier: .heartRate)!
+        static let StepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        
+        /// A static constant containing all HealthKit types implemented and thereby usable in OutRun.
+        static let allImplementedTypes: [HKObjectType] = [
+            HealthType.Workout,
+            HealthType.ActiveEnergyBurned,
+            HealthType.DistanceWalkingRunning,
+            HealthType.DistanceCycling,
+            HealthType.Route,
+            HealthType.BodyMass,
+            HealthType.HeartRate,
+            HealthType.StepCount
+        ]
+        
+    }
+    
+    /// A class containing static instances of special `HKUnit` objects.
+    public class HealthUnit {
+        
+        static let HeartRate = HealthKit.HKUnit.count().unitDivided(by: HealthKit.HKUnit.minute())
+        
+    }
+    
+    // MARK: - Authorisation
+    
+    /**
+     A function to request authorisation to read and write specified types from the health store.
+     - parameter requestedTypes: the types authorisation is supposed to be requested for
+     - parameter completion: a closure being performed on completion of the operation and indicating it's success
+     */
+    static func gainAuthorisation(for requestedTypes: HKSampleType..., completion: @escaping (Bool) -> Void) {
+        
+        let requestedTypes = Set(requestedTypes)
         HealthStoreManager.healthStore.requestAuthorization(toShare: requestedTypes, read: requestedTypes) { (success, error) in
+            
             
             if !success {
                 
                 guard let error = error else {
-                    print("[Health] Unknown error for health store authorization")
+                    print("[Health] Unknown error for health store authorisation")
                     return
                 }
-                print("[Health] Error for health store authorization:", error.localizedDescription)
+                print("[Health] Error for health store authorisation:", error.localizedDescription)
             }
             
             DispatchQueue.main.async {
@@ -70,17 +90,98 @@ enum HealthStoreManager {
         }
     }
     
+    /**
+     A function to provide the current authorisation status of an HealthKit object type.
+     - parameter type: the type that is supposed to be checked
+     - returns: the authorisation status of the provided type
+     */
     static func authorizationStatus(for type: HKObjectType) -> HKAuthorizationStatus {
         return HealthStoreManager.healthStore.authorizationStatus(for: type)
     }
     
-    // MARK: Save Health Workout
-    static func saveHealthWorkout(forWorkout workout: Workout, completion: @escaping (Bool, HKWorkout?) -> Void) {
+    /**
+     Checks the authorisation status for a HKObjektType and adds it to an array if unauthorised.
+     - parameter type: the type to be checked and added
+     - parameter array: the array the type is suppused to be added to
+     - parameter onAuthorised: the closure being performed if authorisation is granted
+     */
+    static func checkAuthorisation(for samples: HKQuantitySample?..., authArray: inout [HKQuantitySample], unauthArray: inout [HKObjectType]) {
         
-        let safeCompletion: (Bool, HKWorkout?) -> Void = { (success, hkWorkout) in
-            DispatchQueue.main.async {
-                completion(success, hkWorkout)
+        for sample in samples {
+            guard let sample = sample else { return }
+            if authorizationStatus(for: sample.quantityType) == .sharingAuthorized {
+                authArray.append(sample)
+            } else {
+                unauthArray.append(sample.quantityType)
             }
+        }
+    }
+    
+    // MARK: - HKHealthStore Manipulation
+    
+    /**
+     Saves the provided workout to the healthStore.
+     - parameter workout: the workout that is supposed to be saved
+     - parameter completion: the closure performed upon completion of saving
+     */
+    static func saveHealthWorkout(for workout: ORWorkoutInterface, completion: @escaping (HealthError?, HKWorkout?) -> Void) {
+        
+        let completion = safeClosure(from: completion)
+        
+        gainAuthorisation(for: HealthType.Workout) { workoutAuthorisation in
+            
+            guard workoutAuthorisation else {
+                completion(.insufficientAuthorisation, nil)
+                return
+            }
+            
+            let (start, end) = (workout.startDate, workout.endDate)
+            let distance = createHealthQuantity(value: workout.distance, unit: .meter())
+            let calories = createHealthQuantity(value: workout.burnedEnergy, unit: .kilocalorie())
+            
+            let workoutEvents = createWorkoutEvents(from: workout)
+            
+            let healthWorkout = HKWorkout(
+                activityType: workout.workoutType.healthKitType,
+                start: start,
+                end: end,
+                workoutEvents: workoutEvents,
+                totalEnergyBurned: calories,
+                totalDistance: distance,
+                device: HKDevice.local(),
+                metadata: [
+                    HKMetadataKeyWasUserEntered : workout.isUserModified
+                ]
+            )
+            
+            var missingAuth = [HKObjectType]()
+            var samples = [HKQuantitySample]()
+            
+            let distanceSample = createHealthQuantitySample(
+                of: workout.workoutType.healthKitDistanceType,
+                quantity: distance,
+                associatedWorkout: healthWorkout
+            )
+            let caloriesSample = createHealthQuantitySample(
+                of: HealthType.ActiveEnergyBurned,
+                quantity: calories,
+                associatedWorkout: healthWorkout
+            )
+            let stepsSample = createHealthQuantitySample(
+                of: HealthType.StepCount,
+                quantityValue: Double(workout.steps),
+                quantityUnit: .count(),
+                associatedWorkout: healthWorkout
+            )
+            
+            checkAuthorisation(
+                for: distanceSample, caloriesSample, stepsSample,
+                authArray: &samples,
+                unauthArray: &missingAuth
+            )
+            
+            
+            
         }
         
         DispatchQueue.main.async {
@@ -122,7 +223,7 @@ enum HealthStoreManager {
                     
                     var samplesToAdd = [HKSample]()
                     if tempWorkout.realWorkoutType == .cycling {
-                        if authorizationStatus(for: objectTypeDistanceCycling) == HKAuthorizationStatus.sharingAuthorized {
+                        if authorizationStatus(for: HealthType.DistanceCycling) == HKAuthorizationStatus.sharingAuthorized {
                             let distanceSample = HKQuantitySample(
                                 type: objectTypeDistanceCycling,
                                 quantity: distanceQuantity,
@@ -136,7 +237,7 @@ enum HealthStoreManager {
                     }
                     
                     if [.running, .walking].contains(tempWorkout.realWorkoutType) {
-                        if authorizationStatus(for: objectTypeDistanceWalkingRunning) == HKAuthorizationStatus.sharingAuthorized {
+                        if authorizationStatus(for: HealthType.DistanceWalkingRunning) == HKAuthorizationStatus.sharingAuthorized {
                             let distanceSample = HKQuantitySample(
                                 type: objectTypeDistanceWalkingRunning,
                                 quantity: distanceQuantity,
@@ -149,7 +250,7 @@ enum HealthStoreManager {
                         }
                     }
                     
-                    if authorizationStatus(for: objectTypeStepCount) == HKAuthorizationStatus.sharingAuthorized {
+                    if authorizationStatus(for: HealthType.StepCount) == HKAuthorizationStatus.sharingAuthorized {
                         if let stepsQuantity = stepsQuantity {
                             let stepsSample = HKQuantitySample(
                                 type: objectTypeStepCount,
@@ -163,7 +264,7 @@ enum HealthStoreManager {
                         }
                     }
                     
-                    if authorizationStatus(for: objectTypeActiveEnergyBurned) == HKAuthorizationStatus.sharingAuthorized {
+                    if authorizationStatus(for: HealthType.ActiveEnergyBurned) == HKAuthorizationStatus.sharingAuthorized {
                         if let caloriesQuantity = caloriesQuantity {
                             let caloriesSample = HKQuantitySample(
                                 type: objectTypeActiveEnergyBurned,
@@ -217,6 +318,110 @@ enum HealthStoreManager {
         }
     }
     
+    // MARK: - Object Creation
+    
+    /**
+     Creates an `HKQuantity` object from the provided data if the value is not `nil`
+     - parameter value: the value of the quantity; if `nil` this function will not return a value
+     - parameter unit: the unit of the quantity
+     - returns: an object of type `HKQuantity` if the provided data was valid
+     */
+    private static func createHealthQuantity(value: Double?, unit: HKUnit) -> HKQuantity? {
+        
+        guard let value = value else { return nil }
+        
+        return HKQuantity(
+            unit: unit,
+            doubleValue: value
+        )
+        
+    }
+    
+    /**
+     Creates an `HKQuantitySample` object from the provided data if the value is not `nil`.
+     - parameter healthType: the type of the quantity sample
+     - parameter quanitity: the quantity to be saved
+     - parameter healthWorkout: the health workout this sample is supposed to be attached to
+     - returns: an object of type `HKQuantitySample`
+     */
+    private static func createHealthQuantitySample(of healthType: HKQuantityType?, quantity: HKQuantity?, associatedWorkout healthWorkout: HKWorkout) -> HKQuantitySample? {
+        
+        guard let healthType = healthType, let quantity = quantity else { return nil }
+        
+        return HKQuantitySample(
+            type: healthType,
+            quantity: quantity,
+            start: healthWorkout.startDate,
+            end: healthWorkout.endDate,
+            device: healthWorkout.device,
+            metadata: healthWorkout.metadata
+        )
+    }
+    
+    /**
+     Creates an `HKQuantitySample` object from the provided data if the value is not `nil`.
+     - parameter healthType: the type of the quantity sample
+     - parameter quanitityValue: the value to be saved in the quantity sample; if `nil` this function will not return a value
+     - parameter quantityUnit: the unit of the quantity sample
+     - parameter healthWorkout: the health workout this sample is supposed to be attached to
+     - returns: an object of type `HKQuantitySample` if the provided data was valid
+     */
+    private static func createHealthQuantitySample(of healthType: HKQuantityType?, quantityValue: Double?, quantityUnit: HKUnit, associatedWorkout healthWorkout: HKWorkout) -> HKQuantitySample? {
+        
+        return createHealthQuantitySample(
+            of: healthType,
+            quantity: createHealthQuantity(
+                value: quantityValue,
+                unit: quantityUnit
+            ),
+            associatedWorkout: healthWorkout
+        )
+    }
+    
+    /**
+     Creates `HKWorkoutEvent`s from the pause and workout event objects of a given workout
+     - parameter workout: the workout object the pause and workout event objects are taken from
+     - returns: the created array of `HKWorkoutEvent`
+     */
+    private static func createWorkoutEvents(from workout: ORWorkoutInterface) -> [HKWorkoutEvent] {
+        
+        var workoutEvents = [HKWorkoutEvent]()
+        
+        workout.pauses.forEach { pause in
+            
+            let events = [
+                HKWorkoutEvent(
+                    type: pause.pauseType == .manual ? .pause : .motionPaused,
+                    dateInterval: DateInterval(start: pause.startDate, duration: 0),
+                    metadata: nil
+                ),
+                workout.endDate == pause.endDate ? nil : HKWorkoutEvent(
+                    type: pause.pauseType == .manual ? .resume : .motionResumed,
+                    dateInterval: DateInterval(start: pause.endDate, duration: 0),
+                    metadata: nil
+                )
+            ].compactMap { $0 }
+            
+            workoutEvents.append(contentsOf: events)
+        }
+        
+        workout.workoutEvents.forEach { event in
+            
+            guard let type = event.eventType.healthKitType else { return }
+            
+            workoutEvents.append(
+                HKWorkoutEvent(
+                    type: type,
+                    dateInterval: DateInterval(start: event.timestamp, duration: 0),
+                    metadata: nil
+                )
+            )
+        }
+        
+    }
+    
+    // MARK: - TODO - DEAL WITH LATER
+    
     // MARK: Attatch Route To Health Workout
     static func attachRoute(to hkWorkout: HKWorkout, with workout: TempWorkout) {
         
@@ -250,7 +455,7 @@ enum HealthStoreManager {
         }
         
         if #available(iOS 12.0, *) {
-            let heartRateBuilder = HKQuantitySeriesSampleBuilder(healthStore: HealthStoreManager.healthStore, quantityType: objectTypeHeartRate, startDate: workout.startDate, device: nil)
+            let heartRateBuilder = HKQuantitySeriesSampleBuilder(healthStore: HealthStoreManager.healthStore, quantityType: HealthType.HeartRate, startDate: workout.startDate, device: nil)
             for (index, heartRateSample) in workout.heartRates.enumerated() {
                 
                 do {
@@ -300,7 +505,7 @@ enum HealthStoreManager {
                     
                     let predicate = HKQuery.predicateForObject(with: targetUUID)
                     
-                    let query = HKSampleQuery(sampleType: objectTypeWorkoutType, predicate: predicate, limit: 1, sortDescriptors: nil) { (query, samples, error) in
+                    let query = HKSampleQuery(sampleType: HealthType.Workout, predicate: predicate, limit: 1, sortDescriptors: nil) { (query, samples, error) in
                         
                         guard let hkWorkout = samples?.first as? HKWorkout else {
                             safeCompletion(false)
@@ -356,7 +561,7 @@ enum HealthStoreManager {
                                 deleteRelatedObjects(of: workout.type == .cycling ? objectTypeDistanceCycling : objectTypeDistanceWalkingRunning)
                             }
                             deleteRelatedObjects(of: objectTypeRouteType)
-                            deleteRelatedObjects(of: objectTypeActiveEnergyBurned)
+                            deleteRelatedObjects(of: HealthType.ActiveEnergyBurned)
                             // MARK: not implemented
                             // deleteRelatedObjects(of: objectTypeHeartRate)
                             deleteRelatedObjects(of: objectTypeStepCount)
@@ -478,7 +683,7 @@ enum HealthStoreManager {
             let weightValue = measurement.converting(to: UnitMass.kilograms).value
             let quantity = HKQuantity(unit: HKUnit.init(from: .kilogram), doubleValue: weightValue)
             let sample = HKQuantitySample(
-                type: objectTypeBodyMass,
+                type: HealthType.BodyMass,
                 quantity: quantity,
                 start: Date(),
                 end: Date(),
@@ -551,7 +756,7 @@ enum HealthStoreManager {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         
-        let query = HKSampleQuery(sampleType: HealthStoreManager.objectTypeWorkoutType, predicate: HKQuery.predicateForObject(with: uuid), limit: 1, sortDescriptors: nil) { (query, samples, error) in
+        let query = HKSampleQuery(sampleType: HealthStoreManager.HealthType.Workout, predicate: HKQuery.predicateForObject(with: uuid), limit: 1, sortDescriptors: nil) { (query, samples, error) in
             uuidExists = !(samples?.isEmpty ?? true)
             dispatchGroup.leave()
         }

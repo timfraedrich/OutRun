@@ -173,6 +173,17 @@ extension Workout: CustomStringConvertible {
             }
         }
         
+        var healthKitDistanceType: HKQuantityType? {
+            switch self {
+            case .running, .walking, .hiking:
+                return HealthStoreManager.HealthType.DistanceWalkingRunning
+            case .cycling:
+                return HealthStoreManager.HealthType.DistanceCycling
+            default:
+                return nil
+            }
+        }
+        
     }
     
 }
