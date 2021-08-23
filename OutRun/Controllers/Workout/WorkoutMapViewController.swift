@@ -34,9 +34,7 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
     lazy var segementedControl: UISegmentedControl = {
         let control = UISegmentedControl()
         
-        if #available(iOS 13.0, *) {
-            control.styleLikeIOS12()
-        }
+        control.styleLikeIOS12()
         
         control.insertSegment(withTitle: LS["WorkoutStats.Altitude"], at: 0, animated: false)
         control.insertSegment(withTitle: LS["WorkoutStats.Speed"], at: 1, animated: false)
@@ -199,10 +197,8 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if #available(iOS 13.0, *) {
-            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false {
-                segementedControl.styleLikeIOS12()
-            }
+        if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false {
+            segementedControl.styleLikeIOS12()
         }
     }
     

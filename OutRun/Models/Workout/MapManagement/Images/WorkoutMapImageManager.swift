@@ -113,9 +113,7 @@ enum WorkoutMapImageManager {
                         mapSnapshotOptions.showsBuildings = true
                         mapSnapshotOptions.showsPointsOfInterest = false
                         mapSnapshotOptions.mapType = .standard
-                        if #available(iOS 13.0, *) {
-                            mapSnapshotOptions.traitCollection = UITraitCollection(userInterfaceStyle: imageUsesDarkMode ? .dark : .light)
-                        }
+                        mapSnapshotOptions.traitCollection = UITraitCollection(userInterfaceStyle: imageUsesDarkMode ? .dark : .light)
                         
                         let snapshotter = MKMapSnapshotter(options: mapSnapshotOptions)
                         

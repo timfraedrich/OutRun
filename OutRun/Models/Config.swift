@@ -44,13 +44,7 @@ enum Config {
     ]
     
     static var isDarkModeEnabled: Bool {
-        get {
-            if #available(iOS 13.0, *) {
-                return UITraitCollection.current.userInterfaceStyle == .dark
-            } else {
-                return false
-            }
-        }
+        return UITraitCollection.current.userInterfaceStyle == .dark
     }
     
     enum ReleaseStatus: String {

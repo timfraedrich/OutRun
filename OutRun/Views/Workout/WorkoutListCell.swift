@@ -215,14 +215,12 @@ class WorkoutListCell: UITableViewCell, MKMapViewDelegate, ApplicationStateObser
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        if #available(iOS 13.0, *) {
-            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false {
-                self.circleView.layer.borderColor = UIColor.accentColor.cgColor
-                self.mapImageView.image = nil
-                self.loadImage()
-                if workout.isRace {
-                    self.containerView.layer.borderColor = UIColor.accentColor.withAlphaComponent(0.5).cgColor
-                }
+        if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false {
+            self.circleView.layer.borderColor = UIColor.accentColor.cgColor
+            self.mapImageView.image = nil
+            self.loadImage()
+            if workout.isRace {
+                self.containerView.layer.borderColor = UIColor.accentColor.withAlphaComponent(0.5).cgColor
             }
         }
     }

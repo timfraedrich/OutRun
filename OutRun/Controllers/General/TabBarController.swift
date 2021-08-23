@@ -115,10 +115,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if #available(iOS 13.0, *) {
-            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false {
-                self.addButton.layer.borderColor = UIColor.foregroundColor.withAlphaComponent(0.2).cgColor
-            }
+        if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false {
+            self.addButton.layer.borderColor = UIColor.foregroundColor.withAlphaComponent(0.2).cgColor
         }
     }
     

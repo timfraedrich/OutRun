@@ -110,13 +110,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
     
     var routeOverlay: MKOverlay?
     
-    var blurView = UIVisualEffectView(effect: UIBlurEffect(style: {
-        if #available(iOS 13.0, *) {
-            return .systemThinMaterial
-        } else {
-            return .extraLight
-        }
-    }()))
+    var blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
     
     override func viewDidLoad() {
         
@@ -239,12 +233,10 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
         self.readinessIndicatorView.status = status
         self.actionButton.transition(to: status)
         
-        if #available(iOS 13.0, *) {
-            if status.isActiveStatus {
-                self.isModalInPresentation = true
-            } else {
-                self.isModalInPresentation = false
-            }
+        if status.isActiveStatus {
+            self.isModalInPresentation = true
+        } else {
+            self.isModalInPresentation = false
         }
     }
     

@@ -25,13 +25,7 @@ class LoadingView: UIView {
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         
-        let loadingIndicator = UIActivityIndicatorView(style: {
-            if #available(iOS 13.0, *) {
-                return .large
-            } else {
-                return .gray
-            }
-        }())
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
         loadingIndicator.startAnimating()
         self.addSubview(loadingIndicator)
         

@@ -35,11 +35,7 @@ class ChangeLogViewController: UIViewController {
         let effectView = UIVisualEffectView()
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(close))
         effectView.addGestureRecognizer(tapRec)
-        if #available(iOS 13.0, *) {
-            effectView.effect = UIBlurEffect(style: .systemUltraThinMaterialDark)
-        } else {
-            effectView.effect = UIBlurEffect(style: .dark)
-        }
+        effectView.effect = UIBlurEffect(style: .systemUltraThinMaterialDark)
         
         self.view.addSubview(effectView)
         self.view.backgroundColor = .none

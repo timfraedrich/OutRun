@@ -26,10 +26,8 @@ class SetupSegementedControlView: SetupActionView {
     
     let segmentedControl: UISegmentedControl = {
         let seg = UISegmentedControl()
-        if #available(iOS 13.0, *) {
-            seg.tintColor = .accentColor
-            seg.styleLikeIOS12()
-        }
+        seg.tintColor = .accentColor
+        seg.styleLikeIOS12()
         return seg
     }()
     
