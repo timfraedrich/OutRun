@@ -28,18 +28,22 @@ extension HealthStoreManager {
         /// The intended action could not be performed due to lack of proper authorisation.
         case insufficientAuthorisation
         /// While carrying out the intended action an error occured in the health store.
-        case healthKitError(error: Error)
+        case healthKitError(error: Error?)
         /// The intended action could be performed, but not carried out in it's full extend due to lack of optional authorisation
         case optionalAuthorisationMissing
+        /// The input provided to perform the intended action was invalid
+        case invalidInput
         
         var debugDescription: String {
             switch self {
             case .insufficientAuthorisation:
                 return "The intended action could not be performed due to lack of proper authorisation."
             case .healthKitError(let error):
-                return "While carrying out the intended action an error occured in the health store. Health Error: \(error.localizedDescription)"
+                return "While carrying out the intended action an error occured in the health store." + (error != nil ? " Health Error: \(error!.localizedDescription)" : "")
             case .optionalAuthorisationMissing:
                 return "The intended action could be performed, but not carried out to it's full extend due to lack of optional authorisation. Please check whether you have granted all the required permissions in Health."
+            case .invalidInput:
+                return "The input provided to perform the intended action was invalid"
             }
         }
         

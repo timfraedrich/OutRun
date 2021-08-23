@@ -26,7 +26,7 @@ class HealthWorkout: TempWorkout {
     
     let hkWorkout: HKWorkout
     
-    init?(_ hkWorkout: HKWorkout, stepsSamples: [HKQuantitySample], route: [CLLocation], workoutEvents: [HKWorkoutEvent], heartRates: [TempWorkoutHeartRateDataSample]) {
+    init?(_ hkWorkout: HKWorkout, steps: Int?, route: [CLLocation], heartRates: [TempWorkoutHeartRateDataSample]) {
         
         guard
             let distance = hkWorkout.totalDistance?.doubleValue(for: .meter()),
@@ -34,7 +34,7 @@ class HealthWorkout: TempWorkout {
         else {
             return nil
         }
-        
+        let workoutEvents = hkWorkout.workoutEvents ?? []
         let isUserModified = hkWorkout.metadata?[HKMetadataKeyWasUserEntered] as? Bool ?? false
         
         let elevationTouple = Computation.computeElevationData(from: route.map { $0.altitude })
@@ -49,7 +49,7 @@ class HealthWorkout: TempWorkout {
             uuid: nil,
             workoutType: type,
             distance: distance,
-            steps: HealthWorkout.steps(from: stepsSamples),
+            steps: steps,
             startDate: hkWorkout.startDate,
             endDate: hkWorkout.endDate,
             burnedEnergy: hkWorkout.totalEnergyBurned?.doubleValue(for: .kilocalorie()),
@@ -75,14 +75,6 @@ class HealthWorkout: TempWorkout {
     }
     
     // MARK: Static
-    
-    static func steps(from hkSamples: [HKQuantitySample]) -> Int? {
-        var steps = Int()
-        for sample in hkSamples {
-            steps += Int(sample.quantity.doubleValue(for: HKUnit.count()))
-        }
-        return steps != 0 ? steps : nil
-    }
     
     static func durationTouple(from pauses: [TempWorkoutPause], startDate: Date, endDate: Date) -> Computation.DurationTouple {
         

@@ -215,7 +215,7 @@ extension DataManager {
             From<Workout>()
                 .select(NSDictionary.self, .attribute(\._healthKitUUID))
                 .where(\._healthKitUUID != nil))
-                .compactMap { UUID(uuidString: $0.first?.value as? String ?? "") }
+                .compactMap { $0.first?.value as? UUID }
         ) ?? []
     }
     

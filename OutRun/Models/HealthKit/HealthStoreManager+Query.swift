@@ -20,211 +20,237 @@
 
 import Foundation
 import HealthKit
+import CoreLocation
 
 extension HealthStoreManager {
     
-    // MARK: Query External Health Workouts
-    static func queryExternalWorkouts(completion: @escaping (Bool, [HealthWorkout]) -> Void) {
+    /**
+     Queries the health object associated with the provided uuid if one exists.
+     - parameter type: the type of the object to be returned
+     - parameter uuid: the provided uuid by which the health object is identified
+     - parameter completion: the closure being performed upon completion
+     - parameter sample: the optional sample
+     - parameter error: the error if one occured
+     */
+    static func queryHealthObject(of type: HKSampleType, with uuid: UUID, completion: @escaping (_ sample: HKSample?, _ error: Error?) -> Void) {
         
-        let safeCompletion: (Bool, [HealthWorkout]) -> Void = { (success, queryObjects) in
-            DispatchQueue.main.async {
-                completion(success, queryObjects)
-            }
-        }
+        let completion = safeClosure(from: completion)
+        let predicate = HKQuery.predicateForObject(with: uuid)
         
-        HealthStoreManager.gainAuthorization { (success) in
-        
-            if success {
-                
-                let existingHKWorkouts = DataManager.queryExistingHealthUUIDs()
-                let set = Set(existingHKWorkouts)
-                
-                let existingPredicate = HKQuery.predicateForObjects(with: set)
-                let notExistingPredicate = NSCompoundPredicate(notPredicateWithSubpredicate: existingPredicate)
-                let workoutPredicate = NSCompoundPredicate(
-                    orPredicateWithSubpredicates: Workout.WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
-                )
-                let queryPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notExistingPredicate, workoutPredicate])
-                
-                let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
-                
-                let query = HKSampleQuery(sampleType: .workoutType(), predicate: queryPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: [sortDescriptor], resultsHandler: { (query, samples, error) in
-                    
-                    guard let samples = samples as? [HKWorkout] else {
-                        safeCompletion(false, [])
-                        return
-                    }
-                    
-                    DispatchQueue.main.async {
-                        
-                        var queryObjects = [HealthWorkout]()
-                        var count = 0
-                        
-                        func completeIfAppropriate() {
-                            if count == samples.count {
-                                safeCompletion(true, queryObjects)
-                            }
-                        }
-                        completeIfAppropriate()
-                        samples.forEach { (workout) in
-                            guard let queryObject = HKWorkoutQueryObject(workout) else {
-                                count += 1
-                                completeIfAppropriate()
-                                return
-                            }
-                            queryObjects.append(queryObject)
-                            HealthQueryManager.getAndAttatchRoute(to: queryObject) {
-                                HealthQueryManager.getAndAttatchSteps(to: queryObject) {
-                                    // not fully implemented
-                                    //HealthQueryManager.getAndAttachHeartRate(to: queryObject) {
-                                        count += 1
-                                        completeIfAppropriate()
-                                    //}
-                                }
-                            }
-                        }
-                    }
-                    
-                })
-                HealthStoreManager.healthStore.execute(query)
-                
-            } else {
-                
-                safeCompletion(false, [])
-                
-            }
+        let query = HKSampleQuery(
+            sampleType: type,
+            predicate: predicate,
+            limit: 1,
+            sortDescriptors: nil
+        ) { query, samples, error in
             
-        }
-    }
-    
-    // MARK: Query Steps and Attatch to Query Object
-    static func getAndAttatchSteps(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
-        
-        let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
-        let stepsQuery = HKAnchoredObjectQuery(type: HealthStoreManager.HealthType.RouteType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, stepsSamples, _, _, error) in
-            
-            guard let stepsSamples = stepsSamples as? [HKQuantitySample] else {
-                completion()
+            guard let object = samples?.first else {
+                completion(nil, error)
                 return
             }
             
-            var steps = Int()
-            for sample in stepsSamples {
-                steps += Int(sample.quantity.doubleValue(for: HKUnit.count()))
-            }
-            
-            queryObject.steps = steps != 0 ? steps : nil
+            completion(object, nil)
         }
         
-        HealthStoreManager.healthStore.execute(stepsQuery)
-        
+        HealthStoreManager.healthStore.execute(query)
     }
     
-    // MARK: Query Route and Attatch to Query Object
-    static func getAndAttatchRoute(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
+    /**
+     Queries the health objects associated with the provided workout.
+     - parameter type: the type of the object to be returned
+     - parameter healthWorkout: the provided uuid by which the health object is identified
+     - parameter completion: the closure being performed upon completion
+     - parameter samples: the optional samples
+     - parameter error: the error if one occured
+     */
+    static func queryHealthObjects<ReturnType: HKSample>(of type: HKSampleType, limit: Int = HKObjectQueryNoLimit, attachedTo healthWorkout: HKWorkout, completion: @escaping (_ samples: [ReturnType]?, _ error: Error?) -> Void) {
         
-        let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
-        let routeObjectQuery = HKAnchoredObjectQuery(type: HealthStoreManager.HealthType.RouteType, predicate: predicate, anchor: nil, limit: 1) { (query, routeSamples, _, _, error) in
+        let completion = safeClosure(from: completion)
+        let predicate = HKQuery.predicateForObjects(from: healthWorkout)
+        
+        let query = HKSampleQuery(
+            sampleType: type,
+            predicate: predicate,
+            limit: limit,
+            sortDescriptors: nil
+        ) { (query, samples, error) in
+            guard let samples = samples?.compactMap({ $0 as? ReturnType }) else { completion(nil, error) }
+            completion(samples, error)
+        }
+        
+        HealthStoreManager.healthStore.execute(query)
+    }
+    
+    /**
+     Searches the health store for an object with the provided type and uuid.
+     - returns: a boolean indicating whether the objects exists of not
+     */
+    static func objectExists(of type: HKSampleType, for uuid: UUID) -> Bool {
+        
+        var objectExists = false
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        
+        let predicate = HKQuery.predicateForObject(with: uuid)
+        let query = HKSampleQuery(
+            sampleType: type,
+            predicate: predicate,
+            limit: 1,
+            sortDescriptors: nil
+        ) { (query, samples, error) in
+            objectExists = !(samples?.isEmpty ?? true)
+            dispatchGroup.leave()
+        }
+        
+        HealthStoreManager.healthStore.execute(query)
+        dispatchGroup.wait()
+        
+        return objectExists
+    }
+    
+    /**
+     Queries all health workouts not saved to the database yet and retruns them asynchronously.
+     - parameter completion: the closure being performed upon completion
+     */
+    static func queryUnsyncedHealthWorkouts(completion: @escaping (HealthError?, [HealthWorkout]) -> Void) {
+        
+        let completion = safeClosure(from: completion)
+        
+        gainAuthorisation(for: [HealthType.Workout]) { authorisation, _ in
+            guard authorisation else { completion(.insufficientAuthorisation, []); return }
             
-            guard let route = routeSamples?.first(where: { (sample) -> Bool in
-                sample is HKWorkoutRoute
-            }) as? HKWorkoutRoute else {
-                print("Error - could not parse HKSample to HKWorkoutRoute")
-                completion()
-                return
-            }
+            let unsyncedWorkouts = NSCompoundPredicate(notPredicateWithSubpredicate: HKQuery.predicateForObjects(with: Set(DataManager.queryExistingHealthUUIDs())))
+            let supportedTypes = NSCompoundPredicate(orPredicateWithSubpredicates: Workout.WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) })
+            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [unsyncedWorkouts, supportedTypes])
             
-            let routeQuery = HKWorkoutRouteQuery(route: route) { (query, locations, success, error) in
-                
-                guard let locs = locations?.compactMap({ (location) -> TempWorkoutRouteDataSample? in
-                    return TempWorkoutRouteDataSample(from: location)
-                }), locations != [] else {
-                    completion()
+            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+            
+            let query = HKSampleQuery(
+                sampleType: HealthType.Workout,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [sortDescriptor]
+            ) { (_, samples, error) in
+                guard let hkWorkouts = samples?.compactMap({ $0 as? HKWorkout }) else {
+                    completion(.healthKitError(error: error), [])
                     return
                 }
-                queryObject.locations.append(contentsOf: locs)
-                completion()
+                
+                var healthWorkouts = [HealthWorkout?]()
+                for hkWorkout in hkWorkouts {
+                    
+                    let stepsMapper: (Int?, HKQuantity, DateInterval) -> Int = { lastValue, quantity, _ in
+                        lastValue ?? 0 + Int(quantity.doubleValue(for: .count()))
+                    }
+                    let heartRateMapper: ([TempWorkoutHeartRateDataSample]?, HKQuantity, DateInterval) -> [TempWorkoutHeartRateDataSample] = { lastValue, quantity, timeInterval -> [TempWorkoutHeartRateDataSample] in
+                        var values = lastValue ?? []
+                        values.append(.init(
+                            uuid: nil,
+                            heartRate: Int(quantity.doubleValue(for: HealthUnit.HeartRate)),
+                            timestamp: timeInterval.start
+                        ))
+                        return values
+                    }
+                    
+                    let steps: Int? = queryAnchoredHealthSeriesData(of: HealthType.StepCount, attachedTo: hkWorkout, transform: stepsMapper)
+                    let routeData: [CLLocation] = queryAnchoredWorkoutRoute(attachedTo: hkWorkout)
+                    let heartRates: [TempWorkoutHeartRateDataSample] = queryAnchoredHealthSeriesData(
+                        of: HealthType.HeartRate,  attachedTo: hkWorkout, transform: heartRateMapper) ?? []
+                    
+                    healthWorkouts.append(
+                        HealthWorkout(
+                            hkWorkout,
+                            steps: steps,
+                            route: routeData,
+                            heartRates: heartRates
+                        )
+                    )
+                }
+                
+                completion(nil, healthWorkouts.filterNil())
             }
-            HealthStoreManager.healthStore.execute(routeQuery)
+            
+            HealthStoreManager.healthStore.execute(query)
         }
-        
-        HealthStoreManager.healthStore.execute(routeObjectQuery)
     }
     
-    // MARK: Query Heart Rates and Attach to Query Object
-    static func getAndAttachHeartRate(to queryObject: HealthWorkout, completion: @escaping () -> Void) {
+    /**
+     Queries health series data attached to the provided workout and tranforms it through a provided closure before returning it allowing for both commulative results and lists being returned.
+     - parameter type: the type of data being queried
+     - parameter healthWorkout: the `HKWorkout` the data is attached to
+     - parameter transform: the closure used to tranform the queried data before returning it
+     - parameter lastValue: the last value returned by the transformClosure
+     - parameter quantity: the current quantity for extracting the wanted data
+     - parameter dateInterval: the quantity's date interval
+     */
+    private static func queryAnchoredHealthSeriesData<ReturnType>(of type: HKQuantityType, attachedTo healthWorkout: HKWorkout, transform: (_ lastValue: ReturnType?, _ quantity: HKQuantity, _ dateInterval: DateInterval) -> ReturnType?) -> ReturnType? {
         
-        let predicate = HKAnchoredObjectQuery.predicateForObjects(from: queryObject.hkWorkout)
-        let heartRateQuery = HKAnchoredObjectQuery(type: HealthStoreManager.HealthType.HeartRate, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, heartRateSamples, _, _, error) in
+        var lastValue: ReturnType?
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        
+        gainAuthorisation(for: [type]) { authorisation, _ in
+            guard authorisation else { dispatchGroup.leave(); return }
             
-            guard let heartRateSamples = heartRateSamples, !heartRateSamples.isEmpty else {
-                completion()
-                return
+            let predicate = HKAnchoredObjectQuery.predicateForObjects(from: healthWorkout)
+            let query = HKQuantitySeriesSampleQuery(quantityType: type, predicate: predicate) { query, quantity, dateInterval, _, done, error in
+                guard error == nil, let quantity = quantity, let dateInterval = dateInterval, let tranformedValue = transform(lastValue, quantity, dateInterval) else { return }
+                
+                lastValue = tranformedValue
+                
+                guard done else { return }
+                HealthStoreManager.healthStore.stop(query)
+                dispatchGroup.leave()
             }
             
-            let samples = heartRateSamples.compactMap { (sample) -> HKQuantitySample? in
-                return (sample as? HKQuantitySample ?? nil)
-            }
+            HealthStoreManager.healthStore.execute(query)
+        }
+        
+        dispatchGroup.wait()
+        return lastValue
+    }
+    
+    /**
+     Queries the workout route attachted to a health workout.
+     - parameter healthRoute: the health workout the route is associated with
+     - returns: the location data of the queried health workout
+     */
+    private static func queryAnchoredWorkoutRoute(attachedTo healthWorkout: HKWorkout) -> [CLLocation] {
+        
+        var routeData = [CLLocation]()
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        
+        gainAuthorisation(for: [HealthType.Route]) { authorisation, _ in
+            guard authorisation else { dispatchGroup.leave(); return }
             
-            var tempSamples = [TempWorkoutHeartRateDataSample]()
-            if #available(iOS 12.0, *) {
+            queryHealthObjects(
+                of: HealthType.Route,
+                attachedTo: healthWorkout
+            ) { routes, error in
+                guard let route = routes?.first as? HKWorkoutRoute else { dispatchGroup.leave(); return }
                 
-                func checkIfDone(_ done: Bool) {
-                    if done {
-                        queryObject.heartRates = tempSamples
-                        completion()
-                    }
-                }
-                
-                func processQuantity(query: HKQuery, quantity: HKQuantity?, date: Date?, done: Bool, error: Error?) {
-                    guard let quantity = quantity, let date = date else {
-                        checkIfDone(done)
-                        return
-                    }
-                    let heartRate = quantity.doubleValue(for: HealthStoreManager.heartRateUnit)
-                    let tempSample = TempWorkoutHeartRateDataSample(uuid: nil, heartRate: heartRate, timestamp: date)
-                    tempSamples.append(tempSample)
+                let query = HKWorkoutRouteQuery(route: route) { query, locations, done, error in
+                    guard let locations = locations else { dispatchGroup.leave(); return }
                     
-                    checkIfDone(done)
-                    if done {
-                        HealthStoreManager.healthStore.stop(query)
-                    }
-                }
-                
-                if #available(iOS 13.0, *) {
-                    let query = HKQuantitySeriesSampleQuery(quantityType: HealthStoreManager.HealthType.HeartRate, predicate: predicate) { (query, quantity, dateInterval, sample, done, error) in
-                        processQuantity(query: query, quantity: quantity, date: dateInterval?.start, done: done, error: error)
-                    }
-                    HealthStoreManager.healthStore.execute(query)
+                    routeData.append(contentsOf: locations)
                     
-                } else {
-                    let sample = samples.first!
-                    let query = HKQuantitySeriesSampleQuery(sample: sample) { (query, quantity, date, done, error) in
-                        processQuantity(query: query, quantity: quantity, date: date, done: done, error: error)
-                    }
-                    HealthStoreManager.healthStore.execute(query)
+                    guard done else { return }
+                    HealthStoreManager.healthStore.stop(query)
+                    dispatchGroup.leave()
                 }
                 
-            } else {
-                
-                for (index, sample) in samples.enumerated() {
-                    let heartRate = sample.quantity.doubleValue(for: HealthStoreManager.heartRateUnit)
-                    let tempSample = TempWorkoutHeartRateDataSample(uuid: nil, heartRate: heartRate, timestamp: sample.startDate)
-                    tempSamples.append(tempSample)
-                    
-                    if (index + 1) == samples.count {
-                        queryObject.heartRates = tempSamples
-                        completion()
-                    }
-                }
+                HealthStoreManager.healthStore.execute(query)
             }
         }
         
-        HealthStoreManager.healthStore.execute(heartRateQuery)
-        
+        dispatchGroup.wait()
+        return routeData
     }
     
-    // MARK: Query Most Recent Weight And Save To UserPreferences
+    /**
+     Queries the most recent body weight sample from the health store and saves it to UserSettings.
+     */
     static func queryMostRecentWeightSample() {
         
         let query = HKSampleQuery(
@@ -232,21 +258,13 @@ extension HealthStoreManager {
             predicate: nil,
             limit: 1,
             sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
-        ) { (query, samples, error) in
+        ) { (_, samples, _) in
+            guard let weight = samples?.max(by: { $0.startDate > $1.startDate }) as? HKQuantitySample else { return }
             
-            guard let newestWeightSample = samples?.max(by: { (sample1, sample2) -> Bool in
-                return sample1.startDate > sample2.startDate
-            }) as? HKQuantitySample else {
-                return
-            }
-            
-            let newWeightInKG = newestWeightSample.quantity.doubleValue(for: HKUnit.init(from: .kilogram))
-            
+            let newWeightInKG = weight.quantity.doubleValue(for: HKUnit.init(from: .kilogram))
             UserPreferences.weight.value = newWeightInKG
         }
         
         HealthStoreManager.healthStore.execute(query)
-        
     }
-    
 }

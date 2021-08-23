@@ -55,11 +55,7 @@ struct DataManager {
     public static func setup(dataModel: ORDataModel.Type = OutRunV4.self, completion: @escaping (DataManager.SetupError?) -> Void, migration: @escaping (Progress) -> Void) {
         
         
-        let completion: (DataManager.SetupError?) -> Void = { error in
-            DispatchQueue.main.async {
-                completion(error)
-            }
-        }
+        let completion = safeClosure(from: completion)
         
         // setup storage
         let storage = SQLiteStore(
@@ -133,11 +129,7 @@ struct DataManager {
         object: ORWorkoutInterface,
         completion: @escaping (_ success: Bool, _ error: DataManager.SaveError?, _ workout: Workout?) -> Void) {
         
-        let completion: (Bool, DataManager.SaveError?, Workout?) -> Void = { success, error, workout in
-            DispatchQueue.main.async {
-                completion(success, error, workout)
-            }
-        }
+        let completion = safeClosure(from: completion)
         
         saveWorkouts(
             objects: [object],
@@ -176,11 +168,7 @@ struct DataManager {
         objects: [ORWorkoutInterface],
         completion: @escaping (_ success: Bool, _ error: DataManager.SaveMultipleError?, _ workouts: [Workout]) -> Void) {
         
-        let completion: (Bool, DataManager.SaveMultipleError?, [Workout]) -> Void = { success, error, workouts in
-            DispatchQueue.main.async {
-                completion(success, error, workouts)
-            }
-        }
+        let completion = safeClosure(from: completion)
         
         // filtering for Workout class and already saved
         let filteredObjects = objects.filter { (object) -> Bool in
@@ -301,11 +289,7 @@ struct DataManager {
      */
     public static func updateWorkout(object: ORWorkoutInterface, completion: @escaping (_ success: Bool, _ error: DataManager.UpdateError?, _ workout: Workout?) -> Void) {
         
-        let completion: (Bool, DataManager.UpdateError?, Workout?) -> Void = { success, error, workout in
-            DispatchQueue.main.async {
-                completion(success, error, workout)
-            }
-        }
+        let completion = safeClosure(from: completion)
         
         // check for Workout class
         if object is Workout {
@@ -406,6 +390,29 @@ struct DataManager {
         }
     }
     
+    /**
+     This function edits the reference to a HealthKit workout in the provided workout object.
+     - parameter workout: the workout requiring a reference update
+     - parameter reference: the reference being updated
+     */
+    public static func editHealthReference(for workout: ORWorkoutInterface, reference: UUID?) {
+        
+        dataStack.perform { transaction in
+            
+            guard let workout = queryObject(from: workout, transaction: transaction) as Workout? else { return }
+            let edit = transaction.edit(workout)
+            
+            edit?._healthKitUUID .= reference
+            
+        } completion: { result in
+            switch result {
+            case .failure(let error):
+                print("[DataManager] failed to create reference to health workout:", error.localizedDescription)
+            default: break
+            }
+        }
+    }
+    
     // MARK: - Event
     
     /**
@@ -420,11 +427,7 @@ struct DataManager {
      */
     public static func saveEvent(object: OREventInterface, completion: @escaping (_ success: Bool, _ error: DataManager.SaveError?, _ event: Event?) -> Void) {
         
-        let completion: (Bool, DataManager.SaveError?, Event?) -> Void = { success, error, event in
-            DispatchQueue.main.async {
-                completion(success, error, event)
-            }
-        }
+        let completion = safeClosure(from: completion)
         
         saveEvents(
             objects: [object],
@@ -462,11 +465,7 @@ struct DataManager {
      */
     public static func saveEvents(objects: [OREventInterface], completion: @escaping (_ success: Bool, _ error: DataManager.SaveMultipleError?, _ events: [Event]) -> Void) {
         
-        let completion: (Bool, DataManager.SaveMultipleError?, [Event]) -> Void = { success, error, events in
-            DispatchQueue.main.async {
-                completion(success, error, events)
-            }
-        }
+        let completion = safeClosure(from: completion)
         
         let filteredObjects = objects.filter { (object) -> Bool in
             if object is Event {
@@ -544,11 +543,7 @@ struct DataManager {
      */
     public static func updateEvent(object: OREventInterface, completion: @escaping (_ success: Bool, _ error: DataManager.UpdateError?, _ event: Event?) -> Void) {
         
-        let completion: (Bool, DataManager.UpdateError?, Event?) -> Void = { success, error, event in
-            DispatchQueue.main.async {
-                completion(success, error, event)
-            }
-        }
+        let completion = safeClosure(from: completion)
         
         // check for Workout class
         if object is Event {

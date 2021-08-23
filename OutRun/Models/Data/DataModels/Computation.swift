@@ -107,6 +107,9 @@ class Computation {
      */
     static func calculateAndValidatePauses(from events: [EventTouple], workoutStart: Date, workoutEnd: Date) -> [PauseTouple]? {
         
+        // filter and sort events
+        let events = events.filter { (0...3).contains($0.type) }.sorted(by: { $0.date < $1.date })
+            
         // validation -> pauses are not taken to next version if this fails
         
         // date range
@@ -129,12 +132,15 @@ class Computation {
         }
         
         // pause objects can be build from the data
-        var pauseData: [(start: Date, end: Date, type: Int)] = []
+        var pauseData: [PauseTouple] = []
         for (index, pauseEvent) in events.enumerated() where [0, 1].contains(pauseEvent.type) {
             
             let pauseType = pauseEvent.type
             
             if let resumeEvent = events.safeValue(for: index + 1), resumeEvent.type == pauseEvent.type + 2 {
+                pauseData.append((start: pauseEvent.date, end: resumeEvent.date, type: pauseType))
+                
+            } else if let resumeEvent = events.safeValue(for: index + 2), resumeEvent.type == pauseEvent.type + 2 {
                 pauseData.append((start: pauseEvent.date, end: resumeEvent.date, type: pauseType))
                 
             } else if index == events.count - 1 {
@@ -148,7 +154,7 @@ class Computation {
             let dataPoint = pauseData.last!
             let range = dataPoint.start...dataPoint.end
             
-            for otherDataPoint in pauseData.dropLast() {
+            overlapLoop: for otherDataPoint in pauseData.dropLast() {
                 
                 // check for duplicate
                 if dataPoint == otherDataPoint {
@@ -158,14 +164,24 @@ class Computation {
                 // check for overlap
                 let otherRange = otherDataPoint.start...otherDataPoint.end
                 if range.overlaps(otherRange) {
+                    
+                    // check if the pauses overlap 100% and one is manual while the other is automatic
+                    // -> meaning the objects were imported from apple health and should be merged
+                    //    together into an automatic pause object
+                    if range == otherDataPoint.start...otherDataPoint.end && dataPoint.type != otherDataPoint.type {
+                        pauseData.removeAll { filterDataPoint in
+                            // removing all manual pauses identical to the range of
+                            range == filterDataPoint.start...filterDataPoint.end && filterDataPoint.type == 0
+                        }
+                        continue overlapLoop
+                    }
+                    
+                    // else == just a normal overlap -> pause data is invalid
                     return nil
                 }
-                
             }
         }
         
         return pauseData
-        
     }
-    
 }

@@ -24,12 +24,12 @@ import CoreLocation
 class HealthStoreManager {
     
     /// A reference to the `HKHealthStore`, the central database and API of HealthKit.
-    private static let healthStore = HKHealthStore()
+    static let healthStore = HKHealthStore()
     
     // MARK: - Constants
     
     /// A class containing static instances of `HKSampleType` for reference to HealthKit objects.
-    public class HealthType {
+    class HealthType {
         
         static let Workout = HKObjectType.workoutType()
         static let ActiveEnergyBurned = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
@@ -41,7 +41,7 @@ class HealthStoreManager {
         static let StepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
         
         /// A static constant containing all HealthKit types implemented and thereby usable in OutRun.
-        static let allImplementedTypes: [HKObjectType] = [
+        static let allImplementedTypes: [HKSampleType] = [
             HealthType.Workout,
             HealthType.ActiveEnergyBurned,
             HealthType.DistanceWalkingRunning,
@@ -55,9 +55,10 @@ class HealthStoreManager {
     }
     
     /// A class containing static instances of special `HKUnit` objects.
-    public class HealthUnit {
+    class HealthUnit {
         
-        static let HeartRate = HealthKit.HKUnit.count().unitDivided(by: HealthKit.HKUnit.minute())
+        static let HeartRate = HKUnit.count().unitDivided(by: HealthKit.HKUnit.minute())
+        static let Kilogram = HKUnit(from: .kilogram)
         
     }
     
@@ -67,26 +68,25 @@ class HealthStoreManager {
      A function to request authorisation to read and write specified types from the health store.
      - parameter requestedTypes: the types authorisation is supposed to be requested for
      - parameter completion: a closure being performed on completion of the operation and indicating it's success
+     - parameter success: indicates whether full authorisation was granted
+     - parameter authorisedTypes: provides the types which were authorised by the user
      */
-    static func gainAuthorisation(for requestedTypes: HKSampleType..., completion: @escaping (Bool) -> Void) {
+    static func gainAuthorisation(for requestedTypes: [HKSampleType] = HealthType.allImplementedTypes, completion: @escaping (_ success: Bool, _ authorisedTypes: [HKSampleType]) -> Void) {
+        let completion = safeClosure(from: completion)
         
-        let requestedTypes = Set(requestedTypes)
-        HealthStoreManager.healthStore.requestAuthorization(toShare: requestedTypes, read: requestedTypes) { (success, error) in
+        let types = Set(requestedTypes)
+        HealthStoreManager.healthStore.requestAuthorization(toShare: types, read: types) { (success, error) in
             
-            
-            if !success {
-                
-                guard let error = error else {
-                    print("[Health] Unknown error for health store authorisation")
-                    return
-                }
+            if let error = error {
                 print("[Health] Error for health store authorisation:", error.localizedDescription)
+            } else {
+                print("[Health] Unknown error for health store authorisation")
             }
             
-            DispatchQueue.main.async {
-                completion(success)
-            }
+            let authorisedTypes = requestedTypes.filter { HealthStoreManager.healthStore.authorizationStatus(for: $0) == .sharingAuthorized }
+            let success = authorisedTypes == requestedTypes
             
+            completion(success, authorisedTypes)
         }
     }
     
@@ -117,23 +117,20 @@ class HealthStoreManager {
         }
     }
     
-    // MARK: - HKHealthStore Manipulation
+    // MARK: - Saving
     
     /**
      Saves the provided workout to the healthStore.
      - parameter workout: the workout that is supposed to be saved
-     - parameter completion: the closure performed upon completion of saving
+     - parameter completion: the closure performed upon the completion of saving
      */
     static func saveHealthWorkout(for workout: ORWorkoutInterface, completion: @escaping (HealthError?, HKWorkout?) -> Void) {
         
         let completion = safeClosure(from: completion)
         
-        gainAuthorisation(for: HealthType.Workout) { workoutAuthorisation in
+        gainAuthorisation(for: [HealthType.Workout]) { workoutAuthorisation, _ in
             
-            guard workoutAuthorisation else {
-                completion(.insufficientAuthorisation, nil)
-                return
-            }
+            guard workoutAuthorisation else { completion(.insufficientAuthorisation, nil); return }
             
             let (start, end) = (workout.startDate, workout.endDate)
             let distance = createHealthQuantity(value: workout.distance, unit: .meter())
@@ -150,7 +147,8 @@ class HealthStoreManager {
                 totalDistance: distance,
                 device: HKDevice.local(),
                 metadata: [
-                    HKMetadataKeyWasUserEntered : workout.isUserModified
+                    HKMetadataKeyWasUserEntered : workout.isUserModified,
+                    HKMetadataKeyExternalUUID : workout.uuid as Any
                 ]
             )
             
@@ -180,140 +178,151 @@ class HealthStoreManager {
                 unauthArray: &missingAuth
             )
             
+            let heartRateSamples = createHeartRateSamples(from: workout)
+            if authorizationStatus(for: HealthType.HeartRate) == .sharingAuthorized {
+                samples.append(contentsOf: heartRateSamples)
+            } else {
+                missingAuth.append(HealthType.HeartRate)
+            }
             
-            
-        }
-        
-        DispatchQueue.main.async {
-            let tempWorkout = TempWorkout(workout: workout)
-            
-            HealthStoreManager.gainAuthorization { (success) in
+            HealthStoreManager.healthStore.save(healthWorkout) { (workoutSuccess, error) in
                 
-                if success {
-                    
-                    let startDate = tempWorkout.startDate
-                    let endDate = tempWorkout.endDate
-                    
-                    let distanceQuantity = HKQuantity(
-                        unit: .meter(),
-                        doubleValue: tempWorkout.distance)
-                    let stepsQuantity = tempWorkout.steps != nil ? HKQuantity(unit: .count(), doubleValue: Double(tempWorkout.steps!)) : nil
-                    let burnedCalories = tempWorkout.burnedEnergy != nil ? tempWorkout.burnedEnergy! : nil
-                    let caloriesQuantity = burnedCalories != nil ? HKQuantity(unit: .kilocalorie(), doubleValue: burnedCalories!) : nil
-                    
-                    let workoutEvents = tempWorkout.workoutEvents.compactMap { (event) -> HKWorkoutEvent? in
-                        guard let type = event.realEventType.healthKitType else {
-                            return nil
-                        }
-                        return HKWorkoutEvent(type: type, dateInterval: DateInterval(start: event.startDate, duration: 0), metadata: nil)
-                    }
-                    
-                    let healthWorkout = HKWorkout(
-                        activityType: tempWorkout.realWorkoutType.healthKitType,
-                        start: startDate,
-                        end: endDate,
-                        workoutEvents: workoutEvents,
-                        totalEnergyBurned: caloriesQuantity,
-                        totalDistance: distanceQuantity,
-                        device: HKDevice.local(),
-                        metadata: [
-                            HKMetadataKeyWasUserEntered : tempWorkout.isUserModified
-                        ]
-                    )
-                    
-                    var samplesToAdd = [HKSample]()
-                    if tempWorkout.realWorkoutType == .cycling {
-                        if authorizationStatus(for: HealthType.DistanceCycling) == HKAuthorizationStatus.sharingAuthorized {
-                            let distanceSample = HKQuantitySample(
-                                type: objectTypeDistanceCycling,
-                                quantity: distanceQuantity,
-                                start: startDate,
-                                end: endDate,
-                                device: HKDevice.local(),
-                                metadata: nil
-                            )
-                            samplesToAdd.append(distanceSample)
-                        }
-                    }
-                    
-                    if [.running, .walking].contains(tempWorkout.realWorkoutType) {
-                        if authorizationStatus(for: HealthType.DistanceWalkingRunning) == HKAuthorizationStatus.sharingAuthorized {
-                            let distanceSample = HKQuantitySample(
-                                type: objectTypeDistanceWalkingRunning,
-                                quantity: distanceQuantity,
-                                start: startDate,
-                                end: endDate,
-                                device: HKDevice.local(),
-                                metadata: nil
-                            )
-                            samplesToAdd.append(distanceSample)
-                        }
-                    }
-                    
-                    if authorizationStatus(for: HealthType.StepCount) == HKAuthorizationStatus.sharingAuthorized {
-                        if let stepsQuantity = stepsQuantity {
-                            let stepsSample = HKQuantitySample(
-                                type: objectTypeStepCount,
-                                quantity: stepsQuantity,
-                                start: startDate,
-                                end: endDate,
-                                device: HKDevice.local(),
-                                metadata: nil
-                            )
-                            samplesToAdd.append(stepsSample)
-                        }
-                    }
-                    
-                    if authorizationStatus(for: HealthType.ActiveEnergyBurned) == HKAuthorizationStatus.sharingAuthorized {
-                        if let caloriesQuantity = caloriesQuantity {
-                            let caloriesSample = HKQuantitySample(
-                                type: objectTypeActiveEnergyBurned,
-                                quantity: caloriesQuantity,
-                                start: startDate as Date,
-                                end: endDate as Date,
-                                device: HKDevice.local(),
-                                metadata: nil
-                            )
-                            samplesToAdd.append(caloriesSample)
-                        }
-                    }
-                    
-                    HealthStoreManager.healthStore.save(healthWorkout) { (workoutSuccess, error) in
-                        
-                        if workoutSuccess {
-                            
-                            HealthStoreManager.attachRoute(to: healthWorkout, with: tempWorkout)
-                            
-                            // not fully implemented yet
-                            /*
-                            HealthStoreManager.attachHeartRates(to: healthWorkout, with: tempWorkout)
-                            */
-                            
-                            HealthStoreManager.healthStore.add(samplesToAdd, to: healthWorkout, completion: { (sampleSuccess, error) in
-                                if !sampleSuccess {
-                                    print("[Health] Error - Failed to add samples to Health Workout")
-                                }
-                            })
-                            
-                            DataManager.addHealthKitWorkoutUUID(forWorkout: workout, uuid: healthWorkout.uuid) { (success) in
-                                safeCompletion(success, healthWorkout)
-                                if !success {
-                                    print("[Health] Error - Saved workout to Health Store but failed to add reference to database")
-                                }
-                            }
-                            
-                        } else {
-                            safeCompletion(false, nil)
-                            print("[Health] Error - Failed to save workout")
-                        }
-                    }
-                    
-                } else {
-                    
-                    safeCompletion(false, nil)
-                    
+                guard workoutSuccess else {
+                    completion(.healthKitError(error: error), nil)
+                    return
                 }
                 
+                createWorkoutRoute(from: workout, andAttachTo: healthWorkout)
+                
+                HealthStoreManager.healthStore.add(samples, to: healthWorkout) { (success, error) in
+                    guard let error = error else { return }
+                    print("[Health] Error - Failed to add samples to Health workout:", error.localizedDescription)
+                }
+                
+                DataManager.editHealthReference(for: workout, reference: healthWorkout.uuid)
+                
+                completion(missingAuth.isEmpty ? nil : .optionalAuthorisationMissing, healthWorkout)
+            }
+        }
+    }
+    
+    /**
+     Saves the provided weight to the health store.
+     - parameter weight: the measurement providing the weight data to be saved
+     - parameter completion: the closure performed upon the completion of saving
+     */
+    static func saveWeight(for weight: NSMeasurement, completion: @escaping (HealthError?) -> Void) {
+        
+        guard weight.canBeConverted(to: UnitMass.kilograms),
+              let kilograms = weight.converting(to: UnitMass.kilograms).value as Optional,
+              let quantity = createHealthQuantity(value: kilograms, unit: HealthUnit.Kilogram)
+        else { completion(.invalidInput); return }
+        
+        gainAuthorisation(for: [HealthType.BodyMass]) { authorisation, _ in
+            guard authorisation else { completion(.insufficientAuthorisation); return }
+            
+            let timestamp = Date()
+            
+            let sample = HKQuantitySample(
+                type: HealthType.BodyMass,
+                quantity: quantity,
+                start: timestamp,
+                end: timestamp,
+                metadata: [ HKMetadataKeyWasUserEntered : true ]
+            )
+            
+            HealthStoreManager.healthStore.save(sample) { success, error in
+                completion(error == nil ? nil : .healthKitError(error: error) )
+            }
+        }
+    }
+    
+    // MARK: - Deletion
+    
+    /**
+     Deletes the `HKWorkout` associated with the provided workout object from the health store.
+     - parameter workout: the workout for which the associated health workout is supposed to be deleted
+     - parameter completion: the closure being performed upon completion indicating if an error occured
+     */
+    static func deleteHealthWorkout(for workout: ORWorkoutInterface, completion: @escaping (HealthError?) -> Void) {
+        
+        guard let reference = workout.healthKitUUID else { completion(.invalidInput); return }
+        let completion = safeClosure(from: completion)
+        
+        gainAuthorisation(for: [HealthType.Workout]) { workoutAuthorisation, _ in
+            guard workoutAuthorisation else { completion(.insufficientAuthorisation); return }
+            
+            queryHealthObject(of: HealthType.Workout, with: reference) { healthWorkout, error in
+                guard let healthWorkout = healthWorkout as? HKWorkout else { completion(.healthKitError(error: error)); return }
+                
+                let assosicationPredicate = HKQuery.predicateForObjects(from: healthWorkout)
+                
+                let sampleTypesToDelete = HealthType.allImplementedTypes.filter { $0 != HealthType.Workout }
+                let dispatchGroup = DispatchGroup()
+                var deleteCount = 0
+                
+                dispatchGroup.enter()
+                sampleTypesToDelete.forEach { type in
+                    HealthStoreManager.healthStore.deleteObjects(of: type, predicate: assosicationPredicate) { _, _, _ in
+                        deleteCount += 1
+                        if deleteCount == sampleTypesToDelete.count {
+                            dispatchGroup.leave()
+                        }
+                    }
+                }
+                
+                dispatchGroup.wait()
+                
+                HealthStoreManager.healthStore.delete(healthWorkout) { success, error in
+                    guard success else { completion(.healthKitError(error: error)); return }
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
+    /**
+     Deletes all objects created by this app from the health store.
+     - parameter completion: the closure being performed upon completion
+     */
+    static func deleteAllObjects(completion: @escaping (HealthError?) -> Void) {
+        
+        let completion = safeClosure(from: completion)
+        let predicate = HKQuery.predicateForObjects(from: HKSource.default())
+        
+        var deleteCount = 0
+        
+        gainAuthorisation { authorisation, authorisedTypes in
+            guard authorisation else { completion(.insufficientAuthorisation); return }
+            
+            authorisedTypes.forEach { type in
+                HealthStoreManager.healthStore.deleteObjects(of: type, predicate: predicate) { _, _, error in
+                    deleteCount += 1
+                    if deleteCount == HealthType.allImplementedTypes.count {
+                        completion(authorisedTypes == HealthType.allImplementedTypes ? nil : .optionalAuthorisationMissing)
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - Updating
+    
+    /**
+     Updates the associated `HKWorkout` by resaving it with the new data and renewing the reference in the workout object.
+     - parameter workout: the workout which is supposed to be updated in the health store
+     - parameter completion: the closure being performed upon completion indicating if an error occured
+     */
+    static func updateHealthWorkout(for workout: ORWorkoutInterface, completion: (HealthError?) -> Void) {
+        
+        let completion = safeClosure(from: completion)
+        
+        deleteHealthWorkout(for: workout) { deletionError in
+            guard deletionError == nil else { completion(deletionError); return }
+            
+            saveHealthWorkout(for: workout) { savingError, _ in
+                guard savingError == nil else { completion(savingError); return }
+                completion(nil)
             }
         }
     }
@@ -389,20 +398,38 @@ class HealthStoreManager {
         
         workout.pauses.forEach { pause in
             
-            let events = [
+            var events = [
                 HKWorkoutEvent(
-                    type: pause.pauseType == .manual ? .pause : .motionPaused,
+                    type: .pause,
                     dateInterval: DateInterval(start: pause.startDate, duration: 0),
                     metadata: nil
                 ),
                 workout.endDate == pause.endDate ? nil : HKWorkoutEvent(
-                    type: pause.pauseType == .manual ? .resume : .motionResumed,
+                    type: .resume,
                     dateInterval: DateInterval(start: pause.endDate, duration: 0),
                     metadata: nil
                 )
-            ].compactMap { $0 }
+            ]
             
-            workoutEvents.append(contentsOf: events)
+            if pause.pauseType == .automatic {
+                events.insert(
+                    HKWorkoutEvent(
+                        type: .motionPaused,
+                        dateInterval: DateInterval(start: pause.startDate, duration: 0),
+                        metadata: nil
+                    ),
+                    at: 1
+                )
+                events.append(
+                    workout.endDate == pause.endDate ? nil : HKWorkoutEvent(
+                        type: .motionResumed,
+                        dateInterval: DateInterval(start: pause.endDate, duration: 0),
+                        metadata: nil
+                    )
+                )
+            }
+            
+            workoutEvents.append(contentsOf: events.filterNil())
         }
         
         workout.workoutEvents.forEach { event in
@@ -420,351 +447,44 @@ class HealthStoreManager {
         
     }
     
-    // MARK: - TODO - DEAL WITH LATER
-    
-    // MARK: Attatch Route To Health Workout
-    static func attachRoute(to hkWorkout: HKWorkout, with workout: TempWorkout) {
+    /**
+     Builds the `HKWorkoutRoute` and attatches it to provided `HKWorkout`.
+     - parameter workout: the workout object the route data is taken from
+     - parameter healthWorkout: the health workout the route is supposed to be attached to
+     */
+    private static func createWorkoutRoute(from workout: ORWorkoutInterface, andAttachTo healthWorkout: HKWorkout) {
         
-        let locations = workout.locations.compactMap { (sample) -> CLLocation? in
-            return sample.clLocation
-        }
+        guard !workout.routeData.isEmpty else { return }
+        
+        let locations = workout.routeData.compactMap { CLLocation(workout: $0) }
         let routeBuilder = HKWorkoutRouteBuilder(healthStore: HealthStoreManager.healthStore, device: nil)
+        
         routeBuilder.insertRouteData(locations) { (success, error) in
-            if !success {
-                print("[Health] Error - failed to create route for Health Workout")
-            } else {
-                routeBuilder.finishRoute(with: hkWorkout, metadata: nil) { (route, error) in
-                    if route == nil {
-                        print("[Health] Error - failed to finish route for Health Workout:")
-                    }
-                }
-            }
-        }
-        
-    }
-    
-    // MARK: Attatch Heart Rates To Health Workout
-    static func attachHeartRates(to hkWorkout: HKWorkout, with workout: TempWorkout) {
-        
-        func add(_ samples: [HKSample]) {
-            HealthStoreManager.healthStore.add(samples, to: hkWorkout) { (success, error) in
-                if !success {
-                    print("[Health] Failed to add heart rates to health workout")
-                }
-            }
-        }
-        
-        if #available(iOS 12.0, *) {
-            let heartRateBuilder = HKQuantitySeriesSampleBuilder(healthStore: HealthStoreManager.healthStore, quantityType: HealthType.HeartRate, startDate: workout.startDate, device: nil)
-            for (index, heartRateSample) in workout.heartRates.enumerated() {
-                
-                do {
-                    try heartRateBuilder.insert(HKQuantity(unit: HealthStoreManager.heartRateUnit, doubleValue: heartRateSample.heartRate), at: heartRateSample.timestamp)
-                } catch {
-                    print("[Health] Failed to create heart rate series for apple health")
-                    break
-                }
-                
-                if index + 1 == workout.heartRates.count {
-                    heartRateBuilder.finishSeries(metadata: nil, endDate: workout.endDate) { (seriesSample, error) in
-                        if let seriesSample = seriesSample {
-                            add(seriesSample)
-                        } else {
-                            print("[Health] Failed to create heart rate series for apple health")
-                        }
-                    }
-                }
-            }
             
-        } else {
-            let heartRateSamples = workout.heartRates.map { heartRateSample -> HKQuantitySample in
-                return HKQuantitySample(type: objectTypeHeartRate, quantity: HKQuantity(unit: HealthStoreManager.heartRateUnit, doubleValue: Double(heartRateSample.heartRate)), start: heartRateSample.timestamp, end: heartRateSample.timestamp)
-            }
-            add(heartRateSamples)
-        }
-    }
-    
-    // MARK: Delete Health Workout
-    static func deleteHealthWorkout(fromWorkout workout: Workout, completion: @escaping (Bool) -> Void) {
-        
-        let safeCompletion: (Bool) -> Void = { success in
-            DispatchQueue.main.async {
-                completion(success)
-            }
-        }
-        
-        DispatchQueue.main.async {
-            guard let targetUUID = workout.healthKitUUID else {
-                safeCompletion(false)
-                return
-            }
-            
-            HealthStoreManager.gainAuthorization { (success) in
-                
-                if success {
-                    
-                    let predicate = HKQuery.predicateForObject(with: targetUUID)
-                    
-                    let query = HKSampleQuery(sampleType: HealthType.Workout, predicate: predicate, limit: 1, sortDescriptors: nil) { (query, samples, error) in
-                        
-                        guard let hkWorkout = samples?.first as? HKWorkout else {
-                            safeCompletion(false)
-                            return
-                        }
-                        
-                        let workoutPredicate = HKQuery.predicateForObjects(from: hkWorkout)
-                        
-                        var deleteCount = 0
-                        var deleteSuccess = true
-                        
-                        func deleteRelatedObjects(of type: HKObjectType) {
-                            HealthStoreManager.healthStore.deleteObjects(of: type, predicate: workoutPredicate) { (success, deletedObjects, error) in
-                                
-                                print("[Health] deleted \(deletedObjects) objects of type '\(type.debugDescription)'")
-                                
-                                if let error = error {
-                                    print("[Health] Error - failed to delete workout related sample of type '\(type.debugDescription)':", error.localizedDescription)
-                                }
-                                
-                                if !success {
-                                    deleteSuccess = false
-                                }
-                                deleteCount += 1
-                                
-                                if deleteCount == 3 {
-                                    if deleteSuccess {
-                                        HealthStoreManager.healthStore.delete(hkWorkout) { (workoutDeleteSuccess, error) in
-                                            if workoutDeleteSuccess {
-                                                DispatchQueue.main.async {
-                                                    DataManager.removeHealthKitWorkoutUUID(forWorkout: workout) { (removalSuccess) in
-                                                        safeCompletion(removalSuccess)
-                                                    }
-                                                }
-                                            } else {
-                                                safeCompletion(workoutDeleteSuccess)
-                                            }
-                                            
-                                            if let error = error {
-                                                print("[Health] Error - failed to delete workout:", error.localizedDescription)
-                                            }
-                                        }
-                                    } else {
-                                        safeCompletion(false)
-                                    }
-                                }
-                                
-                            }
-                        }
-                        
-                        DispatchQueue.main.async {
-                            if [.running, .walking, .cycling].contains(workout.type) {
-                                deleteRelatedObjects(of: workout.type == .cycling ? objectTypeDistanceCycling : objectTypeDistanceWalkingRunning)
-                            }
-                            deleteRelatedObjects(of: objectTypeRouteType)
-                            deleteRelatedObjects(of: HealthType.ActiveEnergyBurned)
-                            // MARK: not implemented
-                            // deleteRelatedObjects(of: objectTypeHeartRate)
-                            deleteRelatedObjects(of: objectTypeStepCount)
-                        }
-                        
-                    }
-                    
-                    HealthStoreManager.healthStore.execute(query)
-                    
-                } else {
-                    
-                    safeCompletion(false)
-                    
-                }
+            guard success else { return }
+            routeBuilder.finishRoute(with: healthWorkout, metadata: nil) { (route, error) in
+                guard let error = error else { return }
+                print("[Health] Error for saving workout route:", error.localizedDescription)
             }
         }
     }
     
-    // MARK: Alter Health Workout
-    static func alterHealthWorkout(from workout: Workout, completion: @escaping (Bool) -> Void) {
+    /**
+     Creates health samples from the heart rate data of the provided workout.
+     - parameter workout: the workout object the heart rate data is taken from
+     - returns: the `HKQuantitySample`s generated from the heart rate data
+     */
+    private static func createHeartRateSamples(from workout: ORWorkoutInterface) -> [HKQuantitySample] {
         
-        let safeCompletion: (Bool) -> Void = { success in
-            DispatchQueue.main.async {
-                completion(success)
-            }
-        }
-        
-        HealthStoreManager.gainAuthorization { (success) in
+        return workout.heartRates.compactMap { heartRateSample -> HKQuantitySample? in
+            guard let quantity = createHealthQuantity(value: Double(heartRateSample.heartRate), unit: HealthUnit.HeartRate) else { return nil }
             
-            if success {
-                HealthStoreManager.deleteHealthWorkout(fromWorkout: workout) { (deleteSuccess) in
-                    
-                    if deleteSuccess {
-                        HealthStoreManager.saveHealthWorkout(forWorkout: workout) { (saveSuccess, hkWorkout) in
-                            safeCompletion(saveSuccess)
-                            print("[Health] Error - Failed to resave workout in order to alter it")
-                        }
-                    } else {
-                        safeCompletion(false)
-                        print("[Health] Error - Failed to delete workout in order to alter it")
-                    }
-                }
-                
-            } else {
-                safeCompletion(false)
-            }
-            
-        }
-        
-    }
-    
-    // MARK: Delete All Health Workouts
-    static func deleteAllHealthWorkouts(completion: @escaping (Bool) -> Void) {
-        
-        let safeCompletion: (Bool) -> Void = { success in
-            DispatchQueue.main.async {
-                completion(success)
-            }
-        }
-        
-        HealthStoreManager.gainAuthorization { (success) in
-            
-            if success {
-                
-                let predicate = HKQuery.predicateForObjects(from: HKSource.default())
-                
-                var deleteCount = 0
-                var deleteSuccess = true
-                
-                func deleteAll(for type: HKObjectType) {
-                    HealthStoreManager.healthStore.deleteObjects(of: type, predicate: predicate) { (success, numberOfDeletedObjects, error) in
-                        
-                        print("[Health] deleted \(numberOfDeletedObjects) objects of type '\(type.debugDescription)'")
-                        
-                        if !success {
-                            deleteSuccess = false
-                        }
-                        
-                        deleteCount += 1
-                        
-                        if deleteCount == requestedTypes.count {
-                            DataManager.removeAllHealthKitWorkoutUUIDs { (removalSuccess) in
-                                safeCompletion(removalSuccess && deleteSuccess)
-                            }
-                        }
-                    }
-                }
-                
-                requestedTypes.forEach { (type) in
-                    deleteAll(for: type)
-                }
-                
-            } else {
-                
-                safeCompletion(false)
-                
-            }
-            
-        }
-        
-    }
-    
-    // MARK: Save New Weight
-    static func syncWeight(measurement: NSMeasurement, completion: @escaping (Bool) -> Void) {
-        
-        let safeCompletion: (Bool) -> Void = { success in
-            DispatchQueue.main.async {
-                completion(success)
-            }
-        }
-        
-        HealthStoreManager.gainAuthorization { (success) in
-            
-            guard success, measurement.canBeConverted(to: UnitMass.kilograms) else {
-                completion(false)
-                return
-            }
-            
-            let weightValue = measurement.converting(to: UnitMass.kilograms).value
-            let quantity = HKQuantity(unit: HKUnit.init(from: .kilogram), doubleValue: weightValue)
-            let sample = HKQuantitySample(
-                type: HealthType.BodyMass,
+            return HKQuantitySample(
+                type: HealthType.HeartRate,
                 quantity: quantity,
-                start: Date(),
-                end: Date(),
-                metadata: [
-                    HKMetadataKeyWasUserEntered : true
-                ]
+                start: heartRateSample.timestamp,
+                end: heartRateSample.timestamp
             )
-            
-            HealthStoreManager.healthStore.save(sample) { (success, error) in
-                safeCompletion(success)
-            }
-            
-        }
-        
-    }
-    
-    // MARK: Sync All Unsycned Workouts With Apple Health
-    /// Function to sync all unsynced workouts with the health store, completion returning the success state and the state if all workouts have been synced already
-    static func syncAllUnsyncedWorkoutsWithAppleHealth(completion: @escaping (Bool, Bool?) -> Void) {
-        
-        let safeCompletion: (Bool, Bool?) -> Void = { (success, allSyncedAlready) in
-            DispatchQueue.main.async {
-                completion(success, allSyncedAlready)
-            }
-        }
-        
-        HealthStoreManager.gainAuthorization { (authSuccess) in
-            
-            if authSuccess {
-                
-                DataQueryManager.queryAllWorkoutsWithoutAppleHealthReference { (querySuccess, workouts) in
-                    
-                    if querySuccess {
-                        
-                        var saveCount = 0
-                        var saveSuccess = true
-                        
-                        workouts.enumerated().forEach { (index, workout) in
-                            HealthStoreManager.saveHealthWorkout(forWorkout: workout) { (success, hkWorkout) in
-                                if !success {
-                                    saveSuccess = false
-                                }
-                                
-                                saveCount += 1
-                                
-                                if saveCount == workouts.count {
-                                    safeCompletion(saveSuccess, false)
-                                }
-                            }
-                        }
-                        
-                        if workouts.count == 0 {
-                            safeCompletion(true, true)
-                        }
-                        
-                    } else {
-                        safeCompletion(false, nil)
-                    }
-                }
-            } else {
-                safeCompletion(false, nil)
-            }
         }
     }
-    
-    // MARK: Check if workout exists
-    static func lookupExistence(of uuid: UUID) -> Bool {
-        
-        var uuidExists = false
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        
-        let query = HKSampleQuery(sampleType: HealthStoreManager.HealthType.Workout, predicate: HKQuery.predicateForObject(with: uuid), limit: 1, sortDescriptors: nil) { (query, samples, error) in
-            uuidExists = !(samples?.isEmpty ?? true)
-            dispatchGroup.leave()
-        }
-        
-        HealthStoreManager.healthStore.execute(query)
-        dispatchGroup.wait()
-        
-        return uuidExists
-    }
-    
 }
