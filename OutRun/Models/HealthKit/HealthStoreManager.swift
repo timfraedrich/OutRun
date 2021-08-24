@@ -487,4 +487,35 @@ class HealthStoreManager {
             )
         }
     }
+    
+    /**
+     Creates a `HealthWorkout` from an `HKWorkout` and queries additional data required to form the object.
+     - returns: the finished `HealthWorkout`
+     */
+    static func createHealthWorkout(from hkWorkout: HKWorkout) -> HealthWorkout? {
+        let stepsMapper: (Int?, HKQuantity, DateInterval) -> Int = { lastValue, quantity, _ in
+            lastValue ?? 0 + Int(quantity.doubleValue(for: .count()))
+        }
+        let heartRateMapper: ([TempWorkoutHeartRateDataSample]?, HKQuantity, DateInterval) -> [TempWorkoutHeartRateDataSample] = { lastValue, quantity, timeInterval -> [TempWorkoutHeartRateDataSample] in
+            var values = lastValue ?? []
+            values.append(.init(
+                uuid: nil,
+                heartRate: Int(quantity.doubleValue(for: HealthUnit.HeartRate)),
+                timestamp: timeInterval.start
+            ))
+            return values
+        }
+        
+        let steps: Int? = queryAnchoredHealthSeriesData(of: HealthType.StepCount, attachedTo: hkWorkout, transform: stepsMapper)
+        let routeData: [CLLocation] = queryAnchoredWorkoutRoute(attachedTo: hkWorkout)
+        let heartRates: [TempWorkoutHeartRateDataSample] = queryAnchoredHealthSeriesData(
+            of: HealthType.HeartRate,  attachedTo: hkWorkout, transform: heartRateMapper) ?? []
+        
+        return HealthWorkout(
+            hkWorkout,
+            steps: steps,
+            route: routeData,
+            heartRates: heartRates
+        )
+    }
 }

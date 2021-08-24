@@ -54,7 +54,6 @@ struct DataManager {
      */
     public static func setup(dataModel: ORDataModel.Type = OutRunV4.self, completion: @escaping (DataManager.SetupError?) -> Void, migration: @escaping (Progress) -> Void) {
         
-        
         let completion = safeClosure(from: completion)
         
         // setup storage
@@ -411,6 +410,16 @@ struct DataManager {
             default: break
             }
         }
+    }
+    
+    /**
+     This function looks up a workout object by searching for the provided UUID as being referenced in the `_healthKitUUID` property and updating it's reference value to `nil`
+     - parameter reference: the reference that is supposed to be removed from a workout
+     */
+    public static func removeHealthReference(reference: UUID) {
+        
+        guard let workout: Workout = queryObject(from: \._healthKitUUID == reference) else { return }
+        editHealthReference(for: workout, reference: nil)
     }
     
     // MARK: - Event

@@ -28,6 +28,18 @@ extension DataManager {
     
     /**
      Queries an object comforming to `ORDataType` with the provided `UUID` from the database.
+     - parameter whereClause: the `CoreStore.Where` clause used for selection of the object
+     - parameter transaction: an optional `AsynchronousDataTransaction` to be provided if the workout needs to be queried during a tranaction; if `nil` the object will be queried from the `DataManager.dataStack`
+     - returns: the wanted `ORDataType` object if one could be found in the database; if the object could not be found, this function will return `nil`
+     */
+    public static func queryObject<ObjectType: ORDataType>(from whereClause: Where<ObjectType>, transaction: AsynchronousDataTransaction? = nil) -> ObjectType? {
+        
+        let object = try? (transaction as FetchableSource? ?? dataStack).fetchOne(From<ObjectType>().where(whereClause))
+        return object
+    }
+    
+    /**
+     Queries an object comforming to `ORDataType` with the provided `UUID` from the database.
      - parameter uuid: the `UUID` of the object that is supposed to be returned; if `nil` this function will return immediately with no value
      - parameter transaction: an optional `AsynchronousDataTransaction` to be provided if the workout needs to be queried during a tranaction; if `nil` the object will be queried from the `DataManager.dataStack`
      - returns: the wanted `ORDataType` object if one could be found in the database; if the object could not be found, this function will return `nil`
@@ -38,9 +50,7 @@ extension DataManager {
             return nil
         }
         
-        let object = try? (transaction as FetchableSource? ?? dataStack).fetchOne(From<ObjectType>().where(\._uuid == uuid))
-        return object
-        
+        return queryObject(from: \._uuid == uuid, transaction: transaction)
     }
     
     /**
@@ -52,7 +62,6 @@ extension DataManager {
     public static func queryObject<ObjectType: ORDataType>(from anyObject: ORDataInterface, transaction: AsynchronousDataTransaction? = nil) -> ObjectType? {
         
         return queryObject(from: anyObject.uuid, transaction: transaction)
-        
     }
     
     /**
@@ -62,7 +71,6 @@ extension DataManager {
      - returns: `true` if the queried count is anything other than 0 meaning there are workouts with the given `UUID` present in the database.
      */
     public static func objectHasDuplicate<ObjectType: ORDataType>(uuid: UUID?, objectType: ObjectType.Type) -> Bool {
-        
         
         guard let uuid = uuid else {
             return false

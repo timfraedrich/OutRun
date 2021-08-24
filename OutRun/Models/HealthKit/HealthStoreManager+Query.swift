@@ -136,38 +136,8 @@ extension HealthStoreManager {
                     return
                 }
                 
-                var healthWorkouts = [HealthWorkout?]()
-                for hkWorkout in hkWorkouts {
-                    
-                    let stepsMapper: (Int?, HKQuantity, DateInterval) -> Int = { lastValue, quantity, _ in
-                        lastValue ?? 0 + Int(quantity.doubleValue(for: .count()))
-                    }
-                    let heartRateMapper: ([TempWorkoutHeartRateDataSample]?, HKQuantity, DateInterval) -> [TempWorkoutHeartRateDataSample] = { lastValue, quantity, timeInterval -> [TempWorkoutHeartRateDataSample] in
-                        var values = lastValue ?? []
-                        values.append(.init(
-                            uuid: nil,
-                            heartRate: Int(quantity.doubleValue(for: HealthUnit.HeartRate)),
-                            timestamp: timeInterval.start
-                        ))
-                        return values
-                    }
-                    
-                    let steps: Int? = queryAnchoredHealthSeriesData(of: HealthType.StepCount, attachedTo: hkWorkout, transform: stepsMapper)
-                    let routeData: [CLLocation] = queryAnchoredWorkoutRoute(attachedTo: hkWorkout)
-                    let heartRates: [TempWorkoutHeartRateDataSample] = queryAnchoredHealthSeriesData(
-                        of: HealthType.HeartRate,  attachedTo: hkWorkout, transform: heartRateMapper) ?? []
-                    
-                    healthWorkouts.append(
-                        HealthWorkout(
-                            hkWorkout,
-                            steps: steps,
-                            route: routeData,
-                            heartRates: heartRates
-                        )
-                    )
-                }
-                
-                completion(nil, healthWorkouts.filterNil())
+                let healthWorkouts = hkWorkouts.compactMap(createHealthWorkout)
+                completion(nil, healthWorkouts)
             }
             
             HealthStoreManager.healthStore.execute(query)
@@ -183,7 +153,7 @@ extension HealthStoreManager {
      - parameter quantity: the current quantity for extracting the wanted data
      - parameter dateInterval: the quantity's date interval
      */
-    private static func queryAnchoredHealthSeriesData<ReturnType>(of type: HKQuantityType, attachedTo healthWorkout: HKWorkout, transform: (_ lastValue: ReturnType?, _ quantity: HKQuantity, _ dateInterval: DateInterval) -> ReturnType?) -> ReturnType? {
+    static func queryAnchoredHealthSeriesData<ReturnType>(of type: HKQuantityType, attachedTo healthWorkout: HKWorkout, transform: (_ lastValue: ReturnType?, _ quantity: HKQuantity, _ dateInterval: DateInterval) -> ReturnType?) -> ReturnType? {
         
         var lastValue: ReturnType?
         let dispatchGroup = DispatchGroup()
@@ -215,7 +185,7 @@ extension HealthStoreManager {
      - parameter healthRoute: the health workout the route is associated with
      - returns: the location data of the queried health workout
      */
-    private static func queryAnchoredWorkoutRoute(attachedTo healthWorkout: HKWorkout) -> [CLLocation] {
+    static func queryAnchoredWorkoutRoute(attachedTo healthWorkout: HKWorkout) -> [CLLocation] {
         
         var routeData = [CLLocation]()
         let dispatchGroup = DispatchGroup()

@@ -23,32 +23,61 @@ import HealthKit
 
 extension HealthStoreManager {
     
-    // MARK: Workout Observer
+    // MARK: - General
     
-    private static let previousWorkoutObserverAnchorData = UserPreference.Optional<Data>(key: "previousWorkoutAnchorData")
-    private static var previousWorkoutObserverAnchor: HKQueryAnchor? {
-        get {
-            if let data = previousWorkoutObserverAnchorData.value {
-                do {
-                    let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: HKQueryAnchor.self, from: data)
-                    return anchor
-                } catch {
-                    print("Unable to restore previous anchor")
-                }
-            }
-            return nil
-        } set {
-            if let anchor = newValue {
-                do {
-                    let data = try NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
-                    previousWorkoutObserverAnchorData.value = data
-                } catch {
-                    print("Unable to store new anchor")
-                }
-            }
-        }
+    /**
+     Gets an optional `HKQueryAnchor` from the provided preference object.
+     - parameter preference: the UserPreference from which the data for the anchor is taken
+     */
+    private static func getAnchor(from preference: UserPreference.Optional<Data>) -> HKQueryAnchor? {
+        guard let data = preference.value,
+              let anchor = try? NSKeyedUnarchiver.unarchivedObject(ofClass: HKQueryAnchor.self, from: data)
+        else { return nil }
+        return anchor
     }
+    
+    /**
+     Sets an optional `HKQueryAnchor` for the provided reference object.
+     - parameter anchor: the optional anchor to be saved to the provided preference
+     - parameter preference: the UserPreference to which the data is saved
+     */
+    private static func setAnchor(_ anchor: HKQueryAnchor?, for preference: UserPreference.Optional<Data>) {
+        guard let anchor = anchor,
+              let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
+        else { return }
+        preference.value = data
+    }
+    
+    /**
+     Executes an anchored query to keep track of changes in the health store.
+     - parameter type: the type of object which changes a tracked for
+     */
+    private static func executeAnchoredQuery(of type: HKSampleType, predicate: NSPredicate? = nil, anchor: HKQueryAnchor?, update: @escaping ((HKAnchoredObjectQuery, [HKSample]?, [HKDeletedObject]?, HKQueryAnchor?, Error?) -> Void)) {
+        
+        let observer = HKAnchoredObjectQuery(
+            type: type,
+            predicate: predicate,
+            anchor: anchor,
+            limit: HKObjectQueryNoLimit,
+            resultsHandler: update
+        )
+        
+        observer.updateHandler = update
+        HealthStoreManager.healthStore.execute(observer)
+    }
+    
+    // MARK: - Workout Observer
+    
+    /// An optional UserPreference to save the anchor data to the workout observer
+    private static let workoutObserverAnchorData = UserPreference.Optional<Data>(key: "previousWorkoutAnchorData")
+    /// A wrapper for the workout observer anchor
+    private static var workoutObserverAnchor: HKQueryAnchor? {
+        get { getAnchor(from: workoutObserverAnchorData) }
+        set { setAnchor(newValue, for: workoutObserverAnchorData) }
+    }
+    /// A variable to reference the last performed workout query
     private static var lastWorkoutQuery: HKAnchoredObjectQuery?
+    /// The closure handling an update by the workout observer.
     private static let workoutObserverUpdateClosure: ((HKAnchoredObjectQuery, [HKSample]?, [HKDeletedObject]?, HKQueryAnchor?, Error?) -> Void) = { (query, samples, deletedObjects, anchor, error) in
         
         if lastWorkoutQuery == nil {
@@ -69,74 +98,42 @@ extension HealthStoreManager {
             return
         }
         
-        previousWorkoutObserverAnchor = anchor
+        workoutObserverAnchor = anchor
+        
+        let existingHealthUUIDs = DataManager.queryExistingHealthUUIDs()
         
         if UserPreferences.automaticallyImportNewHealthWorkouts.value && !samples.isEmpty {
-            let queryObjects = samples.compactMap { (sample) -> HealthWorkout? in
-                if let sample = sample as? HKWorkout, DataQueryManager.checkForDuplicateHealthWorkout(withUUID: sample.uuid) {
-                    return HealthWorkout(sample)
-                }
-                return nil
-            }
-            var count = 0
-            queryObjects.forEach { (queryObject) in
-                HealthQueryManager.getAndAttatchRoute(to: queryObject) {
-                    HealthQueryManager.getAndAttatchSteps(to: queryObject) {
-                        // not fully implemented yet
-                        //HealthQueryManager.getAndAttachHeartRate(to: queryObject) {
-                            count += 1
-                            if count == samples.count {
-                                DataManager.saveWorkouts(for: queryObjects) { (success, error, workouts) in
-                                    if !success {
-                                        print("Error: could not save automatically detected new health workouts;", error ?? "")
-                                    }
-                                }
-                            }
-                        //}
-                    }
-                }
+            let workouts = samples.compactMap { $0 as? HKWorkout }
+                .filter { existingHealthUUIDs.contains($0.uuid) }
+                .compactMap { createHealthWorkout(from: $0) }
+            
+            DataManager.saveWorkouts(objects: workouts) { _, error, _ in
+                guard let error = error else { return }
+                print("[HealthStoreManager+Observer] An error occured while trying to save new health workouts:", error.debugDescription)
             }
         }
         
         if !deletedObjects.isEmpty {
             for deletedObject in deletedObjects {
-                DataManager.removeHealthKitReference(for: deletedObject.uuid) { (success) in
-                    if !success {
-                        print("Error - Failed to remove reference from workout where hkWorkout was deleted")
-                    }
-                }
+                DataManager.removeHealthReference(reference: deletedObject.uuid)
             }
         }
         
     }
     
-    // MARK: Weight Observer
+    // MARK: - Weight Observer
     
-    private static let previousWeightObserverAnchorData = UserPreference.Optional<Data>(key: "previousWorkoutAnchorData")
-    private static var previousWeightObserverAnchor: HKQueryAnchor? {
-        get {
-            if let data = previousWeightObserverAnchorData.value {
-                do {
-                    let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: HKQueryAnchor.self, from: data)
-                    return anchor
-                } catch {
-                    print("Unable to restore previous anchor")
-                }
-            }
-            return nil
-        } set {
-            if let anchor = newValue {
-                do {
-                    let data = try NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
-                    previousWeightObserverAnchorData.value = data
-                } catch {
-                    print("Unable to store new anchor")
-                }
-            }
-        }
+    /// An optional UserPreference to save the anchor data to the weight observer.
+    private static let weightObserverAnchorData = UserPreference.Optional<Data>(key: "previousWorkoutAnchorData")
+    /// A wrapper for the weight observer anchor.
+    private static var weightObserverAnchor: HKQueryAnchor? {
+        get { getAnchor(from: weightObserverAnchorData) }
+        set { setAnchor(newValue, for: weightObserverAnchorData) }
     }
+    /// A variable to reference the last performed weight query.
     private static var lastWeightQuery: HKAnchoredObjectQuery?
-    private static let weightObserverUpdateClosure: ((HKAnchoredObjectQuery, [HKSample]?, [HKDeletedObject]?, HKQueryAnchor?, Error?) -> Void) = { (query, samples, deletedObjects, anchor, error) in
+    /// The closure handling an update by the weight observer.
+    private static let weightObserverUpdateClosure: ((HKAnchoredObjectQuery, [HKSample]?, [HKDeletedObject]?, HKQueryAnchor?, Error?) -> Void) = { (query, samples, deletedObjects, anchor, _) in
         
         if lastWeightQuery == nil {
             lastWeightQuery = query
@@ -151,52 +148,42 @@ extension HealthStoreManager {
         }
         
         if !(samples?.isEmpty ?? true) || !(deletedObjects?.isEmpty ?? true) {
-            HealthQueryManager.queryMostRecentWeightSample()
+            HealthStoreManager.queryMostRecentWeightSample()
         }
         
-        previousWeightObserverAnchor = anchor
-        
+        weightObserverAnchor = anchor
     }
     
-    // MARK: Observer Setup
+    // MARK: - Observer Setup
+    
+    /**
+     Sets up the anchored observers to react to changes in the health store.
+     */
     static func setupObservers() {
         
-        guard UserPreferences.synchronizeWorkoutsWithAppleHealth.value || UserPreferences.synchronizeWeightWithAppleHealth.value else {
-            return
+        HealthStoreManager.gainAuthorisation(for: [HealthType.Workout]) { authorisation, _ in
+            guard authorisation && UserPreferences.synchronizeWorkoutsWithAppleHealth.value else { return }
+            let typePredicates = Workout.WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
+            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: typePredicates)
+            
+            executeAnchoredQuery(
+                of: HealthType.Workout,
+                predicate: predicate,
+                anchor: workoutObserverAnchor,
+                update: workoutObserverUpdateClosure
+            )
         }
         
-        HealthStoreManager.gainAuthorization { (success) in
+        HealthStoreManager.gainAuthorisation(for: [HealthType.Workout]) { authorisation, _ in
+            guard authorisation, UserPreferences.synchronizeWeightWithAppleHealth.value else { return }
+            let predicate = NSCompoundPredicate(notPredicateWithSubpredicate: HKQuery.predicateForObjects(from: .default()))
             
-            if success {
-                
-                if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
-                    
-                    let workoutObserver = HKAnchoredObjectQuery(
-                        type: HealthStoreManager.HealthType.Workout,
-                        predicate: nil,
-                        anchor: previousWorkoutObserverAnchor,
-                        limit: HKObjectQueryNoLimit,
-                        resultsHandler: workoutObserverUpdateClosure
-                    )
-                    
-                    workoutObserver.updateHandler = workoutObserverUpdateClosure
-                    HealthStoreManager.healthStore.execute(workoutObserver)
-                }
-                
-                if UserPreferences.synchronizeWeightWithAppleHealth.value {
-                    
-                    let weightObserver = HKAnchoredObjectQuery(
-                        type: HealthStoreManager.HealthType.BodyMass,
-                        predicate: nil,
-                        anchor: previousWeightObserverAnchor,
-                        limit: HKObjectQueryNoLimit,
-                        resultsHandler: weightObserverUpdateClosure
-                    )
-                    
-                    weightObserver.updateHandler = weightObserverUpdateClosure
-                    HealthStoreManager.healthStore.execute(weightObserver)
-                }
-            }
+            executeAnchoredQuery(
+                of: HealthType.BodyMass,
+                predicate: predicate,
+                anchor: weightObserverAnchor,
+                update: weightObserverUpdateClosure
+            )
         }
     }
     
