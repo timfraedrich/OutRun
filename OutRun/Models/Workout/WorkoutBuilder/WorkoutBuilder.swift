@@ -1,5 +1,5 @@
 //
-//  NewWorkoutManager.swift
+//  WorkoutBuilder.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,6 +20,8 @@
 
 import Foundation
 import CoreLocation
+import RxSwift
+import RxRelay
 
 class WorkoutBuilder: ApplicationStateObserver {
     
@@ -31,29 +33,10 @@ class WorkoutBuilder: ApplicationStateObserver {
      */
     static weak var currentlyActive: WorkoutBuilder?
     
-    // MARK: - Public
-    
-    /// the type of workout the `WorkoutBuilder` is supposed to record
-    public var workoutType: Workout.WorkoutType
-    /// the delegate receiving updates regarding the recording of the workout
-    public weak var delegate: WorkoutBuilderDelegate?
-    /// the current status of the `WorkoutBuilder`
-    public private(set) var status: WorkoutBuilder.Status = .waiting {
-        didSet {
-            self.performOnEveryComponent { (component) in
-                component.statusChanged(from: oldValue, to: self.status, timestamp: Date())
-            }
-            self.liveUpdateStatus()
-        }
-    }
-    /// the date the recorded workout was started
-    public private(set) var startDate: Date? = nil
-    /// the date the recorded workout was ended
-    public private(set) var endDate: Date? = nil
-    /// an array of `TempWorkoutEvent`s consisting of manual pause or resume events
-    public private(set) var manualPauseEvents: [TempWorkoutEvent] = []
+    // ============== TAKE A LOOK AT THIS ================== //
     /// a boolean indicating whether background updates should be performed
     public private(set) var shouldPerformBackgroundUpdates: Bool = true
+    // ===================================================== //
     
     // MARK: Actions
     
@@ -63,34 +46,30 @@ class WorkoutBuilder: ApplicationStateObserver {
      */
     public func startOrResume(completion: @escaping (Bool) -> Void) {
         
-        let completion = makeClosureThreadSafe(completion)
+        let completion = safeClosure(from: completion)
         let timestamp = Date()
         
         validateTransition(to: .recording) { (success) in
+            guard success else { completion(false); return }
             
-            if success {
+            if self.startDateRelay.value == nil {
+                self.startDateRelay.accept(timestamp)
                 
-                if self.startDate == nil {
-                    
-                    self.startDate = timestamp
-                    
-                } else {
-                    
-                    let resumeEvent = TempWorkoutEvent(type: .resume, date: timestamp)
-                    self.manualPauseEvents.append(resumeEvent)
-                    
-                }
-                
-                self.status = .recording
-                self.startPeriodicUpdates()
-                
+            } else if let lastPause = lastPause {
+                let pause = TempWorkoutPause(uuid: nil, startDate: lastPause, endDate: timestamp, pauseType: .manual)
+                let pauses = manualPauseRelay.value + [pause]
+                self.manualPauseRelay.accept(pauses)
+                self.lastPause = nil
             }
             
-            completion(success)
-            
+            self.statusRelay.accept(.recording)
+            self.startPeriodicUpdates()
+                
+            completion(true)
         }
-        
     }
+    
+    private var lastPause: Date?
     
     /**
      Pauses the `WorkoutBuilder` if this action is appropriate
@@ -98,24 +77,16 @@ class WorkoutBuilder: ApplicationStateObserver {
      */
     public func pause(completion: @escaping (Bool) -> Void) {
         
-        let completion = makeClosureThreadSafe(completion)
+        let completion = safeClosure(from: completion)
         let timestamp = Date()
         
         validateTransition(to: .paused) { (success) in
+            guard success else { completion(false); return }
             
-            if success {
-                
-                let pauseEvent = TempWorkoutEvent(type: .pause, date: timestamp)
-                self.manualPauseEvents.append(pauseEvent)
-                
-                self.status = .paused
-                
-            }
-            
-            completion(success)
-            
+            self.lastPause = timestamp
+            self.statusRelay.accept(.paused)
+            completion(true)
         }
-        
     }
     
     /**
@@ -124,34 +95,27 @@ class WorkoutBuilder: ApplicationStateObserver {
      */
     public func finish(shouldProvideCompletionActions: Bool = true, completion: @escaping (Bool) -> Void) {
         
-        let completion = makeClosureThreadSafe(completion)
+        let completion = safeClosure(from: completion)
         let timestamp = Date()
         
         validateTransition(to: .ready) { (success) in
+            guard success else { completion(false); return }
             
-            if success {
+            self.endDateRelay.accept(timestamp)
+            
+            if let snapshot = self.createSnapshot() {
                 
-                self.endDate = timestamp
+                // NEEDS NEW APPROACH
+                // let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
+                // if shouldProvideCompletionActions {
+                //     handler.display()
+                // } else {
+                //     handler.saveWorkout()
+                // }
                 
-                if let snapshot = self.createSnapshot() {
-                    
-                    let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
-                    
-                    if shouldProvideCompletionActions {
-                        handler.display()
-                    } else {
-                        handler.saveWorkout()
-                    }
-                    
-                    completion(true)
-                    
-                } else {
-                    
-                    completion(false)
-                    
-                }
-                
-                self.reset()
+                completion(true)
+              
+            self.reset()
                 
             } else {
                 
@@ -331,10 +295,27 @@ class WorkoutBuilder: ApplicationStateObserver {
     
     // MARK: - Protected
     
+    /// The type of workout the `WorkoutBuilder` is supposed to record.
+    fileprivate let workoutTypeRelay: BehaviorRelay<Workout.WorkoutType>
+    /// The current status of the `WorkoutBuilder`.
+    fileprivate let statusRelay = BehaviorRelay<WorkoutBuilder.Status>(value: .waiting)
+    /// The date the recorded workout was started.
+    fileprivate let startDateRelay = BehaviorRelay<Date?>(value: nil)
+    /// The date the recorded workout was stopped.
+    fileprivate let endDateRelay = BehaviorRelay<Date?>(value: nil)
+    /// The pauses initiated by the app automatically.
+    fileprivate let automaticPauseRelay = BehaviorRelay<[TempWorkoutPause]>(value: [])
+    /// The pauses initiated by the user directly.
+    fileprivate let manualPauseRelay = BehaviorRelay<[TempWorkoutPause]>(value: [])
+    /// The action being performed upon a reset.
+    fileprivate let resetRelay = PublishRelay<Void>()
+    
     /**
      Starts a Timer updating the time elapsed and the energy burned every second while the status of `WorkoutBuilder` is `.recording`
      */
     private func startPeriodicUpdates() {
+        
+        Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.asyncInstance)
         
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
             
@@ -347,19 +328,6 @@ class WorkoutBuilder: ApplicationStateObserver {
             self.liveUpdateBurnedEnergy()
         }
         
-    }
-    
-    /**
-     Returns a closure in which the original closure is performed on the main `DispatchQueue`
-     - parameter closure: the closure that is supposed to be performed on a safe thread
-     - returns: a new closure performing the original closure on a safe thread
-     */
-    private func makeClosureThreadSafe<T>(_ closure: @escaping (T) -> Void) -> (T) -> Void {
-        return { value in
-            DispatchQueue.main.async {
-                closure(value)
-            }
-        }
     }
     
     /**
@@ -509,7 +477,7 @@ class WorkoutBuilder: ApplicationStateObserver {
      */
     public init(workoutType: Workout.WorkoutType? = nil, delegate: WorkoutBuilderDelegate) {
         
-        self.workoutType = workoutType ?? Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value)
+        self.workoutTypeRelay = BehaviorRelay(value: workoutType ?? Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value))
         
         self.delegate = delegate
         
@@ -549,4 +517,20 @@ class WorkoutBuilder: ApplicationStateObserver {
         
     }
     
+    // MARK: - Reactive
+    
+    public struct Input {
+        
+    }
+    
+    public struct Output {
+        
+    }
+    
+    public func transform(input: Input) -> Output {
+        
+    }
+    
+    
 }
+

@@ -30,7 +30,7 @@ extension WorkoutBuilder {
         let endDate: Date
         
         /**
-         Combining two instances of the AutoPause object into one
+         Combining two instances of the AutoPause object into one.
          - parameter with: the `AutoPause` object to merge
          - returns: one `AutoPause` instance with the earliest start date and the latest end date of the provided and `self`; if the initialisation with the new dates fails `self` will be returned
         */
@@ -44,17 +44,15 @@ extension WorkoutBuilder {
         }
         
         /**
-         Conversion of the AutoPause object into TempWorkoutEvents
+         Conversion of the AutoPause object to a TempWorkoutPause.
          - returns: an array of an autoPause and an autoResume TempWorkoutEvent
          */
-        func asWorkoutEvents() -> [TempWorkoutEvent] {
-            let startEvent = TempWorkoutEvent(type: .autoPause, date: startDate)
-            let endEvent = TempWorkoutEvent(type: .autoResume, date: endDate)
-            return [startEvent, endEvent]
+        func asWorkoutEvents() -> TempWorkoutPause {
+            return TempWorkoutPause(uuid: nil, startDate: startDate, endDate: endDate, pauseType: .automatic)
         }
         
         /**
-         Conversion of the AutoPause object into a Range
+         Conversion of the AutoPause object into a Range.
          - parameter date: the reference date for forming the intervals
          - returns: a `ClosedRange` of type Double ranging from the start to the end interval of the `AutoPause` in perspective to the provided date
         */
@@ -68,7 +66,7 @@ extension WorkoutBuilder {
         }
         
         /**
-         Initialises an `AutoPause` object with the provided datesif the start is earlier than the end
+         Initialises an `AutoPause` object with the provided datesif the start is earlier than the end.
          - parameter start: the start date of the automatic pause
          - parameter end: the end date of the automatic pause
          */
@@ -84,24 +82,12 @@ extension WorkoutBuilder {
         }
         
         /**
-         Conversion of an array of `AutoPause`s to an array of `TempWorkoutEvent`s
+         Conversion of an array of `AutoPause`s to an array of `TempWorkoutPause`s.
          - parameter array: the provided array of `AutoPause`s
          - returns: an array of `TempWorkoutEvent`s
          */
-        static func convertToEvents(with array: [AutoPause]) -> [TempWorkoutEvent] {
-            
-            var events = [TempWorkoutEvent]()
-            
-            for pause in array {
-                
-                events.append(contentsOf: pause.asWorkoutEvents())
-                
-            }
-            
-            return events.sorted { (event1, event2) -> Bool in
-                event1.startDate < event2.startDate
-            }
-            
+        static func convertToTemp(with array: [AutoPause]) -> [TempWorkoutPause] {
+            array.map { $0.asWorkoutEvents() }
         }
         
         

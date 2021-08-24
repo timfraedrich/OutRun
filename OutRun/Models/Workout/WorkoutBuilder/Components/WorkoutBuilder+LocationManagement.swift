@@ -143,7 +143,7 @@ extension WorkoutBuilder {
          Initialises the `LocationManagement` object with a `WorkoutBuilder`
          - parameter builder: the workout builder currently holding this instance of `LocationManagement`
          */
-        convenience init(builder: WorkoutBuilder) {
+        required convenience init(builder: WorkoutBuilder) {
             
             self.init()
             self.builder = builder

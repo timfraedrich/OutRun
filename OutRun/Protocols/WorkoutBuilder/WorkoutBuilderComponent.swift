@@ -17,37 +17,34 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+
 import Foundation
+import RxSwift
 
 protocol WorkoutBuilderComponent: AnyObject {
     
-    /// the `WorkoutBuilder` currently holding this instance of `WorkoutBuilderComponent`
-    var builder: WorkoutBuilder? { get set }
-    
-    /// a boolean indicating if the component is ready for a recording to be started
-    var isReady: Bool { get set }
-    
     /**
-     Notifies the `WorkoutBuilderComponent` when the `WorkoutBuilder`s status changed
-     - parameter oldStatus: the old status of the `WorkoutBuilder`
-     - parameter newStatus: the new status of the `WorkoutBuilder`
+     Initiates the `WorkoutBuilderComponent` from a `WorkoutBuilder`.
+     - parameter builder: the workout builder the component is supposed to be bound to
      */
-    func statusChanged(from oldStatus: WorkoutBuilder.Status, to newStatus: WorkoutBuilder.Status, timestamp: Date)
+    init(builder: WorkoutBuilder)
     
     /**
-     Continues the recording process of a workout setting up the component like it was before finishing to record said workout
+     Binds this component to the provided `WorkoutBuilder`.
+     - parameter builder: the workout builder the component is supposed to be bound to
      */
-    func continueWorkout(from snapshot: TempWorkout, timestamp: Date)
+    func bind(builder: WorkoutBuilder)
     
     /**
-     Resets the `WorkoutBuilderComponent` making it ready for a new recording
+     Continues the recording process of a workout setting up the component like it was before finishing to record said workout.
+     - parameter snapshot: the state of the recorded workout supposed to be restored
+     - parameter timestamp: the exact date when the restoration action was scheduled
+     */
+    func continueWorkout(from snapshot: ORWorkoutInterface, at timestamp: Date)
+    
+    /**
+     Resets the `WorkoutBuilderComponent` making it ready for a new recording.
      */
     func reset()
-    
-}
-
-extension WorkoutBuilderComponent {
-    
-    func statusChanged(from oldStatus: WorkoutBuilder.Status, to newStatus: WorkoutBuilder.Status, timestamp: Date) {}
     
 }
