@@ -25,7 +25,7 @@ import HealthKit
 
 extension HKWorkoutEvent: TempValueConvertible {
     
-    var asTemp: TempWorkoutEvent {
+    public var asTemp: TempWorkoutEvent {
         
         guard let type = WorkoutEvent.WorkoutEventType(healthType: self.type) else {
             fatalError("Error: Tried to create TempWorkoutEvent from unsupported HKWorkoutEvent type.")

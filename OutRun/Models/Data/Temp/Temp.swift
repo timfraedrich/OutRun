@@ -22,7 +22,7 @@ import Foundation
 import CoreLocation
 import HealthKit
 
-typealias TempWorkout = TempV4.Workout
+public typealias TempWorkout = TempV4.Workout
 extension TempWorkout: ORWorkoutInterface {
     
     convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkout {
@@ -55,7 +55,7 @@ extension TempWorkout: ORWorkoutInterface {
     }
 }
 
-typealias TempWorkoutPause = TempV4.WorkoutPause
+public typealias TempWorkoutPause = TempV4.WorkoutPause
 extension TempWorkoutPause: ORWorkoutPauseInterface {
     
     convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutPause {
@@ -71,7 +71,7 @@ extension TempWorkoutPause: ORWorkoutPauseInterface {
     }
 }
 
-typealias TempWorkoutEvent = TempV4.WorkoutEvent
+public typealias TempWorkoutEvent = TempV4.WorkoutEvent
 extension TempWorkoutEvent: ORWorkoutEventInterface {
     
     convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutEvent {
@@ -86,7 +86,7 @@ extension TempWorkoutEvent: ORWorkoutEventInterface {
     }
 }
 
-typealias TempWorkoutRouteDataSample = TempV4.WorkoutRouteDataSample
+public typealias TempWorkoutRouteDataSample = TempV4.WorkoutRouteDataSample
 extension TempWorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
     
     convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutRouteDataSample {
@@ -123,7 +123,7 @@ extension TempWorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
     
 }
 
-typealias TempWorkoutHeartRateDataSample = TempV4.WorkoutHeartRateDataSample
+public typealias TempWorkoutHeartRateDataSample = TempV4.WorkoutHeartRateDataSample
 extension TempWorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface {
     
     convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutHeartRateDataSample {
@@ -140,7 +140,7 @@ extension TempWorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface 
     
 }
 
-typealias TempEvent = TempV4.Event
+public typealias TempEvent = TempV4.Event
 extension TempEvent: OREventInterface {
     
     convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempEvent {

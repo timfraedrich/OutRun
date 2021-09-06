@@ -20,11 +20,13 @@
 
 import Foundation
 
-typealias WorkoutHeartRateDataSample = OutRunV4.WorkoutHeartRateDataSample
+public typealias WorkoutHeartRateDataSample = OutRunV4.WorkoutHeartRateDataSample
 
-extension WorkoutHeartRateDataSample: CustomStringConvertible, WorkoutSeriesDataSampleType {
+// MARK: - CustomStringConvertible
+
+extension WorkoutHeartRateDataSample: CustomStringConvertible {
     
-    var description: String {
+    public var description: String {
         
         var desc = "WorkoutHeartRateDataSample("
         
@@ -41,10 +43,10 @@ extension WorkoutHeartRateDataSample: CustomStringConvertible, WorkoutSeriesData
 
 extension WorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface {
     
-    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
-    var heartRate: Int { threadSafeSyncReturn { self._heartRate.value } }
-    var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
-    var workout: ORWorkoutInterface? { self._workout.value }
+    public var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    public var heartRate: Int { threadSafeSyncReturn { self._heartRate.value } }
+    public var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
+    public var workout: ORWorkoutInterface? { self._workout.value }
     
 }
 
@@ -52,7 +54,7 @@ extension WorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface {
 
 extension WorkoutHeartRateDataSample: TempValueConvertible {
     
-    var asTemp: TempWorkoutHeartRateDataSample {
+    public var asTemp: TempWorkoutHeartRateDataSample {
         TempWorkoutHeartRateDataSample(
             uuid: uuid,
             heartRate: heartRate,

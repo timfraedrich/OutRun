@@ -20,7 +20,7 @@
 
 import Foundation
 
-protocol TempValueConvertible {
+public protocol TempValueConvertible {
     
     associatedtype TempType: Codable
     

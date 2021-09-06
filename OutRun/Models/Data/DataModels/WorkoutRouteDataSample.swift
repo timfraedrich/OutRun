@@ -21,11 +21,13 @@
 import Foundation
 import CoreLocation
 
-typealias WorkoutRouteDataSample = OutRunV4.WorkoutRouteDataSample
+public typealias WorkoutRouteDataSample = OutRunV4.WorkoutRouteDataSample
 
-extension WorkoutRouteDataSample: CustomStringConvertible, WorkoutSeriesDataSampleType {
+// MARK: - CustomStringConvertible
+
+extension WorkoutRouteDataSample: CustomStringConvertible {
     
-    var description: String {
+    public var description: String {
         
         var desc = "RouteDataSample("
         
@@ -42,16 +44,16 @@ extension WorkoutRouteDataSample: CustomStringConvertible, WorkoutSeriesDataSamp
 
 extension WorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
     
-    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
-    var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
-    var latitude: Double { threadSafeSyncReturn { self._latitude.value } }
-    var longitude: Double { threadSafeSyncReturn { self._longitude.value } }
-    var altitude: Double { threadSafeSyncReturn { self._altitude.value } }
-    var horizontalAccuracy: Double { threadSafeSyncReturn { self._horizontalAccuracy.value } }
-    var verticalAccuracy: Double { threadSafeSyncReturn { self._verticalAccuracy.value } }
-    var speed: Double { threadSafeSyncReturn { self._speed.value } }
-    var direction: Double { threadSafeSyncReturn { self._direction.value } }
-    var workout: ORWorkoutInterface? { threadSafeSyncReturn { self._workout.value } }
+    public var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    public var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
+    public var latitude: Double { threadSafeSyncReturn { self._latitude.value } }
+    public var longitude: Double { threadSafeSyncReturn { self._longitude.value } }
+    public var altitude: Double { threadSafeSyncReturn { self._altitude.value } }
+    public var horizontalAccuracy: Double { threadSafeSyncReturn { self._horizontalAccuracy.value } }
+    public var verticalAccuracy: Double { threadSafeSyncReturn { self._verticalAccuracy.value } }
+    public var speed: Double { threadSafeSyncReturn { self._speed.value } }
+    public var direction: Double { threadSafeSyncReturn { self._direction.value } }
+    public var workout: ORWorkoutInterface? { threadSafeSyncReturn { self._workout.value } }
     
 }
 
@@ -59,7 +61,7 @@ extension WorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
 
 extension WorkoutRouteDataSample: TempValueConvertible {
     
-    var asTemp: TempWorkoutRouteDataSample {
+    public var asTemp: TempWorkoutRouteDataSample {
         TempWorkoutRouteDataSample(
             uuid: uuid,
             timestamp: timestamp,

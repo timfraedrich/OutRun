@@ -20,20 +20,20 @@
 
 import Foundation
 
-enum TempV1 {
+public enum TempV1 {
     
-    struct Workout: Codable, TempValueConvertible {
+    public struct Workout: Codable, TempValueConvertible {
         
-        let uuid: UUID?
-        let workoutType: Int
-        let startDate: Date
-        let endDate: Date
-        let distance: Double
-        let burnedEnergy: Double
-        let healthKitUUID: UUID?
-        let locations: [TempV1.RouteDataSample]
+        public let uuid: UUID?
+        public let workoutType: Int
+        public let startDate: Date
+        public let endDate: Date
+        public let distance: Double
+        public let burnedEnergy: Double
+        public let healthKitUUID: UUID?
+        public let locations: [TempV1.RouteDataSample]
         
-        var asTemp: TempWorkout {
+        public var asTemp: TempWorkout {
             
             let elevation = Computation.computeElevationData(
                 from: locations.map { $0.altitude }
@@ -71,17 +71,17 @@ enum TempV1 {
         
     }
     
-    struct RouteDataSample: Codable, TempValueConvertible {
+    public struct RouteDataSample: Codable, TempValueConvertible {
         
-        let uuid: UUID?
-        let timestamp: Date
-        let latitude: Double
-        let longitude: Double
-        let altitude: Double
-        let speed: Double
-        let direction: Double
+        public let uuid: UUID?
+        public let timestamp: Date
+        public let latitude: Double
+        public let longitude: Double
+        public let altitude: Double
+        public let speed: Double
+        public let direction: Double
         
-        var asTemp: TempWorkoutRouteDataSample {
+        public var asTemp: TempWorkoutRouteDataSample {
             TempWorkoutRouteDataSample(
                 uuid: self.uuid,
                 timestamp: self.timestamp,

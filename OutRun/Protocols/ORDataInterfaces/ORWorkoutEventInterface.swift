@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing of workout event objects connected to a workout.
-protocol ORWorkoutEventInterface: ORDataInterface {
+public protocol ORWorkoutEventInterface: ORDataInterface {
     
     /// The universally unique identifier used to identify a `WorkoutEvent` in the data base. If `nil` the workout event might not be saved yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }
@@ -34,7 +34,7 @@ protocol ORWorkoutEventInterface: ORDataInterface {
     
 }
 
-extension ORWorkoutEventInterface {
+public extension ORWorkoutEventInterface {
     
     var uuid: UUID? { throwOnAccess() }
     var eventType: WorkoutEvent.WorkoutEventType { throwOnAccess() }

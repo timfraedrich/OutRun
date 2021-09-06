@@ -21,7 +21,7 @@
 import Foundation
 import RxSwift
 
-protocol WorkoutBuilderComponent: AnyObject {
+public protocol WorkoutBuilderComponent: AnyObject {
     
     /**
      Initiates the `WorkoutBuilderComponent` from a `WorkoutBuilder`.

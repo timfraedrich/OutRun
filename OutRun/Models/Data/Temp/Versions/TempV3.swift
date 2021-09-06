@@ -20,26 +20,26 @@
 
 import Foundation
 
-enum TempV3 {
+public enum TempV3 {
     
-    struct Workout: Codable, TempValueConvertible {
+    public struct Workout: Codable, TempValueConvertible {
         
-        let uuid: UUID?
-        let workoutType: Int
-        let startDate: Date
-        let endDate: Date
-        let distance: Double
-        let steps: Int?
-        let isRace: Bool
-        let isUserModified: Bool
-        let comment: String?
-        let burnedEnergy: Double?
-        let healthKitUUID: UUID?
-        let workoutEvents: [TempV3.WorkoutEvent]
-        let locations: [TempV3.WorkoutRouteDataSample]
-        let heartRates: [TempV3.WorkoutHeartRateDataSample]
+        public let uuid: UUID?
+        public let workoutType: Int
+        public let startDate: Date
+        public let endDate: Date
+        public let distance: Double
+        public let steps: Int?
+        public let isRace: Bool
+        public let isUserModified: Bool
+        public let comment: String?
+        public let burnedEnergy: Double?
+        public let healthKitUUID: UUID?
+        public let workoutEvents: [TempV3.WorkoutEvent]
+        public let locations: [TempV3.WorkoutRouteDataSample]
+        public let heartRates: [TempV3.WorkoutHeartRateDataSample]
         
-        var asTemp: TempWorkout {
+        public var asTemp: TempWorkout {
             
             let elevation = Computation.computeElevationData(
                 from: locations.map { $0.altitude }
@@ -94,14 +94,14 @@ enum TempV3 {
         }
     }
     
-    struct WorkoutEvent: Codable, TempValueConvertible {
+    public struct WorkoutEvent: Codable, TempValueConvertible {
         
-        let uuid: UUID?
-        let eventType: Int
-        let startDate: Date
-        let endDate: Date
+        public let uuid: UUID?
+        public let eventType: Int
+        public let startDate: Date
+        public let endDate: Date
         
-        var asTemp: TempWorkoutEvent {
+        public var asTemp: TempWorkoutEvent {
             
             if eventType > 3 {
                 print("Conversion from TempV3.WorkoutEvent to TempWorkoutEvent invalid: eventType too high")
@@ -116,19 +116,19 @@ enum TempV3 {
         }
     }
     
-    struct WorkoutRouteDataSample: Codable, TempValueConvertible {
+    public struct WorkoutRouteDataSample: Codable, TempValueConvertible {
         
-        let uuid: UUID?
-        let timestamp: Date
-        let latitude: Double
-        let longitude: Double
-        let altitude: Double
-        let horizontalAccuracy: Double
-        let verticalAccuracy: Double
-        let speed: Double
-        let direction: Double
+        public let uuid: UUID?
+        public let timestamp: Date
+        public let latitude: Double
+        public let longitude: Double
+        public let altitude: Double
+        public let horizontalAccuracy: Double
+        public let verticalAccuracy: Double
+        public let speed: Double
+        public let direction: Double
         
-        var asTemp: TempWorkoutRouteDataSample {
+        public var asTemp: TempWorkoutRouteDataSample {
             TempWorkoutRouteDataSample(
                 uuid: self.uuid,
                 timestamp: self.timestamp,
@@ -143,13 +143,13 @@ enum TempV3 {
         }
     }
     
-    struct WorkoutHeartRateDataSample: Codable, TempValueConvertible {
+    public struct WorkoutHeartRateDataSample: Codable, TempValueConvertible {
         
-        let uuid: UUID?
-        let heartRate: Double
-        let timestamp: Date
+        public let uuid: UUID?
+        public let heartRate: Double
+        public let timestamp: Date
         
-        var asTemp: TempWorkoutHeartRateDataSample {
+        public var asTemp: TempWorkoutHeartRateDataSample {
             return TempWorkoutHeartRateDataSample(
                 uuid: uuid,
                 heartRate: Int(heartRate),
@@ -158,16 +158,16 @@ enum TempV3 {
         }
     }
     
-    struct Event: Codable, TempValueConvertible {
+    public struct Event: Codable, TempValueConvertible {
         
-        let uuid: UUID?
-        let title: String
-        let comment: String?
-        let startDate: Date?
-        let endDate: Date?
-        let workouts: [UUID]
+        public let uuid: UUID?
+        public let title: String
+        public let comment: String?
+        public let startDate: Date?
+        public let endDate: Date?
+        public let workouts: [UUID]
         
-        var asTemp: TempEvent {
+        public var asTemp: TempEvent {
             return TempEvent(
                 uuid: uuid,
                 title: title,

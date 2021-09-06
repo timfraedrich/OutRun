@@ -23,9 +23,9 @@ import CoreLocation
 import HealthKit
 import CoreStore
 
-typealias Workout = OutRunV4.Workout
+public typealias Workout = OutRunV4.Workout
 
-extension Workout: CustomStringConvertible {
+public extension Workout {
     
     var hasRouteData: Bool {
         return !self.routeData.isEmpty
@@ -35,28 +35,11 @@ extension Workout: CustomStringConvertible {
         return !self.heartRates.isEmpty
     }
     
-    var description: String {
-        
-        var desc = "Workout("
-        
-        if let uuid = uuid {
-            desc += "uuid: \(uuid), "
-        }
-        
-        desc += "type: \(workoutType.debugDescription), start: \(startDate), end: \(endDate), distance: \(distance) m, activeDuration: \(activeDuration) s, pauseDuration: \(pauseDuration) s, pauses: \(pauses.count), events: \(events.count), heartRates: \(heartRates.count)"
-        
-        if let energy = burnedEnergy {
-            desc += " burnedEnergy: \(energy) kcal"
-        }
-        
-        return desc + ")"
-    }
-    
     enum WorkoutType: CaseIterable, CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType, Codable {
         
         case running, walking, cycling, skating, hiking, unknown
         
-        init(rawValue: Int) {
+        public init(rawValue: Int) {
             switch rawValue {
             case 0:
                 self = .running
@@ -73,7 +56,7 @@ extension Workout: CustomStringConvertible {
             }
         }
         
-        init?(hkType: HKWorkoutActivityType) {
+        public init?(hkType: HKWorkoutActivityType) {
             switch hkType {
             case .running:
                 self = .running
@@ -90,7 +73,7 @@ extension Workout: CustomStringConvertible {
             }
         }
         
-        var rawValue: Int {
+        public var rawValue: Int {
             switch self {
             case .running:
                 return 0
@@ -107,7 +90,7 @@ extension Workout: CustomStringConvertible {
             }
         }
         
-        var description: String {
+        public var description: String {
             switch self {
             case .running:
                 return LS["Workout.Type.Running"]
@@ -124,7 +107,7 @@ extension Workout: CustomStringConvertible {
             }
         }
         
-        var debugDescription: String {
+        public var debugDescription: String {
             switch self {
             case .running:
                 return "Running"
@@ -141,7 +124,7 @@ extension Workout: CustomStringConvertible {
             }
         }
         
-        var METSpeedMultiplier: Double {
+        public var METSpeedMultiplier: Double {
             switch self {
             case .running:
                 return 1.035
@@ -156,7 +139,7 @@ extension Workout: CustomStringConvertible {
             }
         }
         
-        var healthKitType: HKWorkoutActivityType {
+        public var healthKitType: HKWorkoutActivityType {
             switch self {
             case .running:
                 return .running
@@ -173,7 +156,7 @@ extension Workout: CustomStringConvertible {
             }
         }
         
-        var healthKitDistanceType: HKQuantityType? {
+        public var healthKitDistanceType: HKQuantityType? {
             switch self {
             case .running, .walking, .hiking:
                 return HealthStoreManager.HealthType.DistanceWalkingRunning
@@ -188,32 +171,54 @@ extension Workout: CustomStringConvertible {
     
 }
 
+// MARK: - CustomStringConvertible
+
+extension Workout: CustomStringConvertible {
+    
+    public var description: String {
+        
+        var desc = "Workout("
+        
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+        
+        desc += "type: \(workoutType.debugDescription), start: \(startDate), end: \(endDate), distance: \(distance) m, activeDuration: \(activeDuration) s, pauseDuration: \(pauseDuration) s, pauses: \(pauses.count), events: \(events.count), heartRates: \(heartRates.count)"
+        
+        if let energy = burnedEnergy {
+            desc += " burnedEnergy: \(energy) kcal"
+        }
+        
+        return desc + ")"
+    }
+}
+
 // MARK: - ORWorkoutInterface
 
 extension Workout: ORWorkoutInterface {
     
-    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
-    var workoutType: Workout.WorkoutType { threadSafeSyncReturn { self._workoutType.value } }
-    var distance: Double { threadSafeSyncReturn { self._distance.value } }
-    var steps: Int? { threadSafeSyncReturn { self._steps.value } }
-    var startDate: Date { threadSafeSyncReturn { self._startDate.value } }
-    var endDate: Date { threadSafeSyncReturn { self._endDate.value } }
-    var burnedEnergy: Double? { threadSafeSyncReturn { self._burnedEnergy.value } }
-    var isRace: Bool { threadSafeSyncReturn { self._isRace.value } }
-    var comment: String? { threadSafeSyncReturn { self._comment.value } }
-    var isUserModified: Bool { threadSafeSyncReturn { self._isUserModified.value } }
-    var healthKitUUID: UUID? { threadSafeSyncReturn { self._healthKitUUID.value } }
-    var finishedRecording: Bool { threadSafeSyncReturn { self._finishedRecording.value } }
-    var ascend: Double { threadSafeSyncReturn { self._ascend.value } }
-    var descend: Double { threadSafeSyncReturn { self._descend.value } }
-    var activeDuration: Double { threadSafeSyncReturn { self._activeDuration.value } }
-    var pauseDuration: Double { threadSafeSyncReturn { self._pauseDuration.value } }
-    var dayIdentifier: String { threadSafeSyncReturn { self._dayIdentifier.value } }
-    var heartRates: [ORWorkoutHeartRateDataSampleInterface] { self._heartRates.value }
-    var routeData: [ORWorkoutRouteDataSampleInterface] { self._routeData.value }
-    var pauses: [ORWorkoutPauseInterface] { self._pauses.value }
-    var workoutEvents: [ORWorkoutEventInterface] { self._workoutEvents.value }
-    var events: [OREventInterface] {  Array(self._events.value) }
+    public var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    public var workoutType: Workout.WorkoutType { threadSafeSyncReturn { self._workoutType.value } }
+    public var distance: Double { threadSafeSyncReturn { self._distance.value } }
+    public var steps: Int? { threadSafeSyncReturn { self._steps.value } }
+    public var startDate: Date { threadSafeSyncReturn { self._startDate.value } }
+    public var endDate: Date { threadSafeSyncReturn { self._endDate.value } }
+    public var burnedEnergy: Double? { threadSafeSyncReturn { self._burnedEnergy.value } }
+    public var isRace: Bool { threadSafeSyncReturn { self._isRace.value } }
+    public var comment: String? { threadSafeSyncReturn { self._comment.value } }
+    public var isUserModified: Bool { threadSafeSyncReturn { self._isUserModified.value } }
+    public var healthKitUUID: UUID? { threadSafeSyncReturn { self._healthKitUUID.value } }
+    public var finishedRecording: Bool { threadSafeSyncReturn { self._finishedRecording.value } }
+    public var ascend: Double { threadSafeSyncReturn { self._ascend.value } }
+    public var descend: Double { threadSafeSyncReturn { self._descend.value } }
+    public var activeDuration: Double { threadSafeSyncReturn { self._activeDuration.value } }
+    public var pauseDuration: Double { threadSafeSyncReturn { self._pauseDuration.value } }
+    public var dayIdentifier: String { threadSafeSyncReturn { self._dayIdentifier.value } }
+    public var heartRates: [ORWorkoutHeartRateDataSampleInterface] { self._heartRates.value }
+    public var routeData: [ORWorkoutRouteDataSampleInterface] { self._routeData.value }
+    public var pauses: [ORWorkoutPauseInterface] { self._pauses.value }
+    public var workoutEvents: [ORWorkoutEventInterface] { self._workoutEvents.value }
+    public var events: [OREventInterface] {  Array(self._events.value) }
     
 }
 
@@ -221,7 +226,7 @@ extension Workout: ORWorkoutInterface {
 
 extension Workout: TempValueConvertible {
     
-    var asTemp: TempWorkout {
+    public var asTemp: TempWorkout {
         return TempWorkout(
             uuid: uuid,
             workoutType: workoutType,

@@ -21,19 +21,9 @@
 import Foundation
 import CoreStore
 
-typealias WorkoutPause = OutRunV4.WorkoutPause
+public typealias WorkoutPause = OutRunV4.WorkoutPause
 
-extension WorkoutPause: CustomStringConvertible {
-    
-    var description: String {
-        var desc = "WorkoutPause("
-            
-        if let uuid = uuid {
-            desc += "uuid: \(uuid), "
-        }
-            
-        return desc + "start: \(startDate), end: \(endDate), duration: \(duration))"
-    }
+public extension WorkoutPause {
     
     var duration: TimeInterval {
         return startDate.distance(to: endDate)
@@ -44,7 +34,7 @@ extension WorkoutPause: CustomStringConvertible {
         case manual
         case automatic
         
-        init(rawValue: Int) {
+        public init(rawValue: Int) {
             switch rawValue {
             case 1:
                 self = .automatic
@@ -53,7 +43,7 @@ extension WorkoutPause: CustomStringConvertible {
             }
         }
         
-        var rawValue: Int {
+        public var rawValue: Int {
             switch self {
             case .manual:
                 return 0
@@ -65,15 +55,30 @@ extension WorkoutPause: CustomStringConvertible {
     
 }
 
+// MARK: - CustomStringConvertible
+
+extension WorkoutPause: CustomStringConvertible {
+    
+    public var description: String {
+        var desc = "WorkoutPause("
+            
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+            
+        return desc + "start: \(startDate), end: \(endDate), duration: \(duration))"
+    }
+}
+
 // MARK: - ORWorkoutPauseInterface
 
 extension WorkoutPause: ORWorkoutPauseInterface {
     
-    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
-    var startDate: Date { threadSafeSyncReturn { self._startDate.value } }
-    var endDate: Date { threadSafeSyncReturn { self._endDate.value } }
-    var pauseType: WorkoutPauseType { threadSafeSyncReturn { self._pauseType.value } }
-    var workout: ORWorkoutInterface? { self._workout.value }
+    public var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    public var startDate: Date { threadSafeSyncReturn { self._startDate.value } }
+    public var endDate: Date { threadSafeSyncReturn { self._endDate.value } }
+    public var pauseType: WorkoutPauseType { threadSafeSyncReturn { self._pauseType.value } }
+    public var workout: ORWorkoutInterface? { self._workout.value }
     
 }
 
@@ -81,7 +86,7 @@ extension WorkoutPause: ORWorkoutPauseInterface {
 
 extension WorkoutPause: TempValueConvertible {
     
-    var asTemp: TempWorkoutPause {
+    public var asTemp: TempWorkoutPause {
         TempWorkoutPause(
             uuid: uuid,
             startDate: startDate,

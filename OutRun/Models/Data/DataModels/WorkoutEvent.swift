@@ -22,24 +22,14 @@ import Foundation
 import HealthKit
 import CoreStore
 
-typealias WorkoutEvent = OutRunV4.WorkoutEvent
+public typealias WorkoutEvent = OutRunV4.WorkoutEvent
 
-extension WorkoutEvent: CustomStringConvertible {
-    
-    var description: String {
-        var desc = "WorkoutEvent("
-            
-        if let uuid = uuid {
-            desc += "uuid: \(uuid), "
-        }
-        
-        return desc + "type: \(eventType.debugDescription), timestamp: \(timestamp)"
-    }
+public extension WorkoutEvent {
     
     enum WorkoutEventType: CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable, ImportableAttributeType, Codable {
         case lap, marker, segment, unknown
         
-        init(rawValue: Int) {
+        public init(rawValue: Int) {
             switch rawValue {
             case 0:
                 self = .lap
@@ -52,7 +42,7 @@ extension WorkoutEvent: CustomStringConvertible {
             }
         }
         
-        init?(healthType: HKWorkoutEventType) {
+        public init?(healthType: HKWorkoutEventType) {
             switch healthType {
             case .lap:
                 self = .lap
@@ -65,7 +55,7 @@ extension WorkoutEvent: CustomStringConvertible {
             }
         }
         
-        var rawValue: Int {
+        public var rawValue: Int {
             switch self {
             case .lap:
                 return 0
@@ -78,7 +68,7 @@ extension WorkoutEvent: CustomStringConvertible {
             }
         }
         
-        var description: String {
+        public var description: String {
             switch self {
             case .lap:
                 return LS["WorkoutEvent.Type.Lap"]
@@ -91,7 +81,7 @@ extension WorkoutEvent: CustomStringConvertible {
             }
         }
         
-        var debugDescription: String {
+        public var debugDescription: String {
             switch self {
             case .lap:
                 return "Lap"
@@ -104,7 +94,7 @@ extension WorkoutEvent: CustomStringConvertible {
             }
         }
         
-        var healthKitType: HKWorkoutEventType? {
+        public var healthKitType: HKWorkoutEventType? {
             switch self {
             case .lap:
                 return .lap
@@ -120,14 +110,29 @@ extension WorkoutEvent: CustomStringConvertible {
     
 }
 
+// MARK: - CustomStringConvertible
+
+extension WorkoutEvent: CustomStringConvertible {
+    
+    public var description: String {
+        var desc = "WorkoutEvent("
+            
+        if let uuid = uuid {
+            desc += "uuid: \(uuid), "
+        }
+        
+        return desc + "type: \(eventType.debugDescription), timestamp: \(timestamp)"
+    }
+}
+
 // MARK: - ORWorkoutEventInterface
 
 extension WorkoutEvent: ORWorkoutEventInterface {
     
-    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
-    var eventType: WorkoutEventType { threadSafeSyncReturn { self._eventType.value } }
-    var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
-    var workout: ORWorkoutInterface? { self._workout.value }
+    public var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    public var eventType: WorkoutEventType { threadSafeSyncReturn { self._eventType.value } }
+    public var timestamp: Date { threadSafeSyncReturn { self._timestamp.value } }
+    public var workout: ORWorkoutInterface? { self._workout.value }
     
 }
 
@@ -135,7 +140,7 @@ extension WorkoutEvent: ORWorkoutEventInterface {
 
 extension WorkoutEvent: TempValueConvertible {
     
-    var asTemp: TempWorkoutEvent {
+    public var asTemp: TempWorkoutEvent {
         TempWorkoutEvent(
             uuid: uuid,
             eventType: eventType,

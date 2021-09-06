@@ -23,7 +23,7 @@ import CoreLocation
 import RxSwift
 import RxRelay
 
-class WorkoutBuilder: ApplicationStateObserver {
+public class WorkoutBuilder: ApplicationStateObserver {
     
     // MARK: - Static
     

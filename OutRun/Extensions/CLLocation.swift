@@ -50,7 +50,7 @@ extension CLLocation {
 
 extension CLLocation: TempValueConvertible {
     
-    var asTemp: TempWorkoutRouteDataSample {
+    public var asTemp: TempWorkoutRouteDataSample {
         TempWorkoutRouteDataSample(
             uuid: nil,
             timestamp: self.timestamp,

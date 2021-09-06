@@ -20,7 +20,7 @@
 
 import CoreStore
 
-enum OutRunV4: ORDataModel {
+public enum OutRunV4: ORDataModel {
     
     static let identifier = "OutRunV4"
     static let schema = CoreStoreSchema(
@@ -90,7 +90,7 @@ enum OutRunV4: ORDataModel {
     static let migrationChain: [ORDataModel.Type] = [OutRunV1.self, OutRunV2.self, OutRunV3.self, OutRunV3to4.self, OutRunV4.self]
     
     // MARK: Workout
-    class Workout: CoreStoreObject, ORDataType {
+    public class Workout: CoreStoreObject, ORDataType {
         
         static let identifier = "Workout"
         
@@ -122,7 +122,7 @@ enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutPause
-    class WorkoutPause: CoreStoreObject, ORDataType {
+    public class WorkoutPause: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutPause"
         
@@ -136,7 +136,7 @@ enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutEvent
-    class WorkoutEvent: CoreStoreObject, ORDataType {
+    public class WorkoutEvent: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutEvent"
         
@@ -149,7 +149,7 @@ enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutRouteDataSample
-    class WorkoutRouteDataSample: CoreStoreObject, ORDataType {
+    public class WorkoutRouteDataSample: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutRouteDataSample"
         
@@ -168,7 +168,7 @@ enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutHeartRateDataSample
-    class WorkoutHeartRateDataSample: CoreStoreObject, ORDataType {
+    public class WorkoutHeartRateDataSample: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutHeartRateSample"
         
@@ -181,7 +181,7 @@ enum OutRunV4: ORDataModel {
     }
     
     // MARK: Event
-    class Event: CoreStoreObject, ORDataType {
+    public class Event: CoreStoreObject, ORDataType {
         
         static let identifier = "Event"
         

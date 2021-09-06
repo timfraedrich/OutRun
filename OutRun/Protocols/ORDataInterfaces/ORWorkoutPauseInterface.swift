@@ -21,7 +21,7 @@
 import Foundation
 
 /// A protocol to unify the saving and processing of pause objects connected to a workout.
-protocol ORWorkoutPauseInterface: ORDataInterface {
+public protocol ORWorkoutPauseInterface: ORDataInterface {
     
     /// The universally unique identifier used to identify a `WorkoutPause` in the data base. If `nil` the pause might not be saved yet, a UUID will be asigned once saved.
     var uuid: UUID? { get }
@@ -36,7 +36,7 @@ protocol ORWorkoutPauseInterface: ORDataInterface {
     
 }
 
-extension ORWorkoutPauseInterface {
+public extension ORWorkoutPauseInterface {
     
     var uuid: UUID? { throwOnAccess() }
     var startDate: Date { throwOnAccess() }

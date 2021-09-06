@@ -20,11 +20,13 @@
 
 import Foundation
 
-typealias Event = OutRunV4.Event
+public typealias Event = OutRunV4.Event
+
+// MARK: CustomStringConvertible
 
 extension Event: CustomStringConvertible {
     
-    var description: String {
+    public var description: String {
         
         var desc = "WorkoutEvent("
         
@@ -41,12 +43,12 @@ extension Event: CustomStringConvertible {
 
 extension Event: OREventInterface {
     
-    var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
-    var title: String { threadSafeSyncReturn { self._title.value } }
-    var comment: String? { threadSafeSyncReturn { self._comment.value } }
-    var startDate: Date? { threadSafeSyncReturn { self._startDate.value } }
-    var endDate: Date? { threadSafeSyncReturn { self._endDate.value } }
-    var workouts: [ORWorkoutInterface] { self._workouts.value }
+    public var uuid: UUID? { threadSafeSyncReturn { self._uuid.value } }
+    public var title: String { threadSafeSyncReturn { self._title.value } }
+    public var comment: String? { threadSafeSyncReturn { self._comment.value } }
+    public var startDate: Date? { threadSafeSyncReturn { self._startDate.value } }
+    public var endDate: Date? { threadSafeSyncReturn { self._endDate.value } }
+    public var workouts: [ORWorkoutInterface] { self._workouts.value }
     
 }
 
@@ -54,7 +56,7 @@ extension Event: OREventInterface {
 
 extension Event: TempValueConvertible {
     
-    var asTemp: TempEvent {
+    public var asTemp: TempEvent {
         TempEvent(
             uuid: uuid,
             title: title,
