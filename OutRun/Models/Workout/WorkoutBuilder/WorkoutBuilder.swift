@@ -25,378 +25,213 @@ import RxRelay
 
 public class WorkoutBuilder: ApplicationStateObserver {
     
-    // MARK: - Static
+    /// Indicating the type and last time when a workout was paused by the user or the app.
+    private var lastPause: (type: WorkoutPause.WorkoutPauseType, startingAt: Date)?
+    /// Holds a reference to the types of workout builder components still preparing to record.
+    private var preparingComponents: [WorkoutBuilderComponent.Type] = []
+    
+    // MARK: - Initialisation
     
     /**
-     weak reference to the currently active `WorkoutBuilder` if there is any
-     - note: ideally there should always only be one currently active `WorkoutBuilder`, because recording multiple workouts at once would not make any sense and multiple instances just take up more system memory
+     Initialises a `WorkoutBuilder` instance.
+     - parameter workoutType: an optional of the type of workout that is supposed to be recorded; if `nil` the `WorkoutBuilder` sets it appropriately from `UserPreferences.standardWorkoutType`
+     - parameter delegate: the delegate that is supposed to receive updates
      */
-    static weak var currentlyActive: WorkoutBuilder?
-    
-    // ============== TAKE A LOOK AT THIS ================== //
-    /// a boolean indicating whether background updates should be performed
-    public private(set) var shouldPerformBackgroundUpdates: Bool = true
-    // ===================================================== //
-    
-    // MARK: Actions
-    
-    /**
-     Starts or resumes the `WorkoutBuilder` if this action is appropriate
-     - parameter completion: a closure with a success boolean as a parameter indicating if the action was performed
-     */
-    public func startOrResume(completion: @escaping (Bool) -> Void) {
+    public init(workoutType: Workout.WorkoutType? = nil) {
         
-        let completion = safeClosure(from: completion)
-        let timestamp = Date()
+        self.workoutTypeRelay = BehaviorRelay(value: workoutType ?? Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value))
         
-        validateTransition(to: .recording) { (success) in
-            guard success else { completion(false); return }
+        self.startObservingApplicationState()
+    }
+    
+    private func prepareBindings() {
+        
+        // reacting to status changes
+        statusRelay.subscribe(onNext: { [weak self] newStatus in
+            guard let self = self else { return }
+            let timestamp = Date()
             
-            if self.startDateRelay.value == nil {
-                self.startDateRelay.accept(timestamp)
+            switch newStatus {
+            case .recording: // starting / resuming workout
+                if self.startDateRelay.value == nil {
+                    self.startDateRelay.accept(timestamp)
+                    
+                } else if let lastPause = self.lastPause {
+                    let pause = TempWorkoutPause(uuid: nil, startDate: lastPause.startingAt, endDate: timestamp, pauseType: lastPause.type)
+                    let pauses = self.pausesRelay.value + [pause]
+                    self.pausesRelay.accept(pauses)
+                    self.lastPause = nil
+                }
+            
+            case .paused: // pausing workout
+                self.lastPause = (type: .manual, startingAt: self.lastPause?.startingAt ?? timestamp)
+            
+            case .autoPaused: // automatic pause
+                self.lastPause = (type: .automatic, startingAt: timestamp)
                 
-            } else if let lastPause = lastPause {
-                let pause = TempWorkoutPause(uuid: nil, startDate: lastPause, endDate: timestamp, pauseType: .manual)
-                let pauses = manualPauseRelay.value + [pause]
-                self.manualPauseRelay.accept(pauses)
-                self.lastPause = nil
+            case .ready: // stopping workout
+                self.endDateRelay.accept(timestamp)
+                
+                // ========================================================
+                // TODO: handle finished workout ==========================
+                // ========================================================
+                
+                self.reset()
+            
+            default: // ignore everything else
+                break
             }
-            
-            self.statusRelay.accept(.recording)
-            self.startPeriodicUpdates()
-                
-            completion(true)
-        }
+        }).disposed(by: disposeBag)
+        
     }
     
-    private var lastPause: Date?
+    // MARK: - Dataflow
     
-    /**
-     Pauses the `WorkoutBuilder` if this action is appropriate
-     - parameter completion: a closure with a success boolean as a parameter indicating if the action was performed
-     */
-    public func pause(completion: @escaping (Bool) -> Void) {
-        
-        let completion = safeClosure(from: completion)
-        let timestamp = Date()
-        
-        validateTransition(to: .paused) { (success) in
-            guard success else { completion(false); return }
-            
-            self.lastPause = timestamp
-            self.statusRelay.accept(.paused)
-            completion(true)
-        }
+    private let disposeBag = DisposeBag()
+    
+    /// The relay to publish the current status of the `WorkoutBuilder`.
+    private let statusRelay = BehaviorRelay<WorkoutBuilder.Status>(value: .waiting)
+    /// The relay to publish the type of workout the `WorkoutBuilder` is supposed to record.
+    private let workoutTypeRelay: BehaviorRelay<Workout.WorkoutType>
+    /// The relay to publish the date the recorded workout was started.
+    private let startDateRelay = BehaviorRelay<Date?>(value: nil)
+    /// The relay to publish the date the recorded workout was stopped.
+    private let endDateRelay = BehaviorRelay<Date?>(value: nil)
+    /// The relay to publish the distance shared by components.
+    private let distanceRelay = BehaviorRelay<Double>(value: 0)
+    /// The relay to publish the steps counted by components.
+    private let stepsRelay = BehaviorRelay<Int?>(value: nil)
+    /// The relay to publish the pauses initiated by the user or by the app automaticallyprivate
+    private let pausesRelay = BehaviorRelay<[TempWorkoutPause]>(value: [])
+    /// The relay to publish the locations received from components.
+    private let locationsRelay = BehaviorRelay<[TempWorkoutRouteDataSample]>(value: [])
+    /// The relay to publish the altitudes received from components.
+    private let altitudesRelay = BehaviorRelay<[AltitudeManagement.AltitudeSample]>(value: [])
+    /// The relay to publish the heart rate samples received from components.
+    private let heartRatesRelay = BehaviorRelay<[TempWorkoutHeartRateDataSample]>(value: [])
+    /// The relay to publish a components report of isufficient permissions to record the workout.
+    private let insufficientPermissionRelay = PublishRelay<String>()
+    /// The relay to publish a UI suspension command.
+    private let uiSuspensionRelay = PublishRelay<Bool>()
+    /// The relay to publish a suspension command.
+    private let suspensionRelay = PublishRelay<Bool>()
+    /// The relay to publish a reset command.
+    private let resetRelay = PublishRelay<ORWorkoutInterface?>()
+    
+    /// A type containing all input data needed to establish a data flow.
+    public struct Input {
+        let readiness: Observable<WorkoutBuilderComponentStatus>?
+        let insufficientPermission: Observable<String>?
+        let statusSuggestion: Observable<WorkoutBuilder.Status>?
+        let distance: Observable<Double>?
+        let steps: Observable<Int?>?
+        let locations: Observable<[TempWorkoutRouteDataSample]>?
+        let altitudes: Observable<[AltitudeManagement.AltitudeSample]>?
+        let heartRates: Observable<[TempWorkoutHeartRateDataSample]>?
+    }
+    
+    /// A type containing all output data needed to establish a data flow.
+    public struct Output {
+        let status: Observable<WorkoutBuilder.Status>
+        let workoutType: Observable<Workout.WorkoutType>
+        let startDate: Observable<Date?>
+        let endDate: Observable<Date?>
+        let distance: Observable<Double>
+        let steps: Observable<Int?>
+        let pauses: Observable<[TempWorkoutPause]>
+        let locations: Observable<[TempWorkoutRouteDataSample]>
+        let altitudes: Observable<[AltitudeManagement.AltitudeSample]>
+        let heartRates: Observable<[TempWorkoutHeartRateDataSample]>
+        let isUISuspended: Observable<Bool>
+        let isSuspended: Observable<Bool>
+        let onReset: Observable<ORWorkoutInterface?>
     }
     
     /**
-     Stops and resets the `WorkoutBuilder` if this action is appropriate giving the recorded data to an instance of `WorkoutCompletionActionHandler`
-     - parameter completion: a closure with a success boolean as a parameter indicating if the action was performed
+     Tranforms the provided inputs to an output establishing a data flow between this WorkoutBuilder and the caller of this function.
+     - parameter input: the input provided to the workout builder
+     - returns: the output to provide the caller with the necessary data
      */
-    public func finish(shouldProvideCompletionActions: Bool = true, completion: @escaping (Bool) -> Void) {
+    public func tranform(_ input: WorkoutBuilder.Input) -> Output {
         
-        let completion = safeClosure(from: completion)
-        let timestamp = Date()
-        
-        validateTransition(to: .ready) { (success) in
-            guard success else { completion(false); return }
-            
-            self.endDateRelay.accept(timestamp)
-            
-            if let snapshot = self.createSnapshot() {
-                
-                // NEEDS NEW APPROACH
-                // let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
-                // if shouldProvideCompletionActions {
-                //     handler.display()
-                // } else {
-                //     handler.saveWorkout()
-                // }
-                
-                completion(true)
-              
-            self.reset()
-                
-            } else {
-                
-                completion(false)
-                
+        input.readiness?.subscribe(onNext: { [weak self] status in
+            guard let self = self else { return }
+            switch status {
+            case .preparing(let preparingType):
+                guard !self.preparingComponents.contains(where: { $0 == preparingType }) else { return }
+                self.preparingComponents.append(preparingType)
+            case .ready(let preparingType):
+                self.preparingComponents.removeAll(where: { $0 == preparingType })
             }
-            
-        }
+            let isReadyToRecord = self.preparingComponents.isEmpty
+            let newStatus: Status = isReadyToRecord ? .ready : .waiting
+            self.validateTransition(to: newStatus) { isValid in
+                guard isValid else { return }
+                self.statusRelay.accept(newStatus)
+            }
+        }).disposed(by: disposeBag)
         
+        input.statusSuggestion?.subscribe(onNext: { [weak self] status in
+            guard let self = self else { return }
+            self.validateTransition(to: status) { (isValid) in
+                guard isValid else { return }
+                self.statusRelay.accept(status)
+            }
+        }).disposed(by: disposeBag)
+        
+        input.insufficientPermission?.bind(to: insufficientPermissionRelay).disposed(by: disposeBag)
+        input.distance?.bind(to: distanceRelay).disposed(by: disposeBag)
+        input.steps?.bind(to: stepsRelay).disposed(by: disposeBag)
+        input.locations?.bind(to: locationsRelay).disposed(by: disposeBag)
+        input.altitudes?.bind(to: altitudesRelay).disposed(by: disposeBag)
+        input.heartRates?.bind(to: heartRatesRelay).disposed(by: disposeBag)
+        
+        return Output(
+            status: statusRelay.asBackgroundObservable(),
+            workoutType: workoutTypeRelay.asBackgroundObservable(),
+            startDate: startDateRelay.asBackgroundObservable(),
+            endDate: endDateRelay.asBackgroundObservable(),
+            distance: distanceRelay.asBackgroundObservable(),
+            // duration
+            // burned energy
+            // speed
+            steps: stepsRelay.asBackgroundObservable(),
+            pauses: pausesRelay.asBackgroundObservable(),
+            locations: locationsRelay.asBackgroundObservable(),
+            altitudes: altitudesRelay.asBackgroundObservable(),
+            heartRates: heartRatesRelay.asBackgroundObservable(),
+            isUISuspended: uiSuspensionRelay.asBackgroundObservable(),
+            isSuspended: suspensionRelay.asBackgroundObservable(),
+            onReset: resetRelay.asBackgroundObservable()
+        )
+    }
+    
+    // MARK: - Preparation
+    
+    /// Resets the `WorkoutBuilder` and it's components and prepares tem for another recording.
+    private func reset() {
+        
+        statusRelay.accept(.waiting)
+        startDateRelay.accept(nil)
+        endDateRelay.accept(nil)
+        pausesRelay.accept([])
+        resetRelay.accept(nil)
     }
     
     /**
-     Continues a workout by setting up the `WorkoutBuilder` and its components like they never stopped recording
-     - parameter snapshot: the snapshot made when finishing the workout
+     Continues a workout by setting up the `WorkoutBuilder` and it's components like they are recording.
+     - parameter snapshot: the snapshot made of the continued workout
      */
     public func continueWorkout(from snapshot: TempWorkout) {
         
-        let timestamp = Date()
-        
-        self.status = .recording
-        self.startDate = snapshot.startDate
-        self.endDate = nil
-        
-        let newPause = TempWorkoutEvent(type: .pause, date: snapshot.endDate)
-        let newResume = TempWorkoutEvent(type: .resume, date: timestamp)
-        
-        self.manualPauseEvents = snapshot.workoutEvents
-        self.manualPauseEvents.append(contentsOf: [newPause, newResume])
-        
-        performOnEveryComponent { (component) in
-            
-            component.continueWorkout(from: snapshot, timestamp: timestamp)
-            
-        }
-        
-        self.startPeriodicUpdates()
-        
+        startDateRelay.accept(snapshot.startDate)
+        endDateRelay.accept(nil)
+        pausesRelay.accept(snapshot.pauses.map { TempWorkoutPause(uuid: $0.uuid, startDate: $0.startDate, endDate: $0.endDate, pauseType: $0.pauseType) })
+        lastPause = (type: .manual, startingAt: snapshot.endDate)
+        resetRelay.accept(snapshot)
     }
     
-    /**
-     Notifies the `WorkoutBuilder` that its holding controller was dismissed and acts appropriately by stopping updates and resetting itself
-     */
-    public func actOnDismiss() {
-        
-        self.locationManagement.stopLocationUpdates()
-        
-        self.reset()
-        
-        if WorkoutBuilder.currentlyActive === self {
-            WorkoutBuilder.currentlyActive = nil
-        }
-        
-    }
-    
-    // MARK: Notifications from Components
-    
-    /**
-     Notifies the `WorkoutBuilder` that the readiness status of one of its components changes
-     */
-    public func notifyOfReadinessChange() {
-        
-        let allReady = !self.components.contains { (component) -> Bool in
-            !component.isReady
-        }
-        
-        if self.status == .waiting && allReady && self.status != .ready {
-            
-            self.status = .ready
-            
-        } else if self.status == .ready && !allReady && self.status != .waiting {
-            
-            self.status = .waiting
-            
-        }
-    }
-    
-    /**
-     Notifies the `WorkoutBuilder` of a new by a component suggested status and validates the transition
-     - parameter status: the suggestes new status
-     - parameter closure: the closure being performed with a boolean indicating if the transition is valid as an argument; the closure will not be called if the suggested status is equal to the current one
-     */
-    public func suggestNewStatus(_ status: WorkoutBuilder.Status, closure: (Bool) -> Void) {
-        
-        self.validateTransition(to: status) { (isValid) in
-            
-            if isValid {
-                self.status = status
-                
-                if status == .recording {
-                    self.startPeriodicUpdates()
-                }
-                
-            }
-            
-            closure(isValid)
-            
-        }
-        
-    }
-    
-    /**
-     Notifies the `WorkoutBuilder` of a location update
-     - parameter location: the last received location
-     */
-    public func notfiyOfLocationUpdate(with location: CLLocation) {
-        
-        self.liveUpdateLocations(withLast: location)
-        self.liveUpdateSpeed()
-        
-        if self.status.isActiveStatus {
-        
-            self.autoPauseDetection.update(timestamp: location.timestamp, workoutType: self.workoutType, speed: location.speed)
-            
-        }
-        
-    }
-    
-    /**
-     Notifies the `WorkoutBuilder` of a distance update
-     */
-    public func notifyOfDistanceUpdate() {
-        
-        self.liveUpdateDistance()
-        
-    }
-    
-    /**
-     Notifies the `WorkoutBuilder` of missing permissions for location access during the recording of the workout
-     */
-    public func notifyOfInsufficientLocationPermission() {
-        
-        self.liveUpdateInsufficientPermission()
-        
-    }
-    
-    // MARK: Snapshot
-    
-    public func createSnapshot() -> TempWorkout? {
-        
-        guard self.status.isActiveStatus, let start = self.startDate else {
-            return nil
-        }
-        
-        let end = self.endDate ?? Date()
-        var burnedEnergy: Double?
-        if let userWeight = UserPreferences.weight.value {
-            burnedEnergy = BurnedEnergyCalculator.calculateBurnedCalories(
-                for: self.workoutType,
-                distance: self.locationManagement.distance,
-                weight: userWeight
-                ).converting(to: UnitEnergy.standardUnit).value
-        }
-        let events = self.manualPauseEvents + AutoPause.convertToEvents(with: self.autoPauseDetection.getAutoPauses(with: end))
-        let refinedLocations = self.altitudeManagement.refine(locations: self.locationManagement.locations)
-        let routeData = refinedLocations.map { (location) -> TempWorkoutRouteDataSample in
-            TempWorkoutRouteDataSample(clLocation: location)
-        }
-        
-        return TempWorkout(
-            uuid: nil,
-            workoutType: self.workoutType.rawValue,
-            startDate: start,
-            endDate: end,
-            distance: self.locationManagement.distance,
-            steps: self.stepCounter.steps,
-            isRace: false,
-            isUserModified: false,
-            comment: nil,
-            burnedEnergy: burnedEnergy,
-            healthKitUUID: nil,
-            workoutEvents: events,
-            locations: routeData,
-            heartRates: []
-        )
-        
-    }
-    
-    // MARK: - Protected
-    
-    /// The type of workout the `WorkoutBuilder` is supposed to record.
-    fileprivate let workoutTypeRelay: BehaviorRelay<Workout.WorkoutType>
-    /// The current status of the `WorkoutBuilder`.
-    fileprivate let statusRelay = BehaviorRelay<WorkoutBuilder.Status>(value: .waiting)
-    /// The date the recorded workout was started.
-    fileprivate let startDateRelay = BehaviorRelay<Date?>(value: nil)
-    /// The date the recorded workout was stopped.
-    fileprivate let endDateRelay = BehaviorRelay<Date?>(value: nil)
-    /// The pauses initiated by the app automatically.
-    fileprivate let automaticPauseRelay = BehaviorRelay<[TempWorkoutPause]>(value: [])
-    /// The pauses initiated by the user directly.
-    fileprivate let manualPauseRelay = BehaviorRelay<[TempWorkoutPause]>(value: [])
-    /// The action being performed upon a reset.
-    fileprivate let resetRelay = PublishRelay<Void>()
-    
-    /**
-     Starts a Timer updating the time elapsed and the energy burned every second while the status of `WorkoutBuilder` is `.recording`
-     */
-    private func startPeriodicUpdates() {
-        
-        Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.asyncInstance)
-        
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
-            
-            guard self.status == .recording else {
-                timer.invalidate()
-                return
-            }
-            
-            self.liveUpdateDuration()
-            self.liveUpdateBurnedEnergy()
-        }
-        
-    }
-    
-    /**
-     Resets the `WorkoutBuilder` and makes it ready for another recording
-     */
-    private func reset() {
-        
-        self.startDate = nil
-        self.endDate = nil
-        self.manualPauseEvents = []
-        self.status = .waiting
-        
-        self.performOnEveryComponent { (component) in
-            
-            component.reset()
-            
-        }
-        
-        self.delegate?.resetAll()
-        
-        self.notifyOfReadinessChange()
-        
-    }
-    
-    // MARK: Components
-    
-    /// an array of the workout builder components to enable quick access for updates, etc.
-    private var components: [WorkoutBuilderComponent] = []
-    
-    /// an instance of `AutoPauseDetection`
-    public let autoPauseDetection = WorkoutBuilder.AutoPauseDetection()
-    /// an instance of `LocationManagement`
-    public let locationManagement = WorkoutBuilder.LocationManagement()
-    /// an instance of `StepCounter`
-    public let stepCounter = WorkoutBuilder.StepCounter()
-    /// an instance of `AltitudeManagement`
-    public let altitudeManagement = WorkoutBuilder.AltitudeManagement()
-    
-    /**
-     Sets up the components in this instance of `WorkoutBuilder` by setting itself as the builder for them and adding each component to `components`
-     - parameter components: the array of `WorkoutBuilderComponent`s the `WorkoutBuilder` is supposed to be set up with
-     */
-    private func setupComponents(with components: [WorkoutBuilderComponent]) {
-        
-        for component in components {
-            
-            component.builder = self
-            
-        }
-        
-        self.components = components
-        
-    }
-    
-    /**
-     Performs an action in every component held in `components`
-     - parameter closure: defines the action that is being performed
-     */
-    private func performOnEveryComponent(closure: (WorkoutBuilderComponent) -> Void) {
-        
-        for component in self.components {
-            
-            closure(component)
-            
-        }
-        
-    }
-    
-    // MARK: Status Validation
+    // MARK: - Validation
     
     /**
      Validates the transition to a new status
@@ -404,133 +239,30 @@ public class WorkoutBuilder: ApplicationStateObserver {
      - parameter closure: the closure being performed with a boolean indicating if the transition is valid as an argument; the closure will not be called if the status is equal to the current one
      */
     private func validateTransition(to newStatus: WorkoutBuilder.Status, closure: (Bool) -> Void) {
-        
-        guard self.status != newStatus else {
-            return
-        }
+        let oldStatus = self.statusRelay.value
+        guard oldStatus != newStatus else { return }
         
         var isValid = false
         
         switch newStatus {
-            
-        case .recording:
-            isValid = self.status != .waiting
-            
-        case .paused:
-            isValid = [.recording, .autoPaused].contains(self.status)
-            
-        case .waiting:
-            isValid = self.status == .ready
-            
-        case .ready:
-            isValid = true
-            
-        case .autoPaused:
-            isValid = self.status == .recording
-            
+        case .recording: isValid = oldStatus != .waiting
+        case .paused: isValid = [.recording, .autoPaused].contains(oldStatus)
+        case .waiting: isValid = oldStatus == .ready
+        case .ready: isValid = true
+        case .autoPaused: isValid = oldStatus == .recording
         }
         
         closure(isValid)
-        
     }
     
-    // MARK: Background Suspension
+    // MARK: - ApplicationStateObserver
     
-    /// a protected boolean indicating whether background updates should be performed
-    private var protectedShouldPerformBackgroundUpdates: Bool = true {
-        didSet {
-            self.delegate?.didUpdate(uiUpdatesSuspended: !self.shouldPerformBackgroundUpdates)
-        }
-    }
-    
-    /**
-     Suspends background updates for `WorkoutBuilder` and its delegate
-     */
-    private func suspendBackgroundUpdates() {
-        
-        self.protectedShouldPerformBackgroundUpdates = false
-        
-    }
-    
-    /**
-     Resumes background updates for `WorkoutBuilder` and its delegate
-     */
-    private func resumeBackgroundUpdates() {
-        
-        self.protectedShouldPerformBackgroundUpdates = true
-        
-        self.liveUpdateStatus()
-        self.liveUpdateDistance()
-        self.liveUpdateLocations(withLast: self.locationManagement.locations.last, force: true)
-        self.liveUpdateDuration()
-        self.liveUpdateSpeed()
-        self.liveUpdateBurnedEnergy()
-        
-    }
-    
-    // MARK: - Initialisers
-    
-    /**
-     Initialises a `WorkoutBuilder` instance
-     - parameter workoutType: an optional of the type of workout that is supposed to be recorded; if `nil` the `WorkoutBuilder` sets it appropriately from `UserPreferences.standardWorkoutType`
-     - parameter delegate: the delegate that is supposed to receive updates
-     */
-    public init(workoutType: Workout.WorkoutType? = nil, delegate: WorkoutBuilderDelegate) {
-        
-        self.workoutTypeRelay = BehaviorRelay(value: workoutType ?? Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value))
-        
-        self.delegate = delegate
-        
-        self.setupComponents(with: [autoPauseDetection, locationManagement, stepCounter, altitudeManagement])
-        
-        self.notifyOfReadinessChange()
-        
-        self.startObservingApplicationState()
-        
-        WorkoutBuilder.currentlyActive = self
-        
-    }
-    
-    // MARK: - ApplicationStateObserver - Protocol
-    
+    /// Implementation of the `ApplicationStateObserver` protocol sending a suspension command to all subscribers when not recording to save battery life.
     func didUpdateApplicationState(to state: ApplicationState) {
-        
-        switch state {
-            
-        case .foreground:
-            
-            self.resumeBackgroundUpdates()
-            
-            if !self.status.isActiveStatus {
-                self.locationManagement.startLocationUpdates()
-            }
-            
-        case .background:
-            
-            self.suspendBackgroundUpdates()
-            
-            if !self.status.isActiveStatus {
-                self.locationManagement.stopLocationUpdates()
-            }
-            
-        }
-        
+        self.uiSuspensionRelay.accept(state == .background)
+        guard !self.statusRelay.value.isActiveStatus else { return }
+        self.suspensionRelay.accept(state == .background)
     }
-    
-    // MARK: - Reactive
-    
-    public struct Input {
-        
-    }
-    
-    public struct Output {
-        
-    }
-    
-    public func transform(input: Input) -> Output {
-        
-    }
-    
     
 }
 

@@ -27,6 +27,13 @@ extension WorkoutBuilder {
     /// A `WorkoutBuilderComponent` for measuring changes in altitude and recording them for the refinement of route data
     class AltitudeManagement: WorkoutBuilderComponent {
         
+        public struct AltitudeSample {
+            public let timestamp: Date
+            public let altitude: Double
+        }
+        
+        // MARK: - TODO: Adapt code below
+        
         // MARK: Public
         
         /// If `true` the `AltitudeManager` will be able to collect data

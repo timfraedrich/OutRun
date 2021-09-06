@@ -135,6 +135,7 @@ extension WorkoutBuilder {
             self.locationManager.activityType = .fitness
             self.locationManager.showsBackgroundLocationIndicator = true
             self.locationManager.requestWhenInUseAuthorization()
+            self.locationManager.pausesLocationUpdatesAutomatically = true
             self.locationManager.startUpdatingLocation()
             
         }

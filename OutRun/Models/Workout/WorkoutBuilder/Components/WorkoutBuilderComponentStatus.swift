@@ -1,5 +1,5 @@
 //
-//  WorkoutSeriesDataSampleType.swift
+//  WorkoutBuilderComponentStatus.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -18,6 +18,14 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import CoreStore
+import Foundation
 
-protocol WorkoutSeriesDataSampleType: CoreStoreObject {}
+/// An enumeration indicating whether or not the component is ready for the recording to be started.
+public enum WorkoutBuilderComponentStatus {
+    
+    /// Indicates that the component is ready to record and provides the kind of component being ready.
+    case ready(WorkoutBuilderComponent.Type)
+    /// Indicates that the component is still preparing and provides the kind of component the builder is supposed to wait for.
+    case preparing(WorkoutBuilderComponent.Type)
+    
+}
