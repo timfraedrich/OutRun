@@ -33,7 +33,6 @@ struct UserPreferences {
     static let standardWorkoutType = UserPreference.Required<Int>(key: "standardWorkoutType", defaultValue: 0)
     static let shouldShowMap = UserPreference.Required<Bool>(key: "shouldShowMap", defaultValue: true)
     static let gpsAccuracy = UserPreference.Optional<Double>(key: "gpsAccuracy", initialValue: nil)
-    static let usePaceForSpeedDisplay = UserPreference.Required<Bool>(key: "usesPaceForRecording", defaultValue: true)
     static let displayRollingSpeed = UserPreference.Required<Bool>(key: "makeSpeedDisplayRolling", defaultValue: true)
     
     static let synchronizeWorkoutsWithAppleHealth = UserPreference.Required<Bool>(key: "savesToAppleHealth", defaultValue: false)
@@ -42,7 +41,7 @@ struct UserPreferences {
     
     static let distanceMeasurementType = MeasurementUserPreference<UnitLength>(key: "distanceMeasurementType", possibleValues: [.kilometers, .miles])
     static let altitudeMeasurementType = MeasurementUserPreference<UnitLength>(key: "altitudeMeasurementType", possibleValues: [.meters, .feet], bigUnits: false)
-    static let speedMeasurementType = MeasurementUserPreference<UnitSpeed>(key: "speedMeasurementType", possibleValues: [.kilometersPerHour, .milesPerHour])
+    static let speedMeasurementType = MeasurementUserPreference<UnitSpeed>(key: "speedMeasurementType", possibleValues: [.kilometersPerHour, .milesPerHour, .minutesPerKilometer])
     static let energyMeasurementType = MeasurementUserPreference<UnitEnergy>(key: "energyMeasurementType", possibleValues: [.kilojoules, .kilocalories])
     static let weightMeasurementType = MeasurementUserPreference<UnitMass>(key: "weightMeasurementType", possibleValues: [.kilograms, .pounds])
     

@@ -101,6 +101,7 @@
 		22A0B72C245B078100E1AB68 /* WorkoutStatsSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B72B245B078100E1AB68 /* WorkoutStatsSeries.swift */; };
 		22A0B72E245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B72D245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift */; };
 		22A0FAF324D8D4B7000292DF /* WorkoutCompletionActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0FAF224D8D4B7000292DF /* WorkoutCompletionActionHandler.swift */; };
+		22A5459C26E7F8DE00E19B0B /* UnitConverterInverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5459B26E7F8DE00E19B0B /* UnitConverterInverse.swift */; };
 		22A5D02625C1A45100C30786 /* TempValueConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5D02525C1A45100C30786 /* TempValueConvertible.swift */; };
 		22A5D02A25C1A54B00C30786 /* TempV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5D02925C1A54B00C30786 /* TempV1.swift */; };
 		22A5D02E25C1A57600C30786 /* TempV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5D02D25C1A57600C30786 /* TempV2.swift */; };
@@ -299,6 +300,7 @@
 		22A0B72B245B078100E1AB68 /* WorkoutStatsSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStatsSeries.swift; sourceTree = "<group>"; };
 		22A0B72D245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStatsSeriesSection.swift; sourceTree = "<group>"; };
 		22A0FAF224D8D4B7000292DF /* WorkoutCompletionActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCompletionActionHandler.swift; sourceTree = "<group>"; };
+		22A5459B26E7F8DE00E19B0B /* UnitConverterInverse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitConverterInverse.swift; sourceTree = "<group>"; };
 		22A5D02525C1A45100C30786 /* TempValueConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempValueConvertible.swift; sourceTree = "<group>"; };
 		22A5D02925C1A54B00C30786 /* TempV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempV1.swift; sourceTree = "<group>"; };
 		22A5D02D25C1A57600C30786 /* TempV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempV2.swift; sourceTree = "<group>"; };
@@ -899,6 +901,7 @@
 				222632AB24B24FF80017517E /* ExportManager.swift */,
 				222199802439F93C00ADAE24 /* UnitConversion.swift */,
 				22FD3252255F319E007719C9 /* ORPrimitive.swift */,
+				22A5459B26E7F8DE00E19B0B /* UnitConverterInverse.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1345,6 +1348,7 @@
 				22F000092349E3B5008CFAD2 /* MeasurementUserPreference.swift in Sources */,
 				222199812439F93C00ADAE24 /* UnitConversion.swift in Sources */,
 				22DDD31A243B935C00FA262E /* ChangeLogViewController.swift in Sources */,
+				22A5459C26E7F8DE00E19B0B /* UnitConverterInverse.swift in Sources */,
 				22E8969C23E9A2B80074D2BB /* BackupManager.swift in Sources */,
 				22DBFBE3234939F100DE6E92 /* UserPreference.swift in Sources */,
 				2227C642234B66BC00CFE31A /* ButtonSetting.swift in Sources */,

@@ -29,6 +29,8 @@ protocol StandardizedUnit {
     
 }
 
+// MARK: - UnitLength
+
 extension UnitLength: StandardizedUnit {
     
     static var standardUnit: Unit {
@@ -56,6 +58,22 @@ extension UnitLength: StandardizedUnit {
     }
 }
 
+// MARK: - UnitSpeed
+
+public extension UnitSpeed {
+    
+    static let minutesPerKilometer = UnitSpeed(
+        symbol: "min/km",
+        converter: UnitConverterInverse(coefficient: 1000.0 / 60.0)
+    )
+    
+    static let feetPerSecond = UnitSpeed(
+        symbol: "ft/s",
+        converter: UnitLength.feet.converter
+    )
+    
+}
+
 extension UnitSpeed: StandardizedUnit {
     
     static var standardUnit: Unit {
@@ -78,10 +96,13 @@ extension UnitSpeed: StandardizedUnit {
     
     static var standardSmallLocalUnit: Unit {
         get {
-            return Locale.current.usesMetricSystem ? UnitSpeed.metersPerSecond : UnitSpeed(symbol: "ft/s", converter: UnitLength.feet.converter)
+            return Locale.current.usesMetricSystem ? UnitSpeed.metersPerSecond : .feetPerSecond
         }
     }
+    
 }
+
+// MARK: - UnitEnergy
 
 extension UnitEnergy: StandardizedUnit {
     
@@ -109,6 +130,8 @@ extension UnitEnergy: StandardizedUnit {
         }
     }
 }
+
+// MARK: - UnitMass
 
 extension UnitMass: StandardizedUnit {
     
