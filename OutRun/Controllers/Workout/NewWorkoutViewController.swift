@@ -53,7 +53,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
     
     let speedView: LabelledDataView = LabelledDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.AverageSpeed"] : LS["Workout.CurrentSpeed"], measurement: NSMeasurement(doubleValue: 0, unit: UnitSpeed.metersPerSecond))
     
-    let paceView: LabelledRelativeDataView = LabelledRelativeDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.RollingPace"] : LS["Workout.TotalPace"], relativeMeasurement: RelativeMeasurement(value: 0, primaryUnit: UnitDuration.minutes, dividingUnit: UserPreferences.distanceMeasurementType.safeValue))
+    let paceView: LabelledRelativeDataView = LabelledRelativeDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.RollingPace"] : LS["Workout.TotalPace"], relativeMeasurement: NSMeasurement(doubleValue: 0, unit: UnitSpeed.minutePerLengthUnit(from: UserPreferences.distanceMeasurementType.safeValue)))
     
     let caloriesView: LabelledDataView = LabelledDataView(title: LS["Workout.BurnedCalories"], measurement: NSMeasurement(doubleValue: 0, unit: UnitEnergy.kilocalories))
     

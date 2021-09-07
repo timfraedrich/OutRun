@@ -45,10 +45,12 @@ class WorkoutStats {
     let endDate: Date
     let activeDuration: NSMeasurement
     let pauseDuration: NSMeasurement
-    var pace: RelativeMeasurement {
-        RelativeMeasurement(
-            primary: activeDuration.converting(to: UnitDuration.minutes),
-            dividing: distance.converting(to: UserPreferences.distanceMeasurementType.safeValue)
+    var pace: NSMeasurement {
+        let minutes = activeDuration.converting(to: UnitDuration.minutes).value
+        let distance = distance.converting(to: UserPreferences.distanceMeasurementType.safeValue).value
+        return NSMeasurement(
+            doubleValue: minutes / distance,
+            unit: UnitSpeed.minutePerLengthUnit(from: UserPreferences.distanceMeasurementType.safeValue)
         )
     }
     
@@ -58,13 +60,16 @@ class WorkoutStats {
     
     // ENERGY
     let burnedEnergy: NSMeasurement?
-    var timeRelativeBurnedEnergy: RelativeMeasurement? {
+    var timeRelativeBurnedEnergy: NSMeasurement? {
         guard let burnedEnergy = burnedEnergy else {
             return nil
         }
-        let time = activeDuration.converting(to: UnitDuration.minutes)
-        let energy = burnedEnergy.converting(to: UserPreferences.energyMeasurementType.safeValue)
-        return RelativeMeasurement(primary: energy, dividing: time)
+        let minutes = activeDuration.converting(to: UnitDuration.minutes).value
+        let energy = burnedEnergy.converting(to: UserPreferences.energyMeasurementType.safeValue).value
+        return NSMeasurement(
+            doubleValue: energy / minutes,
+            unit: UnitPower.energyPerMinute(from: UserPreferences.energyMeasurementType.safeValue)
+        )
     }
     
     init(workout: Workout) {

@@ -132,8 +132,6 @@
 		22B2A89D230D298F00EF8558 /* LabelledDiagramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */; };
 		22B2A89F230D2FC800EF8558 /* LabelledTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */; };
 		22B2A8A1230D331000EF8558 /* WorkoutStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A8A0230D331000EF8558 /* WorkoutStats.swift */; };
-		22B2A8A3230D350000EF8558 /* RelativeMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A8A2230D350000EF8558 /* RelativeMeasurement.swift */; };
-		22B2A8A5230D3B7300EF8558 /* LabelledRelativeDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A8A4230D3B7300EF8558 /* LabelledRelativeDataView.swift */; };
 		22B6CF5722CA0814002D2FB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B6CF5622CA0814002D2FB0 /* AppDelegate.swift */; };
 		22B6CF6122CA0815002D2FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22B6CF6022CA0815002D2FB0 /* Assets.xcassets */; };
 		22B6CF6D22CA0841002D2FB0 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B6CF6C22CA0841002D2FB0 /* HealthKit.framework */; };
@@ -330,8 +328,6 @@
 		22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledDiagramView.swift; sourceTree = "<group>"; };
 		22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledTimeView.swift; sourceTree = "<group>"; };
 		22B2A8A0230D331000EF8558 /* WorkoutStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStats.swift; sourceTree = "<group>"; };
-		22B2A8A2230D350000EF8558 /* RelativeMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelativeMeasurement.swift; sourceTree = "<group>"; };
-		22B2A8A4230D3B7300EF8558 /* LabelledRelativeDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledRelativeDataView.swift; sourceTree = "<group>"; };
 		22B6CF5322CA0814002D2FB0 /* OutRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22B6CF5622CA0814002D2FB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22B6CF6022CA0815002D2FB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -897,7 +893,6 @@
 				22D043B122DCCE2700154EB8 /* DataManager.swift */,
 				229D4C1E2544CBBA00427913 /* DataManager+Error.swift */,
 				221436B824432B390010D82B /* DataManager+Query.swift */,
-				22B2A8A2230D350000EF8558 /* RelativeMeasurement.swift */,
 				222632AB24B24FF80017517E /* ExportManager.swift */,
 				222199802439F93C00ADAE24 /* UnitConversion.swift */,
 				22FD3252255F319E007719C9 /* ORPrimitive.swift */,
@@ -939,7 +934,6 @@
 			isa = PBXGroup;
 			children = (
 				22B6CF7B22CA1675002D2FB0 /* LabelledDataView.swift */,
-				22B2A8A4230D3B7300EF8558 /* LabelledRelativeDataView.swift */,
 				22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */,
 				22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */,
 				22558388242E94AE0043432F /* LoadingView.swift */,
@@ -1236,7 +1230,6 @@
 				22BD1F402474638200415A06 /* ApplicationStateObservation.swift in Sources */,
 				22FC085423AFF13E00184E4B /* SetupPermissionView.swift in Sources */,
 				22C1107C24532AE2009ACE81 /* WorkoutMapViewManager.swift in Sources */,
-				22B2A8A3230D350000EF8558 /* RelativeMeasurement.swift in Sources */,
 				2273943E233BF81800176A07 /* CustomImageCache.swift in Sources */,
 				2252DEF42393973D00DF914D /* StartScreenViewController.swift in Sources */,
 				22739440233BFE2E00176A07 /* WorkoutMapViewController.swift in Sources */,
@@ -1253,7 +1246,6 @@
 				2201531B231677BC00BD79AF /* BurnedEnergyCalculator.swift in Sources */,
 				22F0000D234A2055008CFAD2 /* Setting.swift in Sources */,
 				2230926324D7573C00A3F636 /* Double.swift in Sources */,
-				22B2A8A5230D3B7300EF8558 /* LabelledRelativeDataView.swift in Sources */,
 				22B1DD92253F91380093822B /* OutRunV3to4.swift in Sources */,
 				22BD1F3E247462FF00415A06 /* ApplicationStateObserver.swift in Sources */,
 				22B1DD9A253F91F20093822B /* OutRunV2.swift in Sources */,

@@ -62,15 +62,25 @@ extension UnitLength: StandardizedUnit {
 
 public extension UnitSpeed {
     
-    static let minutesPerKilometer = UnitSpeed(
-        symbol: "min/km",
-        converter: UnitConverterInverse(coefficient: 1000.0 / 60.0)
-    )
+    static func minutePerLengthUnit(from lenthUnit: UnitLength) -> UnitSpeed {
+        
+        let coefficient = lenthUnit.converter.value(fromBaseUnitValue: 1)
+        
+        return UnitSpeed(
+            symbol: "\(UnitDuration.minutes.symbol)/\(lenthUnit.symbol)",
+            converter: UnitConverterInverse(coefficient: coefficient / 60)
+        )
+        
+    }
     
-    static let feetPerSecond = UnitSpeed(
-        symbol: "ft/s",
-        converter: UnitLength.feet.converter
-    )
+    static var feetPerSecond: UnitSpeed {
+        get {
+            UnitSpeed(
+                symbol: "ft/s",
+                converter: UnitLength.feet.converter
+            )
+        }
+    }
     
 }
 
@@ -158,4 +168,21 @@ extension UnitMass: StandardizedUnit {
             return Locale.current.usesMetricSystem ? UnitMass.grams : UnitMass.ounces
         }
     }
+}
+
+// MARK: - UnitPower
+
+public extension UnitPower {
+    
+    static func energyPerMinute(from energyUnit: UnitEnergy) -> UnitPower {
+        
+        let coefficient = energyUnit.converter.value(fromBaseUnitValue: 1)
+        
+        return UnitPower(
+            symbol: "\(energyUnit.symbol)/\(UnitDuration.minutes.symbol)",
+            converter: UnitConverterLinear(coefficient: 60 * coefficient)
+        )
+        
+    }
+    
 }
