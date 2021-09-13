@@ -35,16 +35,12 @@ public protocol WorkoutBuilderComponent: AnyObject {
      */
     func bind(builder: WorkoutBuilder)
     
-    /**
-     Continues the recording process of a workout setting up the component like it was before finishing to record said workout.
-     - parameter snapshot: the state of the recorded workout supposed to be restored
-     - parameter timestamp: the exact date when the restoration action was scheduled
-     */
-    func continueWorkout(from snapshot: ORWorkoutInterface, at timestamp: Date)
+}
+
+public extension WorkoutBuilderComponent {
     
-    /**
-     Resets the `WorkoutBuilderComponent` making it ready for a new recording.
-     */
-    func reset()
+    init(builder: WorkoutBuilder) {
+        self.bind(builder: builder)
+    }
     
 }
