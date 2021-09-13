@@ -44,6 +44,8 @@ public class WorkoutBuilder: ApplicationStateObserver {
         self.startObservingApplicationState()
     }
     
+    // MARK: - Bindings
+    
     private func prepareBindings() {
         
         // reacting to status changes
@@ -87,6 +89,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
     
     // MARK: - Dataflow
     
+    /// The `DisposeBag` used for links to components and own permanent subscriptions.
     private let disposeBag = DisposeBag()
     
     /// The relay to publish the current status of the `WorkoutBuilder`.
@@ -112,9 +115,9 @@ public class WorkoutBuilder: ApplicationStateObserver {
     /// The relay to publish a components report of isufficient permissions to record the workout.
     private let insufficientPermissionRelay = PublishRelay<String>()
     /// The relay to publish a UI suspension command.
-    private let uiSuspensionRelay = PublishRelay<Bool>()
+    private let uiSuspensionRelay = BehaviorRelay<Bool>(value: false)
     /// The relay to publish a suspension command.
-    private let suspensionRelay = PublishRelay<Bool>()
+    private let suspensionRelay = BehaviorRelay<Bool>(value: false)
     /// The relay to publish a reset command.
     private let resetRelay = PublishRelay<ORWorkoutInterface?>()
     
@@ -192,9 +195,6 @@ public class WorkoutBuilder: ApplicationStateObserver {
             startDate: startDateRelay.asBackgroundObservable(),
             endDate: endDateRelay.asBackgroundObservable(),
             distance: distanceRelay.asBackgroundObservable(),
-            // duration
-            // burned energy
-            // speed
             steps: stepsRelay.asBackgroundObservable(),
             pauses: pausesRelay.asBackgroundObservable(),
             locations: locationsRelay.asBackgroundObservable(),
