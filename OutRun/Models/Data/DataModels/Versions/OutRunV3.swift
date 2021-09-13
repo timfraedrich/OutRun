@@ -173,4 +173,93 @@ enum OutRunV3: ORDataModel {
         
     }
     
+    // MARK: - Getters
+    
+    private enum DataModelValueGetters {
+        
+        static func activeDuration(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
+            let start = partialObject.value(for: { $0.startDate })
+            let end = partialObject.value(for: { $0.endDate })
+            let pauseDuration = partialObject.value(for: { $0.pauseDuration })
+            return end.distance(to: start) - pauseDuration
+        }
+        static func pauseDuration(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
+            var duration: Double = 0.0
+            var pauseDate: Date?
+            let events = partialObject.completeObject().workoutEvents.value
+            events.enumerated().forEach { (index, event) in
+                if (event.eventType.value == 0 || event.eventType.value == 1), pauseDate == nil {
+                    pauseDate = event.startDate.value
+                    
+                } else if (event.eventType.value == 2 || event.eventType.value == 3), let pause = pauseDate {
+                    duration += event.startDate.value.distance(to: pause)
+                    pauseDate = nil
+                }
+                
+                if (index + 1) == events.count, let pause = pauseDate, let end = partialObject.value(for: { $0.endDate }) as Optional, end >= pause {
+                    duration += end.distance(to: pause)
+                }
+            }
+            return duration
+        }
+        static func dayIdentifier(_ partialObject: PartialObject<OutRunV3.Workout>) -> String {
+            return CustomDateFormatting.dayIdentifier(forDate: partialObject.value(for: { $0.startDate }))
+        }
+        static func dimensionalAltitudes(_ partialObject: PartialObject<OutRunV3.Workout>) -> (Double, Double) {
+            let altitudes = partialObject.completeObject().routeData.map { (sample) -> Double in return sample.altitude.value }
+            var tempAscending: Double = 0
+            var tempDescending: Double = 0
+            var lastRoundedAltitude: Double?
+            for (index, value) in altitudes.enumerated() {
+                var tempSum = value
+                var tempCount: Double = 1
+                
+                for i in (index - 5)...(index + 5) where altitudes.indices.contains(i) {
+                    if let altitude = altitudes.safeValue(for: i) {
+                        tempSum += altitude
+                        tempCount += 1
+                    }
+                }
+                let rounded = (tempSum / tempCount)
+                guard let lastRounded = lastRoundedAltitude else {
+                    lastRoundedAltitude = rounded
+                    continue
+                }
+                let difference = rounded - lastRounded
+                if difference > 0 {
+                    tempAscending += difference
+                } else if difference < 0 {
+                    tempDescending += abs(difference)
+                }
+                lastRoundedAltitude = rounded
+            }
+            tempAscending.round()
+            tempDescending.round()
+            return (tempAscending, tempDescending)
+        }
+        static func ascendingAltitude(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
+            return dimensionalAltitudes(partialObject).0
+        }
+        static func descendingAltitude(_ partialObject: PartialObject<OutRunV3.Workout>) -> Double {
+            return dimensionalAltitudes(partialObject).1
+        }
+        
+        static func duration(_ partialObject: PartialObject<OutRunV3.WorkoutEvent>) -> Double {
+            let start = partialObject.value(for: { $0.startDate })
+            let end = partialObject.value(for: { $0.endDate })
+            return end.distance(to: start)
+        }
+        
+        static func startDate(_ partialObject: PartialObject<OutRunV3.Event>) -> Date? {
+            return partialObject.completeObject().workouts.min { (workout1, workout2) -> Bool in
+                    return workout1.startDate.value > workout2.startDate.value
+                }?.startDate.value
+        }
+        static func endDate(_ partialObject: PartialObject<OutRunV3.Event>) -> Date? {
+            return partialObject.completeObject().workouts.max { (workout1, workout2) -> Bool in
+                    return workout1.endDate.value > workout2.endDate.value
+                }?.endDate.value
+        }
+        
+    }
 }
