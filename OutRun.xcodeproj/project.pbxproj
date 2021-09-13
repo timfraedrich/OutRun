@@ -186,7 +186,6 @@
 		22FC085423AFF13E00184E4B /* SetupPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC085323AFF13E00184E4B /* SetupPermissionView.swift */; };
 		22FC085623AFF3FC00184E4B /* PermissionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC085523AFF3FC00184E4B /* PermissionButton.swift */; };
 		22FD3253255F319E007719C9 /* ORPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD3252255F319E007719C9 /* ORPrimitive.swift */; };
-		22FEA09024CD37390007CA9C /* WorkoutBuilder+AutoPause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA08F24CD37390007CA9C /* WorkoutBuilder+AutoPause.swift */; };
 		22FEA09224CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA09124CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift */; };
 		22FEA0A724CDA3FF0007CA9C /* ClosedRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0A624CDA3FF0007CA9C /* ClosedRange.swift */; };
 		22FEA0AB24CDD39C0007CA9C /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0AA24CDD39C0007CA9C /* URL.swift */; };
@@ -387,7 +386,6 @@
 		22FC085323AFF13E00184E4B /* SetupPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupPermissionView.swift; sourceTree = "<group>"; };
 		22FC085523AFF3FC00184E4B /* PermissionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionButton.swift; sourceTree = "<group>"; };
 		22FD3252255F319E007719C9 /* ORPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORPrimitive.swift; sourceTree = "<group>"; };
-		22FEA08F24CD37390007CA9C /* WorkoutBuilder+AutoPause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+AutoPause.swift"; sourceTree = "<group>"; };
 		22FEA09124CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+AutoPauseDetection.swift"; sourceTree = "<group>"; };
 		22FEA0A624CDA3FF0007CA9C /* ClosedRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosedRange.swift; sourceTree = "<group>"; };
 		22FEA0AA24CDD39C0007CA9C /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
@@ -1013,7 +1011,6 @@
 			children = (
 				22B6CF6F22CA08C9002D2FB0 /* WorkoutBuilder.swift */,
 				2230925E24D6F6A700A3F636 /* WorkoutBuilder+Status.swift */,
-				22FEA08F24CD37390007CA9C /* WorkoutBuilder+AutoPause.swift */,
 				2230925D24D6F66000A3F636 /* Components */,
 			);
 			path = WorkoutBuilder;
@@ -1278,7 +1275,6 @@
 				22096CF423F0A4AD00D03EC8 /* FloatingButton.swift in Sources */,
 				22003DFC23A9655100EBCD05 /* SetupViewController.swift in Sources */,
 				22B6CF7922CA11D6002D2FB0 /* UIFont.swift in Sources */,
-				22FEA09024CD37390007CA9C /* WorkoutBuilder+AutoPause.swift in Sources */,
 				22C09B9626519939004AF34F /* HKWorkoutEventType.swift in Sources */,
 				22DBFBDD2348B34800DE6E92 /* TitleSetting.swift in Sources */,
 				22FD3253255F319E007719C9 /* ORPrimitive.swift in Sources */,

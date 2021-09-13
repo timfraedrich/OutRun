@@ -69,6 +69,40 @@ extension TempWorkoutPause: ORWorkoutPauseInterface {
             pauseType: temp.pauseType
         )
     }
+    
+    /**
+     Combining two instances of the TempWorkoutPause object into one.
+     - parameter with: the `TempWorkoutPause` object to merge
+     - returns: one `TempWorkoutPause` instance with the earliest start date and the latest end date of the provided and `self`
+    */
+    func merge(with anotherPause: TempWorkoutPause) -> TempWorkoutPause {
+        
+        let commonStart = startDate < anotherPause.startDate ? startDate : anotherPause.startDate
+        let commonEnd = endDate > anotherPause.endDate ? endDate : anotherPause.endDate
+        
+        return TempWorkoutPause(
+            uuid: nil,
+            startDate: commonStart,
+            endDate: commonEnd,
+            pauseType: [pauseType, anotherPause.pauseType].contains(.manual) ? .manual : .automatic
+        )
+        
+    }
+    
+    /**
+     Conversion of the TempWorkoutPause object into a Range.
+     - parameter date: the reference date for forming the intervals
+     - returns: a `ClosedRange` of type Double ranging from the start to the end interval of the `TempWorkoutPause` in perspective to the provided date
+    */
+    func asRange(from date: Date) -> ClosedRange<Double> {
+        
+        let startInterval = self.startDate.distance(to: date)
+        let endInterval = self.endDate.distance(to: date)
+        
+        return startInterval...endInterval
+        
+    }
+    
 }
 
 public typealias TempWorkoutEvent = TempV4.WorkoutEvent
