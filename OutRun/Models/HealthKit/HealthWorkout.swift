@@ -37,7 +37,7 @@ class HealthWorkout: TempWorkout {
         let workoutEvents = hkWorkout.workoutEvents ?? []
         let isUserModified = hkWorkout.metadata?[HKMetadataKeyWasUserEntered] as? Bool ?? false
         
-        let elevationTouple = Computation.computeElevationData(from: route.map { $0.altitude })
+        let elevationTouple = Computation.calculateElevationData(from: route.map { $0.altitude })
         
         let pauses = HealthWorkout.pauses(from: workoutEvents, startDate: hkWorkout.startDate, endDate: hkWorkout.endDate)
         

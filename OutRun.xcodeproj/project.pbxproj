@@ -10,7 +10,6 @@
 		22003DFC23A9655100EBCD05 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22003DFB23A9655100EBCD05 /* SetupViewController.swift */; };
 		22003DFE23A9779D00EBCD05 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22003DFD23A9779D00EBCD05 /* SetupView.swift */; };
 		22015319231663E300BD79AF /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22015318231663E300BD79AF /* UIViewController.swift */; };
-		2201531B231677BC00BD79AF /* BurnedEnergyCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201531A231677BC00BD79AF /* BurnedEnergyCalculator.swift */; };
 		2204A1DD255ACB1100906CFE /* ORDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204A1DC255ACB1100906CFE /* ORDataType.swift */; };
 		2207B75623128F8A00BA71B5 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B75523128F8A00BA71B5 /* CLLocation.swift */; };
 		2207B76523145AFD00BA71B5 /* DeleteWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B76423145AFD00BA71B5 /* DeleteWorkoutView.swift */; };
@@ -203,7 +202,6 @@
 		22003DFB23A9655100EBCD05 /* SetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		22003DFD23A9779D00EBCD05 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		22015318231663E300BD79AF /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		2201531A231677BC00BD79AF /* BurnedEnergyCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BurnedEnergyCalculator.swift; sourceTree = "<group>"; };
 		2204A1DC255ACB1100906CFE /* ORDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORDataType.swift; sourceTree = "<group>"; };
 		2207B75523128F8A00BA71B5 /* CLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
 		2207B76423145AFD00BA71B5 /* DeleteWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteWorkoutView.swift; sourceTree = "<group>"; };
@@ -908,7 +906,6 @@
 				22A0B72A245B075700E1AB68 /* Stats */,
 				22FEA08E24CD37200007CA9C /* WorkoutBuilder */,
 				22A0FAF224D8D4B7000292DF /* WorkoutCompletionActionHandler.swift */,
-				2201531A231677BC00BD79AF /* BurnedEnergyCalculator.swift */,
 			);
 			path = Workout;
 			sourceTree = "<group>";
@@ -1243,7 +1240,6 @@
 				22F3318D23AA23DD006CB7E5 /* SetupSwitchView.swift in Sources */,
 				22AB2FB9233CD0EB002EF0DE /* LabelledDiagramViewDelegate.swift in Sources */,
 				2226A3BF240C441700FF7A94 /* TextViewSetting.swift in Sources */,
-				2201531B231677BC00BD79AF /* BurnedEnergyCalculator.swift in Sources */,
 				22F0000D234A2055008CFAD2 /* Setting.swift in Sources */,
 				2230926324D7573C00A3F636 /* Double.swift in Sources */,
 				22B1DD92253F91380093822B /* OutRunV3to4.swift in Sources */,

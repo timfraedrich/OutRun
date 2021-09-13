@@ -35,7 +35,7 @@ public enum TempV1 {
         
         public var asTemp: TempWorkout {
             
-            let elevation = Computation.computeElevationData(
+            let elevation = Computation.calculateElevationData(
                 from: locations.map { $0.altitude }
             )
             

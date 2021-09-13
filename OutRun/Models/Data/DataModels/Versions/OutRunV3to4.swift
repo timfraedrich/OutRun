@@ -79,7 +79,7 @@ enum OutRunV3to4: ORDataModel, ORIntermediateDataModel {
                 
                 // MARK: - Intermediate Mapping: Elevation
                 
-                let elevationData = Computation.computeElevationData(
+                let elevationData = Computation.calculateElevationData(
                     from: workout.routeData.map { $0.altitude.value }
                 )
                 

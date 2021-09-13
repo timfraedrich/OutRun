@@ -1,5 +1,5 @@
 //
-//  [FILENAME]
+//  Computation.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -34,7 +34,7 @@ class Computation {
      - parameter altitudes: the provided elevations from the route data samples
      - returns: the calculated ascending and descending altitude in a touple of two values
      */
-    static func computeElevationData(from altitudes: [Double]) -> ElevationTouple {
+    static func calculateElevationData(from altitudes: [Double]) -> ElevationTouple {
         
         var tempAscending: Double = 0
         var tempDescending: Double = 0
@@ -183,5 +183,24 @@ class Computation {
         }
         
         return pauseData
+    }
+    
+    /**
+     Computes the energy burned during a workout from the provided information.
+     - parameter type: the type of workout of which the burned energy is supposed to be calculated
+     - parameter distance: the distance travelled during the workout
+     - parameter weight: the weight of the person performing the workout
+     - returns: the energy burned in kilocalories
+     */
+    static func calculateBurnedEnergy(for type: Workout.WorkoutType, distance: Double, weight: Double) -> Double {
+        
+        /// calories == MET ( speed ( kilometers / hours ) * METSpeedMultiplier ) * weight * hours
+        ///          == kilometers / hours * METSpeedMultiplier * weight * hours
+        ///          == kilometers * METSpeedMultiplier * weight
+        
+        let kilometers = distance / 1000
+        let burnedCal = kilometers * type.METSpeedMultiplier * weight
+        
+        return burnedCal
     }
 }
