@@ -62,7 +62,7 @@ extension UnitLength: StandardizedUnit {
 
 public extension UnitSpeed {
     
-    static func minutePerLengthUnit(from lenthUnit: UnitLength) -> UnitSpeed {
+    static func minutesPerLengthUnit(from lenthUnit: UnitLength) -> UnitSpeed {
         
         let coefficient = lenthUnit.converter.value(fromBaseUnitValue: 1)
         

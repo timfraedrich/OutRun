@@ -50,7 +50,7 @@ class WorkoutStats {
         let distance = distance.converting(to: UserPreferences.distanceMeasurementType.safeValue).value
         return NSMeasurement(
             doubleValue: minutes / distance,
-            unit: UnitSpeed.minutePerLengthUnit(from: UserPreferences.distanceMeasurementType.safeValue)
+            unit: UnitSpeed.minutesPerLengthUnit(from: UserPreferences.distanceMeasurementType.safeValue)
         )
     }
     
