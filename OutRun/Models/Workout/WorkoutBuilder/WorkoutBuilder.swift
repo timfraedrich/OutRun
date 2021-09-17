@@ -59,19 +59,34 @@ public class WorkoutBuilder: ApplicationStateObserver {
                     self.startDateRelay.accept(timestamp)
                     
                 } else if let lastPause = self.lastPause {
+                    self.lastPause = nil
+                    if lastPause.type == .automatic, lastPause.startingAt.distance(to: timestamp) < 3 {
+                        return // to eliminate short auto pauses
+                    }
                     let pause = TempWorkoutPause(uuid: nil, startDate: lastPause.startingAt, endDate: timestamp, pauseType: lastPause.type)
                     let pauses = self.pausesRelay.value + [pause]
                     self.pausesRelay.accept(pauses)
-                    self.lastPause = nil
                 }
             
-            case .paused: // pausing workout
-                self.lastPause = (type: .manual, startingAt: self.lastPause?.startingAt ?? timestamp)
-            
-            case .autoPaused: // automatic pause
-                self.lastPause = (type: .automatic, startingAt: timestamp)
+            case .paused, .autoPaused: // (auto) pausing workout
+                let pauseType = newStatus == .paused ? WorkoutPause.WorkoutPauseType.manual : .automatic
+                if let lastPauseObject = self.pausesRelay.value.last, lastPauseObject.pauseType == pauseType, lastPauseObject.endDate.distance(to: timestamp) < 3 {
+                    // last pause is of same type and under three seconds in the past -> merge
+                    self.lastPause = (type: pauseType, startingAt: lastPauseObject.startDate)
+                } else {
+                    // normal pause will be created
+                    self.lastPause = (type: pauseType, startingAt: self.lastPause?.startingAt ?? timestamp)
+                }
                 
-            case .ready: // stopping workout
+            case .ready: // stopping workout or indicating readiness
+                guard self.startDateRelay.value != nil else { return }
+                
+                if let lastPause = self.lastPause {
+                    let pause = TempWorkoutPause(uuid: nil, startDate: lastPause.startingAt, endDate: timestamp, pauseType: lastPause.type)
+                    let pauses = self.pausesRelay.value + [pause]
+                    self.pausesRelay.accept(pauses)
+                }
+                
                 self.endDateRelay.accept(timestamp)
                 
                 // ========================================================
@@ -79,7 +94,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
                 // ========================================================
                 
                 self.reset()
-            
+                
             default: // ignore everything else
                 break
             }
@@ -106,7 +121,9 @@ public class WorkoutBuilder: ApplicationStateObserver {
     private let stepsRelay = BehaviorRelay<Int?>(value: nil)
     /// The relay to publish the pauses initiated by the user or by the app automaticallyprivate
     private let pausesRelay = BehaviorRelay<[TempWorkoutPause]>(value: [])
-    /// The relay to publish the locations received from components.
+    /// The relay to publish the current location regardless of whether it was recorded or not.
+    private let currentLocationRelay = BehaviorRelay<TempWorkoutRouteDataSample?>(value: nil)
+    /// The relay to publish the recorded locations received from components.
     private let locationsRelay = BehaviorRelay<[TempWorkoutRouteDataSample]>(value: [])
     /// The relay to publish the altitudes received from components.
     private let altitudesRelay = BehaviorRelay<[AltitudeManagement.AltitudeSample]>(value: [])
@@ -128,9 +145,22 @@ public class WorkoutBuilder: ApplicationStateObserver {
         let statusSuggestion: Observable<WorkoutBuilder.Status>?
         let distance: Observable<Double>?
         let steps: Observable<Int?>?
+        let currentLocation: Observable<TempWorkoutRouteDataSample?>?
         let locations: Observable<[TempWorkoutRouteDataSample]>?
         let altitudes: Observable<[AltitudeManagement.AltitudeSample]>?
         let heartRates: Observable<[TempWorkoutHeartRateDataSample]>?
+
+        public init(readiness: Observable<WorkoutBuilderComponentStatus>? = nil, insufficientPermission: Observable<String>? = nil, statusSuggestion: Observable<Status>? = nil, distance: Observable<Double>? = nil, steps: Observable<Int?>? = nil, currentLocation: Observable<TempWorkoutRouteDataSample?>? = nil, locations: Observable<[TempWorkoutRouteDataSample]>? = nil, altitudes: Observable<[AltitudeManagement.AltitudeSample]>? = nil, heartRates: Observable<[TempWorkoutHeartRateDataSample]>? = nil) {
+            self.readiness = readiness
+            self.insufficientPermission = insufficientPermission
+            self.statusSuggestion = statusSuggestion
+            self.distance = distance
+            self.steps = steps
+            self.currentLocation = currentLocation
+            self.locations = locations
+            self.altitudes = altitudes
+            self.heartRates = heartRates
+        }
     }
     
     /// A type containing all output data needed to establish a data flow.
@@ -142,6 +172,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
         let distance: Observable<Double>
         let steps: Observable<Int?>
         let pauses: Observable<[TempWorkoutPause]>
+        let currentLocation: Observable<TempWorkoutRouteDataSample?>
         let locations: Observable<[TempWorkoutRouteDataSample]>
         let altitudes: Observable<[AltitudeManagement.AltitudeSample]>
         let heartRates: Observable<[TempWorkoutHeartRateDataSample]>
@@ -185,6 +216,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
         input.insufficientPermission?.bind(to: insufficientPermissionRelay).disposed(by: disposeBag)
         input.distance?.bind(to: distanceRelay).disposed(by: disposeBag)
         input.steps?.bind(to: stepsRelay).disposed(by: disposeBag)
+        input.currentLocation?.bind(to: currentLocationRelay).disposed(by: disposeBag)
         input.locations?.bind(to: locationsRelay).disposed(by: disposeBag)
         input.altitudes?.bind(to: altitudesRelay).disposed(by: disposeBag)
         input.heartRates?.bind(to: heartRatesRelay).disposed(by: disposeBag)
@@ -197,6 +229,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
             distance: distanceRelay.asBackgroundObservable(),
             steps: stepsRelay.asBackgroundObservable(),
             pauses: pausesRelay.asBackgroundObservable(),
+            currentLocation: currentLocationRelay.asBackgroundObservable(),
             locations: locationsRelay.asBackgroundObservable(),
             altitudes: altitudesRelay.asBackgroundObservable(),
             heartRates: heartRatesRelay.asBackgroundObservable(),
@@ -229,6 +262,10 @@ public class WorkoutBuilder: ApplicationStateObserver {
         pausesRelay.accept(snapshot.pauses.map { TempWorkoutPause(uuid: $0.uuid, startDate: $0.startDate, endDate: $0.endDate, pauseType: $0.pauseType) })
         lastPause = (type: .manual, startingAt: snapshot.endDate)
         resetRelay.accept(snapshot)
+        self.validateTransition(to: .recording) { isValid in
+            guard isValid else { return }
+            self.statusRelay.accept(.recording)
+        }
     }
     
     // MARK: - Validation
@@ -265,4 +302,3 @@ public class WorkoutBuilder: ApplicationStateObserver {
     }
     
 }
-

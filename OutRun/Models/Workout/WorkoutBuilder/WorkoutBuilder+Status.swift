@@ -26,7 +26,7 @@ extension WorkoutBuilder {
     /**
      Enumaration of the different kind of status the `WorkoutBuilder` can take on
      */
-    enum Status {
+    public enum Status {
         
         /// indicating that the `WorkoutBuilder` is neither recording nor ready to do so, but instead waiting for all components to be ready
         case waiting
@@ -40,7 +40,7 @@ extension WorkoutBuilder {
         case autoPaused
         
         /// a localised title for the status
-        var title: String {
+        public var title: String {
             switch self {
             case .waiting:
                 return LS["WorkoutBuilder.Status.Waiting"]
@@ -57,7 +57,7 @@ extension WorkoutBuilder {
         }
         
         /// a color representing the status
-        var color: UIColor {
+        public var color: UIColor {
             switch self {
             case .waiting:
                 return .yellow
@@ -71,12 +71,12 @@ extension WorkoutBuilder {
         }
         
         /// a boolean indicating whether the status is a paused status
-        var isPausedStatus: Bool {
+        public var isPausedStatus: Bool {
             return [.paused, .autoPaused].contains(self)
         }
         
         /// a boolean indicating whether the status is an active status meaning data is recorded while one of these status is the current one
-        var isActiveStatus: Bool {
+        public var isActiveStatus: Bool {
             return [.recording, .paused, .autoPaused].contains(self)
         }
     }

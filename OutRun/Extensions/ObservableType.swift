@@ -31,4 +31,15 @@ extension ObservableType {
         return self.observe(on: scheduler)
     }
     
+    /**
+     Merges two observable sequences into one observable sequence by combining each element from self with the latest element from the second source, if any.
+
+     - note: Elements emitted by self before the second source has emitted any values will be omitted.
+ 
+     - parameter second: Second observable source.
+     - returns: An observable sequence containing the result of combining each element of the self with the latest element  from the second source, if any.
+     */
+    func combineWithLatestFrom<Source: ObservableConvertibleType>(_ second: Source) -> Observable<(Element, Source.Element)> {
+        return self.withLatestFrom(second, resultSelector: { ($0, $1) })
+    }
 }

@@ -186,7 +186,7 @@
 		22FC085423AFF13E00184E4B /* SetupPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC085323AFF13E00184E4B /* SetupPermissionView.swift */; };
 		22FC085623AFF3FC00184E4B /* PermissionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC085523AFF3FC00184E4B /* PermissionButton.swift */; };
 		22FD3253255F319E007719C9 /* ORPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD3252255F319E007719C9 /* ORPrimitive.swift */; };
-		22FEA09224CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA09124CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift */; };
+		22FEA09224CD38CB0007CA9C /* AutoPauseDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA09124CD38CB0007CA9C /* AutoPauseDetection.swift */; };
 		22FEA0A724CDA3FF0007CA9C /* ClosedRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0A624CDA3FF0007CA9C /* ClosedRange.swift */; };
 		22FEA0AB24CDD39C0007CA9C /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0AA24CDD39C0007CA9C /* URL.swift */; };
 		22FEA0AD24CDD4CA0007CA9C /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEA0AC24CDD4CA0007CA9C /* FileManager.swift */; };
@@ -386,7 +386,7 @@
 		22FC085323AFF13E00184E4B /* SetupPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupPermissionView.swift; sourceTree = "<group>"; };
 		22FC085523AFF3FC00184E4B /* PermissionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionButton.swift; sourceTree = "<group>"; };
 		22FD3252255F319E007719C9 /* ORPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORPrimitive.swift; sourceTree = "<group>"; };
-		22FEA09124CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+AutoPauseDetection.swift"; sourceTree = "<group>"; };
+		22FEA09124CD38CB0007CA9C /* AutoPauseDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoPauseDetection.swift; sourceTree = "<group>"; };
 		22FEA0A624CDA3FF0007CA9C /* ClosedRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosedRange.swift; sourceTree = "<group>"; };
 		22FEA0AA24CDD39C0007CA9C /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		22FEA0AC24CDD4CA0007CA9C /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -483,7 +483,7 @@
 			isa = PBXGroup;
 			children = (
 				22BF623C26E6B1D2008C904C /* WorkoutBuilderComponentStatus.swift */,
-				22FEA09124CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift */,
+				22FEA09124CD38CB0007CA9C /* AutoPauseDetection.swift */,
 				2230926024D7081A00A3F636 /* WorkoutBuilder+LocationManagement.swift */,
 				22BBDD3124D77C2B00225AE4 /* WorkoutBuilder+StepCounter.swift */,
 				2209E53824DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift */,
@@ -1244,7 +1244,7 @@
 				22AB2FB1233CA201002EF0DE /* WorkoutMapViewDelegate.swift in Sources */,
 				22834F73254220FC00057FEB /* ORWorkoutPauseInterface.swift in Sources */,
 				22A5D03625C1ABDA00C30786 /* TempV4.swift in Sources */,
-				22FEA09224CD38CB0007CA9C /* WorkoutBuilder+AutoPauseDetection.swift in Sources */,
+				22FEA09224CD38CB0007CA9C /* AutoPauseDetection.swift in Sources */,
 				22B6CF7622CA0B13002D2FB0 /* UIView.swift in Sources */,
 				221436BF2443746B0010D82B /* Event.swift in Sources */,
 				2226A3C1240C483400FF7A94 /* UITextView.swift in Sources */,
