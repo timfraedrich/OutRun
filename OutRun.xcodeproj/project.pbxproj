@@ -138,7 +138,7 @@
 		22B6CF7622CA0B13002D2FB0 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B6CF7522CA0B13002D2FB0 /* UIView.swift */; };
 		22B6CF7922CA11D6002D2FB0 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B6CF7822CA11D6002D2FB0 /* UIFont.swift */; };
 		22B6CF7C22CA1675002D2FB0 /* LabelledDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B6CF7B22CA1675002D2FB0 /* LabelledDataView.swift */; };
-		22BBDD3224D77C2B00225AE4 /* WorkoutBuilder+StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BBDD3124D77C2B00225AE4 /* WorkoutBuilder+StepCounter.swift */; };
+		22BBDD3224D77C2B00225AE4 /* StepCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BBDD3124D77C2B00225AE4 /* StepCounter.swift */; };
 		22BD1F3E247462FF00415A06 /* ApplicationStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD1F3D247462FF00415A06 /* ApplicationStateObserver.swift */; };
 		22BD1F402474638200415A06 /* ApplicationStateObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD1F3F2474638200415A06 /* ApplicationStateObservation.swift */; };
 		22BD1F42247463DF00415A06 /* ApplicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD1F41247463DF00415A06 /* ApplicationState.swift */; };
@@ -333,7 +333,7 @@
 		22B6CF7522CA0B13002D2FB0 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		22B6CF7822CA11D6002D2FB0 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		22B6CF7B22CA1675002D2FB0 /* LabelledDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledDataView.swift; sourceTree = "<group>"; };
-		22BBDD3124D77C2B00225AE4 /* WorkoutBuilder+StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+StepCounter.swift"; sourceTree = "<group>"; };
+		22BBDD3124D77C2B00225AE4 /* StepCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounter.swift; sourceTree = "<group>"; };
 		22BD1F3D247462FF00415A06 /* ApplicationStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStateObserver.swift; sourceTree = "<group>"; };
 		22BD1F3F2474638200415A06 /* ApplicationStateObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStateObservation.swift; sourceTree = "<group>"; };
 		22BD1F41247463DF00415A06 /* ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationState.swift; sourceTree = "<group>"; };
@@ -485,7 +485,7 @@
 				22BF623C26E6B1D2008C904C /* WorkoutBuilderComponentStatus.swift */,
 				22FEA09124CD38CB0007CA9C /* AutoPauseDetection.swift */,
 				2230926024D7081A00A3F636 /* LocationManagement.swift */,
-				22BBDD3124D77C2B00225AE4 /* WorkoutBuilder+StepCounter.swift */,
+				22BBDD3124D77C2B00225AE4 /* StepCounter.swift */,
 				2209E53824DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift */,
 			);
 			path = Components;
@@ -1300,7 +1300,7 @@
 				226404B5237617560018F1F8 /* HKImportListController.swift in Sources */,
 				22877542234A73060078CE12 /* LS.swift in Sources */,
 				22FEA0AB24CDD39C0007CA9C /* URL.swift in Sources */,
-				22BBDD3224D77C2B00225AE4 /* WorkoutBuilder+StepCounter.swift in Sources */,
+				22BBDD3224D77C2B00225AE4 /* StepCounter.swift in Sources */,
 				227ED84E240FAC460083EE96 /* EditWorkoutView.swift in Sources */,
 				22E8969A23E6E6E40074D2BB /* Temp.swift in Sources */,
 				22B1DDA4253F9D650093822B /* WorkoutPause.swift in Sources */,
