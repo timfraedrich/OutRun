@@ -40,7 +40,7 @@ class StepCounter: WorkoutBuilderComponent {
     private func startUpdating(from date: Date) {
         
         guard CMPedometer.isStepCountingAvailable() else {
-            insufficientPermissionRelay.accept(<#T##event: String##String#>)
+            insufficientPermissionRelay.accept(LS["Setup.Permission.Motion.Error"])
             return
         }
         

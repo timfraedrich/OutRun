@@ -14,7 +14,7 @@
 		2207B75623128F8A00BA71B5 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B75523128F8A00BA71B5 /* CLLocation.swift */; };
 		2207B76523145AFD00BA71B5 /* DeleteWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B76423145AFD00BA71B5 /* DeleteWorkoutView.swift */; };
 		22096CF423F0A4AD00D03EC8 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22096CF323F0A4AD00D03EC8 /* FloatingButton.swift */; };
-		2209E53924DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2209E53824DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift */; };
+		2209E53924DD4A8F00BBFC2F /* AltitudeManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2209E53824DD4A8F00BBFC2F /* AltitudeManagement.swift */; };
 		2213137D23B4110700881806 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213137C23B4110700881806 /* PermissionManager.swift */; };
 		221436B72442368E0010D82B /* NewWorkoutControllerActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436B62442368E0010D82B /* NewWorkoutControllerActionButton.swift */; };
 		221436B924432B390010D82B /* DataManager+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221436B824432B390010D82B /* DataManager+Query.swift */; };
@@ -204,7 +204,7 @@
 		2207B75523128F8A00BA71B5 /* CLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
 		2207B76423145AFD00BA71B5 /* DeleteWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteWorkoutView.swift; sourceTree = "<group>"; };
 		22096CF323F0A4AD00D03EC8 /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
-		2209E53824DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutBuilder+AltitudeManagement.swift"; sourceTree = "<group>"; };
+		2209E53824DD4A8F00BBFC2F /* AltitudeManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeManagement.swift; sourceTree = "<group>"; };
 		2213137C23B4110700881806 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		221436B62442368E0010D82B /* NewWorkoutControllerActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWorkoutControllerActionButton.swift; sourceTree = "<group>"; };
 		221436B824432B390010D82B /* DataManager+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataManager+Query.swift"; sourceTree = "<group>"; };
@@ -486,7 +486,7 @@
 				22FEA09124CD38CB0007CA9C /* AutoPauseDetection.swift */,
 				2230926024D7081A00A3F636 /* LocationManagement.swift */,
 				22BBDD3124D77C2B00225AE4 /* StepCounter.swift */,
-				2209E53824DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift */,
+				2209E53824DD4A8F00BBFC2F /* AltitudeManagement.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1265,7 +1265,7 @@
 				22A0B72C245B078100E1AB68 /* WorkoutStatsSeries.swift in Sources */,
 				22834F8625422E6900057FEB /* ORWorkoutRouteDataSampleInterface.swift in Sources */,
 				22AB2FB5233CC849002EF0DE /* UISegmentedControl.swift in Sources */,
-				2209E53924DD4A8F00BBFC2F /* WorkoutBuilder+AltitudeManagement.swift in Sources */,
+				2209E53924DD4A8F00BBFC2F /* AltitudeManagement.swift in Sources */,
 				22D043B222DCCE2700154EB8 /* DataManager.swift in Sources */,
 				22F0000F234A2821008CFAD2 /* TitleSubTitleSetting.swift in Sources */,
 				22B6CF7222CA0A14002D2FB0 /* NewWorkoutViewController.swift in Sources */,

@@ -42,4 +42,16 @@ extension ObservableType {
     func combineWithLatestFrom<Source: ObservableConvertibleType>(_ second: Source) -> Observable<(Element, Source.Element)> {
         return self.withLatestFrom(second, resultSelector: { ($0, $1) })
     }
+    
+    /**
+     Creates an `Observable` sequence returning the previous value with a new one.
+     
+     - note: if the first element gets emitted the previous value will be `nil`
+     
+     - returns: An observable sequence returning previous elements together with current ones.
+     */
+    func withPrevious() -> Observable<(Element?, Element)> {
+        return scan([], accumulator: { Array($0 + [$1]).suffix(2) })
+            .map{ ($0.count > 1 ? $0.first : nil, $0.last!) }
+    }
 }

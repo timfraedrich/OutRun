@@ -76,8 +76,8 @@ public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationMa
      - returns: the refined location
      */
     private func refineLocation(_ location: CLLocation) -> CLLocation {
-        let altitude = altitudeData.last { $0.timestamp < location.timestamp }?.altitude
-        return location.replacing(altitude: altitude)
+        guard let firstAltitude = locationsRelay.value.first?.altitude,let relativeAltitude = altitudeData.last(where: { $0.timestamp < location.timestamp })?.altitude else { return location }
+        return location.replacing(altitude: firstAltitude + relativeAltitude)
     }
     
     // MARK: - Dataflow
