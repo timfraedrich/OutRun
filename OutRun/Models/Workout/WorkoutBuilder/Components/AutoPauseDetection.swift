@@ -23,7 +23,7 @@ import RxSwift
 import RxCocoa
 
 /// A `WorkoutBuilderComponent` for detecting automatic pauses during a workout
-class AutoPauseDetection: WorkoutBuilderComponent {
+public class AutoPauseDetection: WorkoutBuilderComponent {
     
     /// The current status of the bound workout builder.
     private var currentStatus: WorkoutBuilder.Status = .waiting
@@ -79,7 +79,7 @@ class AutoPauseDetection: WorkoutBuilderComponent {
     
     // MARK: WorkoutBuilderComponent
     
-    func bind(builder: WorkoutBuilder) {
+    public func bind(builder: WorkoutBuilder) {
         
         let input = Input(statusSuggestion: statusSuggestionRelay.asBackgroundObservable())
         let output = builder.tranform(input)

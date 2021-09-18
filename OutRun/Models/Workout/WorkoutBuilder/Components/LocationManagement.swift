@@ -24,7 +24,7 @@ import RxSwift
 import RxCocoa
 
 /// A `WorkoutBuilderComponent` to manage everything location related
-class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationManagerDelegate {
+public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationManagerDelegate {
     
     /// An instance of `CLLocationManager` used as the data source for locations.
     private var locationManager: CLLocationManager = CLLocationManager()
@@ -136,7 +136,7 @@ class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationManagerDe
     
     // MARK: WorkoutBuilderComponent
     
-    func bind(builder: WorkoutBuilder) {
+    public func bind(builder: WorkoutBuilder) {
         
         let input = Input(
             readiness: readinessRelay.asBackgroundObservable(),
@@ -165,7 +165,7 @@ class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationManagerDe
             .disposed(by: disposeBag)
     }
     
-    func prepare() {
+    public func prepare() {
         
         if UserPreferences.gpsAccuracy.value != -1 {
             self.desiredAccuracy = UserPreferences.gpsAccuracy.value ?? 20
@@ -183,7 +183,7 @@ class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationManagerDe
     
     // MARK: - CLLocationManagerDelegate
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         updateDesiredAccuracy(from: locations)
         
         guard self.shouldRecord else {
@@ -210,11 +210,11 @@ class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationManagerDe
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("LocationManagement] CLLocationManager failed with error:", error.localizedDescription)
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         guard ![.authorizedAlways, .authorizedWhenInUse].contains(status) else { return }
         insufficientPermissionRelay.accept(LS["Setup.Permission.Location.Error"])
     }
