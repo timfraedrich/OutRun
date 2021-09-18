@@ -83,16 +83,16 @@ enum BackupManager {
                 
                 if version == BackupV1.versionCode {
                     let oldBackup = try JSONDecoder().decode(BackupV1.self, from: data)
-                    return (events: [], workouts: oldBackup.workoutData.map { TempWorkout(from: $0) })
+                    return (events: [], workouts: oldBackup.workoutData.map { $0.asTemp })
                     
                 } else if version == BackupV2.versionCode {
                     let oldBackup = try JSONDecoder().decode(BackupV2.self, from: data)
-                    return (events: [], workouts: oldBackup.workoutData.map { TempWorkout(from: $0) })
+                    return (events: [], workouts: oldBackup.workoutData.map { $0.asTemp })
                     
                 } else if version == BackupV3.versionCode {
                     let oldBackup = try JSONDecoder().decode(BackupV3.self, from: data)
-                    return (events: oldBackup.eventData.map { TempEvent(from: $0) },
-                            workouts: oldBackup.workoutData.map { TempWorkout(from: $0) })
+                    return (events: oldBackup.eventData.map { $0.asTemp },
+                            workouts: oldBackup.workoutData.map { $0.asTemp })
                     
                     
                 } else {
