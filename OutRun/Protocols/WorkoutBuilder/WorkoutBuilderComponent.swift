@@ -35,6 +35,11 @@ public protocol WorkoutBuilderComponent: AnyObject {
      */
     func bind(builder: WorkoutBuilder)
     
+    /**
+     Prepares the component for use.
+     */
+    func prepare()
+    
 }
 
 public extension WorkoutBuilderComponent {
@@ -44,6 +49,9 @@ public extension WorkoutBuilderComponent {
     
     init(builder: WorkoutBuilder) {
         self.bind(builder: builder)
+        prepare()
     }
+    
+    func prepare() {}
     
 }

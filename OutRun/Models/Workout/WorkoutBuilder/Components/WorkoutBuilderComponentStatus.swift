@@ -21,11 +21,23 @@
 import Foundation
 
 /// An enumeration indicating whether or not the component is ready for the recording to be started.
-public enum WorkoutBuilderComponentStatus {
+public enum WorkoutBuilderComponentStatus: Equatable {
     
     /// Indicates that the component is ready to record and provides the kind of component being ready.
     case ready(WorkoutBuilderComponent.Type)
     /// Indicates that the component is still preparing and provides the kind of component the builder is supposed to wait for.
     case preparing(WorkoutBuilderComponent.Type)
+    
+    // MARK: - Equatable
+    
+    public static func == (lhs: WorkoutBuilderComponentStatus, rhs: WorkoutBuilderComponentStatus) -> Bool {
+        switch (lhs, rhs) {
+        case (.ready(let lhsType), .ready(let rhsType)),
+             (.preparing(let lhsType), .preparing(let rhsType)):
+            return lhsType == rhsType
+        default:
+            return false
+        }
+    }
     
 }
