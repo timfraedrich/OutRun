@@ -25,32 +25,30 @@ import HealthKit
 public typealias TempWorkout = TempV4.Workout
 extension TempWorkout: ORWorkoutInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkout {
-        
-        let temp = object.asTemp
+    convenience init(from object: ORWorkoutInterface) {
         
         self.init(
-            uuid: temp.uuid,
-            workoutType: temp.workoutType,
-            distance: temp.distance,
-            steps: temp.steps,
-            startDate: temp.startDate,
-            endDate: temp.endDate,
-            burnedEnergy: temp.burnedEnergy,
-            isRace: temp.isRace,
-            comment: temp.comment,
-            isUserModified: temp.isUserModified,
-            healthKitUUID: temp.healthKitUUID,
-            finishedRecording: temp.finishedRecording,
-            ascend: temp.ascend,
-            descend: temp.descend,
-            activeDuration: temp.activeDuration,
-            pauseDuration: temp.pauseDuration,
-            dayIdentifier: temp.dayIdentifier,
-            heartRates: temp._heartRates,
-            routeData: temp._routeData,
-            pauses: temp._pauses,
-            workoutEvents: temp._workoutEvents
+            uuid: object.uuid,
+            workoutType: object.workoutType,
+            distance: object.distance,
+            steps: object.steps,
+            startDate: object.startDate,
+            endDate: object.endDate,
+            burnedEnergy: object.burnedEnergy,
+            isRace: object.isRace,
+            comment: object.comment,
+            isUserModified: object.isUserModified,
+            healthKitUUID: object.healthKitUUID,
+            finishedRecording: object.finishedRecording,
+            ascend: object.ascend,
+            descend: object.descend,
+            activeDuration: object.activeDuration,
+            pauseDuration: object.pauseDuration,
+            dayIdentifier: object.dayIdentifier,
+            heartRates: object.heartRates.map { .init(from: $0) },
+            routeData: object.routeData.map { .init(from: $0) },
+            pauses: object.pauses.map { .init(from: $0) },
+            workoutEvents: object.workoutEvents.map { .init(from: $0) }
         )
     }
 }
@@ -58,15 +56,13 @@ extension TempWorkout: ORWorkoutInterface {
 public typealias TempWorkoutPause = TempV4.WorkoutPause
 extension TempWorkoutPause: ORWorkoutPauseInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutPause {
-        
-        let temp = object.asTemp
+    convenience init(from object: ORWorkoutPauseInterface) {
         
         self.init(
-            uuid: temp.uuid,
-            startDate: temp.startDate,
-            endDate: temp.endDate,
-            pauseType: temp.pauseType
+            uuid: object.uuid,
+            startDate: object.startDate,
+            endDate: object.endDate,
+            pauseType: object.pauseType
         )
     }
     
@@ -108,14 +104,12 @@ extension TempWorkoutPause: ORWorkoutPauseInterface {
 public typealias TempWorkoutEvent = TempV4.WorkoutEvent
 extension TempWorkoutEvent: ORWorkoutEventInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutEvent {
-        
-        let temp = object.asTemp
+    convenience init(from object: ORWorkoutEventInterface) {
         
         self.init(
-            uuid: temp.uuid,
-            eventType: temp.eventType,
-            timestamp: temp.timestamp
+            uuid: object.uuid,
+            eventType: object.eventType,
+            timestamp: object.timestamp
         )
     }
 }
@@ -123,20 +117,18 @@ extension TempWorkoutEvent: ORWorkoutEventInterface {
 public typealias TempWorkoutRouteDataSample = TempV4.WorkoutRouteDataSample
 extension TempWorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutRouteDataSample {
-        
-        let temp = object.asTemp
+    convenience init(from object: ORWorkoutRouteDataSampleInterface) {
         
         self.init(
-            uuid: temp.uuid,
-            timestamp: temp.timestamp,
-            latitude: temp.latitude,
-            longitude: temp.longitude,
-            altitude: temp.altitude,
-            horizontalAccuracy: temp.horizontalAccuracy,
-            verticalAccuracy: temp.verticalAccuracy,
-            speed: temp.speed,
-            direction: temp.direction
+            uuid: object.uuid,
+            timestamp: object.timestamp,
+            latitude: object.latitude,
+            longitude: object.longitude,
+            altitude: object.altitude,
+            horizontalAccuracy: object.horizontalAccuracy,
+            verticalAccuracy: object.verticalAccuracy,
+            speed: object.speed,
+            direction: object.direction
         )
     }
     
@@ -160,14 +152,12 @@ extension TempWorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
 public typealias TempWorkoutHeartRateDataSample = TempV4.WorkoutHeartRateDataSample
 extension TempWorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempWorkoutHeartRateDataSample {
-        
-        let temp = object.asTemp
+    convenience init(from object: ORWorkoutHeartRateDataSampleInterface) {
         
         self.init(
-            uuid: temp.uuid,
-            heartRate: temp.heartRate,
-            timestamp: temp.timestamp
+            uuid: object.uuid,
+            heartRate: object.heartRate,
+            timestamp: object.timestamp
         )
         
     }
@@ -177,17 +167,15 @@ extension TempWorkoutHeartRateDataSample: ORWorkoutHeartRateDataSampleInterface 
 public typealias TempEvent = TempV4.Event
 extension TempEvent: OREventInterface {
     
-    convenience init<Type: TempValueConvertible>(from object: Type) where Type.TempType == TempEvent {
-        
-        let temp = object.asTemp
+    convenience init(from object: OREventInterface) {
         
         self.init(
-            uuid: temp.uuid,
-            title: temp.title,
-            comment: temp.comment,
-            startDate: temp.startDate,
-            endDate: temp.endDate,
-            workouts: temp.workouts
+            uuid: object.uuid,
+            title: object.title,
+            comment: object.comment,
+            startDate: object.startDate,
+            endDate: object.endDate,
+            workouts: object.workouts.compactMap { $0.uuid }
         )
     }
     
