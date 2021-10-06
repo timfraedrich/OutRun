@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.setRootViewController(for: controller, withSmoothTransition: true) {
                         self.checkPermissionStatus(controller: controller) {
                             if UserPreferences.isSetUp.value {
-                                HealthObserver.setupObservers()
+                                HealthStoreManager.setupObservers()
                                 
                                 if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
                                     
