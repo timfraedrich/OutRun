@@ -23,7 +23,7 @@ import RxSwift
 import RxCocoa
 import CoreLocation
 
-class LiveStats: WorkoutBuilderComponent {
+class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
     
     // MARK: - Dataflow
     
