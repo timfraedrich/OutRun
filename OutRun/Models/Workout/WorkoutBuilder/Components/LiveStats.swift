@@ -29,8 +29,6 @@ class LiveStats: WorkoutBuilderComponent {
     
     /// The `DisposeBag` used for binding to the workout builder.
     private var disposeBag = DisposeBag()
-    /// The `DisposeBag` used to bind to the workout builder and clear those bindings upon UI suspension.
-    private var uiDisposeBag = DisposeBag()
     
     /// The relay to publish the current status of the `WorkoutBuilder`.
     fileprivate let statusRelay = BehaviorRelay<WorkoutBuilder.Status>(value: .waiting)
@@ -57,18 +55,6 @@ class LiveStats: WorkoutBuilderComponent {
     fileprivate let speedRelay = BehaviorRelay<String>(value: string(for: 0, unit: UserPreferences.speedMeasurementType.safeValue, type: (UserPreferences.speedMeasurementType.safeValue == UnitSpeed.minutesPerLengthUnit(from: UnitLength.standardBigLocalUnit as! UnitLength)) ? .pace : .auto))
     
     // MARK: Binders
-    
-    /// Binds UI suspension events to this component.
-    private var isUISuspendedBinder: Binder<(WorkoutBuilder, Bool)> {
-        Binder(self) { `self`, value in
-            let (builder, isUISuspended) = value
-            if isUISuspended {
-                self.uiDisposeBag = DisposeBag()
-            } else {
-                self.bind(builder: builder)
-            }
-        }
-    }
     
     /// Maps distance updates to a desired output.
     private var distanceMapper: (Double) -> String = { distance in
@@ -137,49 +123,51 @@ class LiveStats: WorkoutBuilderComponent {
     func bind(builder: WorkoutBuilder) {
         
         disposeBag = DisposeBag()
-        uiDisposeBag = DisposeBag()
         
         let output = builder.tranform(Input())
-        
-        output.isUISuspended
-            .withUnretained(builder)
-            .bind(to: isUISuspendedBinder)
-            .disposed(by: disposeBag)
             
         output.status
+            .pausableBuffered(output.isUISuspended)
             .bind(to: statusRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         output.workoutType
+            .pausableBuffered(output.isUISuspended)
             .bind(to: workoutTypeRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         output.distance
             .map(distanceMapper)
+            .pausableBuffered(output.isUISuspended)
             .bind(to: distanceRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         output.steps
             .map(stepsMapper)
+            .pausableBuffered(output.isUISuspended)
             .bind(to: stepsRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         output.currentLocation
+            .pausableBuffered(output.isUISuspended)
             .bind(to: currentLocationRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         output.locations
+            .pausableBuffered(output.isUISuspended)
             .bind(to: locationsRelay)
             .disposed(by: disposeBag)
         
         output.heartRates
             .compactMap { $0.last }
+            .pausableBuffered(output.isUISuspended)
             .bind(to: currentHeartRateRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         output.insufficientPermission
+            .pausableBuffered(output.isUISuspended, limit: nil)
             .bind(to: insufficientPermissionRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         let periodicUpdates = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.asyncInstance)
         
@@ -188,23 +176,26 @@ class LiveStats: WorkoutBuilderComponent {
             .combineWithLatestFrom(output.pauses)
             .combineWithLatestFrom(output.endDate)
             .compactMap(durationMapper)
+            .pausableBuffered(output.isUISuspended)
             .bind(to: durationRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         periodicUpdates
             .combineWithLatestFrom(output.workoutType)
             .combineWithLatestFrom(output.distance)
             .compactMap(burnedEnergyMapper)
+            .pausableBuffered(output.isUISuspended)
             .bind(to: burnedEnergyRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
         
         output.locations
             .combineWithLatestFrom(output.startDate)
             .combineWithLatestFrom(output.pauses)
             .combineWithLatestFrom(output.distance)
             .compactMap(speedMapper)
+            .pausableBuffered(output.isUISuspended)
             .bind(to: speedRelay)
-            .disposed(by: uiDisposeBag)
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Static
