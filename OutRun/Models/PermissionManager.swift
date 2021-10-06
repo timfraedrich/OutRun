@@ -34,13 +34,13 @@ class PermissionManager: NSObject, CLLocationManagerDelegate {
     // MARK: Apple Health
     
     func checkHealthPermission(closure: @escaping (Bool) -> Void) {
-        for type in HealthStoreManager.requestedTypes where HealthStoreManager.healthStore.authorizationStatus(for: type) != .sharingAuthorized {
-            HealthStoreManager.gainAuthorization { (success) in
-                closure(success)
-            }
-            return
+        let unauthorisedTypes = HealthStoreManager.HealthType.allImplementedTypes.filter {
+            HealthStoreManager.healthStore.authorizationStatus(for: $0) != .sharingAuthorized
         }
-        closure(true)
+        guard unauthorisedTypes.count > 0 else { closure(true); return }
+        HealthStoreManager.gainAuthorisation(for: unauthorisedTypes, completion: { success, authorisedTypes in
+            closure(unauthorisedTypes == authorisedTypes)
+        })
     }
     
     // MARK: Location
