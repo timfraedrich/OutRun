@@ -44,4 +44,32 @@ public extension ORWorkoutPauseInterface {
     var pauseType: WorkoutPause.WorkoutPauseType { throwOnAccess() }
     var workout: ORWorkoutInterface? { throwOnAccess() }
     
+    /// The duration of a pause, meaning the distance between the start and end date.
+    var duration: TimeInterval {
+        return startDate.distance(to: endDate)
+    }
+    
+    /**
+     Conversion of the TempWorkoutPause object into a Range.
+     - parameter date: the reference date for forming the intervals
+     - returns: a `ClosedRange` of type Double ranging from the start to the end interval of the `TempWorkoutPause` in perspective to the provided date
+    */
+    func asRange(from date: Date) -> ClosedRange<Double> {
+        
+        let startInterval = self.startDate.distance(to: date)
+        let endInterval = self.endDate.distance(to: date)
+        
+        return startInterval...endInterval
+        
+    }
+    
+    /**
+     Checks if a date is contained in the date range of a pause object.
+     - parameter date: the date that is supposed to be checked
+     - returns: a boolean indicating whether the date is contained within the pause data range
+     */
+    func contains(_ date: Date) -> Bool {
+        return (startDate...endDate).contains(date)
+    }
+    
 }

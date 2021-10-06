@@ -40,12 +40,14 @@ class CustomMeasurementFormatting {
             break
         }
         
+        let type = type == .auto ? FormattingMeasurementType(for: measurement.unit) : type
+        
         switch type {
-        case .clock:
+        case .clock, .pace:
             let seconds = measurement.converting(to: UnitDuration.seconds).value
             let timeFormatter = DateComponentsFormatter()
             timeFormatter.unitsStyle = .positional
-            timeFormatter.allowedUnits = [.hour, .minute, .second]
+            timeFormatter.allowedUnits = type == .pace ? [.minute, .second] : [.hour, .minute, .second]
             timeFormatter.zeroFormattingBehavior = .pad
             return timeFormatter.string(from: seconds) ?? "Error"
         case .distance:
@@ -70,11 +72,12 @@ class CustomMeasurementFormatting {
     }
     
     enum FormattingMeasurementType {
-        case clock, time
+        case clock, time, pace
         case distance, altitude
         case speed
         case energy
         case weight
+        case count
         case auto
         
         init(for unit: Unit, asClock: Bool = false, asAltitude: Bool = false) {
@@ -84,11 +87,14 @@ class CustomMeasurementFormatting {
             case is UnitLength:
                 self = asAltitude ? .altitude : .distance
             case is UnitSpeed:
-                self = .speed
+                let isPace = [UnitSpeed.minutesPerLengthUnit(from: .kilometers) as Unit, UnitSpeed.minutesPerLengthUnit(from: .miles) as Unit].contains(unit)
+                self = isPace ? .pace : .speed
             case is UnitEnergy:
                 self = .energy
             case is UnitMass:
                 self = .weight
+            case is UnitCount:
+                self = .count
             default:
                 self = .auto
             }

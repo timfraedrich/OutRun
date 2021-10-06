@@ -176,6 +176,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
         let locations: Observable<[TempWorkoutRouteDataSample]>
         let altitudes: Observable<[AltitudeManagement.AltitudeSample]>
         let heartRates: Observable<[TempWorkoutHeartRateDataSample]>
+        let insufficientPermission: Observable<String>
         let isUISuspended: Observable<Bool>
         let isSuspended: Observable<Bool>
         let onReset: Observable<ORWorkoutInterface?>
@@ -233,6 +234,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
             locations: locationsRelay.asBackgroundObservable(),
             altitudes: altitudesRelay.asBackgroundObservable(),
             heartRates: heartRatesRelay.asBackgroundObservable(),
+            insufficientPermission: insufficientPermissionRelay.asBackgroundObservable(),
             isUISuspended: uiSuspensionRelay.asBackgroundObservable(),
             isSuspended: suspensionRelay.asBackgroundObservable(),
             onReset: resetRelay.asBackgroundObservable()

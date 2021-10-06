@@ -82,23 +82,7 @@ extension TempWorkoutPause: ORWorkoutPauseInterface {
             endDate: commonEnd,
             pauseType: [pauseType, anotherPause.pauseType].contains(.manual) ? .manual : .automatic
         )
-        
     }
-    
-    /**
-     Conversion of the TempWorkoutPause object into a Range.
-     - parameter date: the reference date for forming the intervals
-     - returns: a `ClosedRange` of type Double ranging from the start to the end interval of the `TempWorkoutPause` in perspective to the provided date
-    */
-    func asRange(from date: Date) -> ClosedRange<Double> {
-        
-        let startInterval = self.startDate.distance(to: date)
-        let endInterval = self.endDate.distance(to: date)
-        
-        return startInterval...endInterval
-        
-    }
-    
 }
 
 public typealias TempWorkoutEvent = TempV4.WorkoutEvent

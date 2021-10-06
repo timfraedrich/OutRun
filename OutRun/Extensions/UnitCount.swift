@@ -20,8 +20,8 @@
 
 import Foundation
 
-class UnitCount {
+class UnitCount: Unit {
     
-    static let count = Unit(symbol: "")
+    static let count = UnitCount(symbol: "")
     
 }
