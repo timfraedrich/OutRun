@@ -74,7 +74,7 @@ extension HealthStoreManager {
             limit: limit,
             sortDescriptors: nil
         ) { (query, samples, error) in
-            guard let samples = samples?.compactMap({ $0 as? ReturnType }) else { completion(nil, error) }
+            guard let samples = samples?.compactMap({ $0 as? ReturnType }) else { completion(nil, error); return }
             completion(samples, error)
         }
         
@@ -153,7 +153,7 @@ extension HealthStoreManager {
      - parameter quantity: the current quantity for extracting the wanted data
      - parameter dateInterval: the quantity's date interval
      */
-    static func queryAnchoredHealthSeriesData<ReturnType>(of type: HKQuantityType, attachedTo healthWorkout: HKWorkout, transform: (_ lastValue: ReturnType?, _ quantity: HKQuantity, _ dateInterval: DateInterval) -> ReturnType?) -> ReturnType? {
+    static func queryAnchoredHealthSeriesData<ReturnType>(of type: HKQuantityType, attachedTo healthWorkout: HKWorkout, transform: @escaping (_ lastValue: ReturnType?, _ quantity: HKQuantity, _ dateInterval: DateInterval) -> ReturnType?) -> ReturnType? {
         
         var lastValue: ReturnType?
         let dispatchGroup = DispatchGroup()

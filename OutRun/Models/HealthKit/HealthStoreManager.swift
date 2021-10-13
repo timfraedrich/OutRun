@@ -433,9 +433,7 @@ class HealthStoreManager {
         }
         
         workout.workoutEvents.forEach { event in
-            
             guard let type = event.eventType.healthKitType else { return }
-            
             workoutEvents.append(
                 HKWorkoutEvent(
                     type: type,
@@ -445,6 +443,7 @@ class HealthStoreManager {
             )
         }
         
+        return workoutEvents
     }
     
     /**

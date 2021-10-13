@@ -40,6 +40,18 @@ extension DataManager {
     
     /**
      Queries an object comforming to `ORDataType` with the provided `UUID` from the database.
+     - parameter whereClause: the `CoreStore.Where` clause used for selection of the object
+     - parameter transaction: an optional `AsynchronousDataTransaction` to be provided if the workout needs to be queried during a tranaction; if `nil` the object will be queried from the `DataManager.dataStack`
+     - returns: the wanted `ORDataType` object if one could be found in the database; if the object could not be found, this function will return `nil`
+     */
+    public static func queryObjects<ObjectType: ORDataType>(from whereClause: Where<ObjectType>, transaction: AsynchronousDataTransaction? = nil) -> [ObjectType] {
+        
+        let objects = try? (transaction as FetchableSource? ?? dataStack).fetchAll(From<ObjectType>().where(whereClause))
+        return objects ?? []
+    }
+    
+    /**
+     Queries an object comforming to `ORDataType` with the provided `UUID` from the database.
      - parameter uuid: the `UUID` of the object that is supposed to be returned; if `nil` this function will return immediately with no value
      - parameter transaction: an optional `AsynchronousDataTransaction` to be provided if the workout needs to be queried during a tranaction; if `nil` the object will be queried from the `DataManager.dataStack`
      - returns: the wanted `ORDataType` object if one could be found in the database; if the object could not be found, this function will return `nil`
