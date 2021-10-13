@@ -207,22 +207,18 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
         let measurement = NSMeasurement(doubleValue: value, unit: unit)
         return CustomMeasurementFormatting.string(forMeasurement: measurement, type: type, rounding: rounding)
     }
-}
-
-// MARK: Reactive
-
-extension Reactive where Base == LiveStats {
     
-    var status: Driver<WorkoutBuilder.Status> { base.statusRelay.asDriver() }
-    var workoutType: Driver<Workout.WorkoutType?> { base.workoutTypeRelay.asDriver() }
-    var distance: Driver<String> { base.distanceRelay.asDriver() }
-    var steps: Driver<String> { base.stepsRelay.asDriver() }
-    var currentLocation: Driver<TempWorkoutRouteDataSample?> { base.currentLocationRelay.asDriver() }
-    var locations: Driver<[TempWorkoutRouteDataSample]> { base.locationsRelay.asDriver() }
-    var currentHeartRate: Driver<TempWorkoutHeartRateDataSample?> { base.currentHeartRateRelay.asDriver() }
-    var insufficientPermission: Driver<String> { base.insufficientPermissionRelay.asDriver(onErrorJustReturn: "Error") }
-    var duration: Driver<String> { base.durationRelay.asDriver() }
-    var burnedEnergy: Driver<String> { base.burnedEnergyRelay.asDriver() }
-    var speed: Driver<String> { base.speedRelay.asDriver() }
+    // MARK: - Reactive
     
+    var status: Driver<WorkoutBuilder.Status> { self.statusRelay.asDriver() }
+    var workoutType: Driver<Workout.WorkoutType?> { self.workoutTypeRelay.asDriver() }
+    var distance: Driver<String> { self.distanceRelay.asDriver() }
+    var steps: Driver<String> { self.stepsRelay.asDriver() }
+    var currentLocation: Driver<TempWorkoutRouteDataSample?> { self.currentLocationRelay.asDriver() }
+    var locations: Driver<[TempWorkoutRouteDataSample]> { self.locationsRelay.asDriver() }
+    var currentHeartRate: Driver<TempWorkoutHeartRateDataSample?> { self.currentHeartRateRelay.asDriver() }
+    var insufficientPermission: Driver<String> { self.insufficientPermissionRelay.asDriver(onErrorJustReturn: "Error") }
+    var duration: Driver<String> { self.durationRelay.asDriver() }
+    var burnedEnergy: Driver<String> { self.burnedEnergyRelay.asDriver() }
+    var speed: Driver<String> { self.speedRelay.asDriver() }
 }
