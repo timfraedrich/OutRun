@@ -20,6 +20,7 @@
 
 import HealthKit
 import CoreLocation
+import CoreStore
 
 class HealthStoreManager {
     
@@ -233,6 +234,32 @@ class HealthStoreManager {
             
             HealthStoreManager.healthStore.save(sample) { success, error in
                 completion(error == nil ? nil : .healthKitError(error: error) )
+            }
+        }
+    }
+    
+    /**
+     Saves all workouts in the database to Apple Health while ignoring the ones already saved.
+     - parameter completion: the closure called upon completion of saving
+     - parameter error: an optional `HealthError`, when nil the operation was successful
+     - parameter allSavedAlready: a boolean indicating whether all workouts were saved to Health already
+     */
+    static func saveAllWorkouts(completion: @escaping (_ error: HealthError?, _ allSavedAlready: Bool) -> Void) {
+        
+        let unsavedWorkouts: [Workout] = DataManager.queryObjects(from: \._healthKitUUID == UUID())
+        guard unsavedWorkouts.count > 0 else { completion(nil, true); return }
+        
+        var saveCount = 0
+        var errorOccured: HealthError?
+        
+        for workout in unsavedWorkouts {
+            saveHealthWorkout(for: workout) { error, _ in
+                saveCount += 1
+                if error != nil {
+                    errorOccured = error
+                }
+                guard saveCount == unsavedWorkouts.count else { return }
+                completion(errorOccured, false)
             }
         }
     }

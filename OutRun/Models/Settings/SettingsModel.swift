@@ -115,8 +115,8 @@ class SettingsModel {
                             if UserPreferences.synchronizeWeightWithAppleHealth.value {
                                 
                                 let measurement = NSMeasurement(doubleValue: weightValue, unit: UnitMass.kilograms)
-                                HealthStoreManager.syncWeight(measurement: measurement) { (success) in
-                                    if !success {
+                                HealthStoreManager.saveWeight(for: measurement) { (error) in
+                                    if error != nil {
                                         print("Failed to sync weight with Apple Health")
                                     }
                                 }
@@ -213,13 +213,6 @@ class SettingsModel {
                         }()
                     ),
                     SwitchSetting(
-                        title: LS["Settings.DisplayPace"],
-                        isSwitchOn: UserPreferences.usePaceForSpeedDisplay.value,
-                        switchToggleAction: { (newValue, setting) in
-                            UserPreferences.usePaceForSpeedDisplay.value = newValue
-                        }
-                    ),
-                    SwitchSetting(
                         title: LS["Settings.DisplayRollingSpeed"],
                         isSwitchOn: UserPreferences.displayRollingSpeed.value,
                         switchToggleAction: { (newValue, setting) in
@@ -239,7 +232,7 @@ class SettingsModel {
                             if newValue {
                                 PermissionManager.standard.checkHealthPermission { (success) in
                                     UserPreferences.synchronizeWorkoutsWithAppleHealth.value = success
-                                    HealthObserver.setupObservers()
+                                    HealthStoreManager.setupObservers()
                                     setting.refresh()
                                 }
                             } else {
@@ -255,7 +248,7 @@ class SettingsModel {
                             if newValue {
                                 PermissionManager.standard.checkHealthPermission { (success) in
                                     UserPreferences.synchronizeWeightWithAppleHealth.value = success
-                                    HealthObserver.setupObservers()
+                                    HealthStoreManager.setupObservers()
                                 }
                             } else {
                                 UserPreferences.synchronizeWeightWithAppleHealth.value = newValue
@@ -290,10 +283,10 @@ class SettingsModel {
                         title: { return LS["Settings.SyncAll"] },
                         selectAction: { (setting, controller, cell) in
                             _ = controller.startLoading {
-                                HealthStoreManager.syncAllUnsyncedWorkoutsWithAppleHealth { (success, allSyncedAlready) in
+                                HealthStoreManager.saveAllWorkouts { error, allSavedAlready in
                                     controller.endLoading {
-                                        if success {
-                                            if allSyncedAlready ?? false {
+                                        if error == nil {
+                                            if allSavedAlready {
                                                  controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.AllSyncedAlready"])
                                             } else {
                                                 controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.Success"])
@@ -316,8 +309,8 @@ class SettingsModel {
                     TitleSetting(
                         title: LS["Settings.CreateBackup"],
                         doesRedirect: true,
-                        selectAction: { (setting, controller, cell) in
-                            ExportManager.displayShareAlert(for: <#T##[ORWorkoutInterface]#>, on: <#T##UIViewController#>)
+                        selectAction: { (_, controller, _) in
+                            ExportManager.displayShareAlert(for: .all, on: controller)
                         }
                     ),
                     TitleSetting(
@@ -325,8 +318,9 @@ class SettingsModel {
                         doesRedirect: true,
                         selectAction: { (setting, controller, cell) in
                             let picker = UIDocumentPickerViewController(documentTypes: ["de.tadris.orbup"], in: .import)
+                            let delegate = BackupDocumentPickerDelegate(on: controller)
                             picker.modalPresentationStyle = .formSheet
-                            picker.delegate = BackupDocumentPickerDelegate(on: controller)
+                            picker.delegate = delegate
                             controller.present(picker, animated: true)
                         }
                     ),
@@ -399,9 +393,9 @@ class SettingsModel {
                                                     action: { _ in
                                                         deleteData {
                                                             DispatchQueue.main.async {
-                                                                HealthStoreManager.deleteAllHealthWorkouts { (success) in
+                                                                HealthStoreManager.deleteAllObjects { error in
                                                                     controller.endLoading() {
-                                                                        if !success {
+                                                                        if error != nil {
                                                                             let errorAlert = UIAlertController(
                                                                                 title: LS["Settings.DeleteAll.AppleHealth.Error.Title"],
                                                                                 message: LS["Settings.DeleteAll.AppleHealth.Error.Message"],
