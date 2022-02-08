@@ -193,7 +193,7 @@
 "Settings.GPSAccuracy.Text" = "Wenn die App GPS-Daten erhält, kommen diese mit einer Genauigkeitsangabe, welche genutzt wird, um zu bestimmen, ob die Daten gut genug für die Verwendung sind. Je nachdem, wie du diesen Filter einstellst werden die aufgezeichneten Workouts in ihrer Qualität variiern.\n\nIm Idealfall sollte der Filter immer auf 'Standard' eingestellt sein, aber falls es aus irgendeinem Grund zu Schwierigkeiten beim Aufzeichnen von Workouts kommen sollte, kann es hilfreich sein, einen anderen Filter auszuprobieren.";
 "Settings.GPSAccuracy.Standard" = "Standard";
 "Settings.GPSAccuracy.High" = "Hoch";
-"Settings.GPSAccuracy.Acceptable" = "Akzeptable";
+"Settings.GPSAccuracy.Acceptable" = "Akzeptabel";
 "Settings.GPSAccuracy.LastResort" = "Niedrig";
 "Settings.GPSAccuracy.Off" = "Aus (nicht empfohlen)";
 "Settings.DisplayPace" = "Tempo anzeigen";
