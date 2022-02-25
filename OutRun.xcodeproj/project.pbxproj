@@ -99,7 +99,6 @@
 		229FF49E235C32D000EA220E /* SelectionSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229FF49D235C32D000EA220E /* SelectionSetting.swift */; };
 		229FF4A1235C7F6300EA220E /* CustomMeasurementFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229FF4A0235C7F6300EA220E /* CustomMeasurementFormatting.swift */; };
 		22A0B72C245B078100E1AB68 /* WorkoutStatsSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B72B245B078100E1AB68 /* WorkoutStatsSeries.swift */; };
-		22A0B72E245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0B72D245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift */; };
 		22A0FAF324D8D4B7000292DF /* WorkoutCompletionActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0FAF224D8D4B7000292DF /* WorkoutCompletionActionHandler.swift */; };
 		22A5459C26E7F8DE00E19B0B /* UnitConverterInverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5459B26E7F8DE00E19B0B /* UnitConverterInverse.swift */; };
 		22A5D02625C1A45100C30786 /* TempValueConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5D02525C1A45100C30786 /* TempValueConvertible.swift */; };
@@ -296,7 +295,6 @@
 		229FF49D235C32D000EA220E /* SelectionSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionSetting.swift; sourceTree = "<group>"; };
 		229FF4A0235C7F6300EA220E /* CustomMeasurementFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMeasurementFormatting.swift; sourceTree = "<group>"; };
 		22A0B72B245B078100E1AB68 /* WorkoutStatsSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStatsSeries.swift; sourceTree = "<group>"; };
-		22A0B72D245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStatsSeriesSection.swift; sourceTree = "<group>"; };
 		22A0FAF224D8D4B7000292DF /* WorkoutCompletionActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCompletionActionHandler.swift; sourceTree = "<group>"; };
 		22A5459B26E7F8DE00E19B0B /* UnitConverterInverse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitConverterInverse.swift; sourceTree = "<group>"; };
 		22A5D02525C1A45100C30786 /* TempValueConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempValueConvertible.swift; sourceTree = "<group>"; };
@@ -603,7 +601,6 @@
 			children = (
 				22B2A8A0230D331000EF8558 /* WorkoutStats.swift */,
 				22A0B72B245B078100E1AB68 /* WorkoutStatsSeries.swift */,
-				22A0B72D245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift */,
 			);
 			path = Stats;
 			sourceTree = "<group>";
@@ -1242,7 +1239,6 @@
 				22BD1F3E247462FF00415A06 /* ApplicationStateObserver.swift in Sources */,
 				22B1DD9A253F91F20093822B /* OutRunV2.swift in Sources */,
 				225BB02F2716E61000478E09 /* StatsHelper.swift in Sources */,
-				22A0B72E245B07B400E1AB68 /* WorkoutStatsSeriesSection.swift in Sources */,
 				22B1DD82253F90700093822B /* DataStack.swift in Sources */,
 				2230926124D7081A00A3F636 /* LocationManagement.swift in Sources */,
 				22877544234A75A10078CE12 /* Units.swift in Sources */,

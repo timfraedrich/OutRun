@@ -21,7 +21,7 @@
 import Foundation
 
 /// A structure used to represent any database object just by it's uuid; accessing any different variable will result in a fatal error.
-class ORPrimitive<Reference>: ORDataInterface {
+class ORPrimitive<Reference>: ORDataInterface, ORSampleInterface {
     
     var uuid: UUID? { _uuid }
     
@@ -34,7 +34,10 @@ class ORPrimitive<Reference>: ORDataInterface {
 }
 
 extension ORPrimitive: ORWorkoutInterface where Reference == Workout {}
-extension ORPrimitive: ORWorkoutPauseInterface where Reference == WorkoutPause {}
+extension ORPrimitive: ORWorkoutPauseInterface where Reference == WorkoutPause {
+    // this somehow needs to be declared here again (ORSampleInterface inheritance somehow broke it)
+    var workout: ORWorkoutInterface? { throwOnAccess() }
+}
 extension ORPrimitive: ORWorkoutEventInterface where Reference == WorkoutEvent {}
 extension ORPrimitive: ORWorkoutRouteDataSampleInterface where Reference == WorkoutRouteDataSample {}
 extension ORPrimitive: ORWorkoutHeartRateDataSampleInterface where Reference == WorkoutHeartRateDataSample {}

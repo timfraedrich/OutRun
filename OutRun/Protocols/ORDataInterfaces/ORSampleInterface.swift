@@ -30,7 +30,7 @@ public protocol ORSampleInterface: ORDataInterface {
     
 }
 
-extension ORSampleInterface {
+public extension ORSampleInterface {
     
     var timestamp: Date { throwOnAccess() }
     var workout: ORWorkoutInterface? { throwOnAccess() }

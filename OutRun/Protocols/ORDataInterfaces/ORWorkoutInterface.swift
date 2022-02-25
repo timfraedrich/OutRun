@@ -68,7 +68,7 @@ public protocol ORWorkoutInterface: ORDataInterface {
     
 }
 
-extension ORWorkoutInterface {
+public extension ORWorkoutInterface {
     
     var workoutType: Workout.WorkoutType { throwOnAccess() }
     var distance: Double { throwOnAccess() }

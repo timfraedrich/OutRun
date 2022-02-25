@@ -25,10 +25,6 @@ public typealias WorkoutPause = OutRunV4.WorkoutPause
 
 public extension WorkoutPause {
     
-    var duration: TimeInterval {
-        return startDate.distance(to: endDate)
-    }
-    
     enum WorkoutPauseType: RawRepresentable, ImportableAttributeType, Codable {
         
         case manual
