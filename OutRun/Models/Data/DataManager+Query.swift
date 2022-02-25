@@ -150,6 +150,52 @@ extension DataManager {
         }
     }
     
+    // MARK: - Sectioned Metrics
+    
+    /**
+     Queries a specific metric from specified samples relative to the start date of the workout and grouped by if they are paused or not.
+     - parameter workout: the workout object used to query samples from
+     - parameter samples: a keypath pointing to the samples of which the matric should be taken
+     - parameter metric: a keypath pointing to the metric of the before specified sample
+     - parameter includeSamples: a boolean indicating whether the data should include the samples specified
+     - parameter completion: a closure performed on completion of querying the data
+     */
+    public static func querySectionedMetrics <SampleType: Collection, MetricType: Any> (
+        from workout: ORWorkoutInterface,
+        samples samplesPath: KeyPath<Workout, SampleType>,
+        metric metricPath: KeyPath<SampleType.Element, MetricType>,
+        includeSamples: Bool = false,
+        completion: @escaping ([(paused: Bool, data: [(timestamp: TimeInterval, value: MetricType, object: SampleType.Element?)])]) -> Void
+    ) where SampleType.Element == ORSampleInterface {
+        
+        guard let workout: Workout = queryObject(from: workout) else {
+            completion([])
+            return
+        }
+        
+        var objects: [WorkoutStatsSeries<Bool, MetricType, SampleType>.RawSection] = []
+        var currentlyPaused = false
+        var currentData = [(timestamp: TimeInterval, value: MetricType, object: SampleType.Element?)]()
+        
+        for sample in workout[keyPath: samplesPath] {
+            
+            if currentlyPaused != workout.pauses.contains(where: { $0.contains(sample.timestamp) }) {
+                if !currentData.isEmpty {
+                    objects.append((paused: currentlyPaused, data: currentData))
+                }
+                currentlyPaused.toggle()
+            }
+            currentData.append((
+                timestamp: sample.timestamp.distance(to: workout.startDate),
+                value: sample[keyPath: metricPath],
+                object: includeSamples ? sample : nil
+            ))
+        }
+        
+        objects.append((paused: currentlyPaused, data: currentData))
+        completion(objects)
+    }
+    
     // MARK: - Backup
     
     /**

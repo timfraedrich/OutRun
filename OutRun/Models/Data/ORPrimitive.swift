@@ -21,7 +21,7 @@
 import Foundation
 
 /// A structure used to represent any database object just by it's uuid; accessing any different variable will result in a fatal error.
-struct ORPrimitive<Reference>: ORDataInterface {
+class ORPrimitive<Reference>: ORDataInterface {
     
     var uuid: UUID? { _uuid }
     

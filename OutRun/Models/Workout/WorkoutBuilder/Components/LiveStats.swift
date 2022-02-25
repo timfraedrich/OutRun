@@ -35,9 +35,9 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
     /// The relay to publish the type of workout the `WorkoutBuilder` is supposed to record.
     fileprivate let workoutTypeRelay = BehaviorRelay<Workout.WorkoutType?>(value: nil)
     /// The relay to publish the distance shared by components.
-    fileprivate let distanceRelay = BehaviorRelay<String>(value: string(for: 0, unit: UserPreferences.distanceMeasurementType.safeValue))
+    fileprivate let distanceRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UserPreferences.distanceMeasurementType.safeValue))
     /// The relay to publish the steps counted by components.
-    fileprivate let stepsRelay = BehaviorRelay<String>(value: string(for: 0, unit: UnitCount.count))
+    fileprivate let stepsRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UnitCount.count))
     /// The relay to publish the current location regardless of whether it was recorded or not.
     fileprivate let currentLocationRelay = BehaviorRelay<TempWorkoutRouteDataSample?>(value: nil)
     /// The relay to publish the recorded locations received from components.
@@ -48,22 +48,22 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
     fileprivate let insufficientPermissionRelay = PublishRelay<String>()
     
     /// The relay to publish a string describing the elapsed duration of the workout.
-    fileprivate let durationRelay = BehaviorRelay<String>(value: string(for: 0, unit: UnitDuration.seconds, type: .clock))
+    fileprivate let durationRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UnitDuration.seconds, type: .clock))
     /// The relay to publish the energy burned during the workout as computed periodically.
-    fileprivate let burnedEnergyRelay = BehaviorRelay<String>(value: string(for: 0, unit: UserPreferences.energyMeasurementType.safeValue))
+    fileprivate let burnedEnergyRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UserPreferences.energyMeasurementType.safeValue))
     /// The relay to publish the speed returned in meters per second.
-    fileprivate let speedRelay = BehaviorRelay<String>(value: string(for: 0, unit: UserPreferences.speedMeasurementType.safeValue, type: (UserPreferences.speedMeasurementType.safeValue == UnitSpeed.minutesPerLengthUnit(from: UnitLength.standardBigLocalUnit as! UnitLength)) ? .pace : .auto))
+    fileprivate let speedRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UserPreferences.speedMeasurementType.safeValue, type: (UserPreferences.speedMeasurementType.safeValue == UnitSpeed.minutesPerLengthUnit(from: UnitLength.standardBigLocalUnit as! UnitLength)) ? .pace : .auto))
     
     // MARK: Binders
     
     /// Maps distance updates to a desired output.
     private var distanceMapper: (Double) -> String = { distance in
-        return LiveStats.string(for: distance, unit: UnitLength.standardUnit)
+        return StatsHelper.string(for: distance, unit: UnitLength.standardUnit)
     }
     
     /// Maps distance updates to a desired output.
     private var stepsMapper: (Int?) -> String = { steps in
-        return LiveStats.string(for: Double(steps), unit: UnitCount.count)
+        return StatsHelper.string(for: Double(steps), unit: UnitCount.count)
     }
     
     /// Maps to duration output.
@@ -71,7 +71,7 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
         let ((_, startDate), pauses) = value
         guard let startDate = startDate else { return nil }
         let duration = startDate.distance(to: endDate ?? Date()) - pauses.map { $0.duration }.reduce(0, +)
-        return LiveStats.string(for: duration, unit: UnitDuration.seconds, type: .clock)
+        return StatsHelper.string(for: duration, unit: UnitDuration.seconds, type: .clock)
     }
     
     /// Maps to burned energy output.
@@ -79,7 +79,7 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
         let workoutType = value.1
         guard let weight = UserPreferences.weight.value else { return nil }
         let burnedEnergy = Computation.calculateBurnedEnergy(for: workoutType, distance: distance, weight: weight)
-        return LiveStats.string(for: burnedEnergy, unit: UnitEnergy.standardUnit)
+        return StatsHelper.string(for: burnedEnergy, unit: UnitEnergy.standardUnit)
     }
     
     /// Binds location updates and the current start date to this component for speed calculation
@@ -115,7 +115,7 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
             speed = distance / duration
         }
         
-        return LiveStats.string(for: speed, unit: UnitSpeed.standardUnit)
+        return StatsHelper.string(for: speed, unit: UnitSpeed.standardUnit)
     }
     
     // MARK: WorkoutBuilderComponent
@@ -196,16 +196,6 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
             .pausableBuffered(output.isUISuspended)
             .bind(to: speedRelay)
             .disposed(by: disposeBag)
-    }
-    
-    // MARK: - Static
-    
-    private static func string(for value: Double? = nil, unit: Unit? = nil, type: CustomMeasurementFormatting.FormattingMeasurementType = .auto, rounding: CustomMeasurementFormatting.FormattingRoundingType = .twoDigits) -> String {
-        
-        guard let value = value, let unit = unit else { return "--" }
-        
-        let measurement = NSMeasurement(doubleValue: value, unit: unit)
-        return CustomMeasurementFormatting.string(forMeasurement: measurement, type: type, rounding: rounding)
     }
     
     // MARK: - Reactive

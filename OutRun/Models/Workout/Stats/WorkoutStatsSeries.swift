@@ -1,4 +1,3 @@
-
 //
 //  WorkoutStatsSeries.swift
 //
@@ -21,33 +20,21 @@
 
 import UIKit
 
-class WorkoutStatsSeries {
+struct WorkoutStatsSeries<SectioningType: Any, ValueType: Any, SampleType: ORSampleInterface>: ExpressibleByArrayLiteral {
     
-    let sectioningType: SectioningType
-    let sections: [WorkoutStatsSeriesSection]
+    typealias ArrayLiteralElement = RawSection
     
-    init(sectioningType: SectioningType, sections: [WorkoutStatsSeriesSection]) {
-        self.sectioningType = sectioningType
+    typealias RawDataPoint = (timestamp: TimeInterval, value: ValueType, object: SampleType?)
+    typealias RawSection = (sectionValue: SectioningType, data: [RawDataPoint])
+    
+    let sections: [RawSection]
+    
+    init(sections: [RawSection]) {
         self.sections = sections
     }
     
-    func convertedForChartView(includeSamples: Bool, yUnit: Unit) -> [(color: UIColor, data: [(Measurement<Unit>, Measurement<Unit>)], samples: [TempWorkoutSeriesDataSampleType])] {
-        return self.sections.map { (section) -> (color: UIColor, data: [(Measurement<Unit>, Measurement<Unit>)], samples: [TempWorkoutSeriesDataSampleType]) in
-            let convertedData = section.data.map { (time, yValue) -> (Measurement<Unit>, Measurement<Unit>) in
-                return (
-                    time.converting(to: UnitDuration.minutes),
-                    yValue.converting(to: yUnit)
-                )
-            }
-            return (
-                color: section.type.color,
-                data: convertedData,
-                samples: includeSamples ? section.associatedDataSamples : []
-            )
-        }
+    init(arrayLiteral elements: RawSection...) {
+        self.init(sections: elements)
     }
     
-    enum SectioningType {
-        case activeAndPaused
-    }
 }

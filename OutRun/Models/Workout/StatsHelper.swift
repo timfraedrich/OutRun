@@ -1,5 +1,5 @@
 //
-//  ORWorkoutEventInterface.swift
+//  StatsHelper.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,16 +20,16 @@
 
 import Foundation
 
-/// A protocol to unify the saving and processing of workout event objects connected to a workout.
-public protocol ORWorkoutEventInterface: ORSampleInterface {
+class StatsHelper {
     
-    /// The type of the workout event. For more see `WorkoutEvent.WorkoutEventType`.
-    var eventType: WorkoutEvent.WorkoutEventType { get }
+    // MARK: - Static
     
-}
-
-public extension ORWorkoutEventInterface {
-    
-    var eventType: WorkoutEvent.WorkoutEventType { throwOnAccess() }
+    static func string(for value: Double? = nil, unit: Unit? = nil, type: CustomMeasurementFormatting.FormattingMeasurementType = .auto, rounding: CustomMeasurementFormatting.FormattingRoundingType = .twoDigits) -> String {
+        
+        guard let value = value, let unit = unit else { return "--" }
+        
+        let measurement = NSMeasurement(doubleValue: value, unit: unit)
+        return CustomMeasurementFormatting.string(forMeasurement: measurement, type: type, rounding: rounding)
+    }
     
 }

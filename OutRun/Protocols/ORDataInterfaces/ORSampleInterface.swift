@@ -1,5 +1,5 @@
 //
-//  ORWorkoutEventInterface.swift
+//  ORSampleInterface
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,16 +20,19 @@
 
 import Foundation
 
-/// A protocol to unify the saving and processing of workout event objects connected to a workout.
-public protocol ORWorkoutEventInterface: ORSampleInterface {
+/// A protocol to unify common datapoints of the samples of a workout.
+public protocol ORSampleInterface: ORDataInterface {
     
-    /// The type of the workout event. For more see `WorkoutEvent.WorkoutEventType`.
-    var eventType: WorkoutEvent.WorkoutEventType { get }
+    /// The `Date` the sample was recorded.
+    var timestamp: Date { get }
+    /// A reference to the `Workout` this sample is associated with.
+    var workout: ORWorkoutInterface? { get }
     
 }
 
-public extension ORWorkoutEventInterface {
+extension ORSampleInterface {
     
-    var eventType: WorkoutEvent.WorkoutEventType { throwOnAccess() }
+    var timestamp: Date { throwOnAccess() }
+    var workout: ORWorkoutInterface? { throwOnAccess() }
     
 }
