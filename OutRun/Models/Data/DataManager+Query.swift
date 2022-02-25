@@ -165,15 +165,15 @@ extension DataManager {
         samples samplesPath: KeyPath<Workout, SampleType>,
         metric metricPath: KeyPath<SampleType.Element, MetricType>,
         includeSamples: Bool = false,
-        completion: @escaping ([(paused: Bool, data: [(timestamp: TimeInterval, value: MetricType, object: SampleType.Element?)])]) -> Void
-    ) where SampleType.Element == ORSampleInterface {
+        completion: @escaping (WorkoutStatsSeries<Bool, MetricType, SampleType.Element>) -> Void
+    ) where SampleType.Element: ORSampleInterface {
         
         guard let workout: Workout = queryObject(from: workout) else {
             completion([])
             return
         }
         
-        var objects: [WorkoutStatsSeries<Bool, MetricType, SampleType>.RawSection] = []
+        var objects: [WorkoutStatsSeries<Bool, MetricType, SampleType.Element>.RawSection] = []
         var currentlyPaused = false
         var currentData = [(timestamp: TimeInterval, value: MetricType, object: SampleType.Element?)]()
         
@@ -181,7 +181,7 @@ extension DataManager {
             
             if currentlyPaused != workout.pauses.contains(where: { $0.contains(sample.timestamp) }) {
                 if !currentData.isEmpty {
-                    objects.append((paused: currentlyPaused, data: currentData))
+                    objects.append((currentlyPaused, currentData))
                 }
                 currentlyPaused.toggle()
             }
@@ -192,8 +192,9 @@ extension DataManager {
             ))
         }
         
-        objects.append((paused: currentlyPaused, data: currentData))
-        completion(objects)
+        objects.append((currentlyPaused, currentData))
+        let series = WorkoutStatsSeries(sections: objects)
+        completion(series)
     }
     
     // MARK: - Backup

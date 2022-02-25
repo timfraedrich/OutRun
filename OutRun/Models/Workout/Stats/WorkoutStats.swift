@@ -41,7 +41,7 @@ class WorkoutStats {
     let steps: Driver<String?>
     let ascendingAltitude: Driver<String?>
     let descendingAltitude: Driver<String?>
-    let altitudeOverTime: Driver<WorkoutStatsSeries<Bool, Double, TempWorkoutRouteDataSample>>
+    let altitudeOverTime: Driver<WorkoutStatsSeries<Bool, Double, WorkoutRouteDataSample>>
     
     // DURATION
     let startDate: Driver<Date>
@@ -52,7 +52,7 @@ class WorkoutStats {
     // SPEED
     let averageSpeed: Driver<String>
     let topSpeed: Driver<String>
-    let speedOverTime: Driver<WorkoutStatsSeries<Bool, Double, TempWorkoutRouteDataSample>>
+    let speedOverTime: Driver<WorkoutStatsSeries<Bool, Double, WorkoutRouteDataSample>>
     
     // ENERGY
     let burnedEnergy: Driver<String?>
@@ -60,7 +60,7 @@ class WorkoutStats {
     
     // HEART RATE
     let averageHeartRate: Driver<String?>
-    let heartRateOverTime: Driver<WorkoutStatsSeries<Bool, Int, TempWorkoutHeartRateDataSample>>
+    let heartRateOverTime: Driver<WorkoutStatsSeries<Bool, Int, WorkoutHeartRateDataSample>>
     
     init(workout: Workout) {
         
@@ -79,7 +79,7 @@ class WorkoutStats {
         self.steps = WorkoutStats.just(Double(workout.steps), unit: UnitCount.count)
         self.ascendingAltitude = WorkoutStats.just(workout.ascend, unit: UnitLength.meters, type: .altitude)
         self.descendingAltitude = WorkoutStats.just(workout.descend, unit: UnitLength.meters, type: .altitude)
-        self.altitudeOverTime = WorkoutStats.series(from: workout, samples: \Workout._routeData, metric: \WorkoutRouteDataSample._altitude)
+        self.altitudeOverTime = WorkoutStats.series(from: workout, samples: \Workout._routeData.value, metric: \WorkoutRouteDataSample._altitude.value)
         
         self.startDate = .just(workout.startDate)
         self.endDate = .just(workout.endDate)
@@ -88,13 +88,13 @@ class WorkoutStats {
         
         self.averageSpeed = WorkoutStats.just(workout.distance / workout.activeDuration, unit: UnitSpeed.metersPerSecond)
         self.topSpeed = WorkoutStats.just(workout.routeData.max{ $0.speed > $1.speed }?.speed, unit: UnitSpeed.metersPerSecond)
-        self.speedOverTime = WorkoutStats.series(from: workout, samples: \Workout._routeData, metric: \WorkoutRouteDataSample._speed)
+        self.speedOverTime = WorkoutStats.series(from: workout, samples: \Workout._routeData, metric: \WorkoutRouteDataSample._speed.value)
         
         self.burnedEnergy = WorkoutStats.just(workout.burnedEnergy, unit: UnitEnergy.standardUnit)
         self.burnedEnergyPerMinute = WorkoutStats.just((workout.burnedEnergy ?? 0) / (workout.activeDuration / 60), unit: UnitPower.energyPerMinute(from: .kilocalories)) // find better solution
         
         self.averageHeartRate = WorkoutStats.just(Double(workout.heartRates.map { $0.heartRate }.reduce(0, +) / workout.heartRates.count), unit: UnitCount.count, type: .count)
-        self.heartRateOverTime = WorkoutStats.series(from: workout, samples: \Workout._heartRates, metric: \WorkoutHeartRateDataSample._heartRate)
+        self.heartRateOverTime = WorkoutStats.series(from: workout, samples: \Workout._heartRates.value, metric: \WorkoutHeartRateDataSample._heartRate.value)
     }
     
     /**
@@ -143,7 +143,7 @@ class WorkoutStats {
         from workout: ORWorkoutInterface,
         samples samplesPath: KeyPath<Workout, SampleType>,
         metric metricPath: KeyPath<SampleType.Element, MetricType>
-    ) -> Driver<WorkoutStatsSeries<Bool, MetricType, SampleType>> where SampleType.Element == ORSampleInterface {
+    ) -> Driver<WorkoutStatsSeries<Bool, MetricType, SampleType.Element>> where SampleType.Element: ORSampleInterface {
         
         Observable.create { observer in
             
