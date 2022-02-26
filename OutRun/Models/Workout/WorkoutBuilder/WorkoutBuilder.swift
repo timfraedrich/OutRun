@@ -89,9 +89,10 @@ public class WorkoutBuilder: ApplicationStateObserver {
                 
                 self.endDateRelay.accept(timestamp)
                 
-                // ========================================================
-                // TODO: handle finished workout ==========================
-                // ========================================================
+                if let snapshot = self.createSnapshot() {
+                    let actionHandler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
+                    actionHandler.display()
+                }
                 
                 self.reset()
                 
@@ -189,31 +190,8 @@ public class WorkoutBuilder: ApplicationStateObserver {
      */
     public func tranform(_ input: WorkoutBuilder.Input) -> Output {
         
-        input.readiness?.subscribe(onNext: { [weak self] status in
-            guard let self = self else { return }
-            switch status {
-            case .preparing(let preparingType):
-                guard !self.preparingComponents.contains(where: { $0 == preparingType }) else { return }
-                self.preparingComponents.append(preparingType)
-            case .ready(let preparingType):
-                self.preparingComponents.removeAll(where: { $0 == preparingType })
-            }
-            let isReadyToRecord = self.preparingComponents.isEmpty
-            let newStatus: Status = isReadyToRecord ? .ready : .waiting
-            self.validateTransition(to: newStatus) { isValid in
-                guard isValid else { return }
-                self.statusRelay.accept(newStatus)
-            }
-        }).disposed(by: disposeBag)
-        
-        input.statusSuggestion?.subscribe(onNext: { [weak self] status in
-            guard let self = self else { return }
-            self.validateTransition(to: status) { (isValid) in
-                guard isValid else { return }
-                self.statusRelay.accept(status)
-            }
-        }).disposed(by: disposeBag)
-        
+        input.readiness?.bind(to: readinessBinder).disposed(by: disposeBag)
+        input.statusSuggestion?.bind(to: statusSuggestionBinder).disposed(by: disposeBag)
         input.insufficientPermission?.bind(to: insufficientPermissionRelay).disposed(by: disposeBag)
         input.distance?.bind(to: distanceRelay).disposed(by: disposeBag)
         input.steps?.bind(to: stepsRelay).disposed(by: disposeBag)
@@ -241,9 +219,65 @@ public class WorkoutBuilder: ApplicationStateObserver {
         )
     }
     
+    /// A `Binder` to update the readiness status of components.
+    private var readinessBinder: Binder<WorkoutBuilderComponentStatus> {
+        Binder(self) { `self`, status in
+            switch status {
+            case .preparing(let preparingType):
+                guard !self.preparingComponents.contains(where: { $0 == preparingType }) else { return }
+                self.preparingComponents.append(preparingType)
+            case .ready(let preparingType):
+                self.preparingComponents.removeAll(where: { $0 == preparingType })
+            }
+            let isReadyToRecord = self.preparingComponents.isEmpty
+            let newStatus: Status = isReadyToRecord ? .ready : .waiting
+            self.validateTransition(to: newStatus) { isValid in
+                guard isValid else { return }
+                self.statusRelay.accept(newStatus)
+            }
+        }
+    }
+    
+    /// A `Binder` to enable components to suggest a new status.
+    private var statusSuggestionBinder: Binder<WorkoutBuilder.Status> {
+        Binder(self) { `self`, status in
+            self.validateTransition(to: status) { (isValid) in
+                guard isValid else { return }
+                self.statusRelay.accept(status)
+            }
+        }
+    }
+    
+    // MARK: - Create Snapshot
+    
+    /**
+     Creates a snapshot of the workout currently under construction.
+     - returns: a `TempWorkout` constructed from the recorded data; will be `nil` when start or end cannot be determined
+     */
+    private func createSnapshot() -> TempWorkout? {
+        
+        guard let start = startDateRelay.value, let end = endDateRelay.value else { return nil }
+        
+        return NewWorkout(
+            workoutType: workoutTypeRelay.value,
+            distance: distanceRelay.value,
+            steps: stepsRelay.value,
+            startDate: start,
+            endDate: end,
+            isRace: false,
+            comment: nil,
+            isUserModified: false,
+            finishedRecording: true,
+            heartRates: [],
+            routeData: locationsRelay.value,
+            pauses: pausesRelay.value,
+            workoutEvents: []
+        )
+    }
+    
     // MARK: - Preparation
     
-    /// Resets the `WorkoutBuilder` and it's components and prepares tem for another recording.
+    /// Resets the `WorkoutBuilder` and it's components and prepares them for another recording.
     private func reset() {
         
         statusRelay.accept(.waiting)
