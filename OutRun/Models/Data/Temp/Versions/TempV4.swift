@@ -24,29 +24,29 @@ public enum TempV4 {
     
     public class Workout: Codable, TempValueConvertible {
         
-        public let uuid: UUID?
-        public let workoutType: OutRunV4.Workout.WorkoutType
-        public let distance: Double
-        public let steps: Int?
-        public let startDate: Date
-        public let endDate: Date
-        public let burnedEnergy: Double?
-        public let isRace: Bool
-        public let comment: String?
-        public let isUserModified: Bool
-        public let healthKitUUID: UUID?
-        public let finishedRecording: Bool
+        public var uuid: UUID?
+        public var workoutType: OutRunV4.Workout.WorkoutType
+        public var distance: Double
+        public var steps: Int?
+        public var startDate: Date
+        public var endDate: Date
+        public var burnedEnergy: Double?
+        public var isRace: Bool
+        public var comment: String?
+        public var isUserModified: Bool
+        public var healthKitUUID: UUID?
+        public var finishedRecording: Bool
         
-        public let ascend: Double
-        public let descend: Double
-        public let activeDuration: Double
-        public let pauseDuration: Double
-        public let dayIdentifier: String
+        public var ascend: Double
+        public var descend: Double
+        public var activeDuration: Double
+        public var pauseDuration: Double
+        public var dayIdentifier: String
         
-        let _heartRates: [TempV4.WorkoutHeartRateDataSample]
-        let _routeData: [TempV4.WorkoutRouteDataSample]
-        let _pauses: [TempV4.WorkoutPause]
-        let _workoutEvents: [TempV4.WorkoutEvent]
+        var _heartRates: [TempV4.WorkoutHeartRateDataSample]
+        var _routeData: [TempV4.WorkoutRouteDataSample]
+        var _pauses: [TempV4.WorkoutPause]
+        var _workoutEvents: [TempV4.WorkoutEvent]
         // events are not stored inside workout objects, instead the UUID of a workout is stored in the TempEvent object
         
         public var heartRates: [ORWorkoutHeartRateDataSampleInterface] { _heartRates }
@@ -86,10 +86,10 @@ public enum TempV4 {
 
     public class WorkoutPause: Codable, TempValueConvertible {
         
-        public let uuid: UUID?
-        public let startDate: Date
-        public let endDate: Date
-        public let pauseType: OutRunV4.WorkoutPause.WorkoutPauseType
+        public var uuid: UUID?
+        public var startDate: Date
+        public var endDate: Date
+        public var pauseType: OutRunV4.WorkoutPause.WorkoutPauseType
 
         public init(uuid: UUID?, startDate: Date, endDate: Date, pauseType: OutRunV4.WorkoutPause.WorkoutPauseType) {
             self.uuid = uuid
@@ -105,9 +105,9 @@ public enum TempV4 {
 
     public class WorkoutEvent: Codable, TempValueConvertible {
         
-        public let uuid: UUID?
-        public let eventType: OutRunV4.WorkoutEvent.WorkoutEventType
-        public let timestamp: Date
+        public var uuid: UUID?
+        public var eventType: OutRunV4.WorkoutEvent.WorkoutEventType
+        public var timestamp: Date
 
         public init(uuid: UUID?, eventType: OutRunV4.WorkoutEvent.WorkoutEventType, timestamp: Date) {
             self.uuid = uuid
@@ -122,15 +122,15 @@ public enum TempV4 {
     
     public class WorkoutRouteDataSample: Codable, TempValueConvertible {
         
-        public let uuid: UUID?
-        public let timestamp: Date
-        public let latitude: Double
-        public let longitude: Double
-        public let altitude: Double
-        public let horizontalAccuracy: Double
-        public let verticalAccuracy: Double
-        public let speed: Double
-        public let direction: Double
+        public var uuid: UUID?
+        public var timestamp: Date
+        public var latitude: Double
+        public var longitude: Double
+        public var altitude: Double
+        public var horizontalAccuracy: Double
+        public var verticalAccuracy: Double
+        public var speed: Double
+        public var direction: Double
 
         public init(uuid: UUID?, timestamp: Date, latitude: Double, longitude: Double, altitude: Double, horizontalAccuracy: Double, verticalAccuracy: Double, speed: Double, direction: Double) {
             self.uuid = uuid
@@ -151,9 +151,9 @@ public enum TempV4 {
     
     public class WorkoutHeartRateDataSample: Codable, TempValueConvertible {
         
-        public let uuid: UUID?
-        public let heartRate: Int
-        public let timestamp: Date
+        public var uuid: UUID?
+        public var heartRate: Int
+        public var timestamp: Date
 
         public init(uuid: UUID?, heartRate: Int, timestamp: Date) {
             self.uuid = uuid
@@ -168,12 +168,12 @@ public enum TempV4 {
     
     public class Event: Codable, TempValueConvertible {
 
-        public let uuid: UUID?
-        public let title: String
-        public let comment: String?
-        public let startDate: Date?
-        public let endDate: Date?
-        public let workouts: [UUID]
+        public var uuid: UUID?
+        public var title: String
+        public var comment: String?
+        public var startDate: Date?
+        public var endDate: Date?
+        public var workouts: [UUID]
 
         public init(uuid: UUID?, title: String, comment: String?, startDate: Date?, endDate: Date?, workouts: [UUID]) {
             self.uuid = uuid
