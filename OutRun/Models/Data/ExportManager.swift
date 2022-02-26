@@ -85,10 +85,8 @@ public class ExportManager {
                         completion(success, urls)
                     }
                 )
-                
             }
         }
-        
     }
     
     /**
@@ -98,7 +96,7 @@ public class ExportManager {
      */
     static func displayShareAlert(for inclusionType: DataInclusionType, on controller: UIViewController) {
         
-        var alertOptions: [UIAlertActionTuple]
+        var alertOptions: [UIAlertActionTuple] = []
         
         for type in ExportTypes.exportTypes(for: inclusionType) {
             
@@ -106,7 +104,6 @@ public class ExportManager {
                 title: type.title,
                 style: .default,
                 action: { _ in
-                    
                     _ = controller.startLoading {
                         type.performExport(for: inclusionType) { (success, files) in
                             controller.endLoading {
@@ -114,10 +111,8 @@ public class ExportManager {
                             }
                         }
                     }
-                    
                 }
             ))
-            
         }
         
         alertOptions.append((
@@ -169,43 +164,20 @@ public class ExportManager {
      */
     private static func createGPXFiles(for inclusionType: DataInclusionType, completion: @escaping (_ success: Bool, _ urls: [URL]) -> Void) {
         
-        var urls = [URL]()
-        var count = 0
+        let completion = safeClosure(from: completion)
         
         switch inclusionType {
         case .someWorkouts(let workouts):
             
+            var urls = [URL]()
+            
             for workout in workouts {
                 
-                // TODO: implement
+                let metadata = GPXMetadata()
+                metadata.desc = "This GPX-File was created by OutRun"
+                metadata.time = Date()
                 
-            }
-            
-        default:
-            fatalError("[ExportManager] Trying to create GPX files from incompatiple DataInclusionType: \(inclusionType)")
-        }
-        
-        /*
-        DataQueryManager.querySectionedSampleSeries(for: workout, sampleType: WorkoutRouteDataSample.self) { (success, sections) in
-            
-            guard success, !sections.isEmpty, let sections = sections as? [(type: WorkoutStatsSeriesSection.SectionType, samples: [TempWorkoutRouteDataSample])] else {
-                completion(false, nil)
-                return
-            }
-            
-            let root = GPXRoot(creator: "OutRun")
-            
-            let metadata = GPXMetadata()
-            metadata.desc = "This GPX-File was created by OutRun"
-            metadata.time = Date()
-            
-            root.metadata = metadata
-            
-            let track = GPXTrack()
-            
-            for section in sections where section.type == .active {
-                
-                let trackPoints = section.samples.map { (sample) -> GPXTrackPoint in
+                let trackPoints = workout.routeData.map { (sample) -> GPXTrackPoint in
                     let trackPoint = GPXTrackPoint()
                     trackPoint.latitude = sample.latitude
                     trackPoint.longitude = sample.longitude
@@ -216,24 +188,31 @@ public class ExportManager {
                 
                 let trackSegement = GPXTrackSegment()
                 trackSegement.trackpoints = trackPoints
+                
+                let track = GPXTrack()
                 track.add(trackSegment: trackSegement)
                 
+                let root = GPXRoot(creator: "OutRun")
+                root.metadata = metadata
+                root.add(track: track)
+                
+                let fileName = CustomDateFormatting.backupTimeCode(forDate: workout.startDate)
+                let directoryUrl = FileManager.default.temporaryDirectory
+                let fullURL = directoryUrl.appendingPathComponent(fileName + ".gpx")
+                
+                do {
+                    try root.outputToFile(saveAt: directoryUrl, fileName: fileName)
+                    urls.append(fullURL)
+                } catch {
+                    print("[ExportManager] Failed to save GPX file")
+                }
             }
             
-            root.add(track: track)
+            completion(true, urls)
             
-            let fileName = CustomTimeFormatting.backupTimeCode(forDate: workout.startDate.value)
-            let directoryUrl = FileManager.default.temporaryDirectory
-            let fullURL = directoryUrl.appendingPathComponent(fileName + ".gpx")
-            
-            do {
-                try root.outputToFile(saveAt: directoryUrl, fileName: fileName)
-                completion(true, fullURL)
-            } catch {
-                print("[ExportManager] Failed to save GPX file")
-                completion(false, nil)
-            }
-        }*/
+        default:
+            fatalError("[ExportManager] Trying to create GPX files from incompatiple DataInclusionType: \(inclusionType)")
+        }
     }
     
     /// An enumeration describing the possible cases of including database objects in an export.
