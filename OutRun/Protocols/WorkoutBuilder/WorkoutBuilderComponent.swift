@@ -47,11 +47,6 @@ public extension WorkoutBuilderComponent {
     typealias Input = WorkoutBuilder.Input
     typealias Output = WorkoutBuilder.Output
     
-    init(builder: WorkoutBuilder) {
-        self.bind(builder: builder)
-        prepare()
-    }
-    
     func prepare() {}
     
 }

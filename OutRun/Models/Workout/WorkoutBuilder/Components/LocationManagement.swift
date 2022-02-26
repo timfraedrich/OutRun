@@ -136,6 +136,11 @@ public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationMa
     
     // MARK: WorkoutBuilderComponent
     
+    public required init(builder: WorkoutBuilder) {
+        self.bind(builder: builder)
+        prepare()
+    }
+    
     public func bind(builder: WorkoutBuilder) {
         
         let input = Input(

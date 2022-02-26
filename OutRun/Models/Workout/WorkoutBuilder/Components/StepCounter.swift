@@ -96,6 +96,10 @@ class StepCounter: WorkoutBuilderComponent {
     
     // MARK: WorkoutBuilderComponent
     
+    public required init(builder: WorkoutBuilder) {
+        self.bind(builder: builder)
+    }
+    
     func bind(builder: WorkoutBuilder) {
         
         let input = Input(

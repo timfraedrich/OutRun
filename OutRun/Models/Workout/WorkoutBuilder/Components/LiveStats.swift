@@ -120,6 +120,10 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
     
     // MARK: WorkoutBuilderComponent
     
+    public required init(builder: WorkoutBuilder) {
+        self.bind(builder: builder)
+    }
+    
     func bind(builder: WorkoutBuilder) {
         
         disposeBag = DisposeBag()

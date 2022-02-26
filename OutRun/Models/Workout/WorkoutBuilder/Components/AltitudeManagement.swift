@@ -78,6 +78,10 @@ public class AltitudeManagement: WorkoutBuilderComponent {
     
     // MARK: WorkoutBuilderComponent
     
+    public required init(builder: WorkoutBuilder) {
+        self.bind(builder: builder)
+    }
+    
     public func bind(builder: WorkoutBuilder) {
         
         let input = Input(

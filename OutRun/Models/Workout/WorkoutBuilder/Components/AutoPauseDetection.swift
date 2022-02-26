@@ -79,6 +79,10 @@ public class AutoPauseDetection: WorkoutBuilderComponent {
     
     // MARK: WorkoutBuilderComponent
     
+    public required init(builder: WorkoutBuilder) {
+        self.bind(builder: builder)
+    }
+    
     public func bind(builder: WorkoutBuilder) {
         
         let input = Input(statusSuggestion: statusSuggestionRelay.asBackgroundObservable())
