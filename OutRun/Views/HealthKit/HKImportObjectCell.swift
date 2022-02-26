@@ -104,9 +104,11 @@ class HKImportObjectCell: UITableViewCell {
         
         dateLabel.text = CustomDateFormatting.dayString(forDate: queryObject.startDate).uppercased()
         timeLabel.text = CustomDateFormatting.timeString(forDate: queryObject.startDate)
-        typeLabel.text = queryObject.type.description.uppercased()
-        durationLabel.text = CustomMeasurementFormatting.string(forMeasurement: queryObject.duration, type: .time, rounding: .wholeNumbers)
-        distanceLabel.text = CustomMeasurementFormatting.string(forMeasurement: queryObject.distance, type: .distance, rounding: .oneDigit)
+        typeLabel.text = queryObject.workoutType.description.uppercased()
+        let duration = NSMeasurement(doubleValue: queryObject.activeDuration, unit: UnitDuration.seconds)
+        durationLabel.text = CustomMeasurementFormatting.string(forMeasurement: duration, type: .time, rounding: .wholeNumbers)
+        let distance = NSMeasurement(doubleValue: queryObject.distance, unit: UnitLength.standardUnit)
+        distanceLabel.text = CustomMeasurementFormatting.string(forMeasurement: distance, type: .distance, rounding: .oneDigit)
     }
     
     required init?(coder: NSCoder) {

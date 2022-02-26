@@ -89,7 +89,7 @@ class HKImportListController: UITableViewController {
                         
                         let object = self.queriedObjects[indexPath.row]
                         _ = self.startLoading {
-                            DataManager.saveWorkout(for: object) { (success, error, workout) in
+                            DataManager.saveWorkout(object: object) { (success, error, workout) in
                                 self.endLoading {
                                     if success {
                                         self.queriedObjects.remove(at: indexPath.row)
@@ -124,7 +124,7 @@ class HKImportListController: UITableViewController {
                     action: { _ in
                         
                         _ = self.startLoading {
-                            DataManager.saveWorkouts(for: self.queriedObjects) { (success, error, workouts) in
+                            DataManager.saveWorkouts(objects: self.queriedObjects) { (success, error, workouts) in
                                 self.endLoading {
                                     if !success {
                                         self.displayError(withMessage: LS["HKImport.ImportAll.Error"], dismissAction: { _ in
@@ -146,20 +146,17 @@ class HKImportListController: UITableViewController {
     private func startQuery() {
         _ = self.startLoading {
             
-            HealthQueryManager.queryExternalWorkouts { (success, objects) in
-                DispatchQueue.main.async {
-                    
-                    self.endLoading {
-                        if success {
-                            self.queriedObjects = objects
-                            self.tableView.reloadData()
-                            self.importButton.isEnabled = !objects.isEmpty
-                        } else {
-                            self.displayError(withMessage: LS["ImportList.Error.FetchFailed.Message"]) { (_) in
-                                self.dismiss(animated: true)
-                            }
-                            self.importButton.isEnabled = false
+            HealthStoreManager.queryUnsyncedHealthWorkouts { error, objects in
+                self.endLoading {
+                    if error != nil {
+                        self.queriedObjects = objects
+                        self.tableView.reloadData()
+                        self.importButton.isEnabled = !objects.isEmpty
+                    } else {
+                        self.displayError(withMessage: LS["ImportList.Error.FetchFailed.Message"]) { (_) in
+                            self.dismiss(animated: true)
                         }
+                        self.importButton.isEnabled = false
                     }
                 }
             }
