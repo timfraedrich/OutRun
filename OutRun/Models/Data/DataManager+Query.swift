@@ -150,6 +150,32 @@ extension DataManager {
         }
     }
     
+    // MARK: - Workout Stats
+    
+    /**
+     Queries the `WorkoutStats` object of a workout asynchronously.
+     - parameter workout: the workout object used to construct the stats object
+     - parameter completion: a closure performed on completion of querying the data
+     */
+    public static func queryWorkoutStats(
+        for workout: ORWorkoutInterface,
+        completion: @escaping (WorkoutStats?) -> Void
+    ) {
+        dataStack.perform(asynchronous: { (transaction) -> WorkoutStats? in
+            
+            guard let workout: Workout = queryObject(from: workout, transaction: transaction) else { return nil }
+            return WorkoutStats(workout: workout)
+            
+        }) { (result) in
+            switch result {
+            case .success(let stats):
+                completion(stats)
+            case .failure:
+                completion(nil)
+            }
+        }
+    }
+    
     // MARK: - Sectioned Metrics
     
     /**

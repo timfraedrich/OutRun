@@ -25,6 +25,7 @@ class WorkoutViewController: DetailViewController {
     
     var workout: Workout?
     
+    
     let contentView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .backgroundColor
@@ -87,7 +88,7 @@ class WorkoutViewController: DetailViewController {
                 return
             }
             
-            DataQueryManager.queryStats(for: workout) { stats in
+            DataManager.queryWorkoutStats(for: workout) { stats in
                 
                 self.loadingView.isHidden = true
                 
@@ -107,7 +108,7 @@ class WorkoutViewController: DetailViewController {
                 let editView = EditWorkoutView(controller: self, workout: workout)
                 let commentView = TextStatsView(workout: workout)
                 let appleHealthView = WorkoutActionView(title: { () -> String in
-                    workout.healthKitUUID.value != nil ? LS["AppleHealth.Remove"] : LS["AppleHealth.Add"]
+                    workout.healthKitUUID != nil ? LS["AppleHealth.Remove"] : LS["AppleHealth.Add"]
                 }, controller: self, workout: workout) { (workout, actionView) in
                     
                     func updateOrShowError(for success: Bool, message: String) {
@@ -118,18 +119,17 @@ class WorkoutViewController: DetailViewController {
                         }
                     }
                     
-                    if workout.healthKitUUID.value == nil {
+                    if workout.healthKitUUID == nil {
                         
-                        HealthStoreManager.saveHealthWorkout(forWorkout: workout) { (success, hkWorkout) in
-                            updateOrShowError(for: success, message: LS["AppleHealth.Add.Error"])
+                        HealthStoreManager.saveHealthWorkout(for: workout) { error, _ in
+                            updateOrShowError(for: error == nil, message: LS["AppleHealth.Add.Error"])
                         }
                         
                     } else {
                         
-                        HealthStoreManager.deleteHealthWorkout(fromWorkout: workout) { (success) in
-                            updateOrShowError(for: success, message: LS["AppleHealth.Remove.Error"])
+                        HealthStoreManager.deleteHealthWorkout(for: workout) { error in
+                            updateOrShowError(for: error == nil, message: LS["AppleHealth.Remove.Error"])
                         }
-                        
                     }
                 }
                 
@@ -218,7 +218,7 @@ class WorkoutViewController: DetailViewController {
                     
                 }
                 
-                if (workout.comment.value != nil || workout.isUserModified.value), let lastView = lastView, let firstActionView = firstActionView {
+                if (workout.comment != nil || workout.isUserModified), let lastView = lastView, let firstActionView = firstActionView {
                     
                     self.contentView.addSubview(commentView)
                     
@@ -245,8 +245,7 @@ class WorkoutViewController: DetailViewController {
     
     @objc func share() {
         if let workout = self.workout {
-            let shareAlert = WorkoutShareAlert(controller: self, workout: workout)
-            self.present(shareAlert, animated: true)
+            ExportManager.displayShareAlert(for: .someWorkouts([workout]), on: self)
         }
     }
     
