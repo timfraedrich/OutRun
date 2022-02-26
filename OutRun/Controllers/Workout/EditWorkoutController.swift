@@ -22,7 +22,7 @@ import UIKit
 
 class EditWorkoutController: SettingsViewController {
     
-    var workout: Workout?
+    var workout: ORWorkoutInterface?
     var controller: UIViewController?
     
     var workoutType = Workout.WorkoutType.running
@@ -32,7 +32,6 @@ class EditWorkoutController: SettingsViewController {
     var duration: TimeInterval = 0
     var isRace = false
     var comment: String? = nil
-    var pauseResumeEvents = [TempWorkoutEvent]()
     
     lazy var addItem = UIBarButtonItem(title: LS["Save"], style: .done, target: self, action: #selector(saveWorkout))
     
@@ -45,15 +44,10 @@ class EditWorkoutController: SettingsViewController {
             self.distance = workout.distance / 1000
             self.steps = workout.steps
             self.startDate = workout.startDate
-            self.duration = workout.endDate.distance(to: workout.startDate.value)
+            self.duration = workout.endDate.distance(to: workout.startDate)
             self.isRace = workout.isRace
             self.comment = workout.comment
             self.addItem.isEnabled = true
-            self.pauseResumeEvents = workout.workoutEvents.filter({ (event) -> Bool in
-                [.pause, .autoPause, .resume, .autoResume].contains(event.type)
-            }).map({ (event) -> TempWorkoutEvent in
-                return TempWorkoutEvent(workoutEvent: event)
-            })
         }
         
         let cancelItem = UIBarButtonItem(title: LS["Cancel"], style: .plain, target: self, action: #selector(closeSelector))
@@ -177,22 +171,21 @@ class EditWorkoutController: SettingsViewController {
     
     @objc func saveWorkout() {
         
+        let endDate = self.startDate.addingTimeInterval(self.duration)
+        let distanceInMeters = (self.distance ?? 0) * 1000
+        
         if let workout = self.workout {
             
-            let endDate = self.startDate.addingTimeInterval(self.duration)
-            let distanceInMeters = (self.distance ?? 0) * 1000
+            var tempWorkout = TempWorkout(from: workout)
+            tempWorkout.workoutType = workoutType
+            tempWorkout.startDate = startDate
+            tempWorkout.endDate = endDate
+            tempWorkout.distance = distanceInMeters
+            tempWorkout.steps = steps
+            tempWorkout.isRace = isRace
+            tempWorkout.comment = comment
             
-            DataManager.alterWorkout(
-                workout: workout,
-                type: self.workoutType != workout.type ? self.workoutType : nil,
-                start: self.startDate != workout.startDate.value ? self.startDate : nil,
-                end: endDate != workout.endDate.value ? endDate : nil,
-                distance: distanceInMeters != workout.distance.value ? distanceInMeters : nil,
-                steps: self.steps != workout.steps.value ? (true, self.steps) : (false, nil),
-                isRace: self.isRace != workout.isRace.value ? self.isRace : nil,
-                comment: self.comment != workout.comment.value ? (true, self.comment) : (false, nil)
-            ) { (success, error, workout) in
-                
+            DataManager.updateWorkout(object: tempWorkout) { success, error, workout in
                 guard let workout = workout, error == nil else {
                     self.displayError(withMessage: LS["EditWorkoutController.SaveWorkout.Error"])
                     return
@@ -212,18 +205,13 @@ class EditWorkoutController: SettingsViewController {
                 }
                 
                 if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
-                    
-                    HealthStoreManager.alterHealthWorkout(from: workout) { (success) in
-                        if !success {
-                            DataManager.removeHealthKitWorkoutUUID(forWorkout: workout) { (referenceRemovalSuccess) in
-                                if !referenceRemovalSuccess {
-                                    self.displayError(withMessage: LS["EditWorkoutController.AlterWorkout.AppleHealth.Error"]) { action in
-                                        customClose()
-                                    }
-                                    print("Error - was not able to remove reference from altered workout that could not be saved to Apple Health")
-                                } else {
-                                    customClose()
-                                }
+                    HealthStoreManager.updateHealthWorkout(for: workout) { error in
+                        if error == nil {
+                            if let uuid = workout.healthKitUUID {
+                                DataManager.removeHealthReference(reference: uuid)
+                            }
+                            self.displayError(withMessage: LS["EditWorkoutController.AlterWorkout.AppleHealth.Error"]) { action in
+                                customClose()
                             }
                         } else {
                             customClose()
@@ -235,41 +223,42 @@ class EditWorkoutController: SettingsViewController {
             }
             
         } else {
-            DataManager.saveWorkout(
-                withType: self.workoutType,
-                start: self.startDate,
-                end: self.startDate.addingTimeInterval(self.duration),
-                distance: (self.distance ?? 0) * 1000,
-                steps: self.steps,
-                isRace: self.isRace,
+            
+            let newWorkout = NewWorkout(
+                workoutType: workoutType,
+                distance: distanceInMeters,
+                steps: steps,
+                startDate: startDate,
+                endDate: endDate,
+                isRace: isRace,
+                comment: comment,
                 isUserModified: true,
-                comment: self.comment,
-                events: [],
-                routeSamples: [],
-                heartRates: []
-            ) { (success, error, workout) in
-                
+                finishedRecording: true,
+                heartRates: [],
+                routeData: [],
+                pauses: [],
+                workoutEvents: []
+            )
+            
+            DataManager.saveWorkout(object: newWorkout) { success, error, workout in
                 guard let workout = workout, error == nil else {
                     self.displayError(withMessage: LS["EditWorkoutController.SaveWorkout.Error"])
                     return
                 }
                 
                 if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
-                
-                    HealthStoreManager.saveHealthWorkout(forWorkout: workout, completion: { (success, healthWorkout) in
-                        if !success {
+                    HealthStoreManager.saveHealthWorkout(for: workout) { error, healthWorkout in
+                        if error == nil {
                             self.displayError(withMessage: LS["EditWorkoutController.SaveWorkout.AppleHealth.Error"]) { (_) in
                                 self.close()
                             }
                         } else {
                             self.closeAndShowController(for: workout)
                         }
-                    })
-                    
+                    }
                 } else {
                     self.closeAndShowController(for: workout)
                 }
-                
             }
         }
         

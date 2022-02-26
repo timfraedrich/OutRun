@@ -87,6 +87,7 @@
 		22877542234A73060078CE12 /* LS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22877541234A73060078CE12 /* LS.swift */; };
 		22877544234A75A10078CE12 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22877543234A75A10078CE12 /* Units.swift */; };
 		2288F6B422E0FB5C0014471C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2288F6B322E0FB5C0014471C /* UIColor.swift */; };
+		228B4F9327CA6C5400CD82E5 /* NewWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228B4F9227CA6C5400CD82E5 /* NewWorkout.swift */; };
 		228BD39023EB51910019C322 /* BackupDocumentPickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228BD38F23EB51910019C322 /* BackupDocumentPickerDelegate.swift */; };
 		228CDFFA2577C66B0023E8F7 /* Computation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228CDFF92577C66B0023E8F7 /* Computation.swift */; };
 		229186332367909D00929885 /* PolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229186322367909D00929885 /* PolicyViewController.swift */; };
@@ -166,7 +167,6 @@
 		22D043B222DCCE2700154EB8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D043B122DCCE2700154EB8 /* DataManager.swift */; };
 		22D043B422DD300E00154EB8 /* WorkoutListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D043B322DD300E00154EB8 /* WorkoutListViewController.swift */; };
 		22D070BA23FC3079007B1744 /* DatePickerSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D070B923FC3079007B1744 /* DatePickerSetting.swift */; };
-		22D07EDB2479C8D600091706 /* EditWorkoutPauseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D07EDA2479C8D600091706 /* EditWorkoutPauseController.swift */; };
 		22D299332402B1AC00F3F6B8 /* InputViewSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D299322402B1AC00F3F6B8 /* InputViewSetting.swift */; };
 		22D299352402B37E00F3F6B8 /* PickerSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D299342402B37E00F3F6B8 /* PickerSetting.swift */; };
 		22D299372402BDE400F3F6B8 /* TimeIntervalPickerSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D299362402BDE400F3F6B8 /* TimeIntervalPickerSetting.swift */; };
@@ -283,6 +283,7 @@
 		22877541234A73060078CE12 /* LS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LS.swift; sourceTree = "<group>"; };
 		22877543234A75A10078CE12 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		2288F6B322E0FB5C0014471C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		228B4F9227CA6C5400CD82E5 /* NewWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWorkout.swift; sourceTree = "<group>"; };
 		228BD38F23EB51910019C322 /* BackupDocumentPickerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDocumentPickerDelegate.swift; sourceTree = "<group>"; };
 		228CDFF92577C66B0023E8F7 /* Computation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Computation.swift; sourceTree = "<group>"; };
 		229186322367909D00929885 /* PolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyViewController.swift; sourceTree = "<group>"; };
@@ -363,7 +364,6 @@
 		22D043B122DCCE2700154EB8 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		22D043B322DD300E00154EB8 /* WorkoutListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListViewController.swift; sourceTree = "<group>"; };
 		22D070B923FC3079007B1744 /* DatePickerSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerSetting.swift; sourceTree = "<group>"; };
-		22D07EDA2479C8D600091706 /* EditWorkoutPauseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutPauseController.swift; sourceTree = "<group>"; };
 		22D299322402B1AC00F3F6B8 /* InputViewSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewSetting.swift; sourceTree = "<group>"; };
 		22D299342402B37E00F3F6B8 /* PickerSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerSetting.swift; sourceTree = "<group>"; };
 		22D299362402BDE400F3F6B8 /* TimeIntervalPickerSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalPickerSetting.swift; sourceTree = "<group>"; };
@@ -887,6 +887,7 @@
 				222199802439F93C00ADAE24 /* UnitConversion.swift */,
 				22FD3252255F319E007719C9 /* ORPrimitive.swift */,
 				22A5459B26E7F8DE00E19B0B /* UnitConverterInverse.swift */,
+				228B4F9227CA6C5400CD82E5 /* NewWorkout.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -940,7 +941,6 @@
 				226E66C622DAF87D0015ECD4 /* WorkoutViewController.swift */,
 				2273943F233BFE2E00176A07 /* WorkoutMapViewController.swift */,
 				2256492423FA776100E4A986 /* EditWorkoutController.swift */,
-				22D07EDA2479C8D600091706 /* EditWorkoutPauseController.swift */,
 			);
 			path = Workout;
 			sourceTree = "<group>";
@@ -1287,13 +1287,13 @@
 				22FD3253255F319E007719C9 /* ORPrimitive.swift in Sources */,
 				228CDFFA2577C66B0023E8F7 /* Computation.swift in Sources */,
 				2207B75623128F8A00BA71B5 /* CLLocation.swift in Sources */,
+				228B4F9327CA6C5400CD82E5 /* NewWorkout.swift in Sources */,
 				22D299332402B1AC00F3F6B8 /* InputViewSetting.swift in Sources */,
 				226404B72376185E0018F1F8 /* HKImportObjectCell.swift in Sources */,
 				22B1DD93253F91380093822B /* OutRunV4.swift in Sources */,
 				22FEA0B124CDDFF80007CA9C /* CustomByteFormatting.swift in Sources */,
 				22B6CF7022CA08C9002D2FB0 /* WorkoutBuilder.swift in Sources */,
 				22713F0722DE58C100EF50FB /* NavigationController.swift in Sources */,
-				22D07EDB2479C8D600091706 /* EditWorkoutPauseController.swift in Sources */,
 				22B2A89F230D2FC800EF8558 /* LabelledTimeView.swift in Sources */,
 				221436BB244356A90010D82B /* Array.swift in Sources */,
 				22CBE0D4244864970009D9A7 /* SmallStatView.swift in Sources */,
