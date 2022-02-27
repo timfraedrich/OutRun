@@ -44,8 +44,8 @@ class WorkoutStats {
     let altitudeOverTime: Driver<WorkoutStatsSeries<Bool, Double, WorkoutRouteDataSample>>
     
     // DURATION
-    let startDate: Driver<Date>
-    let endDate: Driver<Date>
+    let startDate: Driver<String>
+    let endDate: Driver<String>
     let activeDuration: Driver<String>
     let pauseDuration: Driver<String?>
     
@@ -81,8 +81,8 @@ class WorkoutStats {
         self.descendingAltitude = WorkoutStats.just(workout.descend, unit: UnitLength.meters, type: .altitude)
         self.altitudeOverTime = WorkoutStats.unitSeries(from: workout, samples: \Workout._routeData.value, metric: \WorkoutRouteDataSample._altitude.value, desiredUnit: UserPreferences.altitudeMeasurementType.safeValue)
         
-        self.startDate = .just(workout.startDate)
-        self.endDate = .just(workout.endDate)
+        self.startDate = WorkoutStats.just(time: workout.startDate)
+        self.endDate = WorkoutStats.just(time: workout.endDate)
         self.activeDuration = WorkoutStats.just(workout.activeDuration, unit: UnitDuration.seconds)
         self.pauseDuration = WorkoutStats.just(workout.pauseDuration, unit: UnitDuration.seconds)
         
@@ -95,6 +95,16 @@ class WorkoutStats {
         
         self.averageHeartRate = WorkoutStats.just(Double(workout.heartRates.map { $0.heartRate }.reduce(0, +) / workout.heartRates.count), unit: UnitCount.count, type: .count)
         self.heartRateOverTime = WorkoutStats.series(from: workout, samples: \Workout._heartRates.value, metric: \WorkoutHeartRateDataSample._heartRate.value)
+    }
+    
+    /**
+     Creates a static observable string driver from the provided time specified.
+     - parameter time: the date from which the time should be formatted as a string
+     - returns: a static observable string driver
+     */
+    private static func just(time: Date) -> Driver<String> {
+        
+        .just(CustomDateFormatting.timeString(forDate: time))
     }
     
     /**
