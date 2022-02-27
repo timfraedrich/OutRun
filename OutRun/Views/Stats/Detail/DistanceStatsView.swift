@@ -20,41 +20,37 @@
 
 import UIKit
 import Charts
+import RxSwift
 
 class DistanceStatsView: StatsView {
     
-    let altitudeChart: LabelledDiagramView?
+    private let disposeBag = DisposeBag()
     
     init(stats: WorkoutStats) {
         
         var statViews = [StatView]()
         
-        statViews.append(LabelledDataView(title: LS["Workout.Distance"], measurement: stats.distance))
-        if stats.steps != nil {
-            statViews.append(LabelledDataView(title: stats.type == .cycling ? LS["Workout.Strokes"] : LS["Workout.Steps"], measurement: stats.steps!))
-        }
-        if stats.ascendingAltitude != nil {
-            statViews.append(LabelledDataView(title: LS["WorkoutStats.AscendingAltitude"], measurement: stats.ascendingAltitude, isAltitude: true))
-        }
-        if stats.descendingAltitude != nil {
-            statViews.append(LabelledDataView(title: LS["WorkoutStats.DescendingAltitude"], measurement: stats.descendingAltitude, isAltitude: true))
-        }
-        self.altitudeChart = stats.hasRouteSamples ? LabelledDiagramView(title: LS["WorkoutStats.AltitudeOverTime"]) : nil
-        if let altit = self.altitudeChart {
-            statViews.append(altit)
-        }
-        self.altitudeChart?.disableSelection()
+        let distanceView = LabelledDataView(title: LS["Workout.Distance"])
+        stats.distance.drive(distanceView.rx.valueString).disposed(by: disposeBag)
+        statViews.append(distanceView)
         
-        super.init(title: LS["Workout.Distance"], statViews: statViews)
+        if stats.hasSteps {
+            let stepsView = LabelledDataView(title: stats.workoutType == .cycling ? LS["Workout.Strokes"] : LS["Workout.Steps"])
+            stats.steps.drive(stepsView.rx.valueString).disposed(by: disposeBag)
+            statViews.append(stepsView)
+        }
         
         if stats.hasRouteSamples {
-            stats.queryAltitudes { (success, series) in
-                if let series = series {
-                    let convertedSections = series.convertedForChartView(includeSamples: false, yUnit: UserPreferences.altitudeMeasurementType.safeValue)
-                    self.altitudeChart?.setData(for: convertedSections)
-                }
-            }
+            let ascendingView = LabelledDataView(title: LS["WorkoutStats.AscendingAltitude"])
+            let descendingView = LabelledDataView(title: LS["WorkoutStats.DescendingAltitude"])
+            let altitudeChart = LabelledDiagramView(title: LS["WorkoutStats.AltitudeOverTime"])
+            stats.ascendingAltitude.drive(ascendingView.rx.valueString).disposed(by: disposeBag)
+            stats.descendingAltitude.drive(descendingView.rx.valueString).disposed(by: disposeBag)
+            stats.altitudeOverTime.drive(altitudeChart.rx.data()).disposed(by: disposeBag)
+            statViews.append(contentsOf: [ascendingView, descendingView, altitudeChart])
         }
+        
+        super.init(title: LS["Workout.Distance"], statViews: statViews)
     }
     
     required init?(coder aDecoder: NSCoder) {

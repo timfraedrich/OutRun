@@ -27,7 +27,7 @@ class WorkoutStats {
     
     let workout: ORWorkoutInterface
     
-    let workoutType: Driver<Workout.WorkoutType>
+    let workoutType: Workout.WorkoutType
     
     let hasSteps: Bool
     let hasWorkoutPauses: Bool
@@ -66,7 +66,7 @@ class WorkoutStats {
         
         self.workout = workout
         
-        self.workoutType = .just(workout.workoutType)
+        self.workoutType = workout.workoutType
         
         self.hasSteps = workout.steps != nil
         self.hasWorkoutPauses = !workout.pauses.isEmpty
