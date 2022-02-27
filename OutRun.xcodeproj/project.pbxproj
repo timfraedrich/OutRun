@@ -113,7 +113,6 @@
 		22AB2FB3233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB2233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift */; };
 		22AB2FB5233CC849002EF0DE /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB4233CC849002EF0DE /* UISegmentedControl.swift */; };
 		22AB2FB7233CC925002EF0DE /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB6233CC925002EF0DE /* UIImage.swift */; };
-		22AB2FB9233CD0EB002EF0DE /* LabelledDiagramViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB8233CD0EB002EF0DE /* LabelledDiagramViewDelegate.swift */; };
 		22ACA7C324D97703005DFB4E /* ORBaseBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ACA7C224D97703005DFB4E /* ORBaseBanner.swift */; };
 		22ACA7C624D9778F005DFB4E /* ORBannerQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ACA7C524D9778F005DFB4E /* ORBannerQueue.swift */; };
 		22AD5C3A233631C8001C7311 /* WorkoutBuilderReadinessIndicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD5C39233631C8001C7311 /* WorkoutBuilderReadinessIndicationView.swift */; };
@@ -309,7 +308,6 @@
 		22AB2FB2233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewControllerWithContainerView.swift; sourceTree = "<group>"; };
 		22AB2FB4233CC849002EF0DE /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
 		22AB2FB6233CC925002EF0DE /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
-		22AB2FB8233CD0EB002EF0DE /* LabelledDiagramViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledDiagramViewDelegate.swift; sourceTree = "<group>"; };
 		22ACA7C224D97703005DFB4E /* ORBaseBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORBaseBanner.swift; sourceTree = "<group>"; };
 		22ACA7C524D9778F005DFB4E /* ORBannerQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORBannerQueue.swift; sourceTree = "<group>"; };
 		22AD5C39233631C8001C7311 /* WorkoutBuilderReadinessIndicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutBuilderReadinessIndicationView.swift; sourceTree = "<group>"; };
@@ -992,7 +990,6 @@
 				228BD38F23EB51910019C322 /* BackupDocumentPickerDelegate.swift */,
 				22CBE0D52448652C0009D9A7 /* BigStatView.swift */,
 				22F23F3E2422C44200838B87 /* KeyboardAvoidanceSetting.swift */,
-				22AB2FB8233CD0EB002EF0DE /* LabelledDiagramViewDelegate.swift */,
 				22F0000C234A2055008CFAD2 /* Setting.swift */,
 				22CBE0D3244864970009D9A7 /* SmallStatView.swift */,
 				22CBE0D72448654F0009D9A7 /* StatView.swift */,
@@ -1231,7 +1228,6 @@
 				22F23F3F2422C44200838B87 /* KeyboardAvoidanceSetting.swift in Sources */,
 				228BD39023EB51910019C322 /* BackupDocumentPickerDelegate.swift in Sources */,
 				22F3318D23AA23DD006CB7E5 /* SetupSwitchView.swift in Sources */,
-				22AB2FB9233CD0EB002EF0DE /* LabelledDiagramViewDelegate.swift in Sources */,
 				2226A3BF240C441700FF7A94 /* TextViewSetting.swift in Sources */,
 				22F0000D234A2055008CFAD2 /* Setting.swift in Sources */,
 				2230926324D7573C00A3F636 /* Double.swift in Sources */,

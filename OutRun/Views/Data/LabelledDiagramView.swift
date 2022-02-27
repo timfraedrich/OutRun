@@ -20,15 +20,19 @@
 
 import UIKit
 import Charts
+import RxSwift
+import RxCocoa
 
 class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
     
-    private let headlineLabel = UILabel(
+    // MARK: - Layout
+    
+    fileprivate let titleLabel = UILabel(
         textColor: .secondaryColor,
         font: .systemFont(ofSize: 14, weight: .bold)
     )
     
-    let diagram: LineChartView = {
+    fileprivate let diagram: LineChartView = {
         let chart = LineChartView()
         
         chart.backgroundColor = .backgroundColor
@@ -48,102 +52,84 @@ class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
         return chart
     }()
     
-    var delegate: LabelledDiagramViewDelegate?
-    var title: String
-    
-    init(title: String, sections: [(color: UIColor, data: [(Measurement<Unit>, Measurement<Unit>)], samples: [TempWorkoutSeriesDataSampleType])]? = nil, delegate: LabelledDiagramViewDelegate? = nil) {
-        self.title = title
+    private func prepareLayout() {
         
-        super.init(frame: .zero)
+        titleLabel.text = ""
+        diagram.delegate = self
         
-        self.delegate = delegate
-        self.diagram.delegate = self
+        addSubview(titleLabel)
+        addSubview(diagram)
         
-        self.setTitle()
-        if let sections = sections {
-            self.setData(for: sections)
+        titleLabel.snp.makeConstraints { (make) in
+            make.top.left.right.equalToSuperview()
         }
         
-        self.addSubview(headlineLabel)
-        self.addSubview(diagram)
-        
-        headlineLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-        }
         diagram.snp.makeConstraints { (make) in
-            make.top.equalTo(headlineLabel.snp.bottom).offset(5)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.equalTo(titleLabel.snp.bottom).offset(5)
+            make.left.right.bottom.equalToSuperview()
             make.height.equalTo(125)
         }
     }
     
+    // MARK: - Logic
+    
+    init() {
+        super.init(frame: .zero)
+        prepareLayout()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
-        self.title = ""
         super.init(coder: aDecoder)
     }
     
-    func setData(for sections: [(color: UIColor, data: [(Measurement<Unit>, Measurement<Unit>)], samples: [TempWorkoutSeriesDataSampleType])]) {
-        
-        var dataSets = [LineChartDataSet]()
-        
-        for section in sections {
-            var values = [ChartDataEntry]()
-            
-            for (index, dataEntry) in section.data.enumerated() {
-                
-                let sample: TempWorkoutSeriesDataSampleType? = section.samples.indices.contains(index) ? section.samples[index] : nil
-                let entry = ChartDataEntry(x: dataEntry.0.value, y: dataEntry.1.value, data: sample)
-                
-                values.append(entry)
-            }
-            
-            let set = LineChartDataSet(entries: values, label: nil)
-            set.setColor(section.color as NSUIColor)
-            set.lineWidth = 3
-            set.drawCirclesEnabled = false
-            set.drawValuesEnabled = false
-            set.lineCapType = .round
-            
-            dataSets.append(set)
-        }
-        
-        diagram.data = LineChartData(dataSets: dataSets)
-        
-        let dataPoint = sections.first?.data.first
-        setTitle(units: dataPoint != nil ? (dataPoint!.0.unit, dataPoint!.1.unit) : nil)
-    }
-    
-    func setTitle(units: (Unit, Unit)? = nil) {
-        
-        guard let units = units else {
-            self.headlineLabel.text = self.title
-            return
-        }
-        
-        let formatter = MeasurementFormatter()
-        formatter.unitOptions = .providedUnit
-        let unitString = formatter.string(from: units.1) + "-" + formatter.string(from: units.0)
-        
-        self.headlineLabel.text = (self.title + "  -  " + unitString).uppercased()
-    }
+    // MARK: - ChartViewDelegate
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        DispatchQueue.main.async {
-            if let delegate = self.delegate {
-                guard let sample = entry.data as? TempWorkoutSeriesDataSampleType else {
-                    return
-                }
-                delegate.didSelect(sample: sample)
-            }
+        guard let sample = entry.data as? ORSampleInterface else { return }
+        sampleSelectedRelay.accept(sample)
+    }
+    
+    // MARK: - Bindings
+    
+    fileprivate var sampleSelectedRelay = PublishRelay<ORSampleInterface>()
+    
+}
+
+extension Reactive where Base: LabelledDiagramView {
+    
+    var title: Binder<String> {
+        Binder(base) { base, title in
+            base.titleLabel.text = title
         }
     }
     
-    func disableSelection() {
-        self.diagram.highlightPerTapEnabled = false
-        self.diagram.highlightPerDragEnabled = false
+    func data<SampleType: ORSampleInterface>() -> Binder<WorkoutStatsSeries<Bool, Double, SampleType>> {
+        Binder(base) { base, data in
+            let dataSets: [LineChartDataSet] = data.sections.map { (highlighted, sectionData) in
+                let values = sectionData.map { ChartDataEntry(x: $0, y: $1, data: $2) }
+                let set = LineChartDataSet(entries: values, label: nil)
+                set.setColor((highlighted ? UIColor.accentColor : .gray) as NSUIColor)
+                set.lineWidth = 3
+                set.drawCirclesEnabled = false
+                set.drawValuesEnabled = false
+                set.lineCapType = .round
+                return set
+            }
+            base.diagram.data = LineChartData(dataSets: dataSets)
+        }
     }
+    
+    var sampleSelected: Driver<ORSampleInterface> {
+        base.sampleSelectedRelay
+            .throttle(.milliseconds(50), latest: true, scheduler: MainScheduler.asyncInstance)
+            .asDriver(onErrorDriveWith: .never())
+    }
+    
+    var isDisabled: Binder<Bool> {
+        Binder(base) { base, isDisabled in
+            base.diagram.highlightPerTapEnabled = !isDisabled
+            base.diagram.highlightPerDragEnabled = !isDisabled
+        }
+    }
+    
 }
