@@ -19,23 +19,30 @@
 //
 
 import UIKit
+import RxSwift
 
 class TimeStatsView: StatsView {
+    
+    private let disposeBag = DisposeBag()
     
     init(stats: WorkoutStats) {
         
         var statViews = [StatView]()
         
-        let activeView = LabelledDataView(title: LS["Workout.ActiveDuration"], measurement: stats.activeDuration)
-        let pauseView = LabelledDataView(title: LS["Workout.PauseDuration"], measurement: stats.pauseDuration)
-        let paceView = LabelledRelativeDataView(title: nil, relativeMeasurement: stats.pace)
-        let startView = LabelledTimeView(title: LS["WorkoutStats.StartTime"], date: stats.startDate)
-        let endView = LabelledTimeView(title: LS["WorkoutStats.EndTime"], date: stats.endDate)
+        let activeView = LabelledDataView(title: LS["Workout.ActiveDuration"])
+        let pauseView = LabelledDataView(title: LS["Workout.PauseDuration"])
+        let startView = LabelledDataView(title: LS["WorkoutStats.StartTime"])
+        let endView = LabelledDataView(title: LS["WorkoutStats.EndTime"])
         
-        if stats.pauseDuration.doubleValue == 0 {
-            statViews.append(contentsOf: [activeView, paceView, startView, endView])
+        stats.activeDuration.drive(activeView.rx.valueString).disposed(by: disposeBag)
+        stats.pauseDuration.drive(pauseView.rx.valueString).disposed(by: disposeBag)
+        stats.startDate.drive(startView.rx.valueString).disposed(by: disposeBag)
+        stats.endDate.drive(endView.rx.valueString).disposed(by: disposeBag)
+        
+        if !stats.hasWorkoutPauses {
+            statViews.append(contentsOf: [activeView, startView, endView])
         } else {
-            statViews.append(contentsOf: [activeView, pauseView, startView, endView, paceView])
+            statViews.append(contentsOf: [activeView, pauseView, startView, endView])
         }
         
         super.init(title: LS["WorkoutStats.Time"], statViews: statViews)
