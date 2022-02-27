@@ -21,11 +21,20 @@
 import UIKit
 import MapKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuilderDelegate, UIGestureRecognizerDelegate {
+class NewWorkoutViewController: MapViewControllerWithConatinerView, UIGestureRecognizerDelegate {
     
-    var type: Workout.WorkoutType = Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value)
-    lazy var builder: WorkoutBuilder = WorkoutBuilder(workoutType: self.type, delegate: self)
+    private let builder = WorkoutBuilder()
+    private lazy var autoPauseDetection = AutoPauseDetection(builder: builder)
+    private lazy var locationManagement = LocationManagement(builder: builder)
+    private lazy var stepCounter = StepCounter(builder: builder)
+    private lazy var altitudeManagement = AltitudeManagement(builder: builder)
+    private lazy var liveStats = LiveStats(builder: builder)
+    
+    var initialWorkoutType = Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value)
+    
     var userMovedMap: Bool = false {
         didSet {
             DispatchQueue.main.async {
@@ -37,73 +46,39 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
     }
     
     let readinessIndicatorView = WorkoutBuilderReadinessIndicationView()
-    lazy var typeView = FloatingButton(title: self.type.description) { (button) in
+    lazy var typeView = FloatingButton(title: workoutTypeRelay.value.description) { (button) in
         let alert = WorkoutTypeAlert(
             action: { (type) in
-                self.builder.workoutType = type
+                self.workoutTypeRelay.accept(type)
                 button.setTitle(type.description.uppercased(), for: .normal)
             }
         )
         alert.present(on: self)
     }
     
-    let distanceView: LabelledDataView = LabelledDataView(title: LS["Workout.Distance"], measurement: NSMeasurement(doubleValue: 0, unit: UnitLength.meters))
-    
-    let durationView: LabelledDataView = LabelledDataView(title: LS["Workout.Duration"], measurement: NSMeasurement(doubleValue: 0, unit: UnitDuration.seconds))
-    
-    let speedView: LabelledDataView = LabelledDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.AverageSpeed"] : LS["Workout.CurrentSpeed"], measurement: NSMeasurement(doubleValue: 0, unit: UnitSpeed.metersPerSecond))
-    
-    let paceView: LabelledRelativeDataView = LabelledRelativeDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.RollingPace"] : LS["Workout.TotalPace"], relativeMeasurement: NSMeasurement(doubleValue: 0, unit: UnitSpeed.minutePerLengthUnit(from: UserPreferences.distanceMeasurementType.safeValue)))
-    
-    let caloriesView: LabelledDataView = LabelledDataView(title: LS["Workout.BurnedCalories"], measurement: NSMeasurement(doubleValue: 0, unit: UnitEnergy.kilocalories))
+    let distanceView = LabelledDataView(title: LS["Workout.Distance"])
+    let durationView = LabelledDataView(title: LS["Workout.Duration"])
+    let speedView = LabelledDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.AverageSpeed"] : LS["Workout.CurrentSpeed"])
+    let paceView = LabelledDataView(title: UserPreferences.displayRollingSpeed.value ? LS["Workout.RollingPace"] : LS["Workout.TotalPace"])
+    let caloriesView: LabelledDataView = LabelledDataView(title: LS["Workout.BurnedCalories"])
     
     lazy var actionButton = NewWorkoutControllerActionButton { (button, actionType) in
         
         switch actionType {
         case .start:
-            self.builder.startOrResume { (success) in
-                if success {
-                    print("[NewWorkout] started recording")
-                } else {
-                    self.displayBuilderFailureError()
-                }
-            }
+            self.suggestNewStatusRelay.accept(.recording)
         case .stop:
-            self.builder.finish { (success) in
-                if success {
-                    print("[NewWorkout] finished recording")
-                } else {
-                    self.displayBuilderFailureError()
-                }
-            }
+            self.suggestNewStatusRelay.accept(.ready)
         case .pauseOrContinue:
-            if self.builder.status == .paused {
-                self.builder.startOrResume { (success) in
-                    if success {
-                        print("[NewWorkout] continued recording")
-                    } else {
-                        self.displayBuilderFailureError()
-                    }
-                }
-            } else {
-                self.builder.pause { (success) in
-                    if success {
-                        print("[NewWorkout] paused recording")
-                    } else {
-                        self.displayBuilderFailureError()
-                    }
-                }
-            }
-            
+            self.suggestNewStatusRelay.accept(.paused)
         }
     }
     
+    var lastLocationWhileNotCentered: CLLocation?
     lazy var recenterButton = FloatingButton(title: LS["NewWorkoutViewController.Recenter"]) { (button) in
         self.userMovedMap = false
         
-        guard let location = self.builder.locationManagement.locations.last else {
-            return
-        }
+        guard let location = self.lastLocationWhileNotCentered else { return }
         let camera = MKMapCamera(lookingAtCenter: location.coordinate, fromDistance: 200, pitch: 0, heading: location.course)
         self.mapView?.setCamera(camera, animated: true)
     }
@@ -121,7 +96,6 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
         }
         
         self.headline = LS["Workout.NewWorkout"]
-        self.builder = WorkoutBuilder(workoutType: type, delegate: self)
         mapView?.delegate = WorkoutMapViewDelegate.standard
         self.readinessIndicatorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(displayIndicationAlert)))
         self.recenterButton.isHidden = true
@@ -140,6 +114,101 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
         
         super.viewDidLoad()
         
+        prepareLayout()
+        prepareBindings()
+    }
+    
+    @objc func displayIndicationAlert() {
+        if self.readinessIndicatorView.status == .waiting {
+            let alert = UIAlertController(
+                title: LS["NewWorkoutViewController.WaitingAlert.Title"],
+                message: LS["NewWorkoutViewController.WaitingAlert.Message"],
+                preferredStyle: .alert,
+                options: [
+                    (
+                        title: LS["Okay"],
+                        style: .default,
+                        action: nil
+                    )
+                ]
+            )
+            self.present(alert, animated: true)
+        }
+    }
+    
+    private var closeDisposeBag = DisposeBag()
+    @objc override func close() {
+        
+        if builder.status.isActiveStatus {
+            
+            var alert: UIAlertController?
+            alert = UIAlertController(
+                title: LS["NewWorkoutViewController.Cancel.Error.Recording.Title"],
+                message: LS["NewWorkoutViewController.Cancel.Error.Recording.Message"],
+                preferredStyle: .alert,
+                options: [
+                    (
+                        title: LS["NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording"],
+                        style: .destructive,
+                        action: { _ in
+                            self.suggestNewStatusRelay.accept(.ready)
+                            self.statusRelay.subscribe(onNext: { [weak self] status in
+                                guard let self = self else { return }
+                                if status == .ready {
+                                    alert?.dismiss(animated: true) {
+                                        self.dismiss(animated: true) {
+                                            print("[NewWorkout] dismissed after saving")
+                                        }
+                                    }
+                                } else {
+                                    self.displayBuilderFailureError()
+                                    print("[NewWorkout] stop tracking failed")
+                                }
+                                self.closeDisposeBag = DisposeBag()
+                            }).disposed(by: self.closeDisposeBag)
+                        }
+                    ),
+                    (
+                        title: LS["Continue"],
+                        style: .cancel,
+                        action: nil
+                    )
+                ]
+            )
+            self.present(alert!, animated: true)
+            
+        } else {
+            self.dismiss(animated: true) {
+                print("[NewWorkout] dismissed")
+            }
+        }
+    }
+    
+    override func addMapViewWithConstraints() {
+        super.addMapViewWithConstraints()
+        self.view.sendSubviewToBack(blurView)
+    }
+    
+    func displayBuilderFailureError() {
+        DispatchQueue.main.async {
+            self.displayError(withMessage: LS["NewWorkoutViewController.WorkoutBuilder.Error"]
+            )
+        }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    @objc func userInteractedWithMap(_ recognizer: UIGestureRecognizer) {
+        if recognizer.state == .ended {
+            self.userMovedMap = true
+        }
+    }
+    
+    // MARK: - Layout
+    
+    private func prepareLayout() {
         self.view.backgroundColor = .clear
         
         // MARK: adding views to superview
@@ -147,7 +216,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
         self.view.addSubview(typeView)
         self.view.addSubview(recenterButton)
         
-        let speedIndication = UserPreferences.usePaceForSpeedDisplay.value ? paceView : speedView
+        let speedIndication = UserPreferences.speedMeasurementType.safeValue.isPaceUnit ? paceView : speedView
         
         // MARK: adding views to statsView
         self.containerView.addSubview(distanceView)
@@ -202,160 +271,78 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
         }
     }
     
-    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        if self.presentedViewController == nil {
-            self.builder.actOnDismiss()
-        }
-        super.dismiss(animated: flag, completion: completion)
-    }
+    // MARK: - Bindings
     
-    func didUpdate(distanceMeasurement: NSMeasurement) {
-        self.distanceView.value = distanceMeasurement
-    }
+    private let disposeBag = DisposeBag()
     
-    func didUpdate(durationMeasurement: NSMeasurement) {
-        self.durationView.value = durationMeasurement
-    }
+    private let suggestNewStatusRelay = PublishRelay<WorkoutBuilder.Status>()
+    private lazy var workoutTypeRelay = BehaviorRelay<Workout.WorkoutType>(value: self.initialWorkoutType)
     
-    func didUpdate(speedMeasurement: NSMeasurement, rolling: Bool) {
-        self.speedView.value = speedMeasurement
-    }
-    
-    func didUpdate(energyMeasurement: NSMeasurement) {
-        self.caloriesView.value = energyMeasurement
-    }
-    
-    func didUpdate(paceMeasurement: RelativeMeasurement, rolling: Bool) {
-        self.paceView.value = paceMeasurement
-    }
-    
-    func didUpdate(status: WorkoutBuilder.Status) {
-        self.readinessIndicatorView.status = status
-        self.actionButton.transition(to: status)
+    private func prepareBindings() {
         
-        if status.isActiveStatus {
-            self.isModalInPresentation = true
-        } else {
-            self.isModalInPresentation = false
-        }
-    }
-    
-    func didUpdate(currentLocation location: CLLocation, force: Bool) {
-        if !userMovedMap {
-            let camera = MKMapCamera(lookingAtCenter: location.coordinate, fromDistance: 200, pitch: 0, heading: location.course)
-            self.mapView?.setCamera(camera, animated: !force)
-        }
-    }
-    
-    func didUpdate(routeData: [CLLocation]) {
-        let coordinates = routeData.map { (location) -> CLLocationCoordinate2D in
-            return location.coordinate
-        }
-        let overlayReference = routeOverlay
-        self.routeOverlay = MKPolyline(coordinates: coordinates, count: routeData.count)
-        self.mapView?.addOverlay(routeOverlay!, level: .aboveRoads)
-        if let overlay = overlayReference {
-            self.mapView?.removeOverlay(overlay)
-        }
-    }
-    
-    func didUpdate(uiUpdatesSuspended: Bool) {
-        if uiUpdatesSuspended {
-            mapView?.removeFromSuperview()
-        } else if let mapView = self.mapView, !view.subviews.contains(mapView) {
-            self.addMapViewWithConstraints()
-        }
-    }
-    
-    func didInformOfInsufficientLocationPermission() {
-        self.displayOpenSettingsAlert(
-            withTitle: LS["Error"],
-            message: LS["Setup.Permission.Location.Error"]
+        liveStats.distance.drive(distanceView.rx.valueString).disposed(by: disposeBag)
+        liveStats.duration.drive(durationView.rx.valueString).disposed(by: disposeBag)
+        liveStats.speed.drive(speedView.rx.valueString).disposed(by: disposeBag)
+        liveStats.burnedEnergy.drive(caloriesView.rx.valueString).disposed(by: disposeBag)
+        liveStats.status.drive(statusBinder).disposed(by: disposeBag)
+        liveStats.status.drive(statusRelay).disposed(by: disposeBag)
+        liveStats.currentLocation.drive(locationBinder).disposed(by: disposeBag)
+        liveStats.locations.drive(routeBinder).disposed(by: disposeBag)
+        liveStats.insufficientPermission.drive(insufficientPermissionBinder).disposed(by: disposeBag)
+        
+        let input = WorkoutBuilder.Input(
+            workoutType: workoutTypeRelay.asObservable(),
+            statusSuggestion: suggestNewStatusRelay.asObservable()
         )
-    }
-    
-    @objc func displayIndicationAlert() {
-        if self.readinessIndicatorView.status == .waiting {
-            let alert = UIAlertController(
-                title: LS["NewWorkoutViewController.WaitingAlert.Title"],
-                message: LS["NewWorkoutViewController.WaitingAlert.Message"],
-                preferredStyle: .alert,
-                options: [
-                    (
-                        title: LS["Okay"],
-                        style: .default,
-                        action: nil
-                    )
-                ]
-            )
-            self.present(alert, animated: true)
-        }
-    }
-    
-    @objc override func close() {
+        _ = builder.tranform(input)
         
-        if builder.status.isActiveStatus {
+    }
+    
+    private let statusRelay = BehaviorRelay(value: WorkoutBuilder.Status.waiting)
+    
+    private var statusBinder: Binder<WorkoutBuilder.Status> {
+        Binder(self) { `self`, status in
+            self.readinessIndicatorView.status = status
+            self.actionButton.transition(to: status)
             
-            var alert: UIAlertController?
-            alert = UIAlertController(
-                title: LS["NewWorkoutViewController.Cancel.Error.Recording.Title"],
-                message: LS["NewWorkoutViewController.Cancel.Error.Recording.Message"],
-                preferredStyle: .alert,
-                options: [
-                    (
-                        title: LS["NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording"],
-                        style: .destructive,
-                        action: { _ in
-                            self.builder.finish(shouldProvideCompletionActions: false) { (success) in
-                                if success {
-                                    alert?.dismiss(animated: true) {
-                                        self.dismiss(animated: true) {
-                                            print("[NewWorkout] dismissed after saving")
-                                        }
-                                    }
-                                } else {
-                                    self.displayBuilderFailureError()
-                                    print("[NewWorkout] stop tracking failed")
-                                }
-                            }
-                        }
-                    ),
-                    (
-                        title: LS["Continue"],
-                        style: .cancel,
-                        action: nil
-                    )
-                ]
-            )
-            self.present(alert!, animated: true)
-            
-        } else {
-            self.dismiss(animated: true) {
-                print("[NewWorkout] dismissed")
+            if status.isActiveStatus {
+                self.isModalInPresentation = true
+            } else {
+                self.isModalInPresentation = false
             }
         }
     }
     
-    override func addMapViewWithConstraints() {
-        super.addMapViewWithConstraints()
-        self.view.sendSubviewToBack(blurView)
+    private var locationBinder: Binder<TempWorkoutRouteDataSample?> {
+        Binder(self) { `self`, sample in
+            guard let location = sample?.clLocation else { return }
+            if !self.userMovedMap {
+                let camera = MKMapCamera(lookingAtCenter: location.coordinate, fromDistance: 200, pitch: 0, heading: location.course)
+                self.mapView?.setCamera(camera, animated: true)
+            } else {
+                self.lastLocationWhileNotCentered = location
+            }
+        }
     }
     
-    func displayBuilderFailureError() {
-        DispatchQueue.main.async {
-            self.displayError(withMessage: LS["NewWorkoutViewController.WorkoutBuilder.Error"]
+    private var routeBinder: Binder<[TempWorkoutRouteDataSample]> {
+        Binder(self) { `self`, routeSamples in
+            let coordinates = routeSamples.map { $0.clLocationCoordinate2D }
+            let newOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
+            self.mapView?.addOverlay(newOverlay, level: .aboveRoads)
+            if let oldOverlay = self.routeOverlay {
+                self.mapView?.removeOverlay(oldOverlay)
+            }
+            self.routeOverlay = newOverlay
+        }
+    }
+    
+    private var insufficientPermissionBinder: Binder<String> {
+        Binder(self) { `self`, message in
+            self.displayOpenSettingsAlert(
+                withTitle: LS["Error"],
+                message: message
             )
         }
     }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
-    @objc func userInteractedWithMap(_ recognizer: UIGestureRecognizer) {
-        if recognizer.state == .ended {
-            self.userMovedMap = true
-        }
-    }
-    
 }

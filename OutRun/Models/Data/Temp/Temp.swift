@@ -116,21 +116,6 @@ extension TempWorkoutRouteDataSample: ORWorkoutRouteDataSampleInterface {
         )
     }
     
-    var clLocation: CLLocation {
-        CLLocation(
-            coordinate: CLLocationCoordinate2D(
-                latitude: self.latitude,
-                longitude: self.longitude
-            ),
-            altitude: self.altitude,
-            horizontalAccuracy: self.horizontalAccuracy,
-            verticalAccuracy: self.verticalAccuracy,
-            course: self.direction,
-            speed: self.speed,
-            timestamp: self.timestamp
-        )
-    }
-    
 }
 
 public typealias TempWorkoutHeartRateDataSample = TempV4.WorkoutHeartRateDataSample

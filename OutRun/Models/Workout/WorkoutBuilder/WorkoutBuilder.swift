@@ -25,6 +25,13 @@ import RxRelay
 
 public class WorkoutBuilder: ApplicationStateObserver {
     
+    // MARK: Public
+    
+    /// The current status of this `WorkoutBuilder` instance.
+    public var status: Status { statusRelay.value }
+    
+    // MARK: - Internal
+    
     /// Indicating the type and last time when a workout was paused by the user or the app.
     private var lastPause: (type: WorkoutPause.WorkoutPauseType, startingAt: Date)?
     /// Holds a reference to the types of workout builder components still preparing to record.
@@ -143,6 +150,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
     public struct Input {
         let readiness: Observable<WorkoutBuilderComponentStatus>?
         let insufficientPermission: Observable<String>?
+        let workoutType: Observable<Workout.WorkoutType>?
         let statusSuggestion: Observable<WorkoutBuilder.Status>?
         let distance: Observable<Double>?
         let steps: Observable<Int?>?
@@ -151,9 +159,10 @@ public class WorkoutBuilder: ApplicationStateObserver {
         let altitudes: Observable<[AltitudeManagement.AltitudeSample]>?
         let heartRates: Observable<[TempWorkoutHeartRateDataSample]>?
 
-        public init(readiness: Observable<WorkoutBuilderComponentStatus>? = nil, insufficientPermission: Observable<String>? = nil, statusSuggestion: Observable<Status>? = nil, distance: Observable<Double>? = nil, steps: Observable<Int?>? = nil, currentLocation: Observable<TempWorkoutRouteDataSample?>? = nil, locations: Observable<[TempWorkoutRouteDataSample]>? = nil, altitudes: Observable<[AltitudeManagement.AltitudeSample]>? = nil, heartRates: Observable<[TempWorkoutHeartRateDataSample]>? = nil) {
+        public init(readiness: Observable<WorkoutBuilderComponentStatus>? = nil, insufficientPermission: Observable<String>? = nil, workoutType: Observable<Workout.WorkoutType>? = nil, statusSuggestion: Observable<Status>? = nil, distance: Observable<Double>? = nil, steps: Observable<Int?>? = nil, currentLocation: Observable<TempWorkoutRouteDataSample?>? = nil, locations: Observable<[TempWorkoutRouteDataSample]>? = nil, altitudes: Observable<[AltitudeManagement.AltitudeSample]>? = nil, heartRates: Observable<[TempWorkoutHeartRateDataSample]>? = nil) {
             self.readiness = readiness
             self.insufficientPermission = insufficientPermission
+            self.workoutType = workoutType
             self.statusSuggestion = statusSuggestion
             self.distance = distance
             self.steps = steps

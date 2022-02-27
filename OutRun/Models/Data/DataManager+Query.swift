@@ -194,33 +194,42 @@ extension DataManager {
         completion: @escaping (WorkoutStatsSeries<Bool, MetricType, SampleType.Element>) -> Void
     ) where SampleType.Element: ORSampleInterface {
         
-        guard let workout: Workout = queryObject(from: workout) else {
-            completion([])
-            return
-        }
-        
-        var objects: [WorkoutStatsSeries<Bool, MetricType, SampleType.Element>.RawSection] = []
-        var currentlyPaused = false
-        var currentData = [(timestamp: TimeInterval, value: MetricType, object: SampleType.Element?)]()
-        
-        for sample in workout[keyPath: samplesPath] {
+        dataStack.perform(asynchronous: { (transaction) -> WorkoutStatsSeries<Bool, MetricType, SampleType.Element> in
             
-            if currentlyPaused != workout.pauses.contains(where: { $0.contains(sample.timestamp) }) {
-                if !currentData.isEmpty {
-                    objects.append((currentlyPaused, currentData))
-                }
-                currentlyPaused.toggle()
+            guard let workout: Workout = queryObject(from: workout, transaction: transaction) else {
+                return []
             }
-            currentData.append((
-                timestamp: sample.timestamp.distance(to: workout.startDate),
-                value: sample[keyPath: metricPath],
-                object: includeSamples ? sample : nil
-            ))
+            
+            var objects: [WorkoutStatsSeries<Bool, MetricType, SampleType.Element>.RawSection] = []
+            var currentlyPaused = false
+            var currentData = [(timestamp: TimeInterval, value: MetricType, object: SampleType.Element?)]()
+            
+            for sample in workout[keyPath: samplesPath] {
+                
+                if currentlyPaused != workout.pauses.contains(where: { $0.contains(sample.timestamp) }) {
+                    if !currentData.isEmpty {
+                        objects.append((currentlyPaused, currentData))
+                    }
+                    currentlyPaused.toggle()
+                }
+                currentData.append((
+                    timestamp: sample.timestamp.distance(to: workout.startDate),
+                    value: sample[keyPath: metricPath],
+                    object: includeSamples ? sample : nil
+                ))
+            }
+            
+            objects.append((currentlyPaused, currentData))
+            return WorkoutStatsSeries(sections: objects)
+            
+        }) { (result) in
+            switch result {
+            case .success(let series):
+                completion(series)
+            case .failure:
+                completion([])
+            }
         }
-        
-        objects.append((currentlyPaused, currentData))
-        let series = WorkoutStatsSeries(sections: objects)
-        completion(series)
     }
     
     // MARK: - Backup
@@ -303,13 +312,13 @@ extension DataManager {
      - note: This function should only be used on the main thread
      */
     public static func queryExistingHealthUUIDs() -> [UUID] {
-        
-        return (try? dataStack.queryAttributes(
-            From<Workout>()
-                .select(NSDictionary.self, .attribute(\._healthKitUUID))
-                .where(\._healthKitUUID != nil))
-                .compactMap { $0.first?.value as? UUID }
-        ) ?? []
+        threadSafeSyncReturn {
+            return (try? dataStack.queryAttributes(
+                From<Workout>()
+                    .select(NSDictionary.self, .attribute(\._healthKitUUID))
+                    .where(\._healthKitUUID != nil))
+                        .compactMap { $0.first?.value as? UUID }
+            ) ?? []
+        }
     }
-    
 }

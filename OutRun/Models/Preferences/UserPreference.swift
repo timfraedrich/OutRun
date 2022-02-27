@@ -48,7 +48,11 @@ public enum UserPreference {
             get {
                 _Base.typeSafeGet(for: key) ?? defaultValue
             } set {
-                _Base.set(newValue, for: key)
+                if newValue == nil {
+                    _Base.remove(for: key)
+                } else {
+                    _Base.set(newValue, for: key)
+                }
                 publisher.accept(newValue)
             }
         }

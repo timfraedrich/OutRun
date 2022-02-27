@@ -19,6 +19,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 /// A protocol to unify the saving and processing of route data samples connected to a workout.
 public protocol ORWorkoutRouteDataSampleInterface: ORSampleInterface {
@@ -49,5 +50,28 @@ public extension ORWorkoutRouteDataSampleInterface {
     var verticalAccuracy: Double { throwOnAccess() }
     var speed: Double { throwOnAccess() }
     var direction: Double { throwOnAccess() }
+    
+}
+
+public extension ORWorkoutRouteDataSampleInterface {
+    
+    var clLocation: CLLocation {
+        CLLocation(
+            coordinate: self.clLocationCoordinate2D,
+            altitude: self.altitude,
+            horizontalAccuracy: self.horizontalAccuracy,
+            verticalAccuracy: self.verticalAccuracy,
+            course: self.direction,
+            speed: self.speed,
+            timestamp: self.timestamp
+        )
+    }
+    
+    var clLocationCoordinate2D: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(
+            latitude: self.latitude,
+            longitude: self.longitude
+        )
+    }
     
 }

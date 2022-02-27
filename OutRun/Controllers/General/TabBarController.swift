@@ -125,7 +125,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
             let alert = WorkoutTypeAlert(
                 action: { (type) in
                     let controller = NewWorkoutViewController()
-                    controller.type = type
+                    controller.initialWorkoutType = type
                     self.showDetailViewController(controller, sender: self)
                 },
                 manualAction: {

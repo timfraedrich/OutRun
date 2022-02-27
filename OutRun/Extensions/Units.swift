@@ -82,6 +82,15 @@ public extension UnitSpeed {
         }
     }
     
+    var isPaceUnit: Bool {
+        for unit in [UnitLength.standardUnit, UnitLength.standardBigUnit, UnitLength.standardBigLocalUnit, UnitLength.standardSmallLocalUnit] {
+            if let unit = unit as? UnitLength, self == UnitSpeed.minutesPerLengthUnit(from: unit) {
+                return true
+            }
+        }
+        return false
+    }
+    
 }
 
 extension UnitSpeed: StandardizedUnit {
