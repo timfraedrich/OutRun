@@ -104,7 +104,7 @@ class SettingsModel {
                     textFieldPlaceholder: LS["Settings.Name"],
                     textFieldValueAction: { (newValue, setting) in
                         UserPreferences.name.value = newValue
-                }
+                    }
                 ),
                 TextInputSetting(
                     title: { LS["Settings.Weight"] },
@@ -128,7 +128,7 @@ class SettingsModel {
                         setting.refresh()
                         
                         if UserPreferences.synchronizeWeightWithAppleHealth.value {
-                                
+                            
                             let measurement = NSMeasurement(doubleValue: weightValue, unit: UnitMass.kilograms)
                             HealthStoreManager.saveWeight(for: measurement) { (error) in
                                 if error != nil {
@@ -239,13 +239,6 @@ class SettingsModel {
                     }()
                 ),
                 SwitchSetting(
-                    title: LS["Settings.DisplayPace"],
-                    isSwitchOn: UserPreferences.usePaceForSpeedDisplay.value,
-                    switchToggleAction: { (newValue, setting) in
-                        UserPreferences.usePaceForSpeedDisplay.value = newValue
-                    }
-                ),
-                SwitchSetting(
                     title: LS["Settings.DisplayRollingSpeed"],
                     isSwitchOn: UserPreferences.displayRollingSpeed.value,
                     switchToggleAction: { (newValue, setting) in
@@ -277,18 +270,16 @@ class SettingsModel {
                             UserPreferences.synchronizeWorkoutsWithAppleHealth.value = newValue
                             setting.refresh()
                         }
-                    ),
-                    SwitchSetting(
-                        title: LS["Settings.SynchronizeWeightWithAppleHealth"],
-                        isSwitchOn: UserPreferences.synchronizeWeightWithAppleHealth.value,
-                        switchToggleAction: { (newValue, setting) in
-                            if newValue {
-                                PermissionManager.standard.checkHealthPermission { (success) in
-                                    UserPreferences.synchronizeWeightWithAppleHealth.value = success
-                                    HealthStoreManager.setupObservers()
-                                }
-                            } else {
-                                UserPreferences.synchronizeWeightWithAppleHealth.value = newValue
+                    }
+                ),
+                SwitchSetting(
+                    title: LS["Settings.SynchronizeWeightWithAppleHealth"],
+                    isSwitchOn: UserPreferences.synchronizeWeightWithAppleHealth.value,
+                    switchToggleAction: { (newValue, setting) in
+                        if newValue {
+                            PermissionManager.standard.checkHealthPermission { (success) in
+                                UserPreferences.synchronizeWeightWithAppleHealth.value = success
+                                HealthStoreManager.setupObservers()
                             }
                         } else {
                             UserPreferences.synchronizeWeightWithAppleHealth.value = newValue
@@ -307,58 +298,33 @@ class SettingsModel {
                         } else {
                             UserPreferences.automaticallyImportNewHealthWorkouts.value = newValue
                         }
-                    ),
-                    TitleSetting(
-                        title: LS["Settings.ImportFromAppleHealth"],
-                        doesRedirect: true,
-                        selectAction: { (setting, controller, cell) in
-                            
-                            let importController = HKImportListController()
-                            controller.show(importController, sender: controller)
-                            
-                        }
-                    ),
-                    ButtonSetting(
-                        title: { return LS["Settings.SyncAll"] },
-                        selectAction: { (setting, controller, cell) in
-                            _ = controller.startLoading {
-                                HealthStoreManager.saveAllWorkouts { error, allSavedAlready in
-                                    controller.endLoading {
-                                        if error == nil && allSavedAlready {
-                                            controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.AllSyncedAlready"])
-                                        } else {
-                                            controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.Success"])
-                                        }
+                    }
+                ),
+                TitleSetting(
+                    title: LS["Settings.ImportFromAppleHealth"],
+                    doesRedirect: true,
+                    selectAction: { (setting, controller, cell) in
+                        
+                        let importController = HKImportListController()
+                        controller.show(importController, sender: controller)
+                        
+                    }
+                ),
+                ButtonSetting(
+                    title: { return LS["Settings.SyncAll"] },
+                    selectAction: { (setting, controller, cell) in
+                        _ = controller.startLoading {
+                            HealthStoreManager.saveAllWorkouts { error, allSavedAlready in
+                                controller.endLoading {
+                                    if error == nil && allSavedAlready {
+                                        controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.AllSyncedAlready"])
+                                    } else if error == nil {
+                                        controller.displayInfoAlert(withMessage: LS["Settings.SyncAll.Success"])
                                     } else {
                                         controller.displayError(withMessage: LS["Settings.SyncAll.Error"])
                                     }
                                 }
                             }
-                        },
-                        isEnabled: { UserPreferences.synchronizeWorkoutsWithAppleHealth.value }
-                    )
-                ]
-            ),
-            SettingSection(
-                title: LS["Settings.DataPreferences"],
-                message: LS["Settings.DataPreferences.Message"],
-                settings: [
-                    TitleSetting(
-                        title: LS["Settings.CreateBackup"],
-                        doesRedirect: true,
-                        selectAction: { (_, controller, _) in
-                            ExportManager.displayShareAlert(for: .all, on: controller)
-                        }
-                    ),
-                    TitleSetting(
-                        title: LS["Settings.ImportBackupData"],
-                        doesRedirect: true,
-                        selectAction: { (setting, controller, cell) in
-                            let picker = UIDocumentPickerViewController(documentTypes: ["de.tadris.orbup"], in: .import)
-                            let delegate = BackupDocumentPickerDelegate(on: controller)
-                            picker.modalPresentationStyle = .formSheet
-                            picker.delegate = delegate
-                            controller.present(picker, animated: true)
                         }
                     },
                     isEnabled: { UserPreferences.synchronizeWorkoutsWithAppleHealth.value }
@@ -378,7 +344,7 @@ class SettingsModel {
                     title: LS["Settings.CreateBackup"],
                     doesRedirect: true,
                     selectAction: { (setting, controller, cell) in
-                        ShareManager.exportBackupAlertAction(controller: controller)
+                        ExportManager.displayShareAlert(for: .all, on: controller)
                     }
                 ),
                 TitleSetting(
@@ -386,9 +352,9 @@ class SettingsModel {
                     doesRedirect: true,
                     selectAction: { (setting, controller, cell) in
                         let picker = UIDocumentPickerViewController(documentTypes: ["de.tadris.orbup"], in: .import)
+                        let delegate = BackupDocumentPickerDelegate(on: controller)
                         picker.modalPresentationStyle = .formSheet
-                        picker.delegate = BackupDocumentPickerDelegate.standard
-                        BackupDocumentPickerDelegate.standard.currentController = controller
+                        picker.delegate = delegate
                         controller.present(picker, animated: true)
                     }
                 ),
@@ -529,7 +495,7 @@ class SettingsModel {
                         let policyController = PolicyViewController()
                         policyController.type = .termsOfService
                         controller.showDetailViewController(policyController, sender: controller)
-                }
+                    }
                 ),
                 TitleSetting(
                     title: LS["Settings.PrivacyPolicy"],
@@ -539,7 +505,7 @@ class SettingsModel {
                         let policyController = PolicyViewController()
                         policyController.type = .privacyPolicy
                         controller.showDetailViewController(policyController, sender: controller)
-                }
+                    }
                 ),
                 TitleSubTitleSetting(
                     title: LS["Settings.Email"],
@@ -555,7 +521,7 @@ class SettingsModel {
                                 controller.displayError(withMessage: LS["Settings.Email.Error"])
                             }
                         }
-                })
+                    })
             ]
         )
     }

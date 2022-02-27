@@ -23,7 +23,7 @@ import MapKit
 import RxCocoa
 import RxSwift
 
-class WorkoutMapViewController: MapViewControllerWithConatinerView {
+class WorkoutMapViewController: MapViewControllerWithContainerView {
     
     private let disposeBag = DisposeBag()
     

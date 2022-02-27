@@ -58,6 +58,7 @@
 		225AC6A6243F9CC3008D493D /* HealthStoreManager+Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A5243F9CC3008D493D /* HealthStoreManager+Observer.swift */; };
 		225AC6A8243FA088008D493D /* HealthStoreManager+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */; };
 		225BB02F2716E61000478E09 /* StatsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225BB02E2716E61000478E09 /* StatsHelper.swift */; };
+		225DE55627CC2ABF00033DF8 /* MapViewControllerWithContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DE55527CC2ABF00033DF8 /* MapViewControllerWithContainerView.swift */; };
 		22623BFF22DFB811004065C6 /* WorkoutListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22623BFE22DFB811004065C6 /* WorkoutListHeader.swift */; };
 		22623C0122DFBB71004065C6 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22623C0022DFBB71004065C6 /* Sequence.swift */; };
 		226404B5237617560018F1F8 /* HKImportListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226404B4237617560018F1F8 /* HKImportListController.swift */; };
@@ -112,7 +113,6 @@
 		22A6ED6923E18119006A3DD0 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A6ED6823E18119006A3DD0 /* TabBarController.swift */; };
 		22A6ED6B23E18271006A3DD0 /* PlaceholderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A6ED6A23E18271006A3DD0 /* PlaceholderController.swift */; };
 		22AB2FB1233CA201002EF0DE /* WorkoutMapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB0233CA201002EF0DE /* WorkoutMapViewDelegate.swift */; };
-		22AB2FB3233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB2233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift */; };
 		22AB2FB5233CC849002EF0DE /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB4233CC849002EF0DE /* UISegmentedControl.swift */; };
 		22AB2FB7233CC925002EF0DE /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB2FB6233CC925002EF0DE /* UIImage.swift */; };
 		22ACA7C324D97703005DFB4E /* ORBaseBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ACA7C224D97703005DFB4E /* ORBaseBanner.swift */; };
@@ -260,6 +260,7 @@
 		225AC6A5243F9CC3008D493D /* HealthStoreManager+Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Observer.swift"; sourceTree = "<group>"; };
 		225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Query.swift"; sourceTree = "<group>"; };
 		225BB02E2716E61000478E09 /* StatsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsHelper.swift; sourceTree = "<group>"; };
+		225DE55527CC2ABF00033DF8 /* MapViewControllerWithContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewControllerWithContainerView.swift; sourceTree = "<group>"; };
 		22623BFE22DFB811004065C6 /* WorkoutListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListHeader.swift; sourceTree = "<group>"; };
 		22623C0022DFBB71004065C6 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		226404B4237617560018F1F8 /* HKImportListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKImportListController.swift; sourceTree = "<group>"; };
@@ -326,7 +327,6 @@
 		22A7EC7225508F6A00474B2B /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22A7EC7325508F6A00474B2B /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Changelog.strings; sourceTree = "<group>"; };
 		22AB2FB0233CA201002EF0DE /* WorkoutMapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapViewDelegate.swift; sourceTree = "<group>"; };
-		22AB2FB2233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewControllerWithContainerView.swift; sourceTree = "<group>"; };
 		22AB2FB4233CC849002EF0DE /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
 		22AB2FB6233CC925002EF0DE /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		22ACA7C224D97703005DFB4E /* ORBaseBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORBaseBanner.swift; sourceTree = "<group>"; };
@@ -367,7 +367,6 @@
 		22C1107F24532C69009ACE81 /* WorkoutMapImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageRequest.swift; sourceTree = "<group>"; };
 		22C1108124532DBA009ACE81 /* WorkoutMapImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageSize.swift; sourceTree = "<group>"; };
 		22C1108324532E36009ACE81 /* WorkoutMapImageQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageQueue.swift; sourceTree = "<group>"; };
-		22CA683427176E0900ED5E47 /* ORSampleInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ORSampleInterface.swift; sourceTree = "<group>"; };
 		22C2EAE8257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		22C2EAE9257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22C2EAEA257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Changelog.strings; sourceTree = "<group>"; };
@@ -380,6 +379,7 @@
 		22C2EAF1257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		22C2EAF2257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22C2EAF3257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22CA683427176E0900ED5E47 /* ORSampleInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ORSampleInterface.swift; sourceTree = "<group>"; };
 		22CBB4492303F8D000DDA2E0 /* WorkoutHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeaderView.swift; sourceTree = "<group>"; };
 		22CBB44C2303FF5100DDA2E0 /* DistanceStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceStatsView.swift; sourceTree = "<group>"; };
 		22CBB44E2303FF6800DDA2E0 /* TimeStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStatsView.swift; sourceTree = "<group>"; };
@@ -459,7 +459,7 @@
 				22713F0622DE58C100EF50FB /* NavigationController.swift */,
 				22A6ED6823E18119006A3DD0 /* TabBarController.swift */,
 				2248A45122F08E66000F82BB /* DetailViewController.swift */,
-				22AB2FB2233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift */,
+				225DE55527CC2ABF00033DF8 /* MapViewControllerWithContainerView.swift */,
 				22A6ED6A23E18271006A3DD0 /* PlaceholderController.swift */,
 				2226A3BC240BF9AD00FF7A94 /* ProgressViewController.swift */,
 				22DDD319243B935C00FA262E /* ChangeLogViewController.swift */,
@@ -1212,7 +1212,6 @@
 				22ACA7C324D97703005DFB4E /* ORBaseBanner.swift in Sources */,
 				2204A1DD255ACB1100906CFE /* ORDataType.swift in Sources */,
 				222632AA24B24B980017517E /* ClearSettingsViewController.swift in Sources */,
-				22AB2FB3233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift in Sources */,
 				22B1DD8B253F90FD0093822B /* ORIntermediateDataModel.swift in Sources */,
 				225AC6A8243FA088008D493D /* HealthStoreManager+Query.swift in Sources */,
 				22CBB4552303FF8F00DDA2E0 /* RouteStatsView.swift in Sources */,
@@ -1339,6 +1338,7 @@
 				221436B72442368E0010D82B /* NewWorkoutControllerActionButton.swift in Sources */,
 				22D299352402B37E00F3F6B8 /* PickerSetting.swift in Sources */,
 				22BD1F42247463DF00415A06 /* ApplicationState.swift in Sources */,
+				225DE55627CC2ABF00033DF8 /* MapViewControllerWithContainerView.swift in Sources */,
 				22558387242E80FA0043432F /* PolicyManager.swift in Sources */,
 				225AC6A2243F2700008D493D /* WorkoutEvent.swift in Sources */,
 				229FF49E235C32D000EA220E /* SelectionSetting.swift in Sources */,

@@ -24,7 +24,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class NewWorkoutViewController: MapViewControllerWithConatinerView, UIGestureRecognizerDelegate {
+class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRecognizerDelegate {
     
     private let builder = WorkoutBuilder()
     private lazy var autoPauseDetection = AutoPauseDetection(builder: builder)
