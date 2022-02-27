@@ -1,0 +1,22 @@
+//
+//  Changelog.strings
+//
+//  OutRun
+//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+
+"Changelog_1.2.2" = "Efter modtagelse af en varemærkeklage kaldes \"OutRun\" nu \"Out-Run\" i Storbritannien. Denne opdatering har det primære formål at tackle denne klage.\n\nDerudover indeholder den følgende fejlrettelser:\n\n- nogle gange blev data ikke tilføjet korrekt til Apple Health, dette skulle nu løses\n- stigende og faldende højde blev byttet i statistikken, nu er de i den rigtige rækkefølge\n- der har været nogle stilproblemer på grund af ændringer i iOS 14, alt skal se normalt ud igen\n\nOg for denne opdatering ændrede intet mere sig.\n\nHvis du har spørgsmål eller feedback, er du velkommen til at kontakte outrun@tadris.de.\n\nTim, udvikleren.";
+"Changelog_1.3" = "Der er gået lang tid siden sidste opdatering, og mens jeg stadig arbejder på nogle mere grundlæggende ændringer i OutRun, markerer denne opdatering også et stort skridt i udviklingen af denne app.\n\nJeg er meget glad for at kunne meddele, at OutRun nu vil være tilgængelig på ELLEVE yderligere sprog, hvilket bringer os til i alt tretten, og alt dette takket være et par rigtig gode mennesker, der findes i dette projekts README inde i kildekodedepotet.\n \nBortset fra det har ikke meget ændret sig i denne version:\n\n- Der er en ny fane til bidragsydere i indstillingerne, der viser alle de personer, der har føjet betydeligt til OutRun\n- og kildekodeknappen blev flyttet fra 'Support' til 'App-Info'\n\nOg det er det.\n\nHvis du har spørgsmål eller feedback, er du velkommen til at kontakte outrun@tadris.de.\n\nTim, udvikleren.";

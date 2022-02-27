@@ -67,6 +67,8 @@
 		226E9A4B23F01E6E00992815 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E9A4A23F01E6E00992815 /* Date.swift */; };
 		22713F0522DE291F00EF50FB /* WorkoutListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22713F0422DE291F00EF50FB /* WorkoutListCell.swift */; };
 		22713F0722DE58C100EF50FB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22713F0622DE58C100EF50FB /* NavigationController.swift */; };
+		22718E3825925E2D00708D3B /* contribution.json in Resources */ = {isa = PBXBuildFile; fileRef = 22718E3725925E2D00708D3B /* contribution.json */; };
+		22718E3B2592665200708D3B /* Contribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22718E3A2592665200708D3B /* Contribution.swift */; };
 		2273943C233BF6EA00176A07 /* WorkoutMapImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2273943B233BF6EA00176A07 /* WorkoutMapImageManager.swift */; };
 		2273943E233BF81800176A07 /* CustomImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2273943D233BF81800176A07 /* CustomImageCache.swift */; };
 		22739440233BFE2E00176A07 /* WorkoutMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2273943F233BFE2E00176A07 /* WorkoutMapViewController.swift */; };
@@ -199,6 +201,12 @@
 /* Begin PBXFileReference section */
 		22003DFB23A9655100EBCD05 /* SetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		22003DFD23A9779D00EBCD05 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		22005D1325B468D1004BE8E9 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22005D1425B468D2004BE8E9 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22005D1525B468D2004BE8E9 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22005D1625B469E7004BE8E9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22005D1725B469E7004BE8E9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22005D1825B469E7004BE8E9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Changelog.strings; sourceTree = "<group>"; };
 		22015318231663E300BD79AF /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		2204A1DC255ACB1100906CFE /* ORDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORDataType.swift; sourceTree = "<group>"; };
 		2207B75523128F8A00BA71B5 /* CLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
@@ -261,6 +269,8 @@
 		226E9A4A23F01E6E00992815 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		22713F0422DE291F00EF50FB /* WorkoutListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListCell.swift; sourceTree = "<group>"; };
 		22713F0622DE58C100EF50FB /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		22718E3725925E2D00708D3B /* contribution.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = contribution.json; sourceTree = "<group>"; };
+		22718E3A2592665200708D3B /* Contribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contribution.swift; sourceTree = "<group>"; };
 		2273943B233BF6EA00176A07 /* WorkoutMapImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageManager.swift; sourceTree = "<group>"; };
 		2273943D233BF81800176A07 /* CustomImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageCache.swift; sourceTree = "<group>"; };
 		2273943F233BFE2E00176A07 /* WorkoutMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapViewController.swift; sourceTree = "<group>"; };
@@ -303,6 +313,18 @@
 		22A5D03525C1ABDA00C30786 /* TempV4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempV4.swift; sourceTree = "<group>"; };
 		22A6ED6823E18119006A3DD0 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		22A6ED6A23E18271006A3DD0 /* PlaceholderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderController.swift; sourceTree = "<group>"; };
+		22A7EC6825508F4400474B2B /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22A7EC6925508F4400474B2B /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22A7EC6A25508F4400474B2B /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22A7EC6B25508F4F00474B2B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22A7EC6C25508F4F00474B2B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22A7EC6D25508F4F00474B2B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22A7EC6E25508F6000474B2B /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22A7EC6F25508F6000474B2B /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22A7EC7025508F6000474B2B /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22A7EC7125508F6A00474B2B /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22A7EC7225508F6A00474B2B /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22A7EC7325508F6A00474B2B /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Changelog.strings; sourceTree = "<group>"; };
 		22AB2FB0233CA201002EF0DE /* WorkoutMapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapViewDelegate.swift; sourceTree = "<group>"; };
 		22AB2FB2233CBDA4002EF0DE /* MapViewControllerWithContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewControllerWithContainerView.swift; sourceTree = "<group>"; };
 		22AB2FB4233CC849002EF0DE /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
@@ -346,6 +368,18 @@
 		22C1108124532DBA009ACE81 /* WorkoutMapImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageSize.swift; sourceTree = "<group>"; };
 		22C1108324532E36009ACE81 /* WorkoutMapImageQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMapImageQueue.swift; sourceTree = "<group>"; };
 		22CA683427176E0900ED5E47 /* ORSampleInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ORSampleInterface.swift; sourceTree = "<group>"; };
+		22C2EAE8257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAE9257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAEA257FA10F00DBBBBB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22C2EAEB257FA12400DBBBBB /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAEC257FA12400DBBBBB /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAED257FA12400DBBBBB /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22C2EAEE257FA12D00DBBBBB /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAEF257FA12D00DBBBBB /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAF0257FA12E00DBBBBB /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Changelog.strings; sourceTree = "<group>"; };
+		22C2EAF1257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22C2EAF2257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22C2EAF3257FA13700DBBBBB /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Changelog.strings; sourceTree = "<group>"; };
 		22CBB4492303F8D000DDA2E0 /* WorkoutHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeaderView.swift; sourceTree = "<group>"; };
 		22CBB44C2303FF5100DDA2E0 /* DistanceStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceStatsView.swift; sourceTree = "<group>"; };
 		22CBB44E2303FF6800DDA2E0 /* TimeStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStatsView.swift; sourceTree = "<group>"; };
@@ -696,6 +730,7 @@
 				2291863C23679AA300929885 /* InfoPlist.strings */,
 				22B1F14222D61D0F00C02973 /* Localizable.strings */,
 				22FAB3B6253BAC450040CBB1 /* Changelog.strings */,
+				22718E3725925E2D00708D3B /* contribution.json */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -767,6 +802,7 @@
 				22BD1F41247463DF00415A06 /* ApplicationState.swift */,
 				22877541234A73060078CE12 /* LS.swift */,
 				2227C643234B6EF400CFE31A /* Config.swift */,
+				22718E3A2592665200708D3B /* Contribution.swift */,
 				2213137C23B4110700881806 /* PermissionManager.swift */,
 				222073AB24DB3EBC00E19DFC /* ORBanner */,
 				22834F792542239800057FEB /* HelperMethods.swift */,
@@ -1083,6 +1119,16 @@
 				"en-GB",
 				Base,
 				fr,
+				ca,
+				es,
+				nl,
+				da,
+				it,
+				sv,
+				fi,
+				cs,
+				hr,
+				pl,
 			);
 			mainGroup = 22B6CF4A22CA0814002D2FB0;
 			productRefGroup = 22B6CF5422CA0814002D2FB0 /* Products */;
@@ -1104,6 +1150,7 @@
 				22FAB3B4253BAC450040CBB1 /* Changelog.strings in Resources */,
 				22B1F14922D6246800C02973 /* Localizable.strings in Resources */,
 				22B6CF6122CA0815002D2FB0 /* Assets.xcassets in Resources */,
+				22718E3825925E2D00708D3B /* contribution.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1303,6 +1350,7 @@
 				227ED84E240FAC460083EE96 /* EditWorkoutView.swift in Sources */,
 				22E8969A23E6E6E40074D2BB /* Temp.swift in Sources */,
 				22B1DDA4253F9D650093822B /* WorkoutPause.swift in Sources */,
+				22718E3B2592665200708D3B /* Contribution.swift in Sources */,
 				229FF498235C200F00EA220E /* SettingSection.swift in Sources */,
 				22B1DD83253F90700093822B /* SQLiteStore.swift in Sources */,
 				226E66C722DAF87D0015ECD4 /* WorkoutViewController.swift in Sources */,
@@ -1345,6 +1393,16 @@
 				222A775D25273F6700317E5A /* en-GB */,
 				22FAB3A625336B600040CBB1 /* en */,
 				22FAB3AA253B9C690040CBB1 /* fr */,
+				22A7EC6825508F4400474B2B /* ca */,
+				22A7EC6B25508F4F00474B2B /* es */,
+				22A7EC6E25508F6000474B2B /* nl */,
+				22A7EC7125508F6A00474B2B /* da */,
+				22C2EAE8257FA10F00DBBBBB /* it */,
+				22C2EAEB257FA12400DBBBBB /* sv */,
+				22C2EAEE257FA12D00DBBBBB /* fi */,
+				22C2EAF1257FA13700DBBBBB /* cs */,
+				22005D1325B468D1004BE8E9 /* hr */,
+				22005D1625B469E7004BE8E9 /* pl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1363,6 +1421,16 @@
 				22B1F14622D61D3300C02973 /* de */,
 				222A775F2527401E00317E5A /* Base */,
 				22FAB3AB253B9C690040CBB1 /* fr */,
+				22A7EC6925508F4400474B2B /* ca */,
+				22A7EC6C25508F4F00474B2B /* es */,
+				22A7EC6F25508F6000474B2B /* nl */,
+				22A7EC7225508F6A00474B2B /* da */,
+				22C2EAE9257FA10F00DBBBBB /* it */,
+				22C2EAEC257FA12400DBBBBB /* sv */,
+				22C2EAEF257FA12D00DBBBBB /* fi */,
+				22C2EAF2257FA13700DBBBBB /* cs */,
+				22005D1425B468D2004BE8E9 /* hr */,
+				22005D1725B469E7004BE8E9 /* pl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1373,6 +1441,16 @@
 				22FAB3B5253BAC450040CBB1 /* en */,
 				22FAB3B8253BAC4A0040CBB1 /* fr */,
 				22FAB3B9253BAC4B0040CBB1 /* de */,
+				22A7EC6A25508F4400474B2B /* ca */,
+				22A7EC6D25508F4F00474B2B /* es */,
+				22A7EC7025508F6000474B2B /* nl */,
+				22A7EC7325508F6A00474B2B /* da */,
+				22C2EAEA257FA10F00DBBBBB /* it */,
+				22C2EAED257FA12400DBBBBB /* sv */,
+				22C2EAF0257FA12E00DBBBBB /* fi */,
+				22C2EAF3257FA13700DBBBBB /* cs */,
+				22005D1525B468D2004BE8E9 /* hr */,
+				22005D1825B469E7004BE8E9 /* pl */,
 			);
 			name = Changelog.strings;
 			sourceTree = "<group>";
@@ -1508,14 +1586,14 @@
 				CODE_SIGN_ENTITLEMENTS = OutRun/OutRun.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				INFOPLIST_FILE = "$(SRCROOT)/OutRun/Support Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1532,14 +1610,14 @@
 				CODE_SIGN_ENTITLEMENTS = OutRun/OutRun.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				INFOPLIST_FILE = "$(SRCROOT)/OutRun/Support Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

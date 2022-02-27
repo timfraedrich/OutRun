@@ -202,6 +202,10 @@
 "Settings.SourceCode" = "View Source Code";
 "Settings.SourceCode.Error" = "The link could not be opened due to the system rejecting it.";
 "Settings.AppInfo" = "App Info";
+"Settings.Contribution" = "Contribution";
+"Settings.Contribution.Maintainers" = "Maintainers";
+"Settings.Contribution.CodeContributors" = "Code Contributors";
+"Settings.Contribution.Translators" = "Translators";
 "Settings.AppVersion" = "App Version";
 "Settings.ReleaseStatus" = "Release Status";
 "ImportList.Title" = "Import";
@@ -251,7 +255,7 @@
 "Setup.Permission.Motion.Message" = "For data like the steps you take during a workout this app needs access to motion and fitness data.";
 "Setup.Permission.Motion.Error" = "You have not given this app permission to motion and fitness related sensor data. To change that and give the app access to data like steps, you have to enable access in iOS Settings manually. Do you want to open Settings?";
 "TerminationBackup.SaveAlert.Title" = "Rescued Workout";
-"TerminationBackup.SaveAlert.Message" = "The last time you have been recoding a workout you seem to have quit this app without saving it. We have been able to save the data before the app was terminated, do you want to save it now?";
+"TerminationBackup.SaveAlert.Message" = "The last time you have been recording a workout you seem to have quit this app without saving it. We have been able to save the data before the app was terminated, do you want to save it now?";
 "TerminationBackup.Save.Error" = "We are sorry, the workout could not be saved.";
 "TerminationBackup.Save.Health.Error" = "For some Reason the Workout could not be saved to Apple Health.";
 "TerminationBackup.LostAlert.Title" = "Lost Workout";
@@ -277,3 +281,4 @@
 "ExportManager.BackupError" = "The app failed to create a backup, please contact the support.";
 "ExportManager.GPXError" = "The app failed to create a GPX file, please contact the support.";
 "Changelog" = "Changelog";
+"Keep" = "Keep";

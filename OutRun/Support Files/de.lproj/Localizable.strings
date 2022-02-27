@@ -1,5 +1,5 @@
 //
-//  LocalizedStrings.strings
+//  Localizable.strings
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,7 +20,6 @@
 
 "TabBar.Timeline" = "Verlauf";
 "TabBar.Settings" = "Einstellungen";
-
 "OutRun" = "OutRun";
 "Cancel" = "Abbrechen";
 "Save" = "Speichern";
@@ -50,7 +49,6 @@
 "Stop" = "Stopp";
 "All" = "Alle";
 "NotSet" = "Nicht gesetzt";
-
 "NewWorkoutViewController.Cancel.Error.Recording.Title" = "Ein Workout wird gerade aufgezeichnet";
 "NewWorkoutViewController.Cancel.Error.Recording.Message" = "Du kannst dieses Fenster nicht schließen, solange ein Workout aufgezeichnet wird. Willst du die Aufzeichnung stoppen?";
 "NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording" = "Aufzeichnung stoppen";
@@ -254,11 +252,11 @@
 "Setup.Permission.Motion.Message" = "Für Daten wie Schritte, die du während eines Workouts machst, braucht diese App Zugang zu Bewegungs- und Fitnessdaten.";
 "Setup.Permission.Motion.Error" = "Du hast uns scheinbar keinen Zugang auf deine Bewegungs- und Fitnessdaten gegeben. Um das zu ändern, musst du die Berechtigung manuell in den iOS-Einstellungen geben. Willst du die Einstellungen öffnen?";
 "TerminationBackup.SaveAlert.Title" = "Workout gerettet";
-"TerminationBackup.SaveAlert.Message" = "Letztes mal als du ein Workout aufgezeichnet hast, hast du scheinbar die App geschlossen ohne zu speichern. Wir haben die Workoutdaten vor dem Beenden der App retten können, willst du das Workout speichern?";
+"TerminationBackup.SaveAlert.Message" = "Letztes mal als du ein Workout aufgezeichnet hast, hast du scheinbar die App geschlossen ohne zu speichern. Wir konnten die Daten speichern, bevor die App beendet wurde. Willst du das Workout speichern?";
 "TerminationBackup.Save.Error" = "Es tut uns leid, aber das Workout konnte nicht gespeichert werden.";
 "TerminationBackup.Save.Health.Error" = "Aus irgendeinem Grund konnte das Workout nicht in Apple Health gespeichert werden.";
 "TerminationBackup.LostAlert.Title" = "Workout verloren";
-"TerminationBackup.LostAlert.Message" = "Scheinbar hast du bei der letzten Aufzeichnung eines Workouts die App beendet, wir haben es nicht geschafft diese Daten zu retten.";
+"TerminationBackup.LostAlert.Message" = "Scheinbar hast du bei der letzten Aufzeichnung eines Workouts die Anwendung beendet, wir haben es nicht geschafft diese Daten zu retten.";
 "Today" = "Heute";
 "Yesterday" = "Gestern";
 "EditWorkoutController.SaveWorkout.Error" = "Das Workout konnte nicht gespeichert werden, bitte versuche es später erneut.";
@@ -281,3 +279,7 @@
 "WorkoutShareAlert.Message" = "Bitte wähle aus den folgenden Optionen, wie dein Workout exportiert werden soll. Solltest du eine Export-Option vermissen, melde dich doch und schlage diese vor.";
 "WorkoutShareAlert.Title" = "Exportiere dein Workout";
 "WorkoutList.Filter.HasRoute" = "Hat Route";
+"Settings.Contribution.CodeContributors" = "Entwickler";
+"Settings.Contribution.Maintainers" = "Hauptentwickler";
+"Settings.Contribution" = "Mitwirkungen";
+"Settings.Contribution.Translators" = "Übersetzer";

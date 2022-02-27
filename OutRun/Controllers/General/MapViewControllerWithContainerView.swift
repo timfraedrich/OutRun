@@ -21,7 +21,7 @@
 import UIKit
 import MapKit
 
-class MapViewControllerWithConatinerView: DetailViewController {
+class MapViewControllerWithContainerView: DetailViewController {
     
     var mapView: MKMapView? = {
         let mapView = MKMapView()
@@ -34,6 +34,7 @@ class MapViewControllerWithConatinerView: DetailViewController {
     let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .backgroundColor
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         view.layer.cornerRadius = 25
         return view
     }()
@@ -51,7 +52,7 @@ class MapViewControllerWithConatinerView: DetailViewController {
             if let mapView = self.mapView {
                 make.top.equalTo(mapView.snp.bottom).offset(-25)
             }
-            make.bottom.equalToSuperview().offset(25)
+            make.bottom.equalToSuperview()
             make.left.equalTo(safeLayout.snp.left)
             make.right.equalTo(safeLayout.snp.right)
         }

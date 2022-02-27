@@ -46,7 +46,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         
         let settingsController = SettingsViewController()
         settingsController.settingsModelClosure = {
-            return SettingsModel.custom
+            return SettingsModel.main
         }
         let settings = NavigationController(rootViewController: settingsController)
         let settingsTabBarItem = UITabBarItem(
@@ -70,9 +70,15 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         
         self.tabBar.addSubview(addButton)
         
+        var bottomOffset: CGFloat = 5.0
+                
+        if let window = UIApplication.shared.keyWindow {
+            bottomOffset += window.safeAreaInsets.bottom
+        }
+        
         addButton.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.centerY.equalTo(self.tabBar.safeAreaInsets.top).offset(20)
+            make.bottom.equalToSuperview().offset(-bottomOffset)
             make.width.height.equalTo(58)
         }
         let plusIcon = UIImageView(image: .tabbarPlus)

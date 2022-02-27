@@ -1,0 +1,22 @@
+//
+//  Changelog.strings
+//
+//  OutRun
+//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+
+"Changelog_1.2.2" = "Després de rebre una reclamació sobre marques comercials, \"OutRun\" ara es dirà \"Out-Run\" al Regne Unit. Aquesta actualització té com a objectiu principal abordar aquesta reclamació.\n\nA més, conté les següents correccions d'errors:\n\n- de vegades les dades no s’afegien correctament a Salut d'Apple, ara s’hauria de solucionar\n- les altures ascendents i descendents es van canviar a les estadístiques, ara estan en l'ordre correcte\n- Hi ha hagut alguns problemes d'estil a causa de canvis a iOS 14, tot hauria de tornar a semblar amb normalitat\n\nI per a aquesta actualització no va canviar res més.\n\nSi teniu cap pregunta o comentari, no dubteu a posar-vos en contacte amb outrun@tadris.de.\n\nTim, el desenvolupador.";
+"Changelog_1.3" = "Ha passat força temps des de la darrera actualització i, encara que estic treballant en alguns canvis més fonamentals a OutRun, aquesta actualització també suposa un gran pas en l'evolució d'aquesta aplicació.\n\nEstic molt feliç d’anunciar que OutRun ara estarà disponible en ONZE idiomes addicionals, cosa que ens porta a un total de tretze i tot això gràcies a unes poques persones realment fantàstiques, que es poden trobar al README d’aquest projecte dins del repositori de codi font.\n\nA part d'això, no ha canviat molt en aquesta versió:\n\n- Hi ha una nova pestanya de col·laboradors a la configuració, que mostra totes les persones que s’han afegit considerablement a OutRun\n- i el botó del codi font es va moure de \"Assistència\" a \"Informació de l'aplicació\"\n\nI això és tot.\n\nSi teniu cap pregunta o comentari, no dubteu a posar-vos en contacte amb outrun@tadris.de.\n\nTim, el desenvolupador.";

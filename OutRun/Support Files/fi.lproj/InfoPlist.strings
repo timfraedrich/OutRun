@@ -1,0 +1,9 @@
+
+
+
+"NSMotionUsageDescription" = "Tämä sovellus tarvitsee liikkeisiin liittyviä seurantaominaisuuksia tietojen tallentamiseksi, kuten vaiheet harjoituksen aikana";
+"NSLocationWhenInUseUsageDescription" = "Tämä sovellus tarvitsee sijaintisi seurata liikuntaa";
+"NSLocationAlwaysUsageDescription" = "Tämä sovellus tarvitsee sijaintisi seurata liikuntaa";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Tämä sovellus tarvitsee sijaintisi seurata liikuntaa";
+"NSHealthUpdateUsageDescription" = "Tämä sovellus tarvitsee pääsyn terveystietoihisi lukeaksesi ja mahdolliset oikeat harjoitukset, jotka Tämä sovellus on rakentanut";
+"NSHealthShareUsageDescription" = "Tämä sovellus tarvitsee pääsyn terveystietoihisi tallentaaksesi tämän sovelluksen rakentamat harjoitukset";

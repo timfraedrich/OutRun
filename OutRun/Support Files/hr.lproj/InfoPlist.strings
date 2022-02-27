@@ -1,0 +1,8 @@
+
+
+"NSMotionUsageDescription" = "Za zapisivanje podataka poput broja koraka tijekom treninga, program treba mogućnosti praćenja kretanja";
+"NSHealthUpdateUsageDescription" = "Za učitavanje i moguće ispravljanje treninga koji su izrađeni s ovim programom, program treba pristup tvojim zdravstvenim podacima";
+"NSHealthShareUsageDescription" = "Za praćenje treninga koji su izrađeni s ovim programom, program treba pristup tvojim zdravstvenim podacima";
+"NSLocationWhenInUseUsageDescription" = "Za praćenje treninga, program treba tvoju lokaciju";
+"NSLocationAlwaysUsageDescription" = "Za praćenje treninga, program treba tvoju lokaciju";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Za praćenje treninga, program treba tvoju lokaciju";
