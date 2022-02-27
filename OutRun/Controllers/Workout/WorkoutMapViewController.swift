@@ -20,8 +20,12 @@
 
 import UIKit
 import MapKit
+import RxCocoa
+import RxSwift
 
-class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiagramViewDelegate {
+class WorkoutMapViewController: MapViewControllerWithConatinerView {
+    
+    private let disposeBag = DisposeBag()
     
     var workout: Workout?
     var stats: WorkoutStats?
@@ -29,7 +33,7 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
     var annotation: MKPointAnnotation?
     lazy var marker = MKMarkerAnnotationView(annotation: self.annotation, reuseIdentifier: nil)
     
-    lazy var diagramView = LabelledDiagramView(title: "", delegate: self)
+    let diagramView = LabelledDiagramView()
     
     lazy var segementedControl: UISegmentedControl = {
         let control = UISegmentedControl()
@@ -125,7 +129,11 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
         self.headline = LS["WorkoutMapController.Headline"]
         
         if let mapView = self.mapView {
-            WorkoutMapViewManager.setupRoute(forWorkout: workout, mapView: mapView, customEdgePadding: UIEdgeInsets(top: 100, left: 20, bottom: 50, right: 20)) {
+            WorkoutMapViewManager.setupRoute(
+                forWorkout: workout,
+                mapView: mapView,
+                customEdgePadding: UIEdgeInsets(top: 100, left: 20, bottom: 50, right: 20)
+            ) {
                 print("Map set up")
             }
         }
@@ -145,11 +153,17 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
             make.left.right.bottom.equalTo(containerView.safeAreaLayoutGuide).inset(spacing)
             make.top.equalTo(segementedControl.snp.bottom).offset(spacing / 2)
         }
+        
+        diagramView.rx.sampleSelected
+            .drive(didSelectSample)
+            .disposed(by: disposeBag)
     }
     
     override func close() {
         self.dismiss(animated: true)
     }
+    
+    private var diagramDisposeBag = DisposeBag()
     
     @objc func displayDiagramData(sender: UISegmentedControl) {
         
@@ -157,40 +171,45 @@ class WorkoutMapViewController: MapViewControllerWithConatinerView, LabelledDiag
             return
         }
         
+        diagramDisposeBag = DisposeBag()
+        
         switch sender.selectedSegmentIndex {
         case 0:
-            stats.queryAltitudes { (success, series) in
-                if let series = series {
-                    let convertedSections = series.convertedForChartView(includeSamples: true, yUnit: UserPreferences.altitudeMeasurementType.safeValue)
-                    self.diagramView.title = LS["WorkoutStats.Altitude"]
-                    self.diagramView.setData(for: convertedSections)
-                }
-            }
+            
+            stats.altitudeOverTime
+                .drive(diagramView.rx.data())
+                .disposed(by: diagramDisposeBag)
+            
+            Driver.just(LS["WorkoutStats.Altitude"])
+                .drive(diagramView.rx.title)
+                .disposed(by: diagramDisposeBag)
+            
         case 1:
-            stats.querySpeeds { (success, series) in
-                if let series = series {
-                    let convertedSections = series.convertedForChartView(includeSamples: true, yUnit: UserPreferences.speedMeasurementType.safeValue)
-                    self.diagramView.title = LS["WorkoutStats.Speed"]
-                    self.diagramView.setData(for: convertedSections)
-                }
-            }
+            
+            stats.speedOverTime
+                .drive(diagramView.rx.data())
+                .disposed(by: diagramDisposeBag)
+            
+            Driver.just(LS["WorkoutStats.Speed"])
+                .drive(diagramView.rx.title)
+                .disposed(by: diagramDisposeBag)
+            
         default:
             break
         }
         
     }
     
-    func didSelect(sample: TempWorkoutSeriesDataSampleType) {
-        DispatchQueue.main.async {
-            if let sample = sample as? TempWorkoutRouteDataSample {
-                if self.annotation == nil {
-                    self.annotation = MKPointAnnotation()
-                    self.mapView?.addAnnotation(self.annotation!)
-                }
-                let latitude = sample.latitude
-                let longitude = sample.longitude
-                self.annotation!.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    private var didSelectSample: Binder<ORSampleInterface> {
+        Binder(self) { `self`, sample in
+            guard let sample = sample as? ORWorkoutRouteDataSampleInterface else { return }
+            if self.annotation == nil {
+                self.annotation = MKPointAnnotation()
+                self.mapView?.addAnnotation(self.annotation!)
             }
+            let latitude = sample.latitude
+            let longitude = sample.longitude
+            self.annotation?.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         }
     }
     
