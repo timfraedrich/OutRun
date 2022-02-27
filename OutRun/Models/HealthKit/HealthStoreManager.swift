@@ -340,7 +340,7 @@ class HealthStoreManager {
      - parameter workout: the workout which is supposed to be updated in the health store
      - parameter completion: the closure being performed upon completion indicating if an error occured
      */
-    static func updateHealthWorkout(for workout: ORWorkoutInterface, completion: (HealthError?) -> Void) {
+    static func updateHealthWorkout(for workout: ORWorkoutInterface, completion: @escaping (HealthError?) -> Void) {
         
         let completion = safeClosure(from: completion)
         
