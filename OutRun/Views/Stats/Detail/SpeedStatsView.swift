@@ -19,38 +19,27 @@
 //
 
 import UIKit
+import RxSwift
 
 class SpeedStatsView: StatsView {
     
-    let speedChart: LabelledDiagramView?
+    private let disposeBag = DisposeBag()
     
     init(stats: WorkoutStats) {
         
-        var statViews = [StatView]()
+        let avgSpeedView = LabelledDataView(title: LS["WorkoutStats.AverageSpeed"])
+        let topSpeedView = LabelledDataView(title: LS["WorkoutStats.TopSpeed"])
+        let speedChart = LabelledDiagramView(title: LS["WorkoutStats.SpeedOverTime"])
         
-        let avgSpeedView = LabelledDataView(title: LS["WorkoutStats.AverageSpeed"], measurement: stats.averageSpeed)
-        statViews.append(avgSpeedView)
-        
+        stats.averageSpeed.drive(avgSpeedView.rx.valueString).disposed(by: disposeBag)
         if stats.hasRouteSamples {
-            let topSpeedView = LabelledDataView(title: LS["WorkoutStats.TopSpeed"], measurement: stats.topSpeed)
-            self.speedChart = LabelledDiagramView(title: LS["WorkoutStats.SpeedOverTime"])
-            statViews.append(contentsOf: [topSpeedView, speedChart!])
-        } else {
-            self.speedChart = nil
+            stats.topSpeed.drive(topSpeedView.rx.valueString).disposed(by: disposeBag)
+            stats.speedOverTime.drive(speedChart.rx.data()).disposed(by: disposeBag)
         }
-        self.speedChart?.disableSelection()
+        
+        let statViews: [StatView] = [avgSpeedView] + (stats.hasRouteSamples ? [topSpeedView, speedChart] : [])
         
         super.init(title: LS["WorkoutStats.Speed"], statViews: statViews)
-        
-        if stats.hasRouteSamples {
-            stats.querySpeeds { (success, series) in
-                if let series = series {
-                    let convertedSections = series.convertedForChartView(includeSamples: false, yUnit: UserPreferences.speedMeasurementType.safeValue)
-                    self.speedChart?.setData(for: convertedSections)
-                }
-            }
-        }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

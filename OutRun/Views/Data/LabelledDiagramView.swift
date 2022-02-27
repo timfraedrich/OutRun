@@ -28,6 +28,7 @@ class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
     // MARK: - Layout
     
     fileprivate let titleLabel = UILabel(
+        text: "",
         textColor: .secondaryColor,
         font: .systemFont(ofSize: 14, weight: .bold)
     )
@@ -54,7 +55,6 @@ class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
     
     private func prepareLayout() {
         
-        titleLabel.text = ""
         diagram.delegate = self
         
         addSubview(titleLabel)
@@ -73,9 +73,10 @@ class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
     
     // MARK: - Logic
     
-    init() {
+    init(title: String = "") {
         super.init(frame: .zero)
         prepareLayout()
+        self.titleLabel.text = title
     }
     
     required init?(coder aDecoder: NSCoder) {
