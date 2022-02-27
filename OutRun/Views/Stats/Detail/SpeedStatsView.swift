@@ -20,6 +20,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class SpeedStatsView: StatsView {
     
@@ -35,6 +36,7 @@ class SpeedStatsView: StatsView {
         if stats.hasRouteSamples {
             stats.topSpeed.drive(topSpeedView.rx.valueString).disposed(by: disposeBag)
             stats.speedOverTime.drive(speedChart.rx.data()).disposed(by: disposeBag)
+            Driver.just(true).drive(speedChart.rx.isDisabled).disposed(by: disposeBag)
         }
         
         let statViews: [StatView] = [avgSpeedView] + (stats.hasRouteSamples ? [topSpeedView, speedChart] : [])
