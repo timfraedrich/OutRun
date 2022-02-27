@@ -95,7 +95,7 @@ enum WorkoutMapImageManager {
         DataManager.asyncLocationCoordinatesQuery(
             for: ORPrimitive<Workout>(uuid: uuid),
             completion: { error, coordinates in
-                if error != nil {
+                if error == nil {
                     
                     processQueue.async {
                         

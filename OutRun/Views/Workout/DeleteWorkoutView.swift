@@ -70,9 +70,9 @@ class DeleteWorkoutView: WorkoutActionView {
                                             title: LS["Delete"],
                                             style: .destructive,
                                             action: { _ in
-                                                HealthStoreManager.deleteHealthWorkout(fromWorkout: self.workout) { (success) in
+                                                HealthStoreManager.deleteHealthWorkout(for: self.workout) { (error) in
                                                     
-                                                    if !success {
+                                                    if error != nil {
                                                         self.controller.displayError(withMessage: LS["WorkoutDeletion.Error.AppleHealth.Message"], dismissAction: { _ in
                                                             deleteWorkout()
                                                         })

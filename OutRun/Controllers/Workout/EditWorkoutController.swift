@@ -206,7 +206,7 @@ class EditWorkoutController: SettingsViewController {
                 
                 if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
                     HealthStoreManager.updateHealthWorkout(for: workout) { error in
-                        if error == nil {
+                        if error != nil {
                             if let uuid = workout.healthKitUUID {
                                 DataManager.removeHealthReference(reference: uuid)
                             }
@@ -248,7 +248,7 @@ class EditWorkoutController: SettingsViewController {
                 
                 if UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
                     HealthStoreManager.saveHealthWorkout(for: workout) { error, healthWorkout in
-                        if error == nil {
+                        if error != nil {
                             self.displayError(withMessage: LS["EditWorkoutController.SaveWorkout.AppleHealth.Error"]) { (_) in
                                 self.close()
                             }

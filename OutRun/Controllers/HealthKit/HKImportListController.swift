@@ -148,7 +148,7 @@ class HKImportListController: UITableViewController {
             
             HealthStoreManager.queryUnsyncedHealthWorkouts { error, objects in
                 self.endLoading {
-                    if error != nil {
+                    if error == nil {
                         self.queriedObjects = objects
                         self.tableView.reloadData()
                         self.importButton.isEnabled = !objects.isEmpty
