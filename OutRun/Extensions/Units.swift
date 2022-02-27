@@ -20,7 +20,7 @@
 
 import Foundation
 
-protocol StandardizedUnit {
+protocol StandardizedUnit: Unit {
     
     static var standardUnit: Unit { get }
     static var standardBigUnit: Unit { get }

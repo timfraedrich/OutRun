@@ -79,7 +79,7 @@ class WorkoutStats {
         self.steps = WorkoutStats.just(Double(workout.steps), unit: UnitCount.count)
         self.ascendingAltitude = WorkoutStats.just(workout.ascend, unit: UnitLength.meters, type: .altitude)
         self.descendingAltitude = WorkoutStats.just(workout.descend, unit: UnitLength.meters, type: .altitude)
-        self.altitudeOverTime = WorkoutStats.series(from: workout, samples: \Workout._routeData.value, metric: \WorkoutRouteDataSample._altitude.value)
+        self.altitudeOverTime = WorkoutStats.unitSeries(from: workout, samples: \Workout._routeData.value, metric: \WorkoutRouteDataSample._altitude.value, desiredUnit: UserPreferences.altitudeMeasurementType.safeValue)
         
         self.startDate = .just(workout.startDate)
         self.endDate = .just(workout.endDate)
@@ -88,7 +88,7 @@ class WorkoutStats {
         
         self.averageSpeed = WorkoutStats.just(workout.distance / workout.activeDuration, unit: UnitSpeed.metersPerSecond)
         self.topSpeed = WorkoutStats.just(workout.routeData.max{ $0.speed > $1.speed }?.speed, unit: UnitSpeed.metersPerSecond)
-        self.speedOverTime = WorkoutStats.series(from: workout, samples: \Workout._routeData, metric: \WorkoutRouteDataSample._speed.value)
+        self.speedOverTime = WorkoutStats.unitSeries(from: workout, samples: \Workout._routeData, metric: \WorkoutRouteDataSample._speed.value, desiredUnit: UserPreferences.speedMeasurementType.safeValue)
         
         self.burnedEnergy = WorkoutStats.just(workout.burnedEnergy, unit: UnitEnergy.standardUnit)
         self.burnedEnergyPerMinute = WorkoutStats.just((workout.burnedEnergy ?? 0) / (workout.activeDuration / 60), unit: UnitPower.energyPerMinute(from: .kilocalories)) // find better solution
@@ -138,6 +138,7 @@ class WorkoutStats {
      - parameter workout: the workout object used to query samples from
      - parameter samples: a keypath pointing to the samples of which the matric should be taken
      - parameter metric: a keypath pointing to the metric of the before specified sample
+     - returns: a driver publishing the stats series
      */
     private static func series <SampleType: Collection, MetricType: Any> (
         from workout: ORWorkoutInterface,
@@ -145,7 +146,7 @@ class WorkoutStats {
         metric metricPath: KeyPath<SampleType.Element, MetricType>
     ) -> Driver<WorkoutStatsSeries<Bool, MetricType, SampleType.Element>> where SampleType.Element: ORSampleInterface {
         
-        Observable.create { observer in
+        Observable<WorkoutStatsSeries<Bool, MetricType, SampleType.Element>>.create { observer in
             
             var disposed = false
             
@@ -165,5 +166,32 @@ class WorkoutStats {
             }
             
         }.asDriver(onErrorJustReturn: [])
+    }
+    
+    /**
+     Queries a series of a specific `Double` metric converted to a desired unit from specified samples relative to the start date of the workout and grouped by if they are paused or not.
+     - parameter workout: the workout object used to query samples from
+     - parameter samples: a keypath pointing to the samples of which the matric should be taken
+     - parameter metric: a keypath pointing to the metric of the before specified sample
+     - parameter desiredUnit: the unit the metric should be converted to
+     - returns: a driver publishing the stats series
+     */
+    private static func unitSeries <SampleType: Collection, UnitType: StandardizedUnit> (
+        from workout: ORWorkoutInterface,
+        samples samplesPath: KeyPath<Workout, SampleType>,
+        metric metricPath: KeyPath<SampleType.Element, Double>,
+        desiredUnit: UnitType
+    ) -> Driver<WorkoutStatsSeries<Bool, Double, SampleType.Element>> where SampleType.Element: ORSampleInterface {
+        
+        series(from: workout, samples: samplesPath, metric: metricPath)
+            .map { series in
+                return WorkoutStatsSeries(sections: series.sections.map { (sectionValue, data) in
+                    let convertedData = data.map { (timestamp, value, object) -> (TimeInterval, Double, SampleType.Element?) in
+                        let convertedValue = NSMeasurement(doubleValue: value, unit: UnitType.standardUnit).converting(to: desiredUnit).value
+                        return (timestamp, convertedValue, object)
+                    }
+                    return (sectionValue, convertedData)
+                })
+            }
     }
 }
