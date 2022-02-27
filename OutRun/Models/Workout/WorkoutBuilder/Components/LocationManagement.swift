@@ -137,6 +137,7 @@ public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationMa
     // MARK: WorkoutBuilderComponent
     
     public required init(builder: WorkoutBuilder) {
+        super.init()
         self.bind(builder: builder)
         prepare()
     }

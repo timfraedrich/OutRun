@@ -207,7 +207,7 @@ class SetupViewController: UIViewController {
         UserPreferences.automaticallyImportNewHealthWorkouts.value = self.shouldAutoImportWorkouts
         
         UserPreferences.isSetUp.value = true
-        HealthObserver.setupObservers()
+        HealthStoreManager.setupObservers()
         AppDelegate.lastVersion.value = Config.version
         
     }
