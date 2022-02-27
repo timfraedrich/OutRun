@@ -129,7 +129,6 @@
 		22B1F13F22D61CF400C02973 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B1F14122D61CF400C02973 /* LaunchScreen.storyboard */; };
 		22B1F14922D6246800C02973 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22B1F14222D61D0F00C02973 /* Localizable.strings */; };
 		22B2A89D230D298F00EF8558 /* LabelledDiagramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */; };
-		22B2A89F230D2FC800EF8558 /* LabelledTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */; };
 		22B2A8A1230D331000EF8558 /* WorkoutStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B2A8A0230D331000EF8558 /* WorkoutStats.swift */; };
 		22B6CF5722CA0814002D2FB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B6CF5622CA0814002D2FB0 /* AppDelegate.swift */; };
 		22B6CF6122CA0815002D2FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22B6CF6022CA0815002D2FB0 /* Assets.xcassets */; };
@@ -323,7 +322,6 @@
 		22B1DDA3253F9D650093822B /* WorkoutPause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPause.swift; sourceTree = "<group>"; };
 		22B1F14622D61D3300C02973 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledDiagramView.swift; sourceTree = "<group>"; };
-		22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledTimeView.swift; sourceTree = "<group>"; };
 		22B2A8A0230D331000EF8558 /* WorkoutStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStats.swift; sourceTree = "<group>"; };
 		22B6CF5322CA0814002D2FB0 /* OutRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22B6CF5622CA0814002D2FB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -923,7 +921,6 @@
 			isa = PBXGroup;
 			children = (
 				22B6CF7B22CA1675002D2FB0 /* LabelledDataView.swift */,
-				22B2A89E230D2FC800EF8558 /* LabelledTimeView.swift */,
 				22B2A89C230D298F00EF8558 /* LabelledDiagramView.swift */,
 				22558388242E94AE0043432F /* LoadingView.swift */,
 			);
@@ -1290,7 +1287,6 @@
 				22FEA0B124CDDFF80007CA9C /* CustomByteFormatting.swift in Sources */,
 				22B6CF7022CA08C9002D2FB0 /* WorkoutBuilder.swift in Sources */,
 				22713F0722DE58C100EF50FB /* NavigationController.swift in Sources */,
-				22B2A89F230D2FC800EF8558 /* LabelledTimeView.swift in Sources */,
 				221436BB244356A90010D82B /* Array.swift in Sources */,
 				22CBE0D4244864970009D9A7 /* SmallStatView.swift in Sources */,
 				221436B72442368E0010D82B /* NewWorkoutControllerActionButton.swift in Sources */,

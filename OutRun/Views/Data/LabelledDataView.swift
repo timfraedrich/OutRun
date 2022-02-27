@@ -19,61 +19,61 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class LabelledDataView: UIView, SmallStatView {
     
-    var value: NSMeasurement? {
-        didSet {
-            self.setData(for: self.value)
-        }
-    }
-    
-    private let headlineLabel = UILabel(
+    fileprivate let titleLabel = UILabel(
+        text: "",
         textColor: .secondaryColor,
         font: .systemFont(ofSize: 14, weight: .bold)
     )
     
-    private let informationLabel = UILabel(
+    fileprivate let dataLabel = UILabel(
         text: "--",
         font: .systemFont(ofSize: 25, weight: .heavy)
     )
     
-    init(title: String, measurement: NSMeasurement?, isAltitude: Bool = false) {
+    init(title: String = "") {
         super.init(frame: .zero)
         
-        self.headlineLabel.text = title.uppercased()
-        self.setData(for: measurement, isAltitude: isAltitude)
+        self.titleLabel.text = title
         
-        self.addSubview(headlineLabel)
-        self.addSubview(informationLabel)
+        self.addSubview(titleLabel)
+        self.addSubview(dataLabel)
         
-        headlineLabel.snp.makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
-        informationLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.headlineLabel.snp.bottom)
+        dataLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(titleLabel.snp.bottom)
             make.left.equalToSuperview()
             make.bottom.equalToSuperview()
             make.right.equalToSuperview()
         }
     }
     
-    private func setData(for measurement: NSMeasurement?, isAltitude: Bool = false) {
-        
-        guard let newValue = measurement else {
-            self.informationLabel.text = "--"
-            return
-        }
-        
-        let type = CustomMeasurementFormatting.FormattingMeasurementType(for: newValue.unit, asClock: true, asAltitude: isAltitude)
-        self.informationLabel.text = CustomMeasurementFormatting.string(forMeasurement: newValue, type: type, rounding: .twoDigits)
-        
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+}
+
+extension Reactive where Base: LabelledDataView {
+    
+    var title: Binder<String?> {
+        Binder(base) { base, title in
+            base.titleLabel.text = title ?? ""
+        }
+    }
+    
+    var valueString: Binder<String?> {
+        Binder(base) { base, value in
+            base.dataLabel.text = value ?? "--"
+        }
     }
     
 }
