@@ -90,7 +90,7 @@ public enum OutRunV4: ORDataModel {
     static let migrationChain: [ORDataModel.Type] = [OutRunV1.self, OutRunV2.self, OutRunV3.self, OutRunV3to4.self, OutRunV4.self]
     
     // MARK: Workout
-    public class Workout: CoreStoreObject, ORDataType {
+    public final class Workout: CoreStoreObject, ORDataType {
         
         static let identifier = "Workout"
         
@@ -122,7 +122,7 @@ public enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutPause
-    public class WorkoutPause: CoreStoreObject, ORDataType {
+    public final class WorkoutPause: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutPause"
         
@@ -136,7 +136,7 @@ public enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutEvent
-    public class WorkoutEvent: CoreStoreObject, ORDataType {
+    public final class WorkoutEvent: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutEvent"
         
@@ -149,7 +149,7 @@ public enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutRouteDataSample
-    public class WorkoutRouteDataSample: CoreStoreObject, ORDataType {
+    public final class WorkoutRouteDataSample: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutRouteDataSample"
         
@@ -168,7 +168,7 @@ public enum OutRunV4: ORDataModel {
     }
     
     // MARK: WorkoutHeartRateDataSample
-    public class WorkoutHeartRateDataSample: CoreStoreObject, ORDataType {
+    public final class WorkoutHeartRateDataSample: CoreStoreObject, ORDataType {
         
         static let identifier = "WorkoutHeartRateSample"
         
@@ -181,7 +181,7 @@ public enum OutRunV4: ORDataModel {
     }
     
     // MARK: Event
-    public class Event: CoreStoreObject, ORDataType {
+    public final class Event: CoreStoreObject, ORDataType {
         
         static let identifier = "Event"
         
