@@ -42,7 +42,7 @@ class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
         chart.rightAxis.labelTextColor = .secondaryColor
         chart.xAxis.labelTextColor = .secondaryColor
         
-        chart.chartDescription?.enabled = false
+        chart.chartDescription.enabled = false
         chart.xAxis.labelPosition = .bottom
         chart.leftAxis.enabled = false
         chart.legend.enabled = false
@@ -108,7 +108,7 @@ extension Reactive where Base: LabelledDiagramView {
         Binder(base) { base, data in
             let dataSets: [LineChartDataSet] = data.sections.map { (highlighted, sectionData) in
                 let values = sectionData.map { ChartDataEntry(x: $0, y: $1, data: $2) }
-                let set = LineChartDataSet(entries: values, label: nil)
+                let set = LineChartDataSet(entries: values, label: "")
                 set.setColor((highlighted ? UIColor.accentColor : .gray) as NSUIColor)
                 set.lineWidth = 3
                 set.drawCirclesEnabled = false
