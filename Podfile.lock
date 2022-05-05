@@ -1,17 +1,19 @@
 PODS:
   - Cache (6.0.0)
-  - Charts (3.6.0):
-    - Charts/Core (= 3.6.0)
-  - Charts/Core (3.6.0)
-  - CoreGPX (0.8.1)
-  - CoreStore (7.3.0)
-  - RxCocoa (6.2.0):
-    - RxRelay (= 6.2.0)
-    - RxSwift (= 6.2.0)
-  - RxRelay (6.2.0):
-    - RxSwift (= 6.2.0)
-  - RxSwift (6.2.0)
-  - SnapKit (5.0.1)
+  - Charts (4.0.2):
+    - Charts/Core (= 4.0.2)
+  - Charts/Core (4.0.2):
+    - SwiftAlgorithms (~> 1.0)
+  - CoreGPX (0.9.0)
+  - CoreStore (8.1.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
+  - SnapKit (5.6.0)
+  - SwiftAlgorithms (1.0.0)
 
 DEPENDENCIES:
   - Cache
@@ -32,17 +34,19 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - SnapKit
+    - SwiftAlgorithms
 
 SPEC CHECKSUMS:
   Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
-  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
-  CoreGPX: 2d1deecae3c99674bb1165935c350f9c0e54e5ab
-  CoreStore: d9c0ab3095dea26504bf76e6d8a042a4cb071e35
-  RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
-  RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
-  RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
-  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  Charts: cfa4e911e6dc289582c2fe011a0e87c03d96727f
+  CoreGPX: 1381c8c47428c3a6bcac2f93d25ca1c5e3525811
+  CoreStore: 497ade3103f1ffd95d09c2658f9008d10c7d3082
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
 
-PODFILE CHECKSUM: d6a0d09c0296417f665a7367a5f54dac81f0131d
+PODFILE CHECKSUM: af441dedf0e7d89d1f5b0e9cb8ac8666e959dbec
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3

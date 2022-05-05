@@ -1,20 +1,36 @@
 project 'OutRun.xcodeproj'
-
-# Uncomment the next line to define a global platform for your project
 platform :ios, '13.0'
 
-target 'OutRun' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
+def app_pods
+  pod 'Cache'
+end
 
-  # Pods for OutRun
+def ui_pods
   pod 'SnapKit'
   pod 'Charts'
+  # pod 'JTAppleCalendar'
+end
+
+def data_pods
   pod 'CoreStore'
   pod 'CoreGPX'
-  pod 'Cache'
+end
+
+def rx_pods
   pod 'RxSwift'
   pod 'RxCocoa'
-  # pod 'JTAppleCalendar'
+end
+
+target 'OutRun' do
+  use_frameworks!
+
+  app_pods
+  ui_pods
+  rx_pods
+  data_pods
+
+  target 'UnitTests' do
+    inherit! :search_paths
+  end
 
 end
