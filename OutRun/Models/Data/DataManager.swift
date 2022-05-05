@@ -72,7 +72,7 @@ struct DataManager {
         let currentVersion = storage.currentORModel(from: dataModel.migrationChain)
         var relevants = dataModel.migrationChain.filter { (type) -> Bool in
             // relevent version should include the final type (dataModel) and all intermediate models, but it is important that they are successors of current version of the storage otherwise the models might be incompatible
-            (type.self is ORIntermediateDataModel.Type || type == dataModel) && (currentVersion != nil ? type.isSuccessor(to: currentVersion!) || type == currentVersion : true)
+            type == dataModel || (currentVersion != nil ? type is ORIntermediateDataModel && (type.isSuccessor(to: currentVersion!) || type == currentVersion) : false)
         }
             
         let destinationModel = relevants.removeFirst()
