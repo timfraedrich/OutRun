@@ -139,6 +139,9 @@ class HealthStoreManager {
             
             let workoutEvents = createWorkoutEvents(from: workout)
             
+            var metadata: [String : Any] = [HKMetadataKeyWasUserEntered : workout.isUserModified]
+            if let uuid = workout.uuid { metadata[HKMetadataKeyExternalUUID] = uuid.uuidString }
+            
             let healthWorkout = HKWorkout(
                 activityType: workout.workoutType.healthKitType,
                 start: start,
@@ -147,10 +150,7 @@ class HealthStoreManager {
                 totalEnergyBurned: calories,
                 totalDistance: distance,
                 device: HKDevice.local(),
-                metadata: [
-                    HKMetadataKeyWasUserEntered : workout.isUserModified,
-                    HKMetadataKeyExternalUUID : workout.uuid as Any
-                ]
+                metadata: metadata
             )
             
             var missingAuth = [HKObjectType]()
