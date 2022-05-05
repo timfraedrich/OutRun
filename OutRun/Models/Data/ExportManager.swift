@@ -187,7 +187,7 @@ public class ExportManager {
                 }
                 
                 let trackSegement = GPXTrackSegment()
-                trackSegement.trackpoints = trackPoints
+                trackSegement.add(trackpoints: trackPoints)
                 
                 let track = GPXTrack()
                 track.add(trackSegment: trackSegement)
