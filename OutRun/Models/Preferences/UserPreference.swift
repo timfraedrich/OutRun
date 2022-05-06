@@ -24,75 +24,96 @@ import RxCocoa
 
 public enum UserPreference {
     
-    public class _Base<Object>: ReactiveCompatible {
+    fileprivate class _Base<Object> {
         
-        public let key: String
-        public let defaultValue: Object
+        let key: String
+        let publisher: BehaviorRelay<Object?>
         
-        fileprivate let publisher: BehaviorRelay<Object>
-        
-        fileprivate init(key: String, defaultValue: Object, initialValue: Object?) {
+        init(key: String) {
             self.key = key
-            self.defaultValue = defaultValue
-            
-            let initialSetKey = key + ".initialValueSet"
-            if let initialValue = initialValue, !(_Base.typeSafeGet(for: initialSetKey) ?? false) {
-                _Base.set(true, for: initialSetKey)
-                _Base.set(initialValue, for: key)
-            }
-            
-            self.publisher = BehaviorRelay(value: _Base.typeSafeGet(for: key) ?? defaultValue)
+            self.publisher = BehaviorRelay(value: _Base.typeSafeGet(for: key))
         }
         
-        public var value: Object {
-            get {
-                _Base.typeSafeGet(for: key) ?? defaultValue
-            } set {
-                if newValue == nil {
-                    _Base.remove(for: key)
-                } else {
-                    _Base.set(newValue, for: key)
-                }
-                publisher.accept(newValue)
-            }
+        func get() -> Object? {
+            return _Base.typeSafeGet(for: key)
         }
         
-        public func delete() {
-            _Base.remove(for: key)
+        func set(_ value: Object?) {
+            guard let value = value else { remove(); return }
+            UserDefaults.standard.set(value, forKey: key)
+        }
+        
+        func setInitial(_ value: Object?) {
+            guard let value = value else { return }
+            let initialSet = _Base<Bool>(key: key + ".initialValueSet")
+            guard !(initialSet.get() ?? false) else { return }
+            set(value)
+            initialSet.set(true)
+        }
+        
+        func remove() {
+            UserDefaults.standard.removeObject(forKey: key)
         }
         
         private static func typeSafeGet<Object>(for key: String) -> Object? {
             return UserDefaults.standard.object(forKey: key) as? Object
         }
         
-        private static func set<Object>(_ value: Object, for key: String) {
-            UserDefaults.standard.set(value, forKey: key)
+    }
+    
+    public class Required<Object> {
+        
+        fileprivate let _base: _Base<Object>
+        public var key: String { _base.key }
+        public let defaultValue: Object
+        
+        init(key: String, defaultValue: Object, initialValue: Object? = nil) {
+            self._base = _Base(key: key)
+            self.defaultValue = defaultValue
+            self._base.setInitial(initialValue)
         }
         
-        private static func remove(for key: String) {
-            UserDefaults.standard.removeObject(forKey: key)
+        var value: Object {
+            get { _base.get() ?? defaultValue }
+            set { _base.set(newValue) }
+        }
+        
+        func delete() {
+            _base.remove()
         }
         
     }
     
-    public class Required<Object>: _Base<Object> {
-        public init(key: String, defaultValue: Object) {
-            super.init(key: key, defaultValue: defaultValue, initialValue: nil)
-        }
-    }
-    
-    public class Optional<Object>: _Base<Object?> {
+    public class Optional<Object> {
+        
+        fileprivate let _base: _Base<Object>
+        public var key: String { _base.key }
+        public let defaultValue: Object?
+        
         public init(key: String, defaultValue: Object? = nil, initialValue: Object? = nil) {
-            super.init(key: key, defaultValue: defaultValue, initialValue: initialValue)
+            self._base = _Base(key: key)
+            self.defaultValue = defaultValue
+            self._base.setInitial(initialValue)
+        }
+        
+        public var value: Object? {
+            get { _base.get() ?? defaultValue }
+            set { _base.set(newValue) }
+        }
+        
+        public func delete() {
+            _base.remove()
         }
     }
-
 }
 
 public extension Reactive {
     
-    func value<Object>() -> Observable<Object> where Base: UserPreference._Base<Object> {
-        base.publisher.asObservable()
+    func value<Object>() -> Observable<Object> where Base: UserPreference.Required<Object> {
+        base._base.publisher.map { $0 ?? base.defaultValue }.asObservable()
     }
     
+    func value<Object>() -> Observable<Object?> where Base: UserPreference.Optional<Object> {
+        base._base.publisher.map { $0 ?? base.defaultValue }.asObservable()
+    }
 }

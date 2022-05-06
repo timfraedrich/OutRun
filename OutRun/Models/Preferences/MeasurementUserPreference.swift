@@ -20,73 +20,42 @@
 
 import Foundation
 
-class MeasurementUserPreference<UnitType> where UnitType: Unit {
+public class MeasurementUserPreference<UnitType> where UnitType: Unit {
     
-    private let userPreference: UserPreference.Optional<Int>
-    let possibleValues: [UnitType]
-    let key: String
-    let bigUnits: Bool
+    private let base: UserPreference.Optional<Int>
+    public let possibleValues: [UnitType]
+    public let bigUnits: Bool
     
-    init(key: String, possibleValues: [UnitType], bigUnits: Bool = true) {
-        self.userPreference = UserPreference.Optional<Int>(key: key)
+    public init(key: String, possibleValues: [UnitType], bigUnits: Bool = true) {
+        guard !possibleValues.isEmpty else {
+            fatalError("MeasurementUserPreference - Tried to initialise without providing at least one possible value")
+        }
+        self.base = UserPreference.Optional<Int>(key: key)
         self.possibleValues = possibleValues
-        self.key = key
         self.bigUnits = bigUnits
     }
     
-    var value: UnitType? {
-        get {
-            let rawValue = userPreference.value ?? -1
-            guard self.possibleValues.indices.contains(rawValue) else {
-                return nil
-            }
-            return self.possibleValues[rawValue]
-        } set {
-            guard let newValue = newValue else {
-                userPreference.value = userPreference.defaultValue
-                return
-            }
-            let rawValue = self.possibleValues.firstIndex(of: newValue) ?? self.userPreference.defaultValue
-            userPreference.value = rawValue
-        }
+    public var value: UnitType? {
+        get { possibleValues.safeValue(for: base.value ?? -1) }
+        set { base.value = possibleValues.firstIndex { $0 == newValue } }
     }
     
-    var safeValue: UnitType {
-        get {
-            guard let value = self.value else {
-                guard let standardUnit = self.standardLocalValue else {
-                    return self.possibleValues[0]
-                }
-                return standardUnit
-            }
-            return value
-        }
+    public var safeValue: UnitType {
+        value ?? standardLocalValue ?? possibleValues[0]
     }
     
-    var standardValue: UnitType? {
-        get {
-            guard UnitType.self is StandardizedUnit.Type else {
-                return nil
-            }
-            let standardizedUnit = UnitType.self as! StandardizedUnit.Type
-            return (self.bigUnits ? standardizedUnit.standardBigUnit : standardizedUnit.standardUnit) as? UnitType
-        }
+    public var standardValue: UnitType? {
+        let Unit = (UnitType.self as? StandardizedUnit.Type)
+        return (bigUnits ? Unit?.standardBigUnit : Unit?.standardUnit) as? UnitType
     }
     
-    var standardLocalValue: UnitType? {
-        get {
-            guard UnitType.self is StandardizedUnit.Type else {
-                return nil
-            }
-            let standardizedUnit = UnitType.self as! StandardizedUnit.Type
-            return (self.bigUnits ? standardizedUnit.standardBigLocalUnit : standardizedUnit.standardSmallLocalUnit) as? UnitType
-        }
+    public var standardLocalValue: UnitType? {
+        let Unit = (UnitType.self as? StandardizedUnit.Type)
+        return (bigUnits ? Unit?.standardBigLocalUnit : Unit?.standardSmallLocalUnit) as? UnitType
     }
     
-    func convert(fromValue value: Double, toPrefered: Bool, rounded: Bool = true) -> Double {
-        guard let standardUnit = self.standardValue else {
-            return -1
-        }
+    public func convert(fromValue value: Double, toPrefered: Bool, rounded: Bool = true) -> Double {
+        guard let standardUnit = self.standardValue else { return -1 }
         let preferedUnit = self.safeValue
         let sourceUnit = toPrefered ? standardUnit : preferedUnit
         let targetUnit = toPrefered ? preferedUnit : standardUnit
@@ -141,8 +110,8 @@ class MeasurementUserPreference<UnitType> where UnitType: Unit {
         
     }
     
-    func delete() {
-        self.userPreference.delete()
+    public func delete() {
+        self.base.delete()
     }
     
 }
