@@ -26,12 +26,12 @@ import RxCocoa
 
 class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRecognizerDelegate {
     
-    private let builder = WorkoutBuilder()
-    private lazy var autoPauseDetection = AutoPauseDetection(builder: builder)
-    private lazy var locationManagement = LocationManagement(builder: builder)
-    private lazy var stepCounter = StepCounter(builder: builder)
-    private lazy var altitudeManagement = AltitudeManagement(builder: builder)
-    private lazy var liveStats = LiveStats(builder: builder)
+    private let builder: WorkoutBuilder
+    private let autoPauseDetection: AutoPauseDetection
+    private let locationManagement: LocationManagement
+    private let stepCounter: StepCounter
+    private let altitudeManagement: AltitudeManagement
+    private let liveStats: LiveStats
     
     var initialWorkoutType = Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value)
     
@@ -204,6 +204,30 @@ class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRec
         if recognizer.state == .ended {
             self.userMovedMap = true
         }
+    }
+    
+    // MARK: - Init
+    
+    public init() {
+        let builder = WorkoutBuilder()
+        self.builder = builder
+        self.autoPauseDetection = AutoPauseDetection(builder: builder)
+        self.locationManagement = LocationManagement(builder: builder)
+        self.stepCounter = StepCounter(builder: builder)
+        self.altitudeManagement = AltitudeManagement(builder: builder)
+        self.liveStats = LiveStats(builder: builder)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        let builder = WorkoutBuilder()
+        self.builder = builder
+        self.autoPauseDetection = AutoPauseDetection(builder: builder)
+        self.locationManagement = LocationManagement(builder: builder)
+        self.stepCounter = StepCounter(builder: builder)
+        self.altitudeManagement = AltitudeManagement(builder: builder)
+        self.liveStats = LiveStats(builder: builder)
+        super.init(coder: coder)
     }
     
     // MARK: - Layout

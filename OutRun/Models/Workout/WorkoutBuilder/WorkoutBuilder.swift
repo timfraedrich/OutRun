@@ -48,6 +48,7 @@ public class WorkoutBuilder: ApplicationStateObserver {
         
         self.workoutTypeRelay = BehaviorRelay(value: workoutType ?? Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value))
         
+        self.prepareBindings()
         self.startObservingApplicationState()
     }
     

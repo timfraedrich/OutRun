@@ -210,7 +210,8 @@ public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationMa
             let location = refineLocation(location)
             locationsRelay.accept(locationsRelay.value + [location.asTemp])
             
-            guard shouldUpdateDistance, let lastLocation = self.locationsRelay.value.last else { continue }
+            let lastIndex = self.locationsRelay.value.count - 2
+            guard shouldUpdateDistance, let lastLocation = locationsRelay.value.safeValue(for: lastIndex) else { continue }
             let newDistance = location.distance(from: lastLocation.clLocation) + distanceRelay.value
             distanceRelay.accept(newDistance)
         }

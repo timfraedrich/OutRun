@@ -75,20 +75,11 @@ extension HealthStoreManager {
         get { getAnchor(from: workoutObserverAnchorData) }
         set { setAnchor(newValue, for: workoutObserverAnchorData) }
     }
-    /// A variable to reference the last performed workout query
-    private static var lastWorkoutQuery: HKAnchoredObjectQuery?
     /// The closure handling an update by the workout observer.
     private static let workoutObserverUpdateClosure: ((HKAnchoredObjectQuery, [HKSample]?, [HKDeletedObject]?, HKQueryAnchor?, Error?) -> Void) = { (query, samples, deletedObjects, anchor, error) in
         
-        if lastWorkoutQuery == nil {
-            lastWorkoutQuery = query
-        }
-        
-        guard UserPreferences.synchronizeWorkoutsWithAppleHealth.value, lastWorkoutQuery == query else {
+        guard UserPreferences.synchronizeWorkoutsWithAppleHealth.value else {
             HealthStoreManager.healthStore.stop(query)
-            if !UserPreferences.synchronizeWorkoutsWithAppleHealth.value {
-                lastWorkoutQuery = nil
-            }
             return
         }
         
@@ -104,7 +95,7 @@ extension HealthStoreManager {
         
         if UserPreferences.automaticallyImportNewHealthWorkouts.value && !samples.isEmpty {
             let workouts = samples.compactMap { $0 as? HKWorkout }
-                .filter { existingHealthUUIDs.contains($0.uuid) }
+                .filter { !existingHealthUUIDs.contains($0.uuid) }
                 .compactMap { createHealthWorkout(from: $0) }
             
             DataManager.saveWorkouts(objects: workouts) { _, error, _ in
@@ -142,7 +133,7 @@ extension HealthStoreManager {
         guard UserPreferences.synchronizeWeightWithAppleHealth.value, lastWeightQuery == query else {
             HealthStoreManager.healthStore.stop(query)
             if !UserPreferences.synchronizeWeightWithAppleHealth.value {
-                lastWorkoutQuery = nil
+                lastWeightQuery = nil
             }
             return
         }
@@ -164,7 +155,7 @@ extension HealthStoreManager {
         HealthStoreManager.gainAuthorisation(for: [HealthType.Workout]) { authorisation, _ in
             guard authorisation && UserPreferences.synchronizeWorkoutsWithAppleHealth.value else { return }
             let typePredicates = Workout.WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
-            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: typePredicates)
+            let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typePredicates)
             
             executeAnchoredQuery(
                 of: HealthType.Workout,
@@ -174,7 +165,7 @@ extension HealthStoreManager {
             )
         }
         
-        HealthStoreManager.gainAuthorisation(for: [HealthType.Workout]) { authorisation, _ in
+        HealthStoreManager.gainAuthorisation(for: [HealthType.BodyMass]) { authorisation, _ in
             guard authorisation, UserPreferences.synchronizeWeightWithAppleHealth.value else { return }
             let predicate = NSCompoundPredicate(notPredicateWithSubpredicate: HKQuery.predicateForObjects(from: .default()))
             

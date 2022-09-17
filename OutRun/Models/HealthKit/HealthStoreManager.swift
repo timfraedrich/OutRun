@@ -80,7 +80,7 @@ class HealthStoreManager {
             
             if let error = error {
                 print("[Health] Error for health store authorisation:", error.localizedDescription)
-            } else {
+            } else if !success {
                 print("[Health] Unknown error for health store authorisation")
             }
             

@@ -74,7 +74,7 @@ extension ObservableType {
                 buffer.reserveCapacity(limit)
             }
 
-            var paused = true
+            var paused = false
             var flushIndex = 0
             let lock = NSRecursiveLock()
 
@@ -92,11 +92,11 @@ extension ObservableType {
             let boundaryDisposable = pauser.distinctUntilChanged(==).subscribe { event in
                 lock.lock(); defer { lock.unlock() }
                 switch event {
-                case .next(let resume):
-                    if resume && buffer.count > 0 {
+                case .next(let pause):
+                    if !pause && buffer.count > 0 {
                         flush()
                     }
-                    paused = !resume
+                    paused = pause
 
                 case .completed:
                     observer.onCompleted()
