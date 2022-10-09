@@ -16,17 +16,11 @@ def data_pods
   pod 'CoreGPX'
 end
 
-def rx_pods
-  pod 'RxSwift'
-  pod 'RxCocoa'
-end
-
 target 'OutRun' do
   use_frameworks!
 
   app_pods
   ui_pods
-  rx_pods
   data_pods
 
   target 'UnitTests' do
