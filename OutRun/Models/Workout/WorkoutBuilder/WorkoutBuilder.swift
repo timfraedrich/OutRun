@@ -20,8 +20,8 @@
 
 import Foundation
 import CoreLocation
-import RxSwift
-import RxRelay
+import Combine
+import CombineExt
 
 public class WorkoutBuilder: ApplicationStateObserver {
     
@@ -46,7 +46,8 @@ public class WorkoutBuilder: ApplicationStateObserver {
      */
     public init(workoutType: Workout.WorkoutType? = nil) {
         
-        self.workoutTypeRelay = BehaviorRelay(value: workoutType ?? Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value))
+        let workoutType = workoutType ?? Workout.WorkoutType(rawValue: UserPreferences.standardWorkoutType.value)
+        self.workoutTypeRelay = CurrentValueRelay(workoutType)
         
         self.prepareBindings()
         self.startObservingApplicationState()
@@ -57,8 +58,8 @@ public class WorkoutBuilder: ApplicationStateObserver {
     private func prepareBindings() {
         
         // reacting to status changes
-        statusRelay.subscribe(onNext: { [weak self] newStatus in
-            guard let self = self else { return }
+        statusRelay.sink(receiveValue: { [weak self] newStatus in
+            guard let self else { return }
             let timestamp = Date()
             
             switch newStatus {
@@ -107,60 +108,71 @@ public class WorkoutBuilder: ApplicationStateObserver {
             default: // ignore everything else
                 break
             }
-        }).disposed(by: disposeBag)
+        }).store(in: &cancellables)
         
     }
     
     // MARK: - Dataflow
     
-    /// The `DisposeBag` used for links to components and own permanent subscriptions.
-    private let disposeBag = DisposeBag()
+    /// An Array of cancellables for subscription links to components and custom permanent subscriptions.
+    private var cancellables: [AnyCancellable] = []
     
     /// The relay to publish the current status of the `WorkoutBuilder`.
-    private let statusRelay = BehaviorRelay<WorkoutBuilder.Status>(value: .waiting)
+    private let statusRelay = CurrentValueRelay<WorkoutBuilder.Status>(.waiting)
     /// The relay to publish the type of workout the `WorkoutBuilder` is supposed to record.
-    private let workoutTypeRelay: BehaviorRelay<Workout.WorkoutType>
+    private let workoutTypeRelay: CurrentValueRelay<Workout.WorkoutType>
     /// The relay to publish the date the recorded workout was started.
-    private let startDateRelay = BehaviorRelay<Date?>(value: nil)
+    private let startDateRelay = CurrentValueRelay<Date?>(nil)
     /// The relay to publish the date the recorded workout was stopped.
-    private let endDateRelay = BehaviorRelay<Date?>(value: nil)
+    private let endDateRelay = CurrentValueRelay<Date?>(nil)
     /// The relay to publish the distance shared by components.
-    private let distanceRelay = BehaviorRelay<Double>(value: 0)
+    private let distanceRelay = CurrentValueRelay<Double>(0)
     /// The relay to publish the steps counted by components.
-    private let stepsRelay = BehaviorRelay<Int?>(value: nil)
+    private let stepsRelay = CurrentValueRelay<Int?>(nil)
     /// The relay to publish the pauses initiated by the user or by the app automaticallyprivate
-    private let pausesRelay = BehaviorRelay<[TempWorkoutPause]>(value: [])
+    private let pausesRelay = CurrentValueRelay<[TempWorkoutPause]>([])
     /// The relay to publish the current location regardless of whether it was recorded or not.
-    private let currentLocationRelay = BehaviorRelay<TempWorkoutRouteDataSample?>(value: nil)
+    private let currentLocationRelay = CurrentValueRelay<TempWorkoutRouteDataSample?>(nil)
     /// The relay to publish the recorded locations received from components.
-    private let locationsRelay = BehaviorRelay<[TempWorkoutRouteDataSample]>(value: [])
+    private let locationsRelay = CurrentValueRelay<[TempWorkoutRouteDataSample]>([])
     /// The relay to publish the altitudes received from components.
-    private let altitudesRelay = BehaviorRelay<[AltitudeManagement.AltitudeSample]>(value: [])
+    private let altitudesRelay = CurrentValueRelay<[AltitudeManagement.AltitudeSample]>([])
     /// The relay to publish the heart rate samples received from components.
-    private let heartRatesRelay = BehaviorRelay<[TempWorkoutHeartRateDataSample]>(value: [])
+    private let heartRatesRelay = CurrentValueRelay<[TempWorkoutHeartRateDataSample]>([])
     /// The relay to publish a components report of isufficient permissions to record the workout.
-    private let insufficientPermissionRelay = PublishRelay<String>()
+    private let insufficientPermissionRelay = PassthroughRelay<String>()
     /// The relay to publish a UI suspension command.
-    private let uiSuspensionRelay = BehaviorRelay<Bool>(value: false)
+    private let uiSuspensionRelay = CurrentValueRelay<Bool>(false)
     /// The relay to publish a suspension command.
-    private let suspensionRelay = BehaviorRelay<Bool>(value: false)
+    private let suspensionRelay = CurrentValueRelay<Bool>(false)
     /// The relay to publish a reset command.
-    private let resetRelay = PublishRelay<ORWorkoutInterface?>()
+    private let resetRelay = PassthroughRelay<ORWorkoutInterface?>()
     
     /// A type containing all input data needed to establish a data flow.
     public struct Input {
-        let readiness: Observable<WorkoutBuilderComponentStatus>?
-        let insufficientPermission: Observable<String>?
-        let workoutType: Observable<Workout.WorkoutType>?
-        let statusSuggestion: Observable<WorkoutBuilder.Status>?
-        let distance: Observable<Double>?
-        let steps: Observable<Int?>?
-        let currentLocation: Observable<TempWorkoutRouteDataSample?>?
-        let locations: Observable<[TempWorkoutRouteDataSample]>?
-        let altitudes: Observable<[AltitudeManagement.AltitudeSample]>?
-        let heartRates: Observable<[TempWorkoutHeartRateDataSample]>?
+        let readiness: AnyPublisher<WorkoutBuilderComponentStatus, Never>?
+        let insufficientPermission: AnyPublisher<String, Never>?
+        let workoutType: AnyPublisher<Workout.WorkoutType, Never>?
+        let statusSuggestion: AnyPublisher<WorkoutBuilder.Status, Never>?
+        let distance: AnyPublisher<Double, Never>?
+        let steps: AnyPublisher<Int?, Never>?
+        let currentLocation: AnyPublisher<TempWorkoutRouteDataSample?, Never>?
+        let locations: AnyPublisher<[TempWorkoutRouteDataSample], Never>?
+        let altitudes: AnyPublisher<[AltitudeManagement.AltitudeSample], Never>?
+        let heartRates: AnyPublisher<[TempWorkoutHeartRateDataSample], Never>?
 
-        public init(readiness: Observable<WorkoutBuilderComponentStatus>? = nil, insufficientPermission: Observable<String>? = nil, workoutType: Observable<Workout.WorkoutType>? = nil, statusSuggestion: Observable<Status>? = nil, distance: Observable<Double>? = nil, steps: Observable<Int?>? = nil, currentLocation: Observable<TempWorkoutRouteDataSample?>? = nil, locations: Observable<[TempWorkoutRouteDataSample]>? = nil, altitudes: Observable<[AltitudeManagement.AltitudeSample]>? = nil, heartRates: Observable<[TempWorkoutHeartRateDataSample]>? = nil) {
+        public init(
+            readiness: AnyPublisher<WorkoutBuilderComponentStatus, Never>? = nil,
+            insufficientPermission: AnyPublisher<String, Never>? = nil,
+            workoutType: AnyPublisher<Workout.WorkoutType, Never>? = nil,
+            statusSuggestion: AnyPublisher<WorkoutBuilder.Status, Never>? = nil,
+            distance: AnyPublisher<Double, Never>? = nil,
+            steps: AnyPublisher<Int?, Never>? = nil,
+            currentLocation: AnyPublisher<TempWorkoutRouteDataSample?, Never>? = nil,
+            locations: AnyPublisher<[TempWorkoutRouteDataSample], Never>? = nil,
+            altitudes: AnyPublisher<[AltitudeManagement.AltitudeSample], Never>? = nil,
+            heartRates: AnyPublisher<[TempWorkoutHeartRateDataSample], Never>? = nil
+        ) {
             self.readiness = readiness
             self.insufficientPermission = insufficientPermission
             self.workoutType = workoutType
@@ -176,21 +188,21 @@ public class WorkoutBuilder: ApplicationStateObserver {
     
     /// A type containing all output data needed to establish a data flow.
     public struct Output {
-        let status: Observable<WorkoutBuilder.Status>
-        let workoutType: Observable<Workout.WorkoutType>
-        let startDate: Observable<Date?>
-        let endDate: Observable<Date?>
-        let distance: Observable<Double>
-        let steps: Observable<Int?>
-        let pauses: Observable<[TempWorkoutPause]>
-        let currentLocation: Observable<TempWorkoutRouteDataSample?>
-        let locations: Observable<[TempWorkoutRouteDataSample]>
-        let altitudes: Observable<[AltitudeManagement.AltitudeSample]>
-        let heartRates: Observable<[TempWorkoutHeartRateDataSample]>
-        let insufficientPermission: Observable<String>
-        let isUISuspended: Observable<Bool>
-        let isSuspended: Observable<Bool>
-        let onReset: Observable<ORWorkoutInterface?>
+        let status: AnyPublisher<WorkoutBuilder.Status, Never>
+        let workoutType: AnyPublisher<Workout.WorkoutType, Never>
+        let startDate: AnyPublisher<Date?, Never>
+        let endDate: AnyPublisher<Date?, Never>
+        let distance: AnyPublisher<Double, Never>
+        let steps: AnyPublisher<Int?, Never>
+        let pauses: AnyPublisher<[TempWorkoutPause], Never>
+        let currentLocation: AnyPublisher<TempWorkoutRouteDataSample?, Never>
+        let locations: AnyPublisher<[TempWorkoutRouteDataSample], Never>
+        let altitudes: AnyPublisher<[AltitudeManagement.AltitudeSample], Never>
+        let heartRates: AnyPublisher<[TempWorkoutHeartRateDataSample], Never>
+        let insufficientPermission: AnyPublisher<String, Never>
+        let isUISuspended: AnyPublisher<Bool, Never>
+        let isSuspended: AnyPublisher<Bool, Never>
+        let onReset: AnyPublisher<ORWorkoutInterface?, Never>
     }
     
     /**
@@ -200,38 +212,39 @@ public class WorkoutBuilder: ApplicationStateObserver {
      */
     public func tranform(_ input: WorkoutBuilder.Input) -> Output {
         
-        input.readiness?.bind(to: readinessBinder).disposed(by: disposeBag)
-        input.statusSuggestion?.bind(to: statusSuggestionBinder).disposed(by: disposeBag)
-        input.insufficientPermission?.bind(to: insufficientPermissionRelay).disposed(by: disposeBag)
-        input.distance?.bind(to: distanceRelay).disposed(by: disposeBag)
-        input.steps?.bind(to: stepsRelay).disposed(by: disposeBag)
-        input.currentLocation?.bind(to: currentLocationRelay).disposed(by: disposeBag)
-        input.locations?.bind(to: locationsRelay).disposed(by: disposeBag)
-        input.altitudes?.bind(to: altitudesRelay).disposed(by: disposeBag)
-        input.heartRates?.bind(to: heartRatesRelay).disposed(by: disposeBag)
+        input.readiness?.sink(receiveValue: readinessBinder).store(in: &cancellables)
+        input.statusSuggestion?.sink(receiveValue: statusSuggestionBinder).store(in: &cancellables)
+        input.insufficientPermission?.sink(receiveValue: insufficientPermissionRelay.accept).store(in: &cancellables)
+        input.distance?.sink(receiveValue: distanceRelay.accept).store(in: &cancellables)
+        input.steps?.sink(receiveValue: stepsRelay.accept).store(in: &cancellables)
+        input.currentLocation?.sink(receiveValue: currentLocationRelay.accept).store(in: &cancellables)
+        input.locations?.sink(receiveValue: locationsRelay.accept).store(in: &cancellables)
+        input.altitudes?.sink(receiveValue: altitudesRelay.accept).store(in: &cancellables)
+        input.heartRates?.sink(receiveValue: heartRatesRelay.accept).store(in: &cancellables)
         
         return Output(
-            status: statusRelay.asBackgroundObservable(),
-            workoutType: workoutTypeRelay.asBackgroundObservable(),
-            startDate: startDateRelay.asBackgroundObservable(),
-            endDate: endDateRelay.asBackgroundObservable(),
-            distance: distanceRelay.asBackgroundObservable(),
-            steps: stepsRelay.asBackgroundObservable(),
-            pauses: pausesRelay.asBackgroundObservable(),
-            currentLocation: currentLocationRelay.asBackgroundObservable(),
-            locations: locationsRelay.asBackgroundObservable(),
-            altitudes: altitudesRelay.asBackgroundObservable(),
-            heartRates: heartRatesRelay.asBackgroundObservable(),
-            insufficientPermission: insufficientPermissionRelay.asBackgroundObservable(),
-            isUISuspended: uiSuspensionRelay.asBackgroundObservable(),
-            isSuspended: suspensionRelay.asBackgroundObservable(),
-            onReset: resetRelay.asBackgroundObservable()
+            status: statusRelay.asBackgroundPublisher(),
+            workoutType: workoutTypeRelay.asBackgroundPublisher(),
+            startDate: startDateRelay.asBackgroundPublisher(),
+            endDate: endDateRelay.asBackgroundPublisher(),
+            distance: distanceRelay.asBackgroundPublisher(),
+            steps: stepsRelay.asBackgroundPublisher(),
+            pauses: pausesRelay.asBackgroundPublisher(),
+            currentLocation: currentLocationRelay.asBackgroundPublisher(),
+            locations: locationsRelay.asBackgroundPublisher(),
+            altitudes: altitudesRelay.asBackgroundPublisher(),
+            heartRates: heartRatesRelay.asBackgroundPublisher(),
+            insufficientPermission: insufficientPermissionRelay.asBackgroundPublisher(),
+            isUISuspended: uiSuspensionRelay.asBackgroundPublisher(),
+            isSuspended: suspensionRelay.asBackgroundPublisher(),
+            onReset: resetRelay.asBackgroundPublisher()
         )
     }
     
-    /// A `Binder` to update the readiness status of components.
-    private var readinessBinder: Binder<WorkoutBuilderComponentStatus> {
-        Binder(self) { `self`, status in
+    /// A closure to update the readiness status of components.
+    private var readinessBinder: (WorkoutBuilderComponentStatus) -> Void {
+        return { [weak self] status in
+            guard let self else { return }
             switch status {
             case .preparing(let preparingType):
                 guard !self.preparingComponents.contains(where: { $0 == preparingType }) else { return }
@@ -248,9 +261,10 @@ public class WorkoutBuilder: ApplicationStateObserver {
         }
     }
     
-    /// A `Binder` to enable components to suggest a new status.
-    private var statusSuggestionBinder: Binder<WorkoutBuilder.Status> {
-        Binder(self) { `self`, status in
+    /// A closure to enable components to suggest a new status.
+    private var statusSuggestionBinder: (WorkoutBuilder.Status) -> Void {
+        return { [weak self] status in
+            guard let self else { return }
             self.validateTransition(to: status) { (isValid) in
                 guard isValid else { return }
                 self.statusRelay.accept(status)

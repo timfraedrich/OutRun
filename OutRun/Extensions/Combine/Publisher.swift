@@ -24,9 +24,9 @@ import Combine
 public extension Publisher {
     
     /// Creates a `Publisher` which will always be observed and susbcribed to on a background queue.
-    func asBackgroundPublisher() -> any Publisher {
+    func asBackgroundPublisher() -> AnyPublisher<Output, Failure> {
         let backgroundQueue = DispatchQueue(label: "background", qos: .background)
-        return self.receive(on: backgroundQueue).subscribe(on: backgroundQueue)
+        return self.receive(on: backgroundQueue).subscribe(on: backgroundQueue).eraseToAnyPublisher()
     }
     
 }
