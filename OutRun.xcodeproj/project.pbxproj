@@ -618,6 +618,14 @@
 			path = ORDataInterfaces;
 			sourceTree = "<group>";
 		};
+		229790FB28F371120072DC86 /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				229790F528F365B50072DC86 /* Publisher.swift */,
+			);
+			path = Combine;
+			sourceTree = "<group>";
+		};
 		2298D20C234543B900344989 /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -842,6 +850,7 @@
 			isa = PBXGroup;
 			children = (
 				22B1DD7D253F905E0093822B /* Cache */,
+				229790FB28F371120072DC86 /* Combine */,
 				22B1DD7F253F90700093822B /* CoreStore */,
 				22E5056C25C96A6000DC9AC1 /* HealthKit */,
 				22E5057025C96B3600DC9AC1 /* UIKit */,
@@ -855,7 +864,6 @@
 				221436C02443960A0010D82B /* UnitCount.swift */,
 				22877543234A75A10078CE12 /* Units.swift */,
 				22FEA0AA24CDD39C0007CA9C /* URL.swift */,
-				229790F528F365B50072DC86 /* Publisher.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
