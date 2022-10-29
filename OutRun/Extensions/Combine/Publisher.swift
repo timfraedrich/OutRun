@@ -29,4 +29,23 @@ public extension Publisher {
         return self.receive(on: backgroundQueue).subscribe(on: backgroundQueue).eraseToAnyPublisher()
     }
     
+    /**
+     Publishes the current element together with its predecessor.
+     
+         let range = (1...3)
+         cancellable = range.publisher
+            .withPrevious()
+            .sink {
+                print ("(\($0.previous), \($0.current))", terminator: " ")
+            }
+         // Prints: "(nil, 1) (Optional(1), 2) (Optional(2), 3) ".
+     
+     - note: The first element will be accompanied by `nil` as the previous value.
+     - returns: A publisher of a touple of the optional previous and the current element from the upstream publisher.
+     */
+    func withPrevious() -> AnyPublisher<(previous: Output?, current: Output), Failure> {
+        scan(Optional<(Output?, Output)>.none) { ($0?.1, $1) }
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+    }
 }
