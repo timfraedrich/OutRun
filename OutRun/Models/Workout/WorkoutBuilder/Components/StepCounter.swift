@@ -20,8 +20,8 @@
 
 import Foundation
 import CoreMotion
-import RxSwift
-import RxCocoa
+import Combine
+import CombineExt
 
 /// A `WorkoutBuilderComponent` for counting the steps taken during a workout
 class StepCounter: WorkoutBuilderComponent {
@@ -59,19 +59,20 @@ class StepCounter: WorkoutBuilderComponent {
     
     // MARK: - Dataflow
     
-    /// The `DisposeBag` used for binding to the workout builder.
-    private let disposeBag = DisposeBag()
+    /// An Array of cancellables for binding to the workout builder.
+    private var cancellables: [AnyCancellable] = []
     
     /// The relay to publish that insufficient permission was granted to the workout builder.
-    private let insufficientPermissionRelay = PublishRelay<String>()
+    private let insufficientPermissionRelay = PassthroughRelay<String>()
     /// The relay to publish the taken steps to the workout builder.
-    private let stepsRelay = BehaviorRelay<Int?>(value: nil)
+    private let stepsRelay = CurrentValueRelay<Int?>(nil)
     
     // MARK: Binders
     
     /// Binds status updates from the `WorkoutBuilder` to this component.
-    private var statusBinder: Binder<WorkoutBuilder.Status> {
-        Binder(self) { `self`, newStatus in
+    private var statusBinder: (WorkoutBuilder.Status) -> Void {
+        return { [weak self] newStatus in
+            guard let self else { return }
             self.shouldRecord = newStatus == .recording
             
             guard newStatus == .recording else { return }
@@ -80,8 +81,9 @@ class StepCounter: WorkoutBuilderComponent {
     }
     
     /// Binds reset events to this component.
-    private var onResetBinder: Binder<ORWorkoutInterface?> {
-        Binder(self) { `self`, snapshot in
+    private var onResetBinder: (ORWorkoutInterface?) -> Void {
+        return { [weak self] snapshot in
+            guard let self else { return }
             self.stepsRelay.accept(snapshot?.steps)
             self.stepsBeforeLastPause = snapshot?.steps
             self.shouldRecord = snapshot != nil
@@ -103,18 +105,13 @@ class StepCounter: WorkoutBuilderComponent {
     func bind(builder: WorkoutBuilder) {
         
         let input = Input(
-            insufficientPermission: insufficientPermissionRelay.asBackgroundObservable(),
-            steps: stepsRelay.asBackgroundObservable()
+            insufficientPermission: insufficientPermissionRelay.asBackgroundPublisher(),
+            steps: stepsRelay.asBackgroundPublisher()
         )
         
         let output = builder.tranform(input)
         
-        output.status
-            .bind(to: statusBinder)
-            .disposed(by: disposeBag)
-        
-        output.onReset
-            .bind(to: onResetBinder)
-            .disposed(by: disposeBag)
+        output.status.sink(receiveValue: statusBinder).store(in: &cancellables)
+        output.onReset.sink(receiveValue: onResetBinder).store(in: &cancellables)
     }
 }
