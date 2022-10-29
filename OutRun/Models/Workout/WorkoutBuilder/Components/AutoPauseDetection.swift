@@ -19,8 +19,8 @@
 //
 
 import Foundation
-import RxSwift
-import RxCocoa
+import Combine
+import CombineExt
 
 /// A `WorkoutBuilderComponent` for detecting automatic pauses during a workout
 public class AutoPauseDetection: WorkoutBuilderComponent {
@@ -32,17 +32,18 @@ public class AutoPauseDetection: WorkoutBuilderComponent {
     
     // MARK: - Dataflow
     
-    /// The `DisposeBag` used for binding to the workout builder.
-    private let disposeBag = DisposeBag()
+    /// An Array of cancellables for binding to the workout builder.
+    private var cancellables: [AnyCancellable] = []
     
     /// The relay to suggest a new status to the `WorkoutBuilder`.
-    private let statusSuggestionRelay = PublishRelay<WorkoutBuilder.Status>()
+    private let statusSuggestionRelay = PassthroughRelay<WorkoutBuilder.Status>()
     
     // MARK: Binders
     
     /// Binds status updates to this component.
-    private var statusBinder: Binder<WorkoutBuilder.Status> {
-        Binder(self) { `self`, newStatus in
+    private var statusBinder: (WorkoutBuilder.Status) -> Void {
+        return { [weak self] newStatus in
+            guard let self else { return }
             self.currentStatus = newStatus
             if newStatus == .recording {
                 self.currentPredictedStartDate = nil
@@ -51,8 +52,9 @@ public class AutoPauseDetection: WorkoutBuilderComponent {
     }
     
     /// Binds location updates together with latest status to this component.
-    private var updateBinder: Binder<(TempWorkoutRouteDataSample, Workout.WorkoutType)> {
-        Binder(self) { `self`, value in
+    private var updateBinder: ((TempWorkoutRouteDataSample, Workout.WorkoutType)) -> Void {
+        return { [weak self] value in
+            guard let self else { return }
             let (location, workoutType) = value
             guard !(self.currentStatus == .paused), self.currentStatus.isActiveStatus, location.speed >= 0, ![.walking, .hiking].contains(workoutType) else { return }
             
@@ -71,8 +73,9 @@ public class AutoPauseDetection: WorkoutBuilderComponent {
     }
     
     /// Binds a reset event to this component.
-    private var resetBinder: Binder<ORWorkoutInterface?> {
-        Binder(self) { `self`, snapshot in
+    private var resetBinder: (ORWorkoutInterface?) -> Void {
+        return { [weak self] snapshot in
+            guard let self else { return }
             self.currentPredictedStartDate = snapshot?.endDate
         }
     }
@@ -85,21 +88,16 @@ public class AutoPauseDetection: WorkoutBuilderComponent {
     
     public func bind(builder: WorkoutBuilder) {
         
-        let input = Input(statusSuggestion: statusSuggestionRelay.asBackgroundObservable())
+        let input = Input(statusSuggestion: statusSuggestionRelay.asBackgroundPublisher())
         let output = builder.tranform(input)
         
-        output.status
-            .bind(to: statusBinder)
-            .disposed(by: disposeBag)
+        output.status.sink(receiveValue: statusBinder).store(in: &cancellables)
+        output.onReset.sink(receiveValue: resetBinder).store(in: &cancellables)
         
         output.currentLocation
             .compactMap { $0 }
-            .combineWithLatestFrom(output.workoutType)
-            .bind(to: updateBinder)
-            .disposed(by: disposeBag)
-        
-        output.onReset
-            .bind(to: resetBinder)
-            .disposed(by: disposeBag)
+            .combineLatest(output.workoutType)
+            .sink(receiveValue: updateBinder)
+            .store(in: &cancellables)
     }
 }
