@@ -21,8 +21,6 @@
 import UIKit
 import MapKit
 import SnapKit
-import RxSwift
-import RxCocoa
 
 class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRecognizerDelegate {
     
@@ -46,15 +44,7 @@ class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRec
     }
     
     let readinessIndicatorView = WorkoutBuilderReadinessIndicationView()
-    lazy var typeView = FloatingButton(title: workoutTypeRelay.value.description) { (button) in
-        let alert = WorkoutTypeAlert(
-            action: { (type) in
-                self.workoutTypeRelay.accept(type)
-                button.setTitle(type.description.uppercased(), for: .normal)
-            }
-        )
-        alert.present(on: self)
-    }
+    lazy var typeView = FloatingButton(title: "") { (button) in }
     
     let distanceView = LabelledDataView(title: LS["Workout.Distance"])
     let durationView = LabelledDataView(title: LS["Workout.Duration"])
@@ -64,14 +54,6 @@ class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRec
     
     lazy var actionButton = NewWorkoutControllerActionButton { (button, actionType) in
         
-        switch actionType {
-        case .start:
-            self.suggestNewStatusRelay.accept(.recording)
-        case .stop:
-            self.suggestNewStatusRelay.accept(.ready)
-        case .pauseOrContinue:
-            self.suggestNewStatusRelay.accept(.paused)
-        }
     }
     
     var lastLocationWhileNotCentered: CLLocation?
@@ -115,7 +97,6 @@ class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRec
         super.viewDidLoad()
         
         prepareLayout()
-        prepareBindings()
     }
     
     @objc func displayIndicationAlert() {
@@ -136,7 +117,6 @@ class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRec
         }
     }
     
-    private var closeDisposeBag = DisposeBag()
     @objc override func close() {
         
         if builder.status.isActiveStatus {
@@ -151,21 +131,6 @@ class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRec
                         title: LS["NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording"],
                         style: .destructive,
                         action: { _ in
-                            self.suggestNewStatusRelay.accept(.ready)
-                            self.statusRelay.subscribe(onNext: { [weak self] status in
-                                guard let self = self else { return }
-                                if status == .ready {
-                                    alert?.dismiss(animated: true) {
-                                        self.dismiss(animated: true) {
-                                            print("[NewWorkout] dismissed after saving")
-                                        }
-                                    }
-                                } else {
-                                    self.displayBuilderFailureError()
-                                    print("[NewWorkout] stop tracking failed")
-                                }
-                                self.closeDisposeBag = DisposeBag()
-                            }).disposed(by: self.closeDisposeBag)
                         }
                     ),
                     (
@@ -292,81 +257,6 @@ class NewWorkoutViewController: MapViewControllerWithContainerView, UIGestureRec
             make.right.equalTo(containerView.snp.right).offset(-spacing)
             make.bottom.equalTo(safeLayout).offset(-spacing)
             make.height.equalTo(50)
-        }
-    }
-    
-    // MARK: - Bindings
-    
-    private let disposeBag = DisposeBag()
-    
-    private let suggestNewStatusRelay = PublishRelay<WorkoutBuilder.Status>()
-    private lazy var workoutTypeRelay = BehaviorRelay<Workout.WorkoutType>(value: self.initialWorkoutType)
-    
-    private func prepareBindings() {
-        
-        liveStats.distance.drive(distanceView.rx.valueString).disposed(by: disposeBag)
-        liveStats.duration.drive(durationView.rx.valueString).disposed(by: disposeBag)
-        liveStats.speed.drive(speedView.rx.valueString).disposed(by: disposeBag)
-        liveStats.burnedEnergy.drive(caloriesView.rx.valueString).disposed(by: disposeBag)
-        liveStats.status.drive(statusBinder).disposed(by: disposeBag)
-        liveStats.status.drive(statusRelay).disposed(by: disposeBag)
-        liveStats.currentLocation.drive(locationBinder).disposed(by: disposeBag)
-        liveStats.locations.drive(routeBinder).disposed(by: disposeBag)
-        liveStats.insufficientPermission.drive(insufficientPermissionBinder).disposed(by: disposeBag)
-        
-        let input = WorkoutBuilder.Input(
-            workoutType: workoutTypeRelay.asObservable(),
-            statusSuggestion: suggestNewStatusRelay.asObservable()
-        )
-        _ = builder.tranform(input)
-        
-    }
-    
-    private let statusRelay = BehaviorRelay(value: WorkoutBuilder.Status.waiting)
-    
-    private var statusBinder: Binder<WorkoutBuilder.Status> {
-        Binder(self) { `self`, status in
-            self.readinessIndicatorView.status = status
-            self.actionButton.transition(to: status)
-            
-            if status.isActiveStatus {
-                self.isModalInPresentation = true
-            } else {
-                self.isModalInPresentation = false
-            }
-        }
-    }
-    
-    private var locationBinder: Binder<TempWorkoutRouteDataSample?> {
-        Binder(self) { `self`, sample in
-            guard let location = sample?.clLocation else { return }
-            if !self.userMovedMap {
-                let camera = MKMapCamera(lookingAtCenter: location.coordinate, fromDistance: 200, pitch: 0, heading: location.course)
-                self.mapView?.setCamera(camera, animated: true)
-            } else {
-                self.lastLocationWhileNotCentered = location
-            }
-        }
-    }
-    
-    private var routeBinder: Binder<[TempWorkoutRouteDataSample]> {
-        Binder(self) { `self`, routeSamples in
-            let coordinates = routeSamples.map { $0.clLocationCoordinate2D }
-            let newOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
-            self.mapView?.addOverlay(newOverlay, level: .aboveRoads)
-            if let oldOverlay = self.routeOverlay {
-                self.mapView?.removeOverlay(oldOverlay)
-            }
-            self.routeOverlay = newOverlay
-        }
-    }
-    
-    private var insufficientPermissionBinder: Binder<String> {
-        Binder(self) { `self`, message in
-            self.displayOpenSettingsAlert(
-                withTitle: LS["Error"],
-                message: message
-            )
         }
     }
 }

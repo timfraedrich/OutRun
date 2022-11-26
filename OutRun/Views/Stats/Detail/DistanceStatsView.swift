@@ -20,23 +20,18 @@
 
 import UIKit
 import Charts
-import RxSwift
 
 class DistanceStatsView: StatsView {
-    
-    private let disposeBag = DisposeBag()
     
     init(stats: WorkoutStats) {
         
         var statViews = [StatView]()
         
         let distanceView = LabelledDataView(title: LS["Workout.Distance"])
-        stats.distance.drive(distanceView.rx.valueString).disposed(by: disposeBag)
         statViews.append(distanceView)
         
         if stats.hasSteps {
             let stepsView = LabelledDataView(title: stats.workoutType == .cycling ? LS["Workout.Strokes"] : LS["Workout.Steps"])
-            stats.steps.drive(stepsView.rx.valueString).disposed(by: disposeBag)
             statViews.append(stepsView)
         }
         
@@ -44,9 +39,6 @@ class DistanceStatsView: StatsView {
             let ascendingView = LabelledDataView(title: LS["WorkoutStats.AscendingAltitude"])
             let descendingView = LabelledDataView(title: LS["WorkoutStats.DescendingAltitude"])
             let altitudeChart = LabelledDiagramView(title: LS["WorkoutStats.AltitudeOverTime"])
-            stats.ascendingAltitude.drive(ascendingView.rx.valueString).disposed(by: disposeBag)
-            stats.descendingAltitude.drive(descendingView.rx.valueString).disposed(by: disposeBag)
-            stats.altitudeOverTime.drive(altitudeChart.rx.data()).disposed(by: disposeBag)
             statViews.append(contentsOf: [ascendingView, descendingView, altitudeChart])
         }
         

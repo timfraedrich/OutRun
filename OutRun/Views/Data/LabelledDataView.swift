@@ -19,8 +19,6 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 
 class LabelledDataView: UIView, SmallStatView {
     
@@ -58,22 +56,6 @@ class LabelledDataView: UIView, SmallStatView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-    
-}
-
-extension Reactive where Base: LabelledDataView {
-    
-    var title: Binder<String?> {
-        Binder(base) { base, title in
-            base.titleLabel.text = title ?? ""
-        }
-    }
-    
-    var valueString: Binder<String?> {
-        Binder(base) { base, value in
-            base.dataLabel.text = value ?? "--"
-        }
     }
     
 }

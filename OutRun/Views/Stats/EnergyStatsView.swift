@@ -19,20 +19,14 @@
 //
 
 import UIKit
-import RxSwift
 
 class EnergyStatsView: StatsView {
-    
-    private let disposeBag = DisposeBag()
     
     init(stats: WorkoutStats) {
         
         let totalEnergyView = LabelledDataView(title: LS["WorkoutStats.TotalEnergy"])
         let relativeTitle = CustomMeasurementFormatting.string(forUnit: UserPreferences.energyMeasurementType.safeValue, short: true) + " / " + CustomMeasurementFormatting.string(forUnit: UnitDuration.minutes, short: true)
         let relativeEnergyView = LabelledDataView(title: relativeTitle)
-        
-        stats.burnedEnergy.drive(totalEnergyView.rx.valueString).disposed(by: disposeBag)
-        stats.burnedEnergyPerMinute.drive(relativeEnergyView.rx.valueString).disposed(by: disposeBag)
         
         super.init(
             title: LS["WorkoutStats.BurnedEnergy"],
