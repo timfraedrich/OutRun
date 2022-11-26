@@ -20,8 +20,7 @@
 
 import Foundation
 import CoreLocation
-import RxSwift
-import RxCocoa
+import Combine
 
 class WorkoutStats {
     
@@ -37,30 +36,30 @@ class WorkoutStats {
     let hasEnergyValue: Bool
     
     // DISTANCE
-    let distance: Driver<String>
-    let steps: Driver<String?>
-    let ascendingAltitude: Driver<String?>
-    let descendingAltitude: Driver<String?>
-    let altitudeOverTime: Driver<WorkoutStatsSeries<Bool, Double, WorkoutRouteDataSample>>
+    let distance: AnyPublisher<String, Never>
+    let steps: AnyPublisher<String?, Never>
+    let ascendingAltitude: AnyPublisher<String?, Never>
+    let descendingAltitude: AnyPublisher<String?, Never>
+    let altitudeOverTime: AnyPublisher<WorkoutStatsSeries<Bool, Double, WorkoutRouteDataSample>, Never>
     
     // DURATION
-    let startDate: Driver<String>
-    let endDate: Driver<String>
-    let activeDuration: Driver<String>
-    let pauseDuration: Driver<String?>
+    let startDate: AnyPublisher<String, Never>
+    let endDate: AnyPublisher<String, Never>
+    let activeDuration: AnyPublisher<String, Never>
+    let pauseDuration: AnyPublisher<String?, Never>
     
     // SPEED
-    let averageSpeed: Driver<String>
-    let topSpeed: Driver<String>
-    let speedOverTime: Driver<WorkoutStatsSeries<Bool, Double, WorkoutRouteDataSample>>
+    let averageSpeed: AnyPublisher<String, Never>
+    let topSpeed: AnyPublisher<String, Never>
+    let speedOverTime: AnyPublisher<WorkoutStatsSeries<Bool, Double, WorkoutRouteDataSample>, Never>
     
     // ENERGY
-    let burnedEnergy: Driver<String?>
-    var burnedEnergyPerMinute: Driver<String?>
+    let burnedEnergy: AnyPublisher<String?, Never>
+    var burnedEnergyPerMinute: AnyPublisher<String?, Never>
     
     // HEART RATE
-    let averageHeartRate: Driver<String?>
-    let heartRateOverTime: Driver<WorkoutStatsSeries<Bool, Int, WorkoutHeartRateDataSample>>
+    let averageHeartRate: AnyPublisher<String?, Never>
+    let heartRateOverTime: AnyPublisher<WorkoutStatsSeries<Bool, Int, WorkoutHeartRateDataSample>, Never>
     
     init(workout: Workout) {
         
@@ -102,9 +101,9 @@ class WorkoutStats {
      - parameter time: the date from which the time should be formatted as a string
      - returns: a static observable string driver
      */
-    private static func just(time: Date) -> Driver<String> {
+    private static func just(time: Date) -> AnyPublisher<String, Never> {
         
-        .just(CustomDateFormatting.timeString(forDate: time))
+        return Just(CustomDateFormatting.timeString(forDate: time)).eraseToAnyPublisher()
     }
     
     /**
@@ -120,9 +119,9 @@ class WorkoutStats {
         unit: Unit?,
         type: CustomMeasurementFormatting.FormattingMeasurementType = .auto,
         rounding: CustomMeasurementFormatting.FormattingRoundingType = .twoDigits
-    ) -> Driver<String?> {
+    ) -> AnyPublisher<String?, Never> {
         
-        .just(StatsHelper.string(for: value, unit: unit, type: type, rounding: rounding))
+        return Just(StatsHelper.string(for: value, unit: unit, type: type, rounding: rounding)).eraseToAnyPublisher()
     }
     
     /**
@@ -138,9 +137,9 @@ class WorkoutStats {
         unit: Unit?,
         type: CustomMeasurementFormatting.FormattingMeasurementType = .auto,
         rounding: CustomMeasurementFormatting.FormattingRoundingType = .twoDigits
-    ) -> Driver<String> {
+    ) -> AnyPublisher<String, Never> {
         
-        just(value, unit: unit, type: type, rounding: rounding).map { $0 ?? "--" }.asDriver()
+        return just(value, unit: unit, type: type, rounding: rounding).map { $0 ?? "--" }.eraseToAnyPublisher()
     }
     
     /**
@@ -154,28 +153,23 @@ class WorkoutStats {
         from workout: ORWorkoutInterface,
         samples samplesPath: KeyPath<Workout, SampleType>,
         metric metricPath: KeyPath<SampleType.Element, MetricType>
-    ) -> Driver<WorkoutStatsSeries<Bool, MetricType, SampleType.Element>> where SampleType.Element: ORSampleInterface {
+    ) -> AnyPublisher<WorkoutStatsSeries<Bool, MetricType, SampleType.Element>, Never>
+    where SampleType.Element: ORSampleInterface {
         
-        Observable<WorkoutStatsSeries<Bool, MetricType, SampleType.Element>>.create { observer in
-            
+        return Publishers.Create { subscriber in
             var disposed = false
-            
             DataManager.querySectionedMetrics(
                 from: workout,
                 samples: samplesPath,
                 metric: metricPath,
                 completion: { seriesData in
                     guard !disposed else { return }
-                    observer.onNext(seriesData)
-                    observer.onCompleted()
+                    subscriber.send(seriesData)
+                    subscriber.send(completion: .finished)
                 }
             )
-            
-            return Disposables.create {
-                disposed = true
-            }
-            
-        }.asDriver(onErrorJustReturn: [])
+            return AnyCancellable { disposed = true }
+        }.eraseToAnyPublisher()
     }
     
     /**
@@ -191,7 +185,8 @@ class WorkoutStats {
         samples samplesPath: KeyPath<Workout, SampleType>,
         metric metricPath: KeyPath<SampleType.Element, Double>,
         desiredUnit: UnitType
-    ) -> Driver<WorkoutStatsSeries<Bool, Double, SampleType.Element>> where SampleType.Element: ORSampleInterface {
+    ) -> AnyPublisher<WorkoutStatsSeries<Bool, Double, SampleType.Element>, Never>
+    where SampleType.Element: ORSampleInterface {
         
         series(from: workout, samples: samplesPath, metric: metricPath)
             .map { series in
@@ -202,6 +197,6 @@ class WorkoutStats {
                     }
                     return (sectionValue, convertedData)
                 })
-            }
+            }.eraseToAnyPublisher()
     }
 }
