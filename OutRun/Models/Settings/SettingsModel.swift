@@ -305,7 +305,7 @@ class SettingsModel {
                     doesRedirect: true,
                     selectAction: { (setting, controller, cell) in
                         
-                        let importController = HKImportListController()
+                        let importController = UIViewController()
                         controller.show(importController, sender: controller)
                         
                     }
@@ -385,7 +385,7 @@ class SettingsModel {
                                                                     completion()
                                                                 }
                                                                 
-                                                                let startController = StartScreenViewController()
+                                                                let startController = UIViewController()
                                                                 startController.modalTransitionStyle = .crossDissolve
                                                                 startController.modalPresentationStyle = .fullScreen
                                                                 controller.endLoading {
@@ -492,8 +492,8 @@ class SettingsModel {
                     doesRedirect: true,
                     selectAction: { (setting, controller, cell) in
                         
-                        let policyController = PolicyViewController()
-                        policyController.type = .termsOfService
+                        let policyController = UIViewController()
+                        // policyController.type = .termsOfService
                         controller.showDetailViewController(policyController, sender: controller)
                     }
                 ),
@@ -502,8 +502,8 @@ class SettingsModel {
                     doesRedirect: true,
                     selectAction: { (setting, controller, cell) in
                         
-                        let policyController = PolicyViewController()
-                        policyController.type = .privacyPolicy
+                        let policyController = UIViewController()
+                        // policyController.type = .privacyPolicy
                         controller.showDetailViewController(policyController, sender: controller)
                     }
                 ),

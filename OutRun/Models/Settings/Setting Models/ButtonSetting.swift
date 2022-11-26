@@ -34,7 +34,7 @@ class ButtonSetting: TitleSetting {
         return cell
     }()
     
-    init(title: @escaping () -> String, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil, buttonColor: @escaping () -> UIColor = { return .accentColor }, isEnabled: @escaping () -> Bool = { return true }) {
+    init(title: @escaping () -> String, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil, buttonColor: @escaping () -> UIColor = { return .accentColor }, isEnabled: @escaping () -> Bool = { return true }) {
         self.buttonColorClosure = buttonColor
         self.isEnabledClosure = isEnabled
         super.init(title: title, selectAction: selectAction == nil ? nil : { (setting, controller, cell) in
@@ -44,7 +44,7 @@ class ButtonSetting: TitleSetting {
         })
     }
     
-    convenience init(title: String, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil, buttonColor: UIColor = .accentColor, isEnabled: Bool = true) {
+    convenience init(title: String, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil, buttonColor: UIColor = .accentColor, isEnabled: Bool = true) {
         self.init(title: { return title }, selectAction: selectAction, buttonColor: { return buttonColor }, isEnabled: { return isEnabled })
         self.usesClosures = false
     }

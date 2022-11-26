@@ -69,7 +69,7 @@ class InputViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextField
         self.usesClosures = false
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         dummyTextField.becomeFirstResponder()
     }
     

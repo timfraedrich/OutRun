@@ -132,7 +132,7 @@ class TextInputSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextField
         }
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         textField.becomeFirstResponder()
     }
     

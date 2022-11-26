@@ -19,6 +19,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class TextViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextViewDelegate {
     
@@ -97,7 +98,7 @@ class TextViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextViewDe
         }
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         self.textView.becomeFirstResponder()
     }
     

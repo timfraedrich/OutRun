@@ -102,7 +102,7 @@ class SwitchSetting: Setting {
         switchToggleAction(sender.isOn, self)
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         return
     }
     

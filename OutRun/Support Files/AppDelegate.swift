@@ -40,13 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             DataManager.setup(
                 completion: { error in
                     
-                    let controller: UIViewController = {
-                        if UserPreferences.isSetUp.value {
-                            return TabBarController()
-                        } else {
-                            return StartScreenViewController()
-                        }
-                    }()
+                    let controller: UIViewController = UIViewController()
                     
                     self.setRootViewController(for: controller, withSmoothTransition: true) {
                         self.checkPermissionStatus(controller: controller) {
@@ -56,12 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
                                     
                                     if let changeLog = Config.changeLogs[Config.version] {
-                                        let changeLogController = ChangeLogViewController()
-                                        changeLogController.changeLog = changeLog
-                                        changeLogController.modalPresentationStyle = .overFullScreen
-                                        changeLogController.modalTransitionStyle = .crossDissolve
-                                        
-                                        controller.present(changeLogController, animated: true)
+                                        // show changelog
                                     }
                                     
                                     AppDelegate.lastVersion.value = Config.version
@@ -76,12 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 },
                 migration: { progress in
                     
-                    let progressController = ProgressViewController()
-                    self.setRootViewController(for: progressController, withSmoothTransition: true)
-                    
-                    progress.setProgressHandler { (progress) in
-                        progressController.setProgress(progress.fractionCompleted)
-                    }
+                    // show migration
                     
                 }
             )
