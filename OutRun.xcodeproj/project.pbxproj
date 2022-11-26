@@ -40,6 +40,9 @@
 		225AC6A6243F9CC3008D493D /* HealthStoreManager+Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A5243F9CC3008D493D /* HealthStoreManager+Observer.swift */; };
 		225AC6A8243FA088008D493D /* HealthStoreManager+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */; };
 		225BB02F2716E61000478E09 /* StatsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225BB02E2716E61000478E09 /* StatsHelper.swift */; };
+		225C0F742931CB6100B9B45F /* OutRunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F732931CB6100B9B45F /* OutRunApp.swift */; };
+		225C0F762931D22300B9B45F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F752931D22300B9B45F /* RootView.swift */; };
+		225C0F792931D27900B9B45F /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F782931D27900B9B45F /* RootViewModel.swift */; };
 		22623C0122DFBB71004065C6 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22623C0022DFBB71004065C6 /* Sequence.swift */; };
 		226E9A4923F00C0F00992815 /* TabBarSelectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E9A4823F00C0F00992815 /* TabBarSelectionObserver.swift */; };
 		226E9A4B23F01E6E00992815 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E9A4A23F01E6E00992815 /* Date.swift */; };
@@ -200,6 +203,9 @@
 		225AC6A5243F9CC3008D493D /* HealthStoreManager+Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Observer.swift"; sourceTree = "<group>"; };
 		225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Query.swift"; sourceTree = "<group>"; };
 		225BB02E2716E61000478E09 /* StatsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsHelper.swift; sourceTree = "<group>"; };
+		225C0F732931CB6100B9B45F /* OutRunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutRunApp.swift; sourceTree = "<group>"; };
+		225C0F752931D22300B9B45F /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		225C0F782931D27900B9B45F /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		22623C0022DFBB71004065C6 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		226E9A4823F00C0F00992815 /* TabBarSelectionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSelectionObserver.swift; sourceTree = "<group>"; };
 		226E9A4A23F01E6E00992815 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -419,8 +425,18 @@
 		225C0F562931C44400B9B45F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				225C0F772931D26600B9B45F /* Root */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		225C0F772931D26600B9B45F /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				225C0F752931D22300B9B45F /* RootView.swift */,
+				225C0F782931D27900B9B45F /* RootViewModel.swift */,
+			);
+			path = Root;
 			sourceTree = "<group>";
 		};
 		22834F7025421F0300057FEB /* ORDataInterfaces */ = {
@@ -550,7 +566,6 @@
 			isa = PBXGroup;
 			children = (
 				22B6CF6022CA0815002D2FB0 /* Assets.xcassets */,
-				22B6CF5622CA0814002D2FB0 /* AppDelegate.swift */,
 				22B1F14122D61CF400C02973 /* LaunchScreen.storyboard */,
 				223C2E0B25252F1B00D4B13D /* Info.plist */,
 				2291863C23679AA300929885 /* InfoPlist.strings */,
@@ -585,6 +600,8 @@
 			isa = PBXGroup;
 			children = (
 				22B6CF6E22CA0841002D2FB0 /* OutRun.entitlements */,
+				225C0F732931CB6100B9B45F /* OutRunApp.swift */,
+				22B6CF5622CA0814002D2FB0 /* AppDelegate.swift */,
 				22B6CF7722CA11CA002D2FB0 /* Extensions */,
 				22B6CF7422CA0A28002D2FB0 /* Models */,
 				22EE6E952311EF90001D47CF /* Protocols */,
@@ -1072,6 +1089,7 @@
 				22B1DD9B253F91F20093822B /* OutRunV3.swift in Sources */,
 				22B6CF7922CA11D6002D2FB0 /* UIFont.swift in Sources */,
 				22C09B9626519939004AF34F /* HKWorkoutEventType.swift in Sources */,
+				225C0F792931D27900B9B45F /* RootViewModel.swift in Sources */,
 				22DBFBDD2348B34800DE6E92 /* TitleSetting.swift in Sources */,
 				22FD3253255F319E007719C9 /* ORPrimitive.swift in Sources */,
 				228CDFFA2577C66B0023E8F7 /* Computation.swift in Sources */,
@@ -1112,9 +1130,11 @@
 				22A5459C26E7F8DE00E19B0B /* UnitConverterInverse.swift in Sources */,
 				22E8969C23E9A2B80074D2BB /* BackupManager.swift in Sources */,
 				22DBFBE3234939F100DE6E92 /* UserPreference.swift in Sources */,
+				225C0F742931CB6100B9B45F /* OutRunApp.swift in Sources */,
 				2227C642234B66BC00CFE31A /* ButtonSetting.swift in Sources */,
 				22CBE0D62448652C0009D9A7 /* BigStatView.swift in Sources */,
 				221E47D123ECB837004EAB1D /* Backup.swift in Sources */,
+				225C0F762931D22300B9B45F /* RootView.swift in Sources */,
 				225AC6A4243F2710008D493D /* WorkoutHeartRateDataSample.swift in Sources */,
 				22585C22240AE1BC0052E2CA /* WorkoutRouteDataSample.swift in Sources */,
 				226E9A4923F00C0F00992815 /* TabBarSelectionObserver.swift in Sources */,
@@ -1266,7 +1286,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1323,7 +1343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1391,7 +1411,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRun.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1412,7 +1432,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRun.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

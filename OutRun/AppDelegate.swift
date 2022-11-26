@@ -24,56 +24,49 @@ import CoreStore
 import HealthKit
 import CoreLocation
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
+class AppDelegate: UIResponder, UIApplicationDelegate, ObservableObject {
+    
+    @Published var appLaunchState: AppLaunchState = .loading
     
     static let lastVersion = UserPreference.Optional<String>(key: "lastVersion", initialValue: "1.0")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil)
-        let launchScreen = storyboard.instantiateViewController(withIdentifier: "launchScreen")
-        
-        setRootViewController(for: launchScreen) {
-            DataManager.setup(
-                completion: { error in
-                    
-                    let controller: UIViewController = UIViewController()
-                    
-                    self.setRootViewController(for: controller, withSmoothTransition: true) {
-                        self.checkPermissionStatus(controller: controller) {
-                            if UserPreferences.isSetUp.value {
-                                HealthStoreManager.setupObservers()
-                                
-                                if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
-                                    
-                                    if let changeLog = Config.changeLogs[Config.version] {
-                                        // show changelog
-                                    }
-                                    
-                                    AppDelegate.lastVersion.value = Config.version
-                                    
-                                } else if AppDelegate.lastVersion.value == nil {
-                                    AppDelegate.lastVersion.value = Config.version
-                                }
-                            }
-                        }
-                    }
-                    
-                },
-                migration: { progress in
-                    
-                    // show migration
-                    
-                }
-            )
-            
-        }
+        DataManager.setup(
+            completion: { error in
+                
+                self.appLaunchState = .done
+
+                // check permissions
+                // show changelog
+                //
+                
+                // self.checkPermissionStatus(controller: controller) {
+                //     guard UserPreferences.isSetUp.value else { return }
+                //     HealthStoreManager.setupObservers()
+                //
+                //     if AppDelegate.lastVersion.value != Config.version && AppDelegate.lastVersion.value != nil {
+                //
+                //         if let changeLog = Config.changeLogs[Config.version] {
+                //             // show changelog
+                //         }
+                //
+                //         AppDelegate.lastVersion.value = Config.version
+                //
+                //     } else if AppDelegate.lastVersion.value == nil {
+                //         AppDelegate.lastVersion.value = Config.version
+                //     }
+                // }
+
+            }, migration: { progress in
+
+                // show migration screen
+                self.appLaunchState = .migration
+
+            }
+        )
         
         return true
-        
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -87,17 +80,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {}
-    
+
     func checkPermissionStatus(controller: UIViewController, completion: (() -> Void)? = nil) {
-        
+
         let safeCompletion: () -> Void = {
             DispatchQueue.main.async {
                 completion?()
             }
         }
-        
+
         if UserPreferences.isSetUp.value {
-            
+
             func checkHealthPermission() {
                 if UserPreferences.synchronizeWorkoutsWithAppleHealth.value || UserPreferences.synchronizeWeightWithAppleHealth.value {
                     PermissionManager.standard.checkHealthPermission { (success) in
@@ -115,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     safeCompletion()
                 }
             }
-            
+
             func checkMotionPermission() {
                 PermissionManager.standard.checkMotionPermission { (success) in
                     if !success {
@@ -133,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
             }
-            
+
             PermissionManager.standard.checkLocationPermission { (status) in
                 switch status {
                 case .granted:
@@ -161,44 +154,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
             }
-            
+
         } else {
             safeCompletion()
         }
     }
     
-    /// Setting a new root view controller for the applications current window
-    func setRootViewController(for controller: UIViewController, withSmoothTransition shouldAnimate: Bool = false, completion: (() -> Void)? = nil) {
-        
-        guard self.window != nil else {
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            self.window?.tintColor = .accentColor
-            self.window?.rootViewController = controller
-            self.window?.makeKeyAndVisible()
-            completion?()
-            return
-        }
-        
-        guard shouldAnimate, let rootController = self.window?.rootViewController?.presentedViewController else {
-            self.window?.rootViewController = controller
-            completion?()
-            return
-        }
-        
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .fullScreen
-        
-        rootController.present(controller, animated: true, completion: {
-            
-            rootController.dismiss(animated: false) {
-                
-                self.window?.rootViewController = controller
-                completion?()
-                
-            }
-            
-        })
-        
+    enum AppLaunchState {
+        case loading
+        case migration
+        case done
     }
 }
 
