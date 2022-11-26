@@ -19,40 +19,40 @@
 //
 
 import Foundation
-import RxSwift
-import RxCocoa
+import Combine
+import CombineExt
 import CoreLocation
 
-class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
+class LiveStats: WorkoutBuilderComponent {
     
     // MARK: - Dataflow
     
-    /// The `DisposeBag` used for binding to the workout builder.
-    private var disposeBag = DisposeBag()
+    /// An Array of cancellables for binding to the workout builder.
+    private var cancellables: [AnyCancellable] = []
     
     /// The relay to publish the current status of the `WorkoutBuilder`.
-    fileprivate let statusRelay = BehaviorRelay<WorkoutBuilder.Status>(value: .waiting)
+    fileprivate let statusRelay = CurrentValueRelay<WorkoutBuilder.Status>(.waiting)
     /// The relay to publish the type of workout the `WorkoutBuilder` is supposed to record.
-    fileprivate let workoutTypeRelay = BehaviorRelay<Workout.WorkoutType?>(value: nil)
+    fileprivate let workoutTypeRelay = CurrentValueRelay<Workout.WorkoutType?>(nil)
     /// The relay to publish the distance shared by components.
-    fileprivate let distanceRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UserPreferences.distanceMeasurementType.safeValue))
+    fileprivate let distanceRelay = CurrentValueRelay<String>(StatsHelper.string(for: 0, unit: UserPreferences.distanceMeasurementType.safeValue))
     /// The relay to publish the steps counted by components.
-    fileprivate let stepsRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UnitCount.count))
+    fileprivate let stepsRelay = CurrentValueRelay<String>(StatsHelper.string(for: 0, unit: UnitCount.count))
     /// The relay to publish the current location regardless of whether it was recorded or not.
-    fileprivate let currentLocationRelay = BehaviorRelay<TempWorkoutRouteDataSample?>(value: nil)
+    fileprivate let currentLocationRelay = CurrentValueRelay<TempWorkoutRouteDataSample?>(nil)
     /// The relay to publish the recorded locations received from components.
-    fileprivate let locationsRelay = BehaviorRelay<[TempWorkoutRouteDataSample]>(value: [])
+    fileprivate let locationsRelay = CurrentValueRelay<[TempWorkoutRouteDataSample]>([])
     /// The relay to publish the heart rate samples received from components.
-    fileprivate let currentHeartRateRelay = BehaviorRelay<TempWorkoutHeartRateDataSample?>(value: nil)
+    fileprivate let currentHeartRateRelay = CurrentValueRelay<TempWorkoutHeartRateDataSample?>(nil)
     /// The relay to publish a components report of isufficient permissions to record the workout.
-    fileprivate let insufficientPermissionRelay = PublishRelay<String>()
+    fileprivate let insufficientPermissionRelay = PassthroughRelay<String>()
     
     /// The relay to publish a string describing the elapsed duration of the workout.
-    fileprivate let durationRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UnitDuration.seconds, type: .clock))
+    fileprivate let durationRelay = CurrentValueRelay<String>(StatsHelper.string(for: 0, unit: UnitDuration.seconds, type: .clock))
     /// The relay to publish the energy burned during the workout as computed periodically.
-    fileprivate let burnedEnergyRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UserPreferences.energyMeasurementType.safeValue))
+    fileprivate let burnedEnergyRelay = CurrentValueRelay<String>(StatsHelper.string(for: 0, unit: UserPreferences.energyMeasurementType.safeValue))
     /// The relay to publish the speed returned in meters per second.
-    fileprivate let speedRelay = BehaviorRelay<String>(value: StatsHelper.string(for: 0, unit: UserPreferences.speedMeasurementType.safeValue, type: (UserPreferences.speedMeasurementType.safeValue == UnitSpeed.minutesPerLengthUnit(from: UnitLength.standardBigLocalUnit as! UnitLength)) ? .pace : .auto))
+    fileprivate let speedRelay = CurrentValueRelay<String>(StatsHelper.string(for: 0, unit: UserPreferences.speedMeasurementType.safeValue, type: (UserPreferences.speedMeasurementType.safeValue == UnitSpeed.minutesPerLengthUnit(from: UnitLength.standardBigLocalUnit as! UnitLength)) ? .pace : .auto))
     
     // MARK: Binders
     
@@ -67,24 +67,21 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
     }
     
     /// Maps to duration output.
-    private var durationMapper: (((Int, Date?), [TempWorkoutPause]), Date?) -> String? = { value, endDate in
-        let ((_, startDate), pauses) = value
+    private var durationMapper: (Date, Date?, [TempWorkoutPause], Date?) -> String? = { _, startDate, pauses, endDate in
         guard let startDate = startDate else { return nil }
         let duration = startDate.distance(to: endDate ?? Date()) - pauses.map { $0.duration }.reduce(0, +)
         return StatsHelper.string(for: duration, unit: UnitDuration.seconds, type: .clock)
     }
     
     /// Maps to burned energy output.
-    private var burnedEnergyMapper: ((Int, Workout.WorkoutType), Double) -> String? = { value, distance in
-        let workoutType = value.1
+    private var burnedEnergyMapper: (Date, Workout.WorkoutType, Double) -> String? = { _, workoutType, distance in
         guard let weight = UserPreferences.weight.value else { return nil }
         let burnedEnergy = Computation.calculateBurnedEnergy(for: workoutType, distance: distance, weight: weight)
         return StatsHelper.string(for: burnedEnergy, unit: UnitEnergy.standardUnit)
     }
     
     /// Binds location updates and the current start date to this component for speed calculation
-    private var speedMapper: ((([TempWorkoutRouteDataSample], Date?), [TempWorkoutPause]), Double) -> String? = { value, distance in
-        let ((locations, startDate), pauses) = value
+    private var speedMapper: ([TempWorkoutRouteDataSample], Date?, [TempWorkoutPause], Double) -> String? = { locations, startDate, pauses, distance in
         guard let startDate = startDate else { return nil }
         
         let speed: Double?
@@ -118,6 +115,20 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
         return StatsHelper.string(for: speed, unit: UnitSpeed.standardUnit)
     }
     
+    // MARK: - Publishers
+    
+    var status: AnyPublisher<WorkoutBuilder.Status, Never> { self.statusRelay.eraseToAnyPublisher() }
+    var workoutType: AnyPublisher<Workout.WorkoutType?, Never> { self.workoutTypeRelay.eraseToAnyPublisher() }
+    var distance: AnyPublisher<String, Never> { self.distanceRelay.eraseToAnyPublisher() }
+    var steps: AnyPublisher<String, Never> { self.stepsRelay.eraseToAnyPublisher() }
+    var currentLocation: AnyPublisher<TempWorkoutRouteDataSample?, Never> { self.currentLocationRelay.eraseToAnyPublisher() }
+    var locations: AnyPublisher<[TempWorkoutRouteDataSample], Never> { self.locationsRelay.eraseToAnyPublisher() }
+    var currentHeartRate: AnyPublisher<TempWorkoutHeartRateDataSample?, Never> { self.currentHeartRateRelay.eraseToAnyPublisher() }
+    var insufficientPermission: AnyPublisher<String, Never> { self.insufficientPermissionRelay.eraseToAnyPublisher() }
+    var duration: AnyPublisher<String, Never> { self.durationRelay.eraseToAnyPublisher() }
+    var burnedEnergy: AnyPublisher<String, Never> { self.burnedEnergyRelay.eraseToAnyPublisher() }
+    var speed: AnyPublisher<String, Never> { self.speedRelay.eraseToAnyPublisher() }
+    
     // MARK: WorkoutBuilderComponent
     
     public required init(builder: WorkoutBuilder) {
@@ -126,93 +137,36 @@ class LiveStats: WorkoutBuilderComponent, ReactiveCompatible {
     
     func bind(builder: WorkoutBuilder) {
         
-        disposeBag = DisposeBag()
-        
+        self.cancellables = []
         let output = builder.tranform(Input())
             
-        output.status
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: statusRelay)
-            .disposed(by: disposeBag)
-        
-        output.workoutType
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: workoutTypeRelay)
-            .disposed(by: disposeBag)
-        
-        output.distance
-            .map(distanceMapper)
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: distanceRelay)
-            .disposed(by: disposeBag)
-        
-        output.steps
-            .map(stepsMapper)
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: stepsRelay)
-            .disposed(by: disposeBag)
-        
-        output.currentLocation
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: currentLocationRelay)
-            .disposed(by: disposeBag)
+        output.status.sink(receiveValue: statusRelay.accept).store(in: &cancellables)
+        output.workoutType.sink(receiveValue: workoutTypeRelay.accept).store(in: &cancellables)
+        output.distance.map(distanceMapper).sink(receiveValue: distanceRelay.accept).store(in: &cancellables)
+        output.steps.map(stepsMapper).sink(receiveValue: stepsRelay.accept).store(in: &cancellables)
+        output.currentLocation.sink(receiveValue: currentLocationRelay.accept).store(in: &cancellables)
+        output.locations.sink(receiveValue: locationsRelay.accept).store(in: &cancellables)
+        output.heartRates.map { $0.last }.sink(receiveValue: currentHeartRateRelay.accept).store(in: &cancellables)
+        output.insufficientPermission.sink(receiveValue: insufficientPermissionRelay.accept).store(in: &cancellables)
         
         output.locations
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: locationsRelay)
-            .disposed(by: disposeBag)
-        
-        output.heartRates
-            .compactMap { $0.last }
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: currentHeartRateRelay)
-            .disposed(by: disposeBag)
-        
-        output.insufficientPermission
-            .pausableBuffered(output.isUISuspended, limit: nil)
-            .bind(to: insufficientPermissionRelay)
-            .disposed(by: disposeBag)
-        
-        let periodicUpdates = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.asyncInstance)
-        
-        periodicUpdates
-            .combineWithLatestFrom(output.startDate)
-            .combineWithLatestFrom(output.pauses)
-            .combineWithLatestFrom(output.endDate)
-            .compactMap(durationMapper)
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: durationRelay)
-            .disposed(by: disposeBag)
-        
-        periodicUpdates
-            .combineWithLatestFrom(output.workoutType)
-            .combineWithLatestFrom(output.distance)
-            .compactMap(burnedEnergyMapper)
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: burnedEnergyRelay)
-            .disposed(by: disposeBag)
-        
-        output.locations
-            .combineWithLatestFrom(output.startDate)
-            .combineWithLatestFrom(output.pauses)
-            .combineWithLatestFrom(output.distance)
+            .combineLatest(output.startDate, output.pauses, output.distance)
             .compactMap(speedMapper)
-            .pausableBuffered(output.isUISuspended)
-            .bind(to: speedRelay)
-            .disposed(by: disposeBag)
+            .sink(receiveValue: speedRelay.accept)
+            .store(in: &cancellables)
+        
+        let periodicUpdates = Timer.TimerPublisher(interval: 1, runLoop: .main, mode: .default)
+        
+        periodicUpdates
+            .combineLatest(output.startDate, output.pauses, output.endDate)
+            .compactMap(durationMapper)
+            .sink(receiveValue: durationRelay.accept)
+            .store(in: &cancellables)
+        
+        periodicUpdates
+            .combineLatest(output.workoutType, output.distance)
+            .compactMap(burnedEnergyMapper)
+            .sink(receiveValue: burnedEnergyRelay.accept)
+            .store(in: &cancellables)
     }
-    
-    // MARK: - Reactive
-    
-    var status: Driver<WorkoutBuilder.Status> { self.statusRelay.asDriver() }
-    var workoutType: Driver<Workout.WorkoutType?> { self.workoutTypeRelay.asDriver() }
-    var distance: Driver<String> { self.distanceRelay.asDriver() }
-    var steps: Driver<String> { self.stepsRelay.asDriver() }
-    var currentLocation: Driver<TempWorkoutRouteDataSample?> { self.currentLocationRelay.asDriver() }
-    var locations: Driver<[TempWorkoutRouteDataSample]> { self.locationsRelay.asDriver() }
-    var currentHeartRate: Driver<TempWorkoutHeartRateDataSample?> { self.currentHeartRateRelay.asDriver() }
-    var insufficientPermission: Driver<String> { self.insufficientPermissionRelay.asDriver(onErrorJustReturn: "Error") }
-    var duration: Driver<String> { self.durationRelay.asDriver() }
-    var burnedEnergy: Driver<String> { self.burnedEnergyRelay.asDriver() }
-    var speed: Driver<String> { self.speedRelay.asDriver() }
 }
