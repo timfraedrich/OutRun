@@ -20,12 +20,8 @@
 
 import UIKit
 import MapKit
-import RxCocoa
-import RxSwift
 
 class WorkoutMapViewController: MapViewControllerWithContainerView {
-    
-    private let disposeBag = DisposeBag()
     
     var workout: Workout?
     var stats: WorkoutStats?
@@ -153,64 +149,14 @@ class WorkoutMapViewController: MapViewControllerWithContainerView {
             make.left.right.bottom.equalTo(containerView.safeAreaLayoutGuide).inset(spacing)
             make.top.equalTo(segementedControl.snp.bottom).offset(spacing / 2)
         }
-        
-        diagramView.rx.sampleSelected
-            .drive(didSelectSample)
-            .disposed(by: disposeBag)
     }
     
     override func close() {
         self.dismiss(animated: true)
     }
     
-    private var diagramDisposeBag = DisposeBag()
-    
     @objc func displayDiagramData(sender: UISegmentedControl) {
         
-        guard let stats = stats else {
-            return
-        }
-        
-        diagramDisposeBag = DisposeBag()
-        
-        switch sender.selectedSegmentIndex {
-        case 0:
-            
-            stats.altitudeOverTime
-                .drive(diagramView.rx.data())
-                .disposed(by: diagramDisposeBag)
-            
-            Driver.just(LS["WorkoutStats.Altitude"])
-                .drive(diagramView.rx.title)
-                .disposed(by: diagramDisposeBag)
-            
-        case 1:
-            
-            stats.speedOverTime
-                .drive(diagramView.rx.data())
-                .disposed(by: diagramDisposeBag)
-            
-            Driver.just(LS["WorkoutStats.Speed"])
-                .drive(diagramView.rx.title)
-                .disposed(by: diagramDisposeBag)
-            
-        default:
-            break
-        }
-        
-    }
-    
-    private var didSelectSample: Binder<ORSampleInterface> {
-        Binder(self) { `self`, sample in
-            guard let sample = sample as? ORWorkoutRouteDataSampleInterface else { return }
-            if self.annotation == nil {
-                self.annotation = MKPointAnnotation()
-                self.mapView?.addAnnotation(self.annotation!)
-            }
-            let latitude = sample.latitude
-            let longitude = sample.longitude
-            self.annotation?.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        }
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

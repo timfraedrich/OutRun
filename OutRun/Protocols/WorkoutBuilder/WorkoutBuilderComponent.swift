@@ -19,7 +19,6 @@
 //
 
 import Foundation
-import RxSwift
 
 public protocol WorkoutBuilderComponent: AnyObject {
     

@@ -19,25 +19,14 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 
 class SpeedStatsView: StatsView {
-    
-    private let disposeBag = DisposeBag()
     
     init(stats: WorkoutStats) {
         
         let avgSpeedView = LabelledDataView(title: LS["WorkoutStats.AverageSpeed"])
         let topSpeedView = LabelledDataView(title: LS["WorkoutStats.TopSpeed"])
         let speedChart = LabelledDiagramView(title: LS["WorkoutStats.SpeedOverTime"])
-        
-        stats.averageSpeed.drive(avgSpeedView.rx.valueString).disposed(by: disposeBag)
-        if stats.hasRouteSamples {
-            stats.topSpeed.drive(topSpeedView.rx.valueString).disposed(by: disposeBag)
-            stats.speedOverTime.drive(speedChart.rx.data()).disposed(by: disposeBag)
-            Driver.just(true).drive(speedChart.rx.isDisabled).disposed(by: disposeBag)
-        }
         
         let statViews: [StatView] = [avgSpeedView] + (stats.hasRouteSamples ? [topSpeedView, speedChart] : [])
         

@@ -19,11 +19,8 @@
 //
 
 import UIKit
-import RxSwift
 
 class TimeStatsView: StatsView {
-    
-    private let disposeBag = DisposeBag()
     
     init(stats: WorkoutStats) {
         
@@ -33,11 +30,6 @@ class TimeStatsView: StatsView {
         let pauseView = LabelledDataView(title: LS["Workout.PauseDuration"])
         let startView = LabelledDataView(title: LS["WorkoutStats.StartTime"])
         let endView = LabelledDataView(title: LS["WorkoutStats.EndTime"])
-        
-        stats.activeDuration.drive(activeView.rx.valueString).disposed(by: disposeBag)
-        stats.pauseDuration.drive(pauseView.rx.valueString).disposed(by: disposeBag)
-        stats.startDate.drive(startView.rx.valueString).disposed(by: disposeBag)
-        stats.endDate.drive(endView.rx.valueString).disposed(by: disposeBag)
         
         if !stats.hasWorkoutPauses {
             statViews.append(contentsOf: [activeView, startView, endView])

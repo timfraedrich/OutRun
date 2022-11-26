@@ -20,8 +20,6 @@
 
 import UIKit
 import Charts
-import RxSwift
-import RxCocoa
 
 class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
     
@@ -87,50 +85,5 @@ class LabelledDiagramView: UIView, ChartViewDelegate, BigStatView {
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         guard let sample = entry.data as? ORSampleInterface else { return }
-        sampleSelectedRelay.accept(sample)
     }
-    
-    // MARK: - Bindings
-    
-    fileprivate var sampleSelectedRelay = PublishRelay<ORSampleInterface>()
-    
-}
-
-extension Reactive where Base: LabelledDiagramView {
-    
-    var title: Binder<String> {
-        Binder(base) { base, title in
-            base.titleLabel.text = title
-        }
-    }
-    
-    func data<SampleType: ORSampleInterface>() -> Binder<WorkoutStatsSeries<Bool, Double, SampleType>> {
-        Binder(base) { base, data in
-            let dataSets: [LineChartDataSet] = data.sections.map { (highlighted, sectionData) in
-                let values = sectionData.map { ChartDataEntry(x: $0, y: $1, data: $2) }
-                let set = LineChartDataSet(entries: values, label: "")
-                set.setColor((highlighted ? UIColor.accentColor : .gray) as NSUIColor)
-                set.lineWidth = 3
-                set.drawCirclesEnabled = false
-                set.drawValuesEnabled = false
-                set.lineCapType = .round
-                return set
-            }
-            base.diagram.data = LineChartData(dataSets: dataSets)
-        }
-    }
-    
-    var sampleSelected: Driver<ORSampleInterface> {
-        base.sampleSelectedRelay
-            .throttle(.milliseconds(50), latest: true, scheduler: MainScheduler.asyncInstance)
-            .asDriver(onErrorDriveWith: .never())
-    }
-    
-    var isDisabled: Binder<Bool> {
-        Binder(base) { base, isDisabled in
-            base.diagram.highlightPerTapEnabled = !isDisabled
-            base.diagram.highlightPerDragEnabled = !isDisabled
-        }
-    }
-    
 }

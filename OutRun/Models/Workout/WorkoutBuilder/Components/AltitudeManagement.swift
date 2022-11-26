@@ -20,8 +20,8 @@
 
 import Foundation
 import CoreMotion
-import RxSwift
-import RxCocoa
+import Combine
+import CombineExt
 
 /// A `WorkoutBuilderComponent` for measuring changes in altitude and recording them for the refinement of route data
 public class AltitudeManagement: WorkoutBuilderComponent {
@@ -45,19 +45,20 @@ public class AltitudeManagement: WorkoutBuilderComponent {
     
     // MARK: - Dataflow
     
-    /// The `DisposeBag` used for binding to the workout builder.
-    private let disposeBag = DisposeBag()
+    /// An Array of cancellables for binding to the workout builder.
+    private var cancellables: [AnyCancellable] = []
     
     /// The relay to publish that insufficient permission was granted to the workout builder.
-    private let insufficientPermissionRelay = PublishRelay<String>()
+    private let insufficientPermissionRelay = PassthroughRelay<String>()
     /// The relay to publish the altitudes recorded to the workout builder.
-    private let altitudesRelay = BehaviorRelay<[AltitudeSample]>(value: [])
+    private let altitudesRelay = CurrentValueRelay<[AltitudeSample]>([])
     
     // MARK: Binders
     
     /// Binds the current and previous status of the workout builder to this component.
-    private var statusBinder: Binder<(WorkoutBuilder.Status?, WorkoutBuilder.Status)> {
-        Binder(self) { `self`, value in
+    private var statusBinder: ((WorkoutBuilder.Status?, WorkoutBuilder.Status)) -> Void {
+        return { [weak self] value in
+            guard let self else { return }
             let (oldStatus, newStatus) = value
             guard newStatus.isActiveStatus && !(oldStatus?.isActiveStatus ?? false) else { return }
             self.startUpdating()
@@ -65,8 +66,9 @@ public class AltitudeManagement: WorkoutBuilderComponent {
     }
     
     /// Binds reset events to this component.
-    private var onResetBinder: Binder<ORWorkoutInterface?> {
-        Binder(self) { `self`, snapshot in
+    private var onResetBinder: (ORWorkoutInterface?) -> Void {
+        return { [weak self] snapshot in
+            guard let self else { return }
             if snapshot != nil { // continue
                 self.startUpdating()
             } else { // reset
@@ -85,20 +87,14 @@ public class AltitudeManagement: WorkoutBuilderComponent {
     public func bind(builder: WorkoutBuilder) {
         
         let input = Input(
-            insufficientPermission: insufficientPermissionRelay.asBackgroundObservable(),
-            altitudes: altitudesRelay.asBackgroundObservable()
+            insufficientPermission: insufficientPermissionRelay.asBackgroundPublisher(),
+            altitudes: altitudesRelay.asBackgroundPublisher()
         )
         
         let output = builder.tranform(input)
         
-        output.status
-            .withPrevious()
-            .bind(to: statusBinder)
-            .disposed(by: disposeBag)
-        
-        output.onReset
-            .bind(to: onResetBinder)
-            .disposed(by: disposeBag)
+        output.status.withPrevious().sink(receiveValue: statusBinder).store(in: &cancellables)
+        output.onReset.sink(receiveValue: onResetBinder).store(in: &cancellables)
     }
     
     // MARK: - AltitudeSample

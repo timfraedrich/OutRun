@@ -20,8 +20,8 @@
 
 import Foundation
 import CoreLocation
-import RxSwift
-import RxCocoa
+import Combine
+import CombineExt
 
 /// A `WorkoutBuilderComponent` to manage everything location related
 public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationManagerDelegate {
@@ -82,40 +82,43 @@ public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationMa
     
     // MARK: - Dataflow
     
-    /// The `DisposeBag` used for binding to the workout builder.
-    private let disposeBag = DisposeBag()
+    /// An Array of cancellables for binding to the workout builder.
+    private var cancellables: [AnyCancellable] = []
     
     /// The relay to publish the status of readiness to the workout builder.
-    private let readinessRelay = BehaviorRelay<WorkoutBuilderComponentStatus>(value: .preparing(LocationManagement.self))
+    private let readinessRelay = CurrentValueRelay<WorkoutBuilderComponentStatus>(.preparing(LocationManagement.self))
     /// The relay to publish that insufficient permission was granted to the workout builder.
-    private let insufficientPermissionRelay = PublishRelay<String>()
+    private let insufficientPermissionRelay = PassthroughRelay<String>()
     /// The relay to publish the distance travelled to the workout builder.
-    private let distanceRelay = BehaviorRelay<Double>(value: 0)
+    private let distanceRelay = CurrentValueRelay<Double>(0)
     /// The relay to publish the current location to the workout builder.
-    private let currentLocationRelay = BehaviorRelay<TempWorkoutRouteDataSample?>(value: nil)
+    private let currentLocationRelay = CurrentValueRelay<TempWorkoutRouteDataSample?>(nil)
     /// The relay to publish all recorded locations to the workout builder.
-    private let locationsRelay = BehaviorRelay<[TempWorkoutRouteDataSample]>(value: [])
+    private let locationsRelay = CurrentValueRelay<[TempWorkoutRouteDataSample]>([])
     
     // MARK: Binders
     
     /// Binds the current workout builder status to this component.
-    private var statusBinder: Binder<WorkoutBuilder.Status> {
-        Binder(self) { `self`, newStatus in
+    private var statusBinder: (WorkoutBuilder.Status) -> Void {
+        return { [weak self] newStatus in
+            guard let self else { return }
             self.shouldRecord = newStatus.isActiveStatus
             self.shouldUpdateDistance = newStatus.isActiveStatus && !newStatus.isPausedStatus
         }
     }
     
     /// Binds altititude updates to this component.
-    private var altitudesBinder: Binder<[AltitudeManagement.AltitudeSample]> {
-        Binder(self) { `self`, altitudes in
+    private var altitudesBinder: ([AltitudeManagement.AltitudeSample]) -> Void {
+        return { [weak self] altitudes in
+            guard let self else { return }
             self.altitudeData = altitudes
         }
     }
     
     /// Binds suspension events to this component.
-    private var isSuspendedBinder: Binder<Bool> {
-        Binder(self) { `self`, isSuspended in
+    private var isSuspendedBinder: (Bool) -> Void {
+        return { [weak self] isSuspended in
+            guard let self else { return }
             if isSuspended {
                 self.locationManager.stopUpdatingLocation()
             } else {
@@ -125,8 +128,9 @@ public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationMa
     }
     
     /// Binds reset events to this component.
-    private var onResetBinder: Binder<ORWorkoutInterface?> {
-        Binder(self) { `self`, snapshot in
+    private var onResetBinder: (ORWorkoutInterface?) -> Void {
+        return { [weak self] snapshot in
+            guard let self else { return }
             self.locationsRelay.accept(snapshot?.routeData.map { .init(from: $0) } ?? [])
             self.distanceRelay.accept(snapshot?.distance ?? 0)
             self.locationManager.startUpdatingLocation()
@@ -145,30 +149,19 @@ public class LocationManagement: NSObject, WorkoutBuilderComponent, CLLocationMa
     public func bind(builder: WorkoutBuilder) {
         
         let input = Input(
-            readiness: readinessRelay.asBackgroundObservable(),
-            insufficientPermission: insufficientPermissionRelay.asBackgroundObservable(),
-            distance: distanceRelay.asBackgroundObservable(),
-            currentLocation: currentLocationRelay.asBackgroundObservable(),
-            locations: locationsRelay.asBackgroundObservable()
+            readiness: readinessRelay.asBackgroundPublisher(),
+            insufficientPermission: insufficientPermissionRelay.asBackgroundPublisher(),
+            distance: distanceRelay.asBackgroundPublisher(),
+            currentLocation: currentLocationRelay.asBackgroundPublisher(),
+            locations: locationsRelay.asBackgroundPublisher()
         )
         
         let output = builder.tranform(input)
      
-        output.status
-            .bind(to: statusBinder)
-            .disposed(by: disposeBag)
-        
-        output.altitudes
-            .bind(to: altitudesBinder)
-            .disposed(by: disposeBag)
-        
-        output.isSuspended
-            .bind(to: isSuspendedBinder)
-            .disposed(by: disposeBag)
-        
-        output.onReset
-            .bind(to: onResetBinder)
-            .disposed(by: disposeBag)
+        output.status.sink(receiveValue: statusBinder).store(in: &cancellables)
+        output.altitudes.sink(receiveValue: altitudesBinder).store(in: &cancellables)
+        output.isSuspended.sink(receiveValue: isSuspendedBinder).store(in: &cancellables)
+        output.onReset.sink(receiveValue: onResetBinder).store(in: &cancellables)
     }
     
     public func prepare() {

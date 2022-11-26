@@ -19,19 +19,19 @@
 //
 
 import Foundation
-import RxSwift
-import RxCocoa
+import Combine
+import CombineExt
 
 public enum UserPreference {
     
     fileprivate class _Base<Object> {
         
         let key: String
-        let publisher: BehaviorRelay<Object?>
+        let publisher: CurrentValueRelay<Object?>
         
         init(key: String) {
             self.key = key
-            self.publisher = BehaviorRelay(value: _Base.typeSafeGet(for: key))
+            self.publisher = CurrentValueRelay(_Base.typeSafeGet(for: key))
         }
         
         func get() -> Object? {
@@ -63,7 +63,7 @@ public enum UserPreference {
     
     public class Required<Object> {
         
-        fileprivate let _base: _Base<Object>
+        private let _base: _Base<Object>
         public var key: String { _base.key }
         public let defaultValue: Object
         
@@ -82,11 +82,18 @@ public enum UserPreference {
             _base.remove()
         }
         
+        public var publisher: AnyPublisher<Object?, Never> {
+            _base.publisher
+                .compactMap { [weak self] value in
+                    guard let self else { return nil }
+                    return value ?? self.defaultValue
+                }.eraseToAnyPublisher()
+        }
     }
     
     public class Optional<Object> {
         
-        fileprivate let _base: _Base<Object>
+        private let _base: _Base<Object>
         public var key: String { _base.key }
         public let defaultValue: Object?
         
@@ -104,16 +111,12 @@ public enum UserPreference {
         public func delete() {
             _base.remove()
         }
-    }
-}
-
-public extension Reactive {
-    
-    func value<Object>() -> Observable<Object> where Base: UserPreference.Required<Object> {
-        base._base.publisher.map { $0 ?? base.defaultValue }.asObservable()
-    }
-    
-    func value<Object>() -> Observable<Object?> where Base: UserPreference.Optional<Object> {
-        base._base.publisher.map { $0 ?? base.defaultValue }.asObservable()
+        
+        public var publisher: AnyPublisher<Object?, Never> {
+            _base.publisher
+                .map { [weak self] value in
+                    return value ?? self?.defaultValue
+                }.eraseToAnyPublisher()
+        }
     }
 }

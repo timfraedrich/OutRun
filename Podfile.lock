@@ -4,49 +4,39 @@ PODS:
     - Charts/Core (= 4.1.0)
   - Charts/Core (4.1.0):
     - SwiftAlgorithms (~> 1.0)
+  - CombineExt (1.8.0)
   - CoreGPX (0.9.0)
   - CoreStore (9.0.0)
-  - RxCocoa (6.5.0):
-    - RxRelay (= 6.5.0)
-    - RxSwift (= 6.5.0)
-  - RxRelay (6.5.0):
-    - RxSwift (= 6.5.0)
-  - RxSwift (6.5.0)
   - SnapKit (5.6.0)
   - SwiftAlgorithms (1.0.0)
 
 DEPENDENCIES:
   - Cache
   - Charts
+  - CombineExt
   - CoreGPX
   - CoreStore
-  - RxCocoa
-  - RxSwift
   - SnapKit
 
 SPEC REPOS:
   trunk:
     - Cache
     - Charts
+    - CombineExt
     - CoreGPX
     - CoreStore
-    - RxCocoa
-    - RxRelay
-    - RxSwift
     - SnapKit
     - SwiftAlgorithms
 
 SPEC CHECKSUMS:
   Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
   Charts: 354f86803d11d9c35de280587fef50d1af063978
+  CombineExt: c4daa97ef75754d8ef319bd79edeef82652f3eea
   CoreGPX: 1381c8c47428c3a6bcac2f93d25ca1c5e3525811
   CoreStore: 1b820cd4d929750343479fd72585283a870973f4
-  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
-  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
-  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
 
-PODFILE CHECKSUM: af441dedf0e7d89d1f5b0e9cb8ac8666e959dbec
+PODFILE CHECKSUM: b4f324d21339e6e93aad2dc22f76ec7b558b40a5
 
 COCOAPODS: 1.11.3
