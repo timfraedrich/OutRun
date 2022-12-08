@@ -30,4 +30,5 @@ extension UIColor {
     static let foregroundColor = UIColor(named: "foregroundColor") ?? UIColor(white: 248/255, alpha: 1)
     static let tableViewSeparator = UIColor(white: 0.5, alpha: 0.25)
     
+    static var tintColor: UIColor { UIColor(named: "accentColor") ?? .systemOrange }
 }

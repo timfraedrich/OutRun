@@ -1,8 +1,8 @@
 //
-//  RootView.swift
+//  PillView.swift
 //
 //  OutRun
-//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,16 +20,19 @@
 
 import SwiftUI
 
-struct RootView: View {
+public struct PillView<Content: View>: View {
     
-    @EnvironmentObject var appDelegate: AppDelegate
-    @ObservedObject var viewModel: RootViewModel
+    private let content: () -> Content
     
-    var body: some View {
-        switch appDelegate.appLaunchState {
-        case .loading: Text("Loading")
-        case .migration: Text("Migration")
-        case .done: Text("Done")
-        }
+    public var body: some View {
+        content()
+            .padding(.horizontal, Constants.UI.Padding.normal)
+            .padding(.vertical, Constants.UI.Padding.small)
+            .background(Color.background)
+            .clipShape(Capsule())
+    }
+    
+    public init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
     }
 }

@@ -82,7 +82,7 @@ public enum UserPreference {
             _base.remove()
         }
         
-        public var publisher: AnyPublisher<Object?, Never> {
+        public var publisher: AnyPublisher<Object, Never> {
             _base.publisher
                 .compactMap { [weak self] value in
                     guard let self else { return nil }
