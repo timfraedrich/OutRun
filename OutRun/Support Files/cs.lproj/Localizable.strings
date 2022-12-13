@@ -61,7 +61,7 @@
 "WorkoutDeletion.Error.Message" = "Při pokusu o odstranění tréninku došlo k chybě.";
 "WorkoutDeletion.AppleHealth.Message" = "Chcete také odstranit trénink uložený v Apple Zdraví?";
 "WorkoutDeletion.AppleHealth.Title" = "Smazat v Apple Zdraví?";
-"WorkoutDeletion.Message" = "Opravdu chcete tŕenink smazat? Nepůjde ho obnovit.";
+"WorkoutDeletion.Message" = "Opravdu chcete trénink smazat? Smazané položky nelze obnovit.";
 "WorkoutDeletion.Title" = "Smazat trénink?";
 "WorkoutStats.Route" = "Trasa";
 "WorkoutStats.TotalEnergy" = "Celková energie";
@@ -269,3 +269,5 @@
 "Settings.Contribution.Maintainers" = "Správci";
 "Settings.Contribution" = "Příspěvek";
 "Keep" = "Zachovat";
+"ExportManager.BackupError" = "Vytváření zálohy se nezdařilo, obraťte se prosím na podporu.";
+"ExportManager.GPXError" = "Vytváření souboru GPX se nezdařilo, obraťte se prosím na podporu.";
