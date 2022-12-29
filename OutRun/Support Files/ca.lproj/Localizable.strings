@@ -65,7 +65,7 @@
 "NewWorkoutCompletion.Title" = "Entrenament finalitzat";
 "NewWorkoutAlert.Message" = "Quin tipus d'entrenament vols enregistrar?";
 "NewWorkoutAlert.Title" = "Entrenament";
-"WorkoutListViewController.Headline" = "Entrenaments";
+"WorkoutListViewController.Headline" = "Entrenament";
 "NewWorkoutViewController.WorkoutBuilder.Error" = "Hi ha hagut un error en la lògica suposada per construir l'entrenament.";
 "NewWorkoutViewController.Discard.Message" = "Estàs segur que vols descartar el teu entrenament? Les dades no es poden recuperar.";
 "NewWorkoutViewController.Save.Message" = "Voleu desar o descartar l'entrenament?";
@@ -286,3 +286,5 @@
 "Settings.Contribution.Maintainers" = "Mantenidors";
 "Settings.Contribution" = "Contribució";
 "Keep" = "Mantenir";
+"ExportManager.BackupError" = "L'aplicació no ha pogut crear una còpia de seguretat, posa't en contacte amb el servei d'assistència tècnica.";
+"ExportManager.GPXError" = "L'aplicació no ha pogut crear un fitxer GPX, posa't en contacte amb el suport tècnic.";

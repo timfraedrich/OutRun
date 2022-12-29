@@ -268,3 +268,5 @@
 "WorkoutEvent.Type.Resume" = "Nastavi";
 "NewWorkoutViewController.Recenter" = "Ponovo centriraj";
 "Keep" = "Sačuvaj";
+"ExportManager.BackupError" = "Program nije uspio stvoriti sigurnosnu kopiju, obrati se podršci.";
+"ExportManager.GPXError" = "Program nije uspio stvoriti GPX datoteku, obrati se podršci.";

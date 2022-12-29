@@ -269,3 +269,5 @@
 "Settings.Contribution.Maintainers" = "Driftskötare";
 "Settings.Contribution" = "Bidrag";
 "Keep" = "Behåll";
+"ExportManager.BackupError" = "Appen misslyckades att skapa en säkerhetskopia, kontakta supporten.";
+"ExportManager.GPXError" = "Appen misslyckades att skapa en GPX-fil, kontakta supporten.";

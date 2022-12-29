@@ -286,3 +286,5 @@
 "Settings.Contribution.Maintainers" = "Mantenedores";
 "Settings.Contribution" = "Contribución";
 "Keep" = "Mantener";
+"ExportManager.BackupError" = "La aplicación no pudo crear una copia de seguridad, por favor contacte al soporte.";
+"ExportManager.GPXError" = "La aplicación no ha podido crear un archivo GPX, por favor contacte al soporte.";

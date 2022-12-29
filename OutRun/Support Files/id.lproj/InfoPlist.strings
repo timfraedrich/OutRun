@@ -1,0 +1,8 @@
+
+
+"NSHealthShareUsageDescription" = "Aplikasi ini memerlukan akses ke data kesehatan Anda untuk menyimpan latihan yang dibuat oleh aplikasi ini";
+"NSHealthUpdateUsageDescription" = "Aplikasi ini memerlukan akses ke data kesehatan Anda untuk membaca dan kemungkinan memperbaiki latihan yang dibuat oleh aplikasi ini";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Aplikasi ini memerlukan lokasi Anda untuk melacak latihan";
+"NSLocationAlwaysUsageDescription" = "Aplikasi ini memerlukan lokasi Anda untuk melacak latihan";
+"NSLocationWhenInUseUsageDescription" = "Aplikasi ini memerlukan lokasi Anda untuk melacak latihan";
+"NSMotionUsageDescription" = "Aplikasi ini memerlukan kemampuan pelacakan terkait gerakan untuk merekam data seperti langkah ketika sedang latihan";
