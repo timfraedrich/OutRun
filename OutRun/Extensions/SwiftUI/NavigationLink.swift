@@ -1,5 +1,5 @@
 //
-//  CustomNumberFormatting.swift
+//  NavigationLink.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -18,25 +18,27 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Foundation
+import SwiftUI
 
-class CustomNumberFormatting {
-    
-    static func number(from string: String?) -> Double? {
-        guard let string = string else {
-            return nil
-        }
-        let formatter = NumberFormatter()
-        let value = formatter.number(from: string) as? Double
-        return value
+extension NavigationLink {
+
+    init<T: Identifiable, D: View>(
+        item: Binding<T?>,
+        @ViewBuilder destination: (T) -> D,
+        @ViewBuilder label: () -> Label
+    ) where Destination == D? {
+        
+        let isActive = Binding(
+            get: { item.wrappedValue != nil },
+            set: { value in
+                guard !value else { return }
+                item.wrappedValue = nil
+            }
+        )
+        self.init(
+            destination: item.wrappedValue.map(destination),
+            isActive: isActive,
+            label: label
+        )
     }
-    
-    static func string(from double: Double?, fractionDigits: Int = 2) -> String? {
-        guard let double else { return nil }
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.maximumFractionDigits = fractionDigits
-        return numberFormatter.string(for: double)
-    }
-    
 }

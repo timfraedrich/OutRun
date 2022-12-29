@@ -19,7 +19,7 @@
 //
 import UIKit
 
-class InputViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextFieldDelegate {
+class InputViewSetting: NSObject, Setting, /*KeyboardAvoidanceSetting,*/ UITextFieldDelegate {
     
     var section: SettingSection?
     var usesClosures: Bool
@@ -31,17 +31,17 @@ class InputViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextField
     lazy var dummyTextField: UITextField = {
         let textField = UITextField()
         textField.delegate = self
-        textField.addDoneToolbar()
+        // textField.addDoneToolbar()
         return textField
     }()
     
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell(style: .value1 , reuseIdentifier: nil)
-        cell.backgroundColor = .backgroundColor
+        cell.backgroundColor = .systemBackground
         cell.accessoryType = .none
         cell.selectionStyle = .none
         _ = cell.heightAnchor.constraint(equalToConstant: 44)
-        cell.textLabel?.textColor = .primaryColor
+        cell.textLabel?.textColor = .label
         cell.textLabel?.text = titleClosure()
         return cell
     }()
@@ -69,7 +69,7 @@ class InputViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextField
         self.usesClosures = false
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         dummyTextField.becomeFirstResponder()
     }
     

@@ -1,8 +1,8 @@
 //
-//  UIColor.swift
+//  MetricView.swift
 //
 //  OutRun
-//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,10 +18,23 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import UIKit
+import SwiftUI
 
-extension UIColor {
+struct MetricView: View {
     
-    static let accentColor = UIColor(named: "accentColor") ?? .systemOrange
+    @ObservedObject var viewModel: MetricViewModel
     
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(viewModel.title)
+                .foregroundColor(.secondary)
+                .font(viewModel.size.titleFont)
+                .bold()
+                .lineLimit(1)
+            Text(viewModel.value)
+                .font(viewModel.size.valueFont)
+                .bold()
+                .lineLimit(1)
+        }
+    }
 }

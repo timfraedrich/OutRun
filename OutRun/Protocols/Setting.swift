@@ -26,7 +26,7 @@ protocol Setting {
     var section: SettingSection? { get set }
     var usesClosures: Bool { get }
     
-    func runSelectAction(controller: SettingsViewController)
+    func runSelectAction(controller: UIViewController)
     func updateClosures()
     func refresh()
     

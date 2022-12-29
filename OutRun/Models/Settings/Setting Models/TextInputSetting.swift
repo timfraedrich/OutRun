@@ -20,7 +20,7 @@
 
 import UIKit
 
-class TextInputSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextFieldDelegate {
+class TextInputSetting: NSObject, Setting, /*KeyboardAvoidanceSetting,*/ UITextFieldDelegate {
     
     var section: SettingSection?
     var usesClosures: Bool
@@ -38,7 +38,7 @@ class TextInputSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextField
     fileprivate lazy var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
-        textField.textColor = .primaryColor
+        textField.textColor = .accentColor
         textField.placeholder = self.textFieldPlaceholderClosure()
         textField.text = self.initialTextFieldText ?? self.textFieldTextClosure?()
         textField.layer.cornerRadius = 10
@@ -54,18 +54,18 @@ class TextInputSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextField
             make.height.equalTo(32)
         }
         
-        textField.addDoneToolbar()
+        // textField.addDoneToolbar()
         
         return textField
     }()
     
-    fileprivate lazy var titleLabel = UILabel(text: self.titleClosure(), font: .preferredFont(forTextStyle: .body))
+    fileprivate lazy var titleLabel = UILabel(/*text: self.titleClosure(), font: .preferredFont(forTextStyle: .body)*/)
     
-    fileprivate lazy var behindLabel = UILabel(text: self.textBehindTextField, textColor: .secondaryColor, font: .preferredFont(forTextStyle: .body))
+    fileprivate lazy var behindLabel = UILabel(/*text: self.textBehindTextField, textColor: .secondaryColor, font: .preferredFont(forTextStyle: .body)*/)
     
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell()
-        cell.backgroundColor = .backgroundColor
+        cell.backgroundColor = .systemBackground
         cell.accessoryType = .none
         cell.selectionStyle = .none
         
@@ -132,7 +132,7 @@ class TextInputSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextField
         }
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         textField.becomeFirstResponder()
     }
     

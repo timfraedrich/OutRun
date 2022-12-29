@@ -47,11 +47,7 @@ class WorkoutCompletionActionHandler {
      Displays a dismissable view over the current `UIWindow` that gives the user options on what to do with the just recorded workout, saving it automatically after a certain time
      */
     public func display() {
-        
-        let banner = WorkoutCompletionBanner(handler: self)
-        
-        banner.show(queuePosition: .front)
-        
+        // would normally show save banner
     }
     
     /**
@@ -66,11 +62,7 @@ class WorkoutCompletionActionHandler {
         self.didPerformAction = true
         
         DataManager.saveWorkout(object: self.snapshot) { (success, error, workout) in
-            
-            let banner = TextBanner(text: LS["NewWorkoutCompletion.Save." + (success ? "Success" : "Error")])
-            banner.duration = 5
-            banner.show()
-            
+            // would normally show save success banner
         }
         
     }
@@ -100,9 +92,7 @@ class WorkoutCompletionActionHandler {
             
         }
         
-        let banner = TextBanner(text: LS[messageKey])
-        banner.duration = 5
-        banner.show()
+        // would normally show continuing or error banner
         
         print("Imagine the workout would continue")
         

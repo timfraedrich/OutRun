@@ -1,5 +1,5 @@
 //
-//  CustomNumberFormatting.swift
+//  SetupCoordinatorViewModel.swift
 //
 //  OutRun
 //  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,23 +20,16 @@
 
 import Foundation
 
-class CustomNumberFormatting {
+class SetupCoordinatorViewModel: ObservableObject {
     
-    static func number(from string: String?) -> Double? {
-        guard let string = string else {
-            return nil
+    @Published private(set) var setupViewModel: SetupViewModel?
+    
+    private(set) lazy var welcomeViewModel = WelcomeViewModel(setupButtonAction: setupButtonAction)
+    
+    private var setupButtonAction: () -> Void {
+        return { [weak self] in
+            guard let self else { return }
+            self.setupViewModel = SetupViewModel()
         }
-        let formatter = NumberFormatter()
-        let value = formatter.number(from: string) as? Double
-        return value
     }
-    
-    static func string(from double: Double?, fractionDigits: Int = 2) -> String? {
-        guard let double else { return nil }
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.maximumFractionDigits = fractionDigits
-        return numberFormatter.string(for: double)
-    }
-    
 }

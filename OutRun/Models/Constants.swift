@@ -1,8 +1,8 @@
 //
-//  UIColor.swift
+//  Constants.swift
 //
 //  OutRun
-//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,10 +18,26 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import UIKit
+import Foundation
+import CoreGraphics
 
-extension UIColor {
+public enum Constants {
     
-    static let accentColor = UIColor(named: "accentColor") ?? .systemOrange
+    // MARK: - UI
     
+    public enum UI {
+        
+        public enum Padding {
+            public static let small: CGFloat = 8
+            public static let normal: CGFloat = 16
+            public static let big: CGFloat = 24
+        }
+        
+        public enum CornerRadius {
+            public static let small: CGFloat = 8
+            public static let normal: CGFloat = 16
+            public static let big: CGFloat = 24
+        }
+        
+    }
 }

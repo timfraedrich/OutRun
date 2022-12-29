@@ -31,9 +31,9 @@ class TitleSubTitleSetting: TitleSetting {
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
         
-        cell.backgroundColor = .backgroundColor
-        cell.textLabel?.textColor = .primaryColor
-        cell.detailTextLabel?.textColor = .secondaryColor
+        cell.backgroundColor = .systemBackground
+        cell.textLabel?.textColor = .label
+        cell.detailTextLabel?.textColor = .label
         
         cell.accessoryType = self.doesRedirect ? .disclosureIndicator : .none
         cell.detailTextLabel?.text = self.subTitle
@@ -42,12 +42,12 @@ class TitleSubTitleSetting: TitleSetting {
         return cell
     }()
     
-    init(title: @escaping () -> String, subTitle: @escaping () -> String, doesRedirect: @escaping () -> Bool = { return false }, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil) {
+    init(title: @escaping () -> String, subTitle: @escaping () -> String, doesRedirect: @escaping () -> Bool = { return false }, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil) {
         self.subTitleClosure = subTitle
         super.init(title: title, doesRedirect: doesRedirect, selectAction: selectAction)
     }
     
-    convenience init(title: String, subTitle: String, doesRedirect: Bool = false, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil) {
+    convenience init(title: String, subTitle: String, doesRedirect: Bool = false, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil) {
         self.init(title: { return title }, subTitle: { return subTitle }, doesRedirect: { return doesRedirect }, selectAction: selectAction)
         self.usesClosures = false
     }
@@ -55,9 +55,9 @@ class TitleSubTitleSetting: TitleSetting {
     convenience init(title: @escaping () -> String, subTitle: @escaping () -> String, _ settingsModel: SettingsModel) {
         self.init(title: title, subTitle: subTitle, doesRedirect: { return true }, selectAction: { (setting, controller, cell) in
             
-            let newSettingsController = SettingsViewController()
-            newSettingsController.settingsModel = settingsModel
-            controller.notifyOfPresentation(newSettingsController)
+            let newSettingsController = UIViewController()
+            // newSettingsController.settingsModel = settingsModel
+            // controller.notifyOfPresentation(newSettingsController)
             controller.show(newSettingsController, sender: controller)
             
         })

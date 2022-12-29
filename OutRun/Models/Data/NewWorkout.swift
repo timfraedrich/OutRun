@@ -40,7 +40,7 @@ class NewWorkout: TempWorkout {
             steps: steps,
             startDate: startDate,
             endDate: endDate,
-            burnedEnergy: bodyWeight,
+            burnedEnergy: burnedEnergy,
             isRace: isRace,
             comment: comment,
             isUserModified: isUserModified,

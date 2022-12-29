@@ -1,8 +1,8 @@
 //
-//  UIColor.swift
+//  CloseButton.swift
 //
 //  OutRun
-//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,10 +18,20 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import UIKit
+import SwiftUI
 
-extension UIColor {
+public struct CloseButton: View {
     
-    static let accentColor = UIColor(named: "accentColor") ?? .systemOrange
+    private let action: () -> Void
     
+    public var body: some View {
+        Button(action: action) {
+            Image("close")
+                .renderingMode(.template)
+        }
+    }
+    
+    public init(action: @escaping () -> Void) {
+        self.action = action
+    }
 }

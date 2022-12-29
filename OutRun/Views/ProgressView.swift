@@ -1,8 +1,8 @@
 //
-//  UIColor.swift
+//  ProgressView.swift
 //
 //  OutRun
-//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,10 +18,22 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import UIKit
+import SwiftUI
 
-extension UIColor {
+struct ProgressView: View {
     
-    static let accentColor = UIColor(named: "accentColor") ?? .systemOrange
+    var progress: Int
+    let total: Int
     
+    var body: some View {
+        HStack(spacing: Constants.UI.Padding.small) {
+            ForEach(0..<total, id: \.self) { index in
+                Rectangle()
+                    .foregroundColor(index > progress ? .secondaryBackground : .accentColor)
+                    .frame(height: 4)
+                    .clipShape(Capsule())
+                    .animation(.default)
+            }
+        }
+    }
 }

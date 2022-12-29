@@ -27,9 +27,9 @@ class SelectionSetting: TitleSubTitleSetting {
     }
     private let isSelectedClosure: () -> Bool
     
-    init(title: @escaping () -> String, subTitle: @escaping () -> String = { return "" }, isSelected: @escaping () -> Bool, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil) {
+    init(title: @escaping () -> String, subTitle: @escaping () -> String = { return "" }, isSelected: @escaping () -> Bool, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil) {
         self.isSelectedClosure = isSelected
-        let action: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = { (setting, controller, cell) in
+        let action: ((Setting, UIViewController, UITableViewCell) -> Void)? = { (setting, controller, cell) in
             selectAction?(setting, controller, cell)
             setting.refresh()
         }
@@ -37,7 +37,7 @@ class SelectionSetting: TitleSubTitleSetting {
         self.tableViewCell.accessoryType = self.isSelected ? .checkmark : .none
     }
     
-    convenience init(title: String, subTitle: String = "", isSelected: @escaping () -> Bool, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil) {
+    convenience init(title: String, subTitle: String = "", isSelected: @escaping () -> Bool, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil) {
         self.init(title: { return title }, subTitle: { return subTitle }, isSelected: isSelected, selectAction: selectAction)
         self.usesClosures = false
     }

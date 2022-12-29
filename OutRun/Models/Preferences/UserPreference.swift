@@ -41,6 +41,7 @@ public enum UserPreference {
         func set(_ value: Object?) {
             guard let value = value else { remove(); return }
             UserDefaults.standard.set(value, forKey: key)
+            publisher.accept(value)
         }
         
         func setInitial(_ value: Object?) {
@@ -53,6 +54,7 @@ public enum UserPreference {
         
         func remove() {
             UserDefaults.standard.removeObject(forKey: key)
+            publisher.accept(nil)
         }
         
         private static func typeSafeGet<Object>(for key: String) -> Object? {
@@ -82,7 +84,7 @@ public enum UserPreference {
             _base.remove()
         }
         
-        public var publisher: AnyPublisher<Object?, Never> {
+        public var publisher: AnyPublisher<Object, Never> {
             _base.publisher
                 .compactMap { [weak self] value in
                     guard let self else { return nil }

@@ -1,8 +1,8 @@
 //
-//  UIColor.swift
+//  Binding.swift
 //
 //  OutRun
-//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,10 +18,13 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import UIKit
+import Foundation
+import Combine
+import SwiftUI
 
-extension UIColor {
+public extension Binding {
     
-    static let accentColor = UIColor(named: "accentColor") ?? .systemOrange
-    
+    var optional: Binding<Value?> {
+        return Binding<Value?>(self)
+    }
 }

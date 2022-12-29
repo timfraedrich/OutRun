@@ -34,27 +34,27 @@ class TitleSetting: Setting {
     
     private let titleClosure: () -> String
     private let doesRedirectClosure: () -> Bool
-    private let selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)?
+    private let selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)?
     
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         
-        cell.backgroundColor = .backgroundColor
-        cell.textLabel?.textColor = .primaryColor
+        cell.backgroundColor = .systemBackground
+        cell.textLabel?.textColor = .label
         cell.textLabel?.text = title
         cell.accessoryType = doesRedirect ? .disclosureIndicator : .none
         
         return cell
     }()
     
-    init(title: @escaping () -> String, doesRedirect: @escaping () -> Bool = { return false }, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil) {
+    init(title: @escaping () -> String, doesRedirect: @escaping () -> Bool = { return false }, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil) {
         self.titleClosure = title
         self.doesRedirectClosure = doesRedirect
         self.selectAction = selectAction
         self.usesClosures = true
     }
     
-    convenience init(title: String, doesRedirect: Bool = false, selectAction: ((Setting, SettingsViewController, UITableViewCell) -> Void)? = nil) {
+    convenience init(title: String, doesRedirect: Bool = false, selectAction: ((Setting, UIViewController, UITableViewCell) -> Void)? = nil) {
         self.init(title: { return title }, doesRedirect: { return doesRedirect }, selectAction: selectAction)
         self.usesClosures = false
     }
@@ -62,9 +62,9 @@ class TitleSetting: Setting {
     convenience init(title: String, _ settingsModel: SettingsModel) {
         self.init(title: title, doesRedirect: true, selectAction: { (setting, controller, cell) in
             
-            let newSettingsController = SettingsViewController()
-            newSettingsController.settingsModel = settingsModel
-            controller.notifyOfPresentation(newSettingsController)
+            let newSettingsController = UIViewController()
+            // newSettingsController.settingsModel = settingsModel
+            // controller.notifyOfPresentation(newSettingsController)
             controller.show(newSettingsController, sender: controller)
             
         })
@@ -76,7 +76,7 @@ class TitleSetting: Setting {
         }
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         guard let selectAction = selectAction else {
             return
         }

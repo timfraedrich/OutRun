@@ -1,8 +1,8 @@
 //
-//  UIColor.swift
+//  MKCoordinateSpanExtensions.swift
 //
 //  OutRun
-//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,10 +18,12 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import UIKit
+import Foundation
+import MapKit
 
-extension UIColor {
-    
-    static let accentColor = UIColor(named: "accentColor") ?? .systemOrange
-    
+extension MKCoordinateSpan: Equatable {
+
+    public static func ==(lhs: MKCoordinateSpan, rhs: MKCoordinateSpan) -> Bool {
+        lhs.latitudeDelta == rhs.latitudeDelta && lhs.longitudeDelta == rhs.longitudeDelta
+    }
 }

@@ -19,8 +19,9 @@
 //
 
 import UIKit
+import SnapKit
 
-class TextViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextViewDelegate {
+class TextViewSetting: NSObject, Setting, /*KeyboardAvoidanceSetting,*/ UITextViewDelegate {
     
     var section: SettingSection?
     var usesClosures: Bool
@@ -30,21 +31,21 @@ class TextViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextViewDe
     
     public var registerForKeyboardAvoidanceClosure: ((UITableViewCell) -> Void)?
     
-    lazy var placeholderLabel = UILabel(
+    lazy var placeholderLabel = UILabel(/*
         text: self.placeholderClosure(),
         textColor: .secondaryColor,
         font: .preferredFont(forTextStyle: .body),
         numberOfLines: 1,
         textAlignment: .left
-    )
+    */)
     
     lazy var textView: UITextView = {
         let textView = UITextView()
-        textView.backgroundColor = .backgroundColor
-        textView.textColor = .primaryColor
+        textView.backgroundColor = .systemBackground
+        textView.textColor = .label
         textView.font = .preferredFont(forTextStyle: .body)
         textView.textAlignment = .left
-        textView.addDoneToolbar()
+        // textView.addDoneToolbar()
         textView.delegate = self
         textView.contentInset = UIEdgeInsets(top: -(UIFont.preferredFont(forTextStyle: .body).pointSize / 2), left: -5, bottom: 0, right: -5)
         return textView
@@ -53,7 +54,7 @@ class TextViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextViewDe
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         
-        cell.backgroundColor = .backgroundColor
+        cell.backgroundColor = .systemBackground
         cell.accessoryType = .none
         cell.selectionStyle = .none
         
@@ -97,7 +98,7 @@ class TextViewSetting: NSObject, Setting, KeyboardAvoidanceSetting, UITextViewDe
         }
     }
     
-    func runSelectAction(controller: SettingsViewController) {
+    func runSelectAction(controller: UIViewController) {
         self.textView.becomeFirstResponder()
     }
     
