@@ -10,7 +10,10 @@
 		22015319231663E300BD79AF /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22015318231663E300BD79AF /* UIViewController.swift */; };
 		2201BCA929423DF100F54277 /* View+Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201BCA829423DF100F54277 /* View+Navigation.swift */; };
 		2201BCAB29423E1600F54277 /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201BCAA29423E1600F54277 /* NavigationLink.swift */; };
+		2201BCAD29423FDE00F54277 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201BCAC29423FDE00F54277 /* SetupViewModel.swift */; };
 		2204A1DD255ACB1100906CFE /* ORDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204A1DC255ACB1100906CFE /* ORDataType.swift */; };
+		2204E428295DF28C00243FC3 /* SetupCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204E427295DF28C00243FC3 /* SetupCoordinatorView.swift */; };
+		2204E42A295DF31300243FC3 /* SetupCoordinatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204E429295DF31300243FC3 /* SetupCoordinatorViewModel.swift */; };
 		2207B75623128F8A00BA71B5 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B75523128F8A00BA71B5 /* CLLocation.swift */; };
 		2209E53924DD4A8F00BBFC2F /* AltitudeManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2209E53824DD4A8F00BBFC2F /* AltitudeManagement.swift */; };
 		2213137D23B4110700881806 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213137C23B4110700881806 /* PermissionManager.swift */; };
@@ -43,8 +46,8 @@
 		225AC6A8243FA088008D493D /* HealthStoreManager+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */; };
 		225BB02F2716E61000478E09 /* StatsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225BB02E2716E61000478E09 /* StatsHelper.swift */; };
 		225C0F742931CB6100B9B45F /* OutRunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F732931CB6100B9B45F /* OutRunApp.swift */; };
-		225C0F762931D22300B9B45F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F752931D22300B9B45F /* RootView.swift */; };
-		225C0F792931D27900B9B45F /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F782931D27900B9B45F /* RootViewModel.swift */; };
+		225C0F762931D22300B9B45F /* RootCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F752931D22300B9B45F /* RootCoordinatorView.swift */; };
+		225C0F792931D27900B9B45F /* RootCoordinatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C0F782931D27900B9B45F /* RootCoordinatorViewModel.swift */; };
 		22623C0122DFBB71004065C6 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22623C0022DFBB71004065C6 /* Sequence.swift */; };
 		226E9A4923F00C0F00992815 /* TabBarSelectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E9A4823F00C0F00992815 /* TabBarSelectionObserver.swift */; };
 		226E9A4B23F01E6E00992815 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E9A4A23F01E6E00992815 /* Date.swift */; };
@@ -201,7 +204,10 @@
 		22015318231663E300BD79AF /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		2201BCA829423DF100F54277 /* View+Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Navigation.swift"; sourceTree = "<group>"; };
 		2201BCAA29423E1600F54277 /* NavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
+		2201BCAC29423FDE00F54277 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
 		2204A1DC255ACB1100906CFE /* ORDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORDataType.swift; sourceTree = "<group>"; };
+		2204E427295DF28C00243FC3 /* SetupCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupCoordinatorView.swift; sourceTree = "<group>"; };
+		2204E429295DF31300243FC3 /* SetupCoordinatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupCoordinatorViewModel.swift; sourceTree = "<group>"; };
 		2207B75523128F8A00BA71B5 /* CLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
 		2209E53824DD4A8F00BBFC2F /* AltitudeManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeManagement.swift; sourceTree = "<group>"; };
 		2213137C23B4110700881806 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
@@ -238,8 +244,8 @@
 		225AC6A7243FA088008D493D /* HealthStoreManager+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HealthStoreManager+Query.swift"; sourceTree = "<group>"; };
 		225BB02E2716E61000478E09 /* StatsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsHelper.swift; sourceTree = "<group>"; };
 		225C0F732931CB6100B9B45F /* OutRunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutRunApp.swift; sourceTree = "<group>"; };
-		225C0F752931D22300B9B45F /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		225C0F782931D27900B9B45F /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
+		225C0F752931D22300B9B45F /* RootCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinatorView.swift; sourceTree = "<group>"; };
+		225C0F782931D27900B9B45F /* RootCoordinatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinatorViewModel.swift; sourceTree = "<group>"; };
 		22623C0022DFBB71004065C6 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		226E9A4823F00C0F00992815 /* TabBarSelectionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSelectionObserver.swift; sourceTree = "<group>"; };
 		226E9A4A23F01E6E00992815 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -490,7 +496,6 @@
 			isa = PBXGroup;
 			children = (
 				225C0F772931D26600B9B45F /* Root */,
-				22BC99132941D97600D9B1A5 /* Welcome */,
 				22BC99182941D97F00D9B1A5 /* Setup */,
 			);
 			path = Scenes;
@@ -499,8 +504,8 @@
 		225C0F772931D26600B9B45F /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				225C0F752931D22300B9B45F /* RootView.swift */,
-				225C0F782931D27900B9B45F /* RootViewModel.swift */,
+				225C0F752931D22300B9B45F /* RootCoordinatorView.swift */,
+				225C0F782931D27900B9B45F /* RootCoordinatorViewModel.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -738,8 +743,8 @@
 		22BC99132941D97600D9B1A5 /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
-				22BC99142941D97600D9B1A5 /* WelcomeViewModel.swift */,
 				22BC99152941D97600D9B1A5 /* WelcomeView.swift */,
+				22BC99142941D97600D9B1A5 /* WelcomeViewModel.swift */,
 			);
 			path = Welcome;
 			sourceTree = "<group>";
@@ -747,8 +752,12 @@
 		22BC99182941D97F00D9B1A5 /* Setup */ = {
 			isa = PBXGroup;
 			children = (
-				22BC99192941D97F00D9B1A5 /* SetupView.swift */,
 				22BC991A2941D97F00D9B1A5 /* Steps */,
+				22BC99132941D97600D9B1A5 /* Welcome */,
+				2204E427295DF28C00243FC3 /* SetupCoordinatorView.swift */,
+				2204E429295DF31300243FC3 /* SetupCoordinatorViewModel.swift */,
+				22BC99192941D97F00D9B1A5 /* SetupView.swift */,
+				2201BCAC29423FDE00F54277 /* SetupViewModel.swift */,
 			);
 			path = Setup;
 			sourceTree = "<group>";
@@ -1216,6 +1225,7 @@
 				22B1DD92253F91380093822B /* OutRunV3to4.swift in Sources */,
 				22BD1F3E247462FF00415A06 /* ApplicationStateObserver.swift in Sources */,
 				22B1DD9A253F91F20093822B /* OutRunV2.swift in Sources */,
+				2204E42A295DF31300243FC3 /* SetupCoordinatorViewModel.swift in Sources */,
 				22BC994B2941DA3400D9B1A5 /* Constants.swift in Sources */,
 				22BC99222941D97F00D9B1A5 /* SetupStepBaseView.swift in Sources */,
 				22BC99402941D9A800D9B1A5 /* FeatureView.swift in Sources */,
@@ -1255,7 +1265,7 @@
 				22B1DD9B253F91F20093822B /* OutRunV3.swift in Sources */,
 				22B6CF7922CA11D6002D2FB0 /* UIFont.swift in Sources */,
 				22C09B9626519939004AF34F /* HKWorkoutEventType.swift in Sources */,
-				225C0F792931D27900B9B45F /* RootViewModel.swift in Sources */,
+				225C0F792931D27900B9B45F /* RootCoordinatorViewModel.swift in Sources */,
 				22DBFBDD2348B34800DE6E92 /* TitleSetting.swift in Sources */,
 				22FD3253255F319E007719C9 /* ORPrimitive.swift in Sources */,
 				228CDFFA2577C66B0023E8F7 /* Computation.swift in Sources */,
@@ -1295,6 +1305,7 @@
 				22BC993B2941D9A800D9B1A5 /* ActionButton.swift in Sources */,
 				22FEA0A724CDA3FF0007CA9C /* ClosedRange.swift in Sources */,
 				2243899C26EFCC8000DEC75E /* LiveStats.swift in Sources */,
+				2204E428295DF28C00243FC3 /* SetupCoordinatorView.swift in Sources */,
 				2230925C24D6F39700A3F636 /* WorkoutBuilderComponent.swift in Sources */,
 				22C1108424532E36009ACE81 /* WorkoutMapImageQueue.swift in Sources */,
 				22A5D02A25C1A54B00C30786 /* TempV1.swift in Sources */,
@@ -1308,10 +1319,11 @@
 				2227C642234B66BC00CFE31A /* ButtonSetting.swift in Sources */,
 				22CBE0D62448652C0009D9A7 /* BigStatView.swift in Sources */,
 				221E47D123ECB837004EAB1D /* Backup.swift in Sources */,
-				225C0F762931D22300B9B45F /* RootView.swift in Sources */,
+				225C0F762931D22300B9B45F /* RootCoordinatorView.swift in Sources */,
 				22BC99542941DD7600D9B1A5 /* MKCoordinateSpan.swift in Sources */,
 				22BC99172941D97600D9B1A5 /* WelcomeView.swift in Sources */,
 				225AC6A4243F2710008D493D /* WorkoutHeartRateDataSample.swift in Sources */,
+				2201BCAD29423FDE00F54277 /* SetupViewModel.swift in Sources */,
 				22585C22240AE1BC0052E2CA /* WorkoutRouteDataSample.swift in Sources */,
 				226E9A4923F00C0F00992815 /* TabBarSelectionObserver.swift in Sources */,
 				22585C20240AE0C70052E2CA /* Workout.swift in Sources */,

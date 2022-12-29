@@ -27,7 +27,7 @@ struct OutRunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView(viewModel: RootViewModel())
+            RootCoordinatorView(viewModel: RootCoordinatorViewModel())
         }
     }
 }

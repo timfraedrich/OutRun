@@ -38,22 +38,16 @@ struct WelcomeView: View {
                 FeatureView(viewModel: viewModel)
             }
             Spacer()
-            NavigationLink(isActive: $viewModel.showSetup) {
-                SetupView()
-            } label: {
-                EmptyView()
-            }
-            ActionButton(viewModel.actionButtonTitle, action: {
-                viewModel.showSetup = true
-            })
+            ActionButton(viewModel.actionButtonTitle, action: viewModel.setupButtonAction)
         }
-            .padding([.horizontal, .top], Constants.UI.Padding.big)
-            .padding(.bottom, Constants.UI.Padding.normal)
+        .padding([.horizontal, .top], Constants.UI.Padding.big)
+        .padding(.bottom, Constants.UI.Padding.normal)
+        
     }
 }
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView(viewModel: WelcomeViewModel())
+        WelcomeView(viewModel: WelcomeViewModel(setupButtonAction: {}))
     }
 }

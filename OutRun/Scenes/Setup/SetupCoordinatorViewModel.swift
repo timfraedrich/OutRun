@@ -1,8 +1,8 @@
 //
-//  RootViewModel.swift
+//  SetupCoordinatorViewModel.swift
 //
 //  OutRun
-//  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
+//  Copyright (C) 2020 Tim Fraedrich <timfraedrich@icloud.com>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,30 +19,17 @@
 //
 
 import Foundation
-import Combine
 
-class RootViewModel: ObservableObject {
+class SetupCoordinatorViewModel: ObservableObject {
     
-    private var cancellables: [AnyCancellable] = []
+    @Published private(set) var setupViewModel: SetupViewModel?
     
-    @Published var rootState: RootState
+    private(set) lazy var welcomeViewModel = WelcomeViewModel(setupButtonAction: setupButtonAction)
     
-    var welcomeViewModel = WelcomeViewModel()
-    
-    init() {
-        self.rootState = RootState(isAppSetUp: UserPreferences.isSetUp.value)
-        UserPreferences.isSetUp.publisher
-            .map { RootState(isAppSetUp: $0) }
-            .assign(to: \.rootState, on: self)
-            .store(in: &cancellables)
-    }
-    
-    enum RootState {
-        case welcome
-        case main
-        
-        init(isAppSetUp: Bool) {
-            self = isAppSetUp ? .main : .welcome
+    private var setupButtonAction: () -> Void {
+        return { [weak self] in
+            guard let self else { return }
+            self.setupViewModel = SetupViewModel()
         }
     }
 }

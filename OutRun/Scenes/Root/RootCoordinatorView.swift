@@ -1,5 +1,5 @@
 //
-//  ProgressView.swift
+//  RootCoordinatorView.swift
 //
 //  OutRun
 //  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,19 +20,26 @@
 
 import SwiftUI
 
-struct ProgressView: View {
+struct RootCoordinatorView: View {
     
-    var progress: Int
-    let total: Int
+    @EnvironmentObject var appDelegate: AppDelegate
+    @ObservedObject var viewModel: RootCoordinatorViewModel
     
     var body: some View {
-        HStack(spacing: Constants.UI.Padding.small) {
-            ForEach(0..<total, id: \.self) { index in
-                Rectangle()
-                    .foregroundColor(index > progress ? .secondaryBackground : .accentColor)
-                    .frame(height: 4)
-                    .clipShape(Capsule())
-                    .animation(.default)
+        switch appDelegate.appLaunchState {
+        case .loading:
+            Text("Loading")
+        case .migration:
+            Text("Migration")
+        case .done:
+            switch viewModel.rootState {
+            case .setup:
+                SetupCoordinatorView(viewModel: viewModel.setupCoordinatorViewModel)
+            case .main:
+                Text("Main App")
+                Button("Reset Setup") {
+                    UserPreferences.isSetUp.value = false
+                }
             }
         }
     }

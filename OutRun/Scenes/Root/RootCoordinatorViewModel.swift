@@ -1,5 +1,5 @@
 //
-//  ProgressView.swift
+//  RootViewModel.swift
 //
 //  OutRun
 //  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
@@ -18,22 +18,31 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import SwiftUI
+import Foundation
+import Combine
 
-struct ProgressView: View {
+class RootCoordinatorViewModel: ObservableObject {
     
-    var progress: Int
-    let total: Int
+    private var cancellables: [AnyCancellable] = []
     
-    var body: some View {
-        HStack(spacing: Constants.UI.Padding.small) {
-            ForEach(0..<total, id: \.self) { index in
-                Rectangle()
-                    .foregroundColor(index > progress ? .secondaryBackground : .accentColor)
-                    .frame(height: 4)
-                    .clipShape(Capsule())
-                    .animation(.default)
-            }
+    @Published private(set) var rootState: RootState
+    
+    let setupCoordinatorViewModel = SetupCoordinatorViewModel()
+    
+    init() {
+        self.rootState = RootState(isAppSetUp: UserPreferences.isSetUp.value)
+        UserPreferences.isSetUp.publisher
+            .map { RootState(isAppSetUp: $0) }
+            .assign(to: \.rootState, on: self)
+            .store(in: &cancellables)
+    }
+    
+    enum RootState {
+        case setup
+        case main
+        
+        init(isAppSetUp: Bool) {
+            self = isAppSetUp ? .main : .setup
         }
     }
 }

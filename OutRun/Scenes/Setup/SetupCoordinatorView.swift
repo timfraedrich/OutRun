@@ -1,5 +1,5 @@
 //
-//  RootView.swift
+//  SetupCoordinatorView.swift
 //
 //  OutRun
 //  Copyright (C) 2022 Tim Fraedrich <timfraedrich@icloud.com>
@@ -20,24 +20,15 @@
 
 import SwiftUI
 
-struct RootView: View {
+struct SetupCoordinatorView: View {
     
-    @EnvironmentObject var appDelegate: AppDelegate
-    @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var viewModel: SetupCoordinatorViewModel
     
     var body: some View {
-        switch appDelegate.appLaunchState {
-        case .loading:
-            Text("Loading")
-        case .migration:
-            Text("Migration")
-        case .done:
-            switch viewModel.rootState {
-            case .welcome:
-                WelcomeView(viewModel: viewModel.welcomeViewModel)
-            case .main:
-                Text("Main App")
-            }
+        if let setupViewModel = viewModel.setupViewModel {
+            SetupView(viewModel: setupViewModel)
+        } else {
+            WelcomeView(viewModel: viewModel.welcomeViewModel)
         }
     }
 }

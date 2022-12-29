@@ -22,7 +22,7 @@ import Foundation
 
 class WelcomeViewModel: ObservableObject {
     
-    @Published var showSetup = false
+    private(set) var setupButtonAction: () -> Void
     
     let titleLineOne = "Welcome to"
     let titleLineTwo = "OutRun"
@@ -42,4 +42,7 @@ class WelcomeViewModel: ObservableObject {
     ]
     let actionButtonTitle = "Begin Setup"
     
+    init(setupButtonAction: @escaping () -> Void) {
+        self.setupButtonAction = setupButtonAction
+    }
 }

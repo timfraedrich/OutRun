@@ -22,76 +22,39 @@ import SwiftUI
 
 struct SetupView: View {
     
-    private let numberOfSteps = 4
-    private let skippableIndicies: [Int] = [2]
-    @State private var finishedSteps: [Int:Bool] = [:]
-    @State private var stepIndex: Int = 0
-    
-    private var isNextButtonEnabled: Binding<Bool> {
-        Binding(
-            get: { finishedSteps[stepIndex] ?? skippableIndicies.contains(stepIndex) },
-            set: { finishedSteps[stepIndex] = $0 }
-        )
-    }
+    @ObservedObject var viewModel: SetupViewModel
     
     var body: some View {
         AxisGeometryReader(axis: .horizontal) { outerWidth in
             VStack {
-                ProgressView(progress: $stepIndex, total: numberOfSteps)
+                ProgressView(progress: viewModel.stepIndex, total: viewModel.numberOfSteps)
                 
                 GeometryReader { geometry in
                     let innerWidth = geometry.size.width
                     let spacing = (outerWidth - innerWidth) / 2
                     let offset = innerWidth + spacing
                     ZStack(alignment: .top) {
-                        SetupFormalitiesView(canContinue: isNextButtonEnabled)
-                        SetupUserInfoView(canContinue: isNextButtonEnabled)
+                        SetupFormalitiesView(canContinue: viewModel.isNextButtonEnabled)
+                        SetupUserInfoView(canContinue: viewModel.isNextButtonEnabled)
                             .offset(x: 1 * offset)
                         SetupHealthView()
                             .offset(x: 2 * offset)
-                        SetupPermissionsView(canContinue: isNextButtonEnabled)
+                        SetupPermissionsView(canContinue: viewModel.isNextButtonEnabled)
                             .offset(x: 3 * offset)
-                    }.offset(x: -offset * CGFloat(stepIndex))
+                    }.offset(x: -offset * CGFloat(viewModel.stepIndex))
                 }
                 .padding(.top, Constants.UI.Padding.big)
                 .padding(.bottom, Constants.UI.Padding.normal)
                 HStack {
-                    Button("Previous", action: previous)
-                        .font(.headline).opacity(stepIndex == 0 ? 0 : 1)
+                    Button(viewModel.previousButtonTitle, action: viewModel.previous)
+                        .font(.headline).opacity(viewModel.stepIndex == 0 ? 0 : 1)
                     Spacer()
-                    RoundedButton(nextButtonTitle, action: next)
-                        .disabled(!isNextButtonEnabled.wrappedValue)
+                    RoundedButton(viewModel.nextButtonTitle, action: viewModel.next)
+                        .disabled(!viewModel.isNextButtonEnabled.wrappedValue)
                 }
             }
             .padding(.horizontal, Constants.UI.Padding.big)
             .padding(.vertical, Constants.UI.Padding.normal)
         }
-    }
-    
-    private func previous() {
-        withAnimation {
-            stepIndex = max(0, stepIndex - 1)
-        }
-    }
-    
-    private var nextButtonTitle: String {
-        stepIndex != numberOfSteps - 1 ? "Next" : "Finish"
-    }
-    
-    private func next() {
-        guard stepIndex < numberOfSteps - 1 else { finish(); return }
-        withAnimation {
-            stepIndex = min(numberOfSteps - 1, stepIndex + 1)
-        }
-    }
-    
-    private func finish() {
-        // TODO: implement
-    }
-}
-
-struct SetupView_Previews: PreviewProvider {
-    static var previews: some View {
-        SetupView()
     }
 }
