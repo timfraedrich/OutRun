@@ -31,7 +31,8 @@ class CustomNumberFormatting {
         return value
     }
     
-    static func string(from double: Double, fractionDigits: Int = 2) -> String? {
+    static func string(from double: Double?, fractionDigits: Int = 2) -> String? {
+        guard let double else { return nil }
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = fractionDigits

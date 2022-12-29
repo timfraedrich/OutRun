@@ -29,20 +29,10 @@ struct SetupUserInfoView: View {
     @State private var usesMetricSystem: Bool = true
     @State private var weight: Double?
     
-    // TODO: replace with proper formatting
-    private let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-    
     private var weightText: Binding<String> {
         Binding(
-            get: { formatter.string(for: weight) ?? "" },
-            set: {
-                let number = formatter.number(from: $0)
-                weight = number != nil ? Double(truncating: number!) : nil
-            }
+            get: { CustomNumberFormatting.string(from: weight) ?? "" },
+            set: { weight = CustomNumberFormatting.number(from: $0) }
         )
     }
     
@@ -84,6 +74,7 @@ struct SetupUserInfoView: View {
                         Spacer()
                         TextField("Weight", text: weightText)
                             .multilineTextAlignment(.trailing)
+                            .keyboardType(.decimalPad)
                             .fixedSize()
                             .onReceive(Just(weight)) { weight in
                                 self.weight = weight
