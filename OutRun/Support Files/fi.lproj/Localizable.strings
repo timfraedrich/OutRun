@@ -31,7 +31,7 @@
 "Standard" = "Standardi";
 "Done" = "Tehty";
 "Loading-DoNotClose" = "Ladataan… Ethän sulje";
-"Loading" = "Ladataan…";
+"Loading" = "Ladataan...";
 "Delete" = "Poista";
 "Continue" = "Jatka";
 "Save" = "Tallenna";
@@ -41,7 +41,7 @@
 "TabBar.Timeline" = "Aikajana";
 "NewWorkoutViewController.Recenter" = "Keskitä uudelleen";
 "NewWorkoutViewController.WaitingAlert.Title" = "Odotetaan GPS:ää";
-"Settings.AppleHealthPreferences.Message" = "Jos synkronointi on käytössä, sovellus yrittää tallentaa uudet tiedot automaattisesti Terveys-sovellukseen. Jos Terveyteen määritetty paino muuttuu, se muutetaan automaattisesti myös tässä sovelluksessa.\n\nJos harjoitusten automaattinen tuonti on käytössä, sovellus yrittää tuoda muiden sovellusten lisäämät uudet harjoitukset paikalliseen tietokantaan.\n\n"Synkronoi kaikki synkronoimattomat harjoitukset" vie kaikki paikalliset, tallentamattomat harjoituksesi terveystietoihin.";
+"Settings.AppleHealthPreferences.Message" = "Jos synkronointi on käytössä, sovellus yrittää tallentaa uudet tiedot automaattisesti Terveys-sovellukseen. Jos Terveyteen määritetty paino muuttuu, se muutetaan automaattisesti myös tässä sovelluksessa.\n\nJos harjoitusten automaattinen tuonti on käytössä, sovellus yrittää tuoda muiden sovellusten lisäämät uudet harjoitukset paikalliseen tietokantaan.\n\n\"Synkronoi kaikki synkronoimattomat harjoitukset\" vie kaikki paikalliset, tallentamattomat harjoituksesi terveystietoihin.";
 "EditWorkoutController.Info" = "Tiedot";
 "WorkoutStats.AverageSpeed" = "keskinopeus";
 "Workout.TotalPace" = "Kokonaistahti";
@@ -128,9 +128,6 @@
 "Settings.PrivacyPolicy" = "tietosuojakäytäntö";
 "Settings.TermsOfService" = "käyttöehdot";
 "Settings.DataPreferences.Message" = "OutRunin varmuuskopiot, toisin kuin useimmissa muissa sovelluksissa, ovat pelkkiä tiedostoja, joten et tarvitse erikoistyökaluja niiden siirtämiseen sovellukseen tai toiseen laitteeseen. Ne pysyvät myös täysin paikallisina ellet tallenna niitä pilveen.\n\nKun luot varmuuskopion, sinulle näytetään '.orbup-tiedosto, jonka voit jakaa mihin tahansa muuhun sovellukseen. Huomaa, että tiedosto ei kuitenkaan ole salattu, joten jos lähetät sen jollekulle tai lataat sen toiseen palveluun, saatat vaarantaa yksityisyytesi.\n\nJos haluat tuoda aiemman varmuuskopion, valitse vain '.orbup-tiedosto sieltä, mihin sen olet tallentanut. Sovellus tuo automaattisesti kaikki varmuuskopion sisältämät harjoitukset ja varmistaa, ettei kaksoiskappaleita synny.";
-
-If 'Display Pace' is enabled instead of showing the speed the pace is shown. Should 'Display Rolling Speed' be on the speed or pace displayed are an average of the last kilometer, if not the current speed or the total pace are shown.
-
 "Settings.Support" = "Tuki";
 "Settings.RecordingPreferences.Message" = "Jos kohtaat kaatumisia tai ongelmia harjoituksen tallennuksen aikana, kokeile yrittää kytke 'Näytä kartta' pois päältä, koska tunnetut kaatumiset liittyvät kartan piirtämiseen vaadittuun virran määrään.\n\nJos et näe nopeutta, varmista, onko \"Näytä tahti\" on käytössä nopeuden näyttämisen sijaan. Jos 'Näytä lähin tahti' on päällä, näytetyt nopeus ja tahti ovat viime kilometrin keskiarvoja, muussa tapauksessa sovellus näyttää tämänhetkisen nopeuden tai kokonaistahdin.";
 "Settings.DisplayRollingSpeed" = "Näytä lähin tahti";
@@ -216,7 +213,7 @@ If 'Display Pace' is enabled instead of showing the speed the pace is shown. Sho
 "AppleHealth.Remove.Error" = "Harjoituksen poistaminen terveystiedoista epäonnistui, yritä uudelleen myöhemmin tai tarkista ne Terveys-sovelluksesta. On mahdollista, että treeniä ei lisätty terveystietoihin, mikä tarkoittaa, ettemme voi muokata sitä.";
 "AppleHealth.Remove" = "Poista terveystiedot";
 "AppleHealth.Add.Error" = "Harjoituksen lisääminen terveystietoihin epäonnistui, yritä uudelleen myöhemmin.";
-"AppleHealth.Add" = "Lisää terveystietoihin;
+"AppleHealth.Add" = "Lisää terveystietoihin";
 "WorkoutList.Order.Descending" = "Laskeutuminen";
 "WorkoutList.Order" = "Järjestys";
 "WorkoutList.SortBy" = "Lajittele";
