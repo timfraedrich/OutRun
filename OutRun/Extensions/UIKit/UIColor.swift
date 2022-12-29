@@ -22,13 +22,6 @@ import UIKit
 
 extension UIColor {
     
-    static let accentColor = UIColor(named: "accentColor") ?? .orange
-    static let accentColorSwapped = UIColor(named: "accentColorSwapped") ?? UIColor.orange.withAlphaComponent(0.9)
-    static let primaryColor = UIColor(named: "primaryColor") ?? .black
-    static let secondaryColor = UIColor(named: "secondaryColor") ?? UIColor(white: 118/255, alpha: 1)
-    static let backgroundColor = UIColor(named: "backgroundColor") ??  UIColor.white
-    static let foregroundColor = UIColor(named: "foregroundColor") ?? UIColor(white: 248/255, alpha: 1)
-    static let tableViewSeparator = UIColor(white: 0.5, alpha: 0.25)
+    static let accentColor = UIColor(named: "accentColor") ?? .systemOrange
     
-    static var tintColor: UIColor { UIColor(named: "accentColor") ?? .systemOrange }
 }

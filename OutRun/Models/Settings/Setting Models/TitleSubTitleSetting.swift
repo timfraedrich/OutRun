@@ -31,9 +31,9 @@ class TitleSubTitleSetting: TitleSetting {
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
         
-        cell.backgroundColor = .backgroundColor
-        cell.textLabel?.textColor = .primaryColor
-        cell.detailTextLabel?.textColor = .secondaryColor
+        cell.backgroundColor = .systemBackground
+        cell.textLabel?.textColor = .label
+        cell.detailTextLabel?.textColor = .label
         
         cell.accessoryType = self.doesRedirect ? .disclosureIndicator : .none
         cell.detailTextLabel?.text = self.subTitle

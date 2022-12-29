@@ -39,8 +39,8 @@ class TitleSetting: Setting {
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         
-        cell.backgroundColor = .backgroundColor
-        cell.textLabel?.textColor = .primaryColor
+        cell.backgroundColor = .systemBackground
+        cell.textLabel?.textColor = .label
         cell.textLabel?.text = title
         cell.accessoryType = doesRedirect ? .disclosureIndicator : .none
         

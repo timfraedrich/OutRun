@@ -140,7 +140,7 @@ public struct MapView: UIViewRepresentable {
         
         public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             let renderer = MKPolylineRenderer(overlay: overlay)
-            renderer.strokeColor = .tintColor
+            renderer.strokeColor = .accentColor
             renderer.lineWidth = 4
             return renderer
         }

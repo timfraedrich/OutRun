@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ObservableObject {
 
     func applicationWillTerminate(_ application: UIApplication) {}
 
-    func checkPermissionStatus(controller: UIViewController, completion: (() -> Void)? = nil) {
+    /*func checkPermissionStatus(controller: UIViewController, completion: (() -> Void)? = nil) {
 
         let safeCompletion: () -> Void = {
             DispatchQueue.main.async {
@@ -158,7 +158,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ObservableObject {
         } else {
             safeCompletion()
         }
-    }
+    }*/
     
     enum AppLaunchState {
         case loading

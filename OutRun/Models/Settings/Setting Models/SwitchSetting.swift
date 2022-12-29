@@ -45,11 +45,11 @@ class SwitchSetting: Setting {
         return switchView
     }()
     
-    fileprivate lazy var titleLabel = UILabel(text: title, font: .preferredFont(forTextStyle: .body))
+    fileprivate lazy var titleLabel = UILabel(/*text: title, font: .preferredFont(forTextStyle: .body)*/)
     
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell()
-        cell.backgroundColor = .backgroundColor
+        cell.backgroundColor = .systemBackground
         cell.accessoryType = .none
         cell.selectionStyle = .none
         

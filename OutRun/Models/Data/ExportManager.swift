@@ -96,7 +96,7 @@ public class ExportManager {
      */
     static func displayShareAlert(for inclusionType: DataInclusionType, on controller: UIViewController) {
         
-        var alertOptions: [UIAlertActionTuple] = []
+        /*var alertOptions: [UIAlertActionTuple] = []
         
         for type in ExportTypes.exportTypes(for: inclusionType) {
             
@@ -128,7 +128,7 @@ public class ExportManager {
             options: alertOptions
         )
         
-        controller.present(alert, animated: true)
+        controller.present(alert, animated: true)*/
     }
     
     /** A funtion displaying the iOS share menu on top of the given controller for files at the given directory.

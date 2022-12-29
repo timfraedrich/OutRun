@@ -27,8 +27,8 @@ class ButtonSetting: TitleSetting {
     
     fileprivate lazy var internalTableViewCell: UITableViewCell = {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.backgroundColor = .backgroundColor
-        cell.textLabel?.textColor = isEnabledClosure() ? buttonColorClosure() : .secondaryColor
+        cell.backgroundColor = .systemBackground
+        cell.textLabel?.textColor = isEnabledClosure() ? buttonColorClosure() : .secondaryLabel
         cell.selectionStyle = .none
         cell.textLabel?.text = self.title
         return cell
@@ -59,7 +59,7 @@ class ButtonSetting: TitleSetting {
         if self.usesClosures {
             DispatchQueue.main.async {
                 super.updateClosures()
-                self.tableViewCell.textLabel?.textColor = self.isEnabledClosure() ? self.buttonColorClosure() : .secondaryColor
+                self.tableViewCell.textLabel?.textColor = self.isEnabledClosure() ? self.buttonColorClosure() : .secondaryLabel
             }
         }
     }

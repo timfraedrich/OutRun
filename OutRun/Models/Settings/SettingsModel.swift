@@ -313,7 +313,7 @@ class SettingsModel {
                 ButtonSetting(
                     title: { return LS["Settings.SyncAll"] },
                     selectAction: { (setting, controller, cell) in
-                        _ = controller.startLoading {
+                        /*_ = controller.startLoading {
                             HealthStoreManager.saveAllWorkouts { error, allSavedAlready in
                                 controller.endLoading {
                                     if error == nil && allSavedAlready {
@@ -325,7 +325,7 @@ class SettingsModel {
                                     }
                                 }
                             }
-                        }
+                        }*/
                     },
                     isEnabled: { UserPreferences.synchronizeWorkoutsWithAppleHealth.value }
                 )
@@ -351,18 +351,18 @@ class SettingsModel {
                     title: LS["Settings.ImportBackupData"],
                     doesRedirect: true,
                     selectAction: { (setting, controller, cell) in
-                        let picker = UIDocumentPickerViewController(documentTypes: ["de.tadris.orbup"], in: .import)
+                        /*let picker = UIDocumentPickerViewController(documentTypes: ["de.tadris.orbup"], in: .import)
                         let delegate = BackupDocumentPickerDelegate(on: controller)
                         picker.modalPresentationStyle = .formSheet
                         picker.delegate = delegate
-                        controller.present(picker, animated: true)
+                        controller.present(picker, animated: true)*/
                     }
                 ),
                 ButtonSetting(
                     title: LS["Settings.DeleteAllData"],
                     selectAction: { (setting, controller, cell) in
                         
-                        let alert = UIAlertController(
+                        /*let alert = UIAlertController(
                             title: LS["Settings.DeleteAll.Confirmation.Title"],
                             message: LS["Settings.DeleteAll.Confirmation.Message"],
                             preferredStyle: .alert,
@@ -473,7 +473,7 @@ class SettingsModel {
                                 )
                             ]
                         )
-                        controller.present(alert, animated: true)
+                        controller.present(alert, animated: true)*/
                     },
                     buttonColor: .red
                 )
@@ -518,7 +518,7 @@ class SettingsModel {
                         UIApplication.shared.open(url) { (success) in
                             if !success {
                                 print("Failed to open Mail")
-                                controller.displayError(withMessage: LS["Settings.Email.Error"])
+                                // controller.displayError(withMessage: LS["Settings.Email.Error"])
                             }
                         }
                     })
@@ -549,7 +549,7 @@ class SettingsModel {
                         UIApplication.shared.open(url) { (success) in
                             if !success {
                                 print("Failed to open link to source code")
-                                controller.displayError(withMessage: LS["Settings.SourceCode.Error"])
+                                // controller.displayError(withMessage: LS["Settings.SourceCode.Error"])
                             }
                         }
                     }
