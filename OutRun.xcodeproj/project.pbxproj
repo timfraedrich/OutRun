@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		22015319231663E300BD79AF /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22015318231663E300BD79AF /* UIViewController.swift */; };
+		2201BCA929423DF100F54277 /* View+Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201BCA829423DF100F54277 /* View+Navigation.swift */; };
+		2201BCAB29423E1600F54277 /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201BCAA29423E1600F54277 /* NavigationLink.swift */; };
 		2204A1DD255ACB1100906CFE /* ORDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204A1DC255ACB1100906CFE /* ORDataType.swift */; };
 		2207B75623128F8A00BA71B5 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207B75523128F8A00BA71B5 /* CLLocation.swift */; };
 		2209E53924DD4A8F00BBFC2F /* AltitudeManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2209E53824DD4A8F00BBFC2F /* AltitudeManagement.swift */; };
@@ -197,6 +199,8 @@
 		22005D1725B469E7004BE8E9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		22005D1825B469E7004BE8E9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Changelog.strings; sourceTree = "<group>"; };
 		22015318231663E300BD79AF /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		2201BCA829423DF100F54277 /* View+Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Navigation.swift"; sourceTree = "<group>"; };
+		2201BCAA29423E1600F54277 /* NavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
 		2204A1DC255ACB1100906CFE /* ORDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORDataType.swift; sourceTree = "<group>"; };
 		2207B75523128F8A00BA71B5 /* CLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
 		2209E53824DD4A8F00BBFC2F /* AltitudeManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeManagement.swift; sourceTree = "<group>"; };
@@ -797,6 +801,8 @@
 			isa = PBXGroup;
 			children = (
 				22BC99512941DC9900D9B1A5 /* Color.swift */,
+				2201BCAA29423E1600F54277 /* NavigationLink.swift */,
+				2201BCA829423DF100F54277 /* View+Navigation.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -1173,6 +1179,8 @@
 				22FEA0AF24CDD7B50007CA9C /* DiskStorage.swift in Sources */,
 				22BC99162941D97600D9B1A5 /* WelcomeViewModel.swift in Sources */,
 				2230925F24D6F6A700A3F636 /* WorkoutBuilder+Status.swift in Sources */,
+				2201BCA929423DF100F54277 /* View+Navigation.swift in Sources */,
+				2201BCAB29423E1600F54277 /* NavigationLink.swift in Sources */,
 				22623C0122DFBB71004065C6 /* Sequence.swift in Sources */,
 				226E9A4B23F01E6E00992815 /* Date.swift in Sources */,
 				229FF4A1235C7F6300EA220E /* CustomMeasurementFormatting.swift in Sources */,
