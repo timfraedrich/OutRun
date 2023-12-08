@@ -55,7 +55,7 @@ If you want to add languages or improve already translated ones you can do this 
 
 ## Donation
 
-This project currently does not accept any kinds of donation, neither in-app nor through external methods. For now the only ways to contribute can be found under **Contribution**.
+This project currently does not accept any kind of donation, neither in-app nor through external methods. For now, the only ways to contribute can be found under **Contribution**.
 
 If you cannot contribute in any other way than financially or just feel really generous at the moment you could consider [supporting the folks at Weblate](https://weblate.org/donate/). They are providing their services to OutRun for free, because they are great believers in open-source development, it still costs them money to host the project on their website though, so supporting them also directly benefits OutRun.
 
