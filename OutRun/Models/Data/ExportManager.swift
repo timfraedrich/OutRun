@@ -18,8 +18,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Foundation
 import CoreGPX
+import UIKit
 
 public class ExportManager {
     
