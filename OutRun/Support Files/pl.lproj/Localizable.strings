@@ -95,7 +95,7 @@
 "EditWorkoutController.Info" = "Informacja";
 "MapView.MapType.Hybrid" = "Hybryda";
 "WorkoutShareAlert.OutRunBackup" = "OutRun Kopia";
-"Changelog" = "Czangielog";
+"Changelog" = "Lista Zmian";
 "Workout.StartDate" = "Data Rozpoczęcia";
 "Workout.CurrentSpeed" = "Aktualna Prędkość";
 "Workout.BurnedCalories" = "Spalone Kalorie";
@@ -268,3 +268,5 @@
 "Turn Off" = "Wyłącz";
 "Try Again" = "Spróbuj Ponownie";
 "Keep" = "Zachowaj";
+"ExportManager.BackupError" = "Aplikacji nie udało się utworzyć kopii zapasowej, proszę skontaktować się z pomocą techniczną.";
+"ExportManager.GPXError" = "Aplikacji nie udało się utworzyć pliku GPX, proszę skontaktować się z pomocą techniczna.";
