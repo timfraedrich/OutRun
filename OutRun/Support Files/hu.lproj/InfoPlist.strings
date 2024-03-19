@@ -1,0 +1,8 @@
+
+
+"NSHealthShareUsageDescription" = "Az applikációnak szüksége van az egészségügyi adataihoz az edzések elmentéséhez";
+"NSHealthUpdateUsageDescription" = "Az applikációnak szüksége van az egészségügyi adataihoz az ezen app által feljegyzett edzések olvasásához és kijavításához";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Az applikációnak szüksége van a helyadataihoz az edzések feljegyzéséhez";
+"NSLocationAlwaysUsageDescription" = "Az applikációnak szüksége van a helyadataihoz az edzések feljegyzéséhez";
+"NSLocationWhenInUseUsageDescription" = "Az applikációnak szüksége van a helyadataihoz az edzések feljegyzéséhez";
+"NSMotionUsageDescription" = "Az applikációnak szüksége van a mozgásadataihoz a lépések és egyéb mozdulatok feljegyzéséhez";
