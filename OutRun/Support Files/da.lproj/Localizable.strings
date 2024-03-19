@@ -139,9 +139,9 @@
 "WorkoutEvent.Type.AutoResume" = "Automatisk genoptagelse";
 "Workout.AverageSpeed" = "Gns. Hastighed";
 "Start" = "Starte";
-"Okay" = "Alright";
-"Standard" = "Norm";
-"Continue" = "Fortsætte";
+"Okay" = "Okay";
+"Standard" = "Standard";
+"Continue" = "Fortsæt";
 "WorkoutEvent.Type.Segment" = "Udsnit";
 "Settings.DeleteAll.AppleHealth.Message" = "Vil du beholde de træningsprogrammer, du har registreret i Apple Health-appen, eller vil du også slette dem?";
 "Settings.DeleteAll.AppleHealth.Title" = "Slet Apple Health Data?";
@@ -270,14 +270,14 @@
 "Next" = "Næste";
 "No" = "Ingen";
 "Yes" = "Ja";
-"NoData.Message" = "Der synes ikke at være noget her.";
-"NoDataAvailable" = "Ingen tilgængelig data";
+"NoData.Message" = "Der ser ikke ud til at være noget her.";
+"NoDataAvailable" = "Ingen data tilgængelige";
 "Done" = "Færdig";
 "Loading-DoNotClose" = "Indlæser ... Luk venligst ikke";
 "Loading" = "Indlæser...";
 "Delete" = "Slet";
-"Save" = "Gemme";
-"Cancel" = "Afbestille";
+"Save" = "Gem";
+"Cancel" = "Annuller";
 "OutRun" = "OutRun";
 "TabBar.Settings" = "Indstillinger";
 "TabBar.Timeline" = "Tidslinje";
@@ -286,3 +286,5 @@
 "Settings.Contribution.Maintainers" = "Vedligeholdere";
 "Settings.Contribution" = "Bidrag";
 "Keep" = "Hold";
+"ExportManager.GPXError" = "Der kunne ikke laves en GPX fil. Kontakt Support.";
+"ExportManager.BackupError" = "Applikationen kunne ikke lave en gendannelsesfil, venligst kontakt support for hjælp";
