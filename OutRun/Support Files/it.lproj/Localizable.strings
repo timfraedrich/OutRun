@@ -268,3 +268,4 @@
 "Settings.Contribution.CodeContributors" = "Collaboratori del codice";
 "Settings.Contribution.Maintainers" = "Manutentrici";
 "Settings.Contribution" = "Contributo";
+"ExportManager.BackupError" = "Errore durante la creazione del backup, si prega di contattare il supporto.";
