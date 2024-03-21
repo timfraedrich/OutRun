@@ -1,4 +1,3 @@
-
 "NewWorkoutViewController.WorkoutBuilder.Error" = "Harjoituksen suunnittelussa oli virhe.";
 "NewWorkoutViewController.WaitingAlert.Message" = "GPS-signaali ei ole riittävän tarkka reitin seuraamiseen. Tarkan signaalin löytäminen voi viedä parista sekunnista minuuttiin. Jos tämä tapahtuu usein sijannissasi, yritä säätää toivottua tarkkuutta asetuksissa.";
 "NewWorkoutViewController.Discard.SaveInstead" = "Tallenna sen sijaan";

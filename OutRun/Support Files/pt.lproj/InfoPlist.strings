@@ -1,0 +1,8 @@
+
+
+"NSHealthShareUsageDescription" = "Esse aplicativo precisa de acesso a seus dados de saúde para salvar os treinos construídos pelo aplicativo";
+"NSHealthUpdateUsageDescription" = "Esse aplicativo precisa de acesso aos seus dados de saúde para ler e possivelmente corrigir os treinos construídos pelo aplicativo";
+"NSLocationAlwaysUsageDescription" = "Esse aplicativo precisa da sua localização para registrar os treinos";
+"NSLocationWhenInUseUsageDescription" = "Esse aplicativo precisa da sua localização para registrar os treinos";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Esse aplicativo precisa da sua localização para registrar os treinos";
+"NSMotionUsageDescription" = "Esse aplicativo precisa poder rastrear movimento para gravar dados como passos durante um treino";

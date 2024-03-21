@@ -55,7 +55,7 @@
 "Settings.AutoImportHealthWorkouts" = "Importera träningspass automatiskt";
 "Settings.SynchronizeWeightWithAppleHealth" = "Synkronisera vikt";
 "Settings.SynchronizeWorkoutsWithAppleHealth" = "Synkronisera träningspass";
-"Settings.AppleHealthPreferences.Message" = "Om synkroniseringsalternativen är aktiverade försöker appen synkronisera med Apple Hälsa, så ny data från OutRun automatiskt sparas även i Hälsoappen, och om vikten i Hälsoappen ändras blir den automatiskt justerad här också.\n\nOm alternativet \"Importera träningspass automatiskt\" aktiveras försöker appen automatiskt att importera nya träningspass som läggs till av andra appar i den lokala databasen.\n\n\"Synkronisera alla icke-synkade träningspass\" synkroniserar alla träningspass i den här appen, som inte redan är synkroniserade med Apple Hälsa.";
+"Settings.AppleHealthPreferences.Message" = "Om synkroniseringsalternativen är aktiverade försöker appen synkronisera med Apple Hälsa, så ny data från OutRun automatiskt sparas även i Hälsoappen, och om vikten i Apple Hälsoappen ändras blir den automatiskt justerad här också.\n\nOm alternativet \"Importera träningspass automatiskt\" aktiveras försöker appen automatiskt att importera nya träningspass som läggs till av andra appar i den lokala databasen.\n\n\"Synkronisera alla icke-synkade träningspass\" synkroniserar alla träningspass i den här appen, som inte redan är synkroniserade med Apple Hälsa.";
 "Settings.AppleHealthPreferences" = "Inställningar i Apple Hälsa";
 "Settings.UserSettings.Description" = "Denna App behöver din vikt för att beräkna ett uppskattat värde av bränd energi under ett träningspass. Att ange ditt namn är helt valfritt.";
 "Settings.Weight" = "Vikt";
