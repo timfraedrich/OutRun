@@ -47,8 +47,67 @@ class WorkoutCompletionActionHandler {
      Displays a dismissable view over the current `UIWindow` that gives the user options on what to do with the just recorded workout, saving it automatically after a certain time
      */
     public func display() {
-        // would normally show save banner
-    }
+    // Create a new UIWindow overlay
+    guard let window = UIApplication.shared.keyWindow else { return }
+    
+    // Create a container view for the pop-up
+    let popupView = UIView()
+    popupView.backgroundColor = .white
+    popupView.layer.cornerRadius = 12
+    popupView.translatesAutoresizingMaskIntoConstraints = false
+    window.addSubview(popupView)
+    
+    // Set up Auto Layout constraints for the popup view
+    NSLayoutConstraint.activate([
+        popupView.centerXAnchor.constraint(equalTo: window.centerXAnchor),
+        popupView.centerYAnchor.constraint(equalTo: window.centerYAnchor),
+        popupView.widthAnchor.constraint(equalToConstant: 300),
+        popupView.heightAnchor.constraint(equalToConstant: 200)
+    ])
+    
+    // "Continue" button
+    let continueButton = UIButton(type: .system)
+    continueButton.setTitle("Continue", for: .normal)
+    continueButton.translatesAutoresizingMaskIntoConstraints = false
+    continueButton.addTarget(self, action: #selector(self.continueWorkout), for: .touchUpInside)
+    continueButton.isAccessibilityElement = true
+    continueButton.accessibilityLabel = "Continue workout"
+    continueButton.accessibilityIdentifier = "continueButton"
+
+    // "Discard" button
+    let discardButton = UIButton(type: .system)
+    discardButton.setTitle("Discard", for: .normal)
+    discardButton.translatesAutoresizingMaskIntoConstraints = false
+    discardButton.addTarget(self, action: #selector(self.discardWorkout), for: .touchUpInside)
+    discardButton.isAccessibilityElement = true
+    discardButton.accessibilityLabel = "Discard workout"
+    discardButton.accessibilityIdentifier = "discardButton"
+
+    // "Save" button
+    let saveButton = UIButton(type: .system)
+    saveButton.setTitle("Save", for: .normal)
+    saveButton.translatesAutoresizingMaskIntoConstraints = false
+    saveButton.addTarget(self, action: #selector(self.saveWorkout), for: .touchUpInside)
+    saveButton.isAccessibilityElement = true
+    saveButton.accessibilityLabel = "Save workout"
+    saveButton.accessibilityIdentifier = "saveButton"
+    
+    popupView.addSubview(continueButton)
+    popupView.addSubview(discardButton)
+    popupView.addSubview(saveButton)
+
+    
+    NSLayoutConstraint.activate([
+        continueButton.centerXAnchor.constraint(equalTo: popupView.centerXAnchor),
+        continueButton.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 20),
+        
+        discardButton.centerXAnchor.constraint(equalTo: popupView.centerXAnchor),
+        discardButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: 10),
+        
+        saveButton.centerXAnchor.constraint(equalTo: popupView.centerXAnchor),
+        saveButton.bottomAnchor.constraint(equalTo: popupView.bottomAnchor, constant: -20)
+    ])
+}
     
     /**
      Saves the workout if no other action was already performed
