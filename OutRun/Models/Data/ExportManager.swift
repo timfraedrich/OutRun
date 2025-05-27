@@ -20,6 +20,7 @@
 
 import Foundation
 import CoreGPX
+import UIKit
 
 public class ExportManager {
     

@@ -20,6 +20,7 @@
 
 import Foundation
 import Cache
+import UIKit
 
 class CustomImageCache {
     
