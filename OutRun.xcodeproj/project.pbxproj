@@ -15,6 +15,9 @@
 		22BC14D02DE61D42008B0A4C /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14CF2DE61D42008B0A4C /* CombineExt */; };
 		22BC14D32DE61DA0008B0A4C /* CoreGPX in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14D22DE61DA0008B0A4C /* CoreGPX */; };
 		22BC14D62DE61DBA008B0A4C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14D52DE61DBA008B0A4C /* SnapKit */; };
+		22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E252DEA0EA400CCF525 /* OutRunCore */; };
+		22E72E282DEA0EA400CCF525 /* OutRunDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E272DEA0EA400CCF525 /* OutRunDatabase */; };
+		22E72E2A2DEA0EA400CCF525 /* OutRunRecording in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E292DEA0EA400CCF525 /* OutRunRecording */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,11 +51,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22E72E282DEA0EA400CCF525 /* OutRunDatabase in Frameworks */,
+				22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */,
 				22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */,
 				22AD549E2DE6274B007297E7 /* OutRunRecording in Frameworks */,
 				22BC132F2DE619DE008B0A4C /* Cache in Frameworks */,
 				22BC14D02DE61D42008B0A4C /* CombineExt in Frameworks */,
 				22BC13322DE619E7008B0A4C /* CoreStore in Frameworks */,
+				22E72E2A2DEA0EA400CCF525 /* OutRunRecording in Frameworks */,
 				22AD549C2DE6274B007297E7 /* OutRunDatabase in Frameworks */,
 				22BC14D32DE61DA0008B0A4C /* CoreGPX in Frameworks */,
 				22BC14D62DE61DBA008B0A4C /* SnapKit in Frameworks */,
@@ -107,6 +113,9 @@
 				22AD54992DE6274B007297E7 /* OutRunCore */,
 				22AD549B2DE6274B007297E7 /* OutRunDatabase */,
 				22AD549D2DE6274B007297E7 /* OutRunRecording */,
+				22E72E252DEA0EA400CCF525 /* OutRunCore */,
+				22E72E272DEA0EA400CCF525 /* OutRunDatabase */,
+				22E72E292DEA0EA400CCF525 /* OutRunRecording */,
 			);
 			productName = OutRun;
 			productReference = 22BC11822DE61964008B0A4C /* OutRun.app */;
@@ -159,7 +168,7 @@
 				22BC14CE2DE61D42008B0A4C /* XCRemoteSwiftPackageReference "CombineExt" */,
 				22BC14D12DE61DA0008B0A4C /* XCRemoteSwiftPackageReference "CoreGPX" */,
 				22BC14D42DE61DBA008B0A4C /* XCRemoteSwiftPackageReference "SnapKit" */,
-				22AD54982DE6274B007297E7 /* XCLocalSwiftPackageReference "OutRunComponents" */,
+				22E72E242DEA0EA400CCF525 /* XCLocalSwiftPackageReference "OutRunComponents" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 22BC11832DE61964008B0A4C /* Products */;
@@ -411,7 +420,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		22AD54982DE6274B007297E7 /* XCLocalSwiftPackageReference "OutRunComponents" */ = {
+		22E72E242DEA0EA400CCF525 /* XCLocalSwiftPackageReference "OutRunComponents" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = OutRunComponents;
 		};
@@ -431,7 +440,7 @@
 			repositoryURL = "https://github.com/JohnEstropia/CoreStore";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 9.3.0;
+				minimumVersion = 7.3.0;
 			};
 		};
 		22BC14CE2DE61D42008B0A4C /* XCRemoteSwiftPackageReference "CombineExt" */ = {
@@ -497,6 +506,18 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 22BC14D42DE61DBA008B0A4C /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		22E72E252DEA0EA400CCF525 /* OutRunCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OutRunCore;
+		};
+		22E72E272DEA0EA400CCF525 /* OutRunDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OutRunDatabase;
+		};
+		22E72E292DEA0EA400CCF525 /* OutRunRecording */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OutRunRecording;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

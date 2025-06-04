@@ -19,6 +19,7 @@
 //
 
 import CoreStore
+import Foundation
 
 public enum OutRunV4: ORDataModel {
     
