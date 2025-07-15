@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-public enum WorkoutEventType: Codable, CustomDebugStringConvertible, RawRepresentable {
+public enum WorkoutEventType: Codable, CustomDebugStringConvertible, Equatable, RawRepresentable {
     
     case lap
     case marker

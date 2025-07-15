@@ -21,7 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		22AD52FE2DE626D4007297E7 /* OutRunComponents */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OutRunComponents; sourceTree = "<group>"; };
+		224B42562E1EC7EA0089C1B1 /* OutRunCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OutRunCore; sourceTree = "<group>"; };
 		22BC11822DE61964008B0A4C /* OutRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -72,8 +72,8 @@
 			isa = PBXGroup;
 			children = (
 				22AD53FA2DE626EA007297E7 /* OutRun */,
+				224B42562E1EC7EA0089C1B1 /* OutRunCore */,
 				22BC11832DE61964008B0A4C /* Products */,
-				22AD52FE2DE626D4007297E7 /* OutRunComponents */,
 			);
 			sourceTree = "<group>";
 		};
@@ -168,7 +168,7 @@
 				22BC14CE2DE61D42008B0A4C /* XCRemoteSwiftPackageReference "CombineExt" */,
 				22BC14D12DE61DA0008B0A4C /* XCRemoteSwiftPackageReference "CoreGPX" */,
 				22BC14D42DE61DBA008B0A4C /* XCRemoteSwiftPackageReference "SnapKit" */,
-				22E72E242DEA0EA400CCF525 /* XCLocalSwiftPackageReference "OutRunComponents" */,
+				224B42572E1EC8B10089C1B1 /* XCLocalSwiftPackageReference "OutRunCore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 22BC11832DE61964008B0A4C /* Products */;
@@ -420,9 +420,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		22E72E242DEA0EA400CCF525 /* XCLocalSwiftPackageReference "OutRunComponents" */ = {
+		224B42572E1EC8B10089C1B1 /* XCLocalSwiftPackageReference "OutRunCore" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = OutRunComponents;
+			relativePath = OutRunCore;
 		};
 /* End XCLocalSwiftPackageReference section */
 
