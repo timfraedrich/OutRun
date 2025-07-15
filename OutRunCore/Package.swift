@@ -11,12 +11,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/JohnEstropia/CoreStore", from: "7.3.0"),
+        .package(url: "https://github.com/apple/swift-nio", from: "2.84.0"),
     ],
     targets: [
         .target(
             name: "OutRunCore",
             dependencies: [
                 "CoreStore",
+                .product(name: "NIOCore", package: "swift-nio")
             ]
         ),
         .testTarget(
