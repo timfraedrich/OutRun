@@ -11,7 +11,7 @@ enum CoreStoreSetupError: Error, CustomDebugStringConvertible {
     
     var debugDescription: String {
         switch self {
-        case .failedToInitializeDataStack: "The DataStack could not be added."
+        case .failedToInitializeDataStack: "The CoreStore DataStack could not be added."
         case .failedToAddStorage(let error): "CoreStore failed to add the SQLiteStorage to the DataStack: \(error.debugDescription)"
         }
     }

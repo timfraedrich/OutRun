@@ -6,6 +6,13 @@ import Foundation
 @MainActor
 class CoreStoreManager<DataModel: CoreStoreDataModel> {
     
+    private static var legacyFileName: String { "OutRun.sqlite" }
+    
+    static var legacyStorageExists: Bool {
+        let storage = SQLiteStore(fileName: legacyFileName)
+        return FileManager.default.fileExists(atPath: storage.fileURL.path())
+    }
+    
     /// The primary `DataStack` used by the `DataManager`.
     /// - warning: make sure `dataStack` is initialised by calling `DataManager.setup(dataModel:completion:migration:)` accessing the
     /// property will lead to a fatal error otherwise.
@@ -13,7 +20,7 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
     /// static optional instance of the local storage holding the workout data
     private var storage: SQLiteStore
     
-    init(fileName: String = "OutRun.sqlite") async throws {
+    init(fileName: String = legacyFileName) async throws {
         storage = .init(
             fileName: fileName,
             migrationMappingProviders: DataModel.migrationChain.compactMap { $0.mappingProvider }
@@ -41,6 +48,22 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
                     continuation.resume(throwing: error)
                 }
             })
+        }
+    }
+    
+    func extractAllWorkouts() async throws -> [RawDataModelV3.Workout] {
+        guard DataModel.self == OutRunV3.self else { throw CoreStoreExtractionError.invalidModel }
+        return try await withCheckedThrowingContinuation { continuation in
+            dataStack.perform { transaction in
+                // we only need to export workouts, as Event models were never used in production
+                // all other object 
+                let csWorkouts = try transaction.fetchAll(From<OutRunV3.Workout>())
+                return csWorkouts.map(RawDataModelV3.Workout.init)
+            } success: { workouts in
+                continuation.resume(returning: workouts)
+            } failure: { error in
+                continuation.resume(throwing: CoreStoreExtractionError.databaseError(error: error))
+            }
         }
     }
     

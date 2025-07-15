@@ -13,10 +13,10 @@ enum CoreStoreSaveError: Error, CustomDebugStringConvertible {
     
     var debugDescription: String {
         switch self {
-        case .alreadySaved: "The object already exists inside the database."
-        case .notValid: "The object could not be validated"
+        case .alreadySaved: "The object already exists inside the CoreStore database."
+        case .notValid: "The CoreStore object could not be validated"
         case .databaseError(let error):
-            "There was an error while trying to insert the object into the database: \(error.debugDescription)"
+            "There was an error while trying to insert the object into the CoreStore database: \(error.debugDescription)"
         }
     }
 }
