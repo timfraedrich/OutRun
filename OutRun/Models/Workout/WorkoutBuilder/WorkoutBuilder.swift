@@ -120,9 +120,11 @@ class WorkoutBuilder: ApplicationStateObserver {
     
     /**
      Stops and resets the `WorkoutBuilder` if this action is appropriate giving the recorded data to an instance of `WorkoutCompletionActionHandler`
+     - parameter shouldProvideCompletionActions: whether to display completion actions or save automatically
      - parameter completion: a closure with a success boolean as a parameter indicating if the action was performed
+     - parameter onSaveOrDiscard: optional closure called when Save or Discard is selected (not called for Continue)
      */
-    public func finish(shouldProvideCompletionActions: Bool = true, completion: @escaping (Bool) -> Void) {
+    public func finish(shouldProvideCompletionActions: Bool = true, completion: @escaping (Bool) -> Void, onSaveOrDiscard: ((Bool) -> Void)? = nil) {
         
         let completion = makeClosureThreadSafe(completion)
         let timestamp = Date()
@@ -135,7 +137,7 @@ class WorkoutBuilder: ApplicationStateObserver {
                 
                 if let snapshot = self.createSnapshot() {
                     
-                    let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self)
+                    let handler = WorkoutCompletionActionHandler(snapshot: snapshot, builder: self, completionHandler: onSaveOrDiscard)
                     
                     if shouldProvideCompletionActions {
                         handler.display()

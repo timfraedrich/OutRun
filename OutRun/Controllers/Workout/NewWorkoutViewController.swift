@@ -69,13 +69,19 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
                 }
             }
         case .stop:
-            self.builder.finish { (success) in
+            self.builder.finish(completion: { (success) in
                 if success {
                     print("[NewWorkout] finished recording")
                 } else {
                     self.displayBuilderFailureError()
                 }
-            }
+            }, onSaveOrDiscard: { _ in
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) {
+                        print("[NewWorkout] dismissed after save or discard")
+                    }
+                }
+            })
         case .pauseOrContinue:
             if self.builder.status == .paused {
                 self.builder.startOrResume { (success) in
@@ -314,7 +320,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
                         title: LS("NewWorkoutViewController.Cancel.Error.Recording.Action.StopRecording"),
                         style: .destructive,
                         action: { _ in
-                            self.builder.finish(shouldProvideCompletionActions: false) { (success) in
+                            self.builder.finish(shouldProvideCompletionActions: false, completion: { (success) in
                                 if success {
                                     alert?.dismiss(animated: true) {
                                         self.dismiss(animated: true) {
@@ -325,7 +331,7 @@ class NewWorkoutViewController: MapViewControllerWithConatinerView, WorkoutBuild
                                     self.displayBuilderFailureError()
                                     print("[NewWorkout] stop tracking failed")
                                 }
-                            }
+                            })
                         }
                     ),
                     (

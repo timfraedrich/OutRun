@@ -32,14 +32,20 @@ class WorkoutCompletionActionHandler {
     /// If `true` the `WorkoutCompletionActionHandler` did already perform an action, so no additional action should be taken
     private var didPerformAction: Bool = false
     
+    /// Completion handler called when save or discard is selected
+    private var completionHandler: ((Bool) -> Void)?
+    
     /**
      Initialises the `WorkoutCompletionActionHandler` with the needed snapshot of an `TempWorkout`
      - parameter snapshot: a `TempWorkout` object to be saved, discarded or continued
+     - parameter builder: a `WorkoutBuilder` reference to continue the workout if needed
+     - parameter completionHandler: a closure to be called when save or discard is selected
      */
-    public init(snapshot: TempWorkout, builder: WorkoutBuilder) {
+    public init(snapshot: TempWorkout, builder: WorkoutBuilder, completionHandler: ((Bool) -> Void)? = nil) {
         
         self.snapshot = snapshot
         self.builder = builder
+        self.completionHandler = completionHandler
         
     }
     
@@ -70,6 +76,8 @@ class WorkoutCompletionActionHandler {
             let banner = TextBanner(text: LS("NewWorkoutCompletion.Save." + (success ? "Success" : "Error")))
             banner.duration = 5
             banner.show()
+            
+            self.completionHandler?(false)
             
         }
         
@@ -118,6 +126,8 @@ class WorkoutCompletionActionHandler {
         }
         
         self.didPerformAction = true
+        
+        self.completionHandler?(false)
         
     }
     
