@@ -49,7 +49,14 @@ class CustomMeasurementFormatting {
             timeFormatter.zeroFormattingBehavior = .pad
             return timeFormatter.string(from: seconds) ?? "Error"
         case .distance:
-            return formatter.string(from: measurement.converting(to: UserPreferences.distanceMeasurementType.safeValue))
+            let convertedMeasurement = measurement.converting(to: UserPreferences.distanceMeasurementType.safeValue)
+            // Apply different rounding based on unit: 1 decimal for miles, 0 decimals for kilometers
+            if UserPreferences.distanceMeasurementType.safeValue == UnitLength.miles {
+                formatter.numberFormatter.roundingIncrement = 0.1
+            } else {
+                formatter.numberFormatter.roundingIncrement = 1
+            }
+            return formatter.string(from: convertedMeasurement)
         case .altitude:
             return formatter.string(from: measurement.converting(to: UserPreferences.altitudeMeasurementType.safeValue))
         case .speed:
