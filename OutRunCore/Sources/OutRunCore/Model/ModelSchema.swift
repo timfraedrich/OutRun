@@ -8,7 +8,8 @@ enum ModelSchema: VersionedSchema {
         WorkoutRouteDataSample.self,
         WorkoutHeartRateDataSample.self,
         WorkoutPause.self,
-        WorkoutEvent.self
+        WorkoutEvent.self,
+        WorkoutServiceMapping.self,
     ]
     static let versionIdentifier = Schema.Version(2, 0, 0)
 }

@@ -2,13 +2,11 @@ import Foundation
 
 public struct RawWorkoutEvent: Codable, Equatable {
     
-    public var uuid: UUID
-    public var eventType: WorkoutEventType
+    public var type: WorkoutEventType
     public var timestamp: Date
     
-    public init(uuid: UUID, eventType: WorkoutEventType, timestamp: Date) {
-        self.uuid = uuid
-        self.eventType = eventType
+    public init(type: WorkoutEventType, timestamp: Date) {
+        self.type = type
         self.timestamp = timestamp
     }
 }

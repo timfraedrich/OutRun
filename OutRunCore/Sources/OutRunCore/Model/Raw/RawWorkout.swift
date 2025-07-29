@@ -1,55 +1,64 @@
 import Foundation
 
-public struct RawWorkout: Codable, Equatable {
+public struct RawWorkout: Codable, Equatable, Identifiable {
     
-    public var uuid: UUID
-    public var workoutType: WorkoutType
+    public var id: UUID
+    public var type: WorkoutType
     public var distance: Double
-    public var steps: Int?
     public var startDate: Date
     public var endDate: Date?
-    public var burnedEnergy: Double?
+    public var energy: Double?
+    public var steps: Int?
     public var isRace: Bool
+    public var name: String?
     public var comment: String?
-    public var created: Date
-    public var lastModified: Date
+    public var creationDate: Date
+    public var lastEditDate: Date
+    public var sourceService: WorkoutService
     
     public var heartRates: [RawWorkoutHeartRateDataSample]
     public var routeData: [RawWorkoutRouteDataSample]
     public var pauses: [RawWorkoutPause]
     public var workoutEvents: [RawWorkoutEvent]
+    public var serviceMappings: [RawWorkoutServiceMapping]
     
     public init(
-        uuid: UUID,
-        workoutType: WorkoutType,
+        id: UUID,
+        type: WorkoutType,
         distance: Double,
-        steps: Int?,
         startDate: Date,
         endDate: Date?,
-        burnedEnergy: Double?,
+        energy: Double?,
+        steps: Int?,
         isRace: Bool,
+        name: String?,
         comment: String?,
-        created: Date,
-        lastModified: Date,
-        heartRates: [RawWorkoutHeartRateDataSample],
-        routeData: [RawWorkoutRouteDataSample],
-        pauses: [RawWorkoutPause],
-        workoutEvents: [RawWorkoutEvent]
+        creationDate: Date,
+        lastEditDate: Date,
+        sourceService: WorkoutService,
+        heartRates: [RawWorkoutHeartRateDataSample] = [],
+        routeData: [RawWorkoutRouteDataSample] = [],
+        pauses: [RawWorkoutPause] = [],
+        workoutEvents: [RawWorkoutEvent] = [],
+        serviceMappings: [RawWorkoutServiceMapping] = []
     ) {
-        self.uuid = uuid
-        self.workoutType = workoutType
+        self.id = id
+        self.type = type
         self.distance = distance
-        self.steps = steps
         self.startDate = startDate
         self.endDate = endDate
-        self.burnedEnergy = burnedEnergy
+        self.energy = energy
+        self.steps = steps
         self.isRace = isRace
+        self.name = name
         self.comment = comment
-        self.created = created
-        self.lastModified = lastModified
+        self.creationDate = creationDate
+        self.lastEditDate = lastEditDate
+        self.sourceService = sourceService
         self.heartRates = heartRates
         self.routeData = routeData
         self.pauses = pauses
         self.workoutEvents = workoutEvents
+        self.serviceMappings = serviceMappings
     }
 }

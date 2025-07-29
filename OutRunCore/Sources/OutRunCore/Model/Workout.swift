@@ -5,48 +5,56 @@ import SwiftData
 public class Workout: Equatable, Identifiable {
     
     @Attribute(.unique) public private(set) var id: UUID
+    
     public var type: WorkoutType
+    /// - note: Distance is provided in metres.
     public var distance: Double
-    public var steps: Int?
-    // avg heartrate ?
     public var startDate: Date
     public var endDate: Date?
-    /// - Note: burned energy is provided as kcal
-    public var burnedEnergy: Double?
+    /// - note: Energy is provided in joules, if nil no energy was recorded.
+    public var energy: Double?
+    public var steps: Int?
     public var isRace: Bool
+    
+    public var name: String?
     public var comment: String?
     public var creationDate: Date
     public var lastEditDate: Date
-    // health id ?
+    public var sourceService: WorkoutService
     
     @Relationship(deleteRule: .cascade, inverse: \WorkoutRouteDataSample.workout) public var route: [WorkoutRouteDataSample] = []
     @Relationship(deleteRule: .cascade, inverse: \WorkoutHeartRateDataSample.workout) public var heartRates: [WorkoutHeartRateDataSample] = []
     @Relationship(deleteRule: .cascade, inverse: \WorkoutPause.workout) public var pauses: [WorkoutPause] = []
     @Relationship(deleteRule: .cascade, inverse: \WorkoutEvent.workout) public var events: [WorkoutEvent] = []
+    @Relationship(deleteRule: .cascade, inverse: \WorkoutServiceMapping.workout) public var serviceMappings: [WorkoutServiceMapping] = []
     
     public init(
         id: UUID = .init(),
         type: WorkoutType,
         distance: Double,
-        steps: Int? = nil,
         startDate: Date,
         endDate: Date?,
-        burnedEnergy: Double? = nil,
+        energy: Double?,
+        steps: Int?,
         isRace: Bool,
+        name: String?,
         comment: String? = nil,
         creationDate: Date,
-        lastEditDate: Date? = nil
+        lastEditDate: Date? = nil,
+        sourceService: WorkoutService
     ) {
         self.id = id
         self.type = type
         self.distance = distance
-        self.steps = steps
         self.startDate = startDate
         self.endDate = endDate
-        self.burnedEnergy = burnedEnergy
+        self.energy = energy
+        self.steps = steps
         self.isRace = isRace
+        self.name = name
         self.comment = comment
         self.creationDate = creationDate
         self.lastEditDate = lastEditDate ?? creationDate
+        self.sourceService = sourceService
     }
 }

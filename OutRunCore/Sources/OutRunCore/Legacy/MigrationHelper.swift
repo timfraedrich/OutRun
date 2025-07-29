@@ -69,24 +69,24 @@ enum MigrationHelper {
             switch pauseEvent.type {
             case .pause:
                 if pauseStarts.isEmpty, let firstAutoPauseStart = autoPauseStarts.first {
-                    pauses.append(.init(id: .init(), startDate: firstAutoPauseStart, endDate: pauseEvent.date, userInitiated: false))
+                    pauses.append(.init(startDate: firstAutoPauseStart, endDate: pauseEvent.date, userInitiated: false))
                 }
                 pauseStarts.append(pauseEvent.date)
             case .autoPause:
                 autoPauseStarts.append(pauseEvent.date)
             case .resume:
                 guard let start = pauseStarts.popLast(), pauseStarts.isEmpty else { continue }
-                pauses.append(.init(id: .init(), startDate: start, endDate: pauseEvent.date, userInitiated: true))
+                pauses.append(.init(startDate: start, endDate: pauseEvent.date, userInitiated: true))
             case .autoResume:
                 guard let potentialStart = autoPauseStarts.popLast(), autoPauseStarts.isEmpty, pauseStarts.isEmpty else { continue }
                 let start = if let lastPauseEnd = pauses.last?.endDate { max(potentialStart, lastPauseEnd) } else { potentialStart }
-                pauses.append(.init(id: .init(), startDate: start, endDate: pauseEvent.date, userInitiated: false))
+                pauses.append(.init(startDate: start, endDate: pauseEvent.date, userInitiated: false))
             }
         }
         if let pauseStart = pauseStarts.first {
-            pauses.append(.init(id: .init(), startDate: pauseStart, endDate: workoutEnd, userInitiated: true))
+            pauses.append(.init(startDate: pauseStart, endDate: workoutEnd, userInitiated: true))
         } else if let autoPauseStart = autoPauseStarts.first {
-            pauses.append(.init(id: .init(), startDate: autoPauseStart, endDate: workoutEnd, userInitiated: false))
+            pauses.append(.init(startDate: autoPauseStart, endDate: workoutEnd, userInitiated: false))
         }
         let safeMinimumDuration = max(minimumDuration, .leastNonzeroMagnitude)
         return pauses.filter { $0.duration >= safeMinimumDuration }
