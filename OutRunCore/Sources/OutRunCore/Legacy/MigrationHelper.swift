@@ -3,25 +3,6 @@ import NIOCore
 
 enum MigrationHelper {
     
-    struct PauseEvent {
-        let date: Date
-        let type: PauseEventType
-        
-        enum PauseEventType: Int {
-            case pause = 0
-            case autoPause = 1
-            case resume = 2
-            case autoResume = 3
-            
-            var isPauseStart: Bool {
-                switch self {
-                case .pause, .autoPause: true
-                case .resume, .autoResume: false
-                }
-            }
-        }
-    }
-    
     /**
      Computes pauses from workout event data.
      - parameter events: The events from which the pauses are supposed to be calculated
@@ -90,5 +71,56 @@ enum MigrationHelper {
         }
         let safeMinimumDuration = max(minimumDuration, .leastNonzeroMagnitude)
         return pauses.filter { $0.duration >= safeMinimumDuration }
+    }
+    
+    /// Converts a kcal energy value to a joules energy value. This is needed as legacy models use kcal for representing burned energy and
+    /// new models from version 2.0.0 use joules
+    static func convertKcalToJoules(_ kcal: Double) -> Double {
+        UnitEnergy.kilocalories.converter.baseUnitValue(fromValue: kcal)
+    }
+    
+    /// Returns a RawWorkoutServiceMapping for the WorkoutService .appleHealth if a healthKitUUID was provided or an empty array otherwise.
+    static func serviceMappingsFromHealthKitUUID(_ healthKitUUID: UUID?) -> [RawWorkoutServiceMapping] {
+        guard let healthKitUUID else { return [] }
+        return [
+            .init(
+                service: .appleHealth,
+                externalId: healthKitUUID.uuidString,
+                externalUrl: nil,
+                lastSyncDate: nil,
+                syncStatus: .pending
+            )
+        ]
+    }
+    
+    // MARK: Types
+    
+    struct PauseEvent {
+        let date: Date
+        let type: PauseEventType
+        
+        enum PauseEventType: Int {
+            case pause = 0
+            case autoPause = 1
+            case resume = 2
+            case autoResume = 3
+            
+            var isPauseStart: Bool {
+                switch self {
+                case .pause, .autoPause: true
+                case .resume, .autoResume: false
+                }
+            }
+            
+            init?(legacyEventType: LegacyWorkoutEventType) {
+                switch legacyEventType {
+                case .pause: self = .pause
+                case .autoPause: self = .autoPause
+                case .resume: self = .resume
+                case .autoResume: self = .autoResume
+                default: return nil
+                }
+            }
+        }
     }
 }
