@@ -16,7 +16,7 @@ public class WorkoutServiceMapping: Equatable {
         service: WorkoutService,
         externalId: String,
         externalUrl: String?,
-        lastSyncDate: Date,
+        lastSyncDate: Date?,
         syncStatus: WorkoutSyncStatus,
         workout: Workout
     ) {
@@ -27,5 +27,15 @@ public class WorkoutServiceMapping: Equatable {
         self.syncStatus = syncStatus
         self.workout = workout
     }
+    
+    convenience init(from rawServiceMapping: RawWorkoutServiceMapping, attachTo workout: Workout) {
+        self.init(
+            service: rawServiceMapping.service,
+            externalId: rawServiceMapping.externalId,
+            externalUrl: rawServiceMapping.externalUrl,
+            lastSyncDate: rawServiceMapping.lastSyncDate,
+            syncStatus: rawServiceMapping.syncStatus,
+            workout: workout
+        )
+    }
 }
-

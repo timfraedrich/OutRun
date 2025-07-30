@@ -57,4 +57,22 @@ public class Workout: Equatable, Identifiable {
         self.lastEditDate = lastEditDate ?? creationDate
         self.sourceService = sourceService
     }
+    
+    convenience init(from rawWorkout: RawWorkout) {
+        self.init(
+            id: rawWorkout.id,
+            type: rawWorkout.type,
+            distance: rawWorkout.distance,
+            startDate: rawWorkout.startDate,
+            endDate: rawWorkout.endDate,
+            energy: rawWorkout.energy,
+            steps: rawWorkout.steps,
+            isRace: rawWorkout.isRace,
+            name: rawWorkout.name,
+            comment: rawWorkout.comment,
+            creationDate: rawWorkout.creationDate,
+            lastEditDate: rawWorkout.lastEditDate,
+            sourceService: rawWorkout.sourceService
+        )
+    }
 }

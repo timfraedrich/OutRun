@@ -6,9 +6,9 @@ import Foundation
 @MainActor
 class CoreStoreManager<DataModel: CoreStoreDataModel> {
     
-    private static var legacyFileName: String { "OutRun.sqlite" }
+    private nonisolated static var legacyFileName: String { "OutRun.sqlite" }
     
-    static var legacyStorageExists: Bool {
+    nonisolated static var legacyStorageExists: Bool {
         let storage = SQLiteStore(fileName: legacyFileName)
         return FileManager.default.fileExists(atPath: storage.fileURL.path())
     }
@@ -20,9 +20,9 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
     /// static optional instance of the local storage holding the workout data
     private var storage: SQLiteStore
     
-    init(fileName: String = legacyFileName) async throws {
+    init(fileName: String? = nil) async throws {
         storage = .init(
-            fileName: fileName,
+            fileName: fileName ?? Self.legacyFileName,
             migrationMappingProviders: DataModel.migrationChain.compactMap { $0.mappingProvider }
         )
         let migrationChain = DataModel.migrationChain
