@@ -61,4 +61,27 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
         self.events = events
         self.serviceMappings = serviceMappings
     }
+    
+    public init(workout: Workout) {
+        self.init(
+            id: workout.id,
+            type: workout.type,
+            distance: workout.distance,
+            startDate: workout.startDate,
+            endDate: workout.endDate,
+            energy: workout.energy,
+            steps: workout.steps,
+            isRace: workout.isRace,
+            name: workout.name,
+            comment: workout.comment,
+            creationDate: workout.creationDate,
+            lastEditDate: workout.lastEditDate,
+            sourceService: workout.sourceService,
+            heartRates: workout.heartRates.map(RawWorkoutHeartRateDataSample.init).sorted(using: SortDescriptor(\.timestamp)),
+            route: workout.route.map(RawWorkoutRouteDataSample.init).sorted(using: SortDescriptor(\.timestamp)),
+            pauses: workout.pauses.map(RawWorkoutPause.init).sorted(using: SortDescriptor(\.startDate)),
+            events: workout.events.map(RawWorkoutEvent.init).sorted(using: SortDescriptor(\.timestamp)),
+            serviceMappings: workout.serviceMappings.map(RawWorkoutServiceMapping.init).sorted(using: SortDescriptor(\.externalId))
+        )
+    }
 }

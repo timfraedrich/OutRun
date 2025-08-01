@@ -58,6 +58,8 @@ public class Workout: Equatable, Identifiable {
         self.sourceService = sourceService
     }
     
+    /// - note: this initializer leaves out any kind of samples. Samples must be inserted into the context and linked
+    /// manually.
     convenience init(from rawWorkout: RawWorkout) {
         self.init(
             id: rawWorkout.id,

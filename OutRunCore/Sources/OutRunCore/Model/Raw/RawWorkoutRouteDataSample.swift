@@ -27,4 +27,16 @@ public struct RawWorkoutRouteDataSample: Codable, Equatable {
         self.verticalAccuracy = verticalAccuracy
         self.speed = speed
     }
+    
+    public init(from routeDataSample: WorkoutRouteDataSample) {
+        self.init(
+            timestamp: routeDataSample.timestamp,
+            latitude: routeDataSample.latitude,
+            longitude: routeDataSample.longitude,
+            altitude: routeDataSample.altitude,
+            horizontalAccuracy: routeDataSample.horizontalAccuracy,
+            verticalAccuracy: routeDataSample.verticalAccuracy,
+            speed: routeDataSample.speed
+        )
+    }
 }

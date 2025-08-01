@@ -15,4 +15,12 @@ public struct RawWorkoutPause: Codable, Equatable {
         self.endDate = endDate
         self.userInitiated = userInitiated
     }
+    
+    public init(from workoutPause: WorkoutPause) {
+        self.init(
+            startDate: workoutPause.startDate,
+            endDate: workoutPause.endDate,
+            userInitiated: workoutPause.userInitiated
+        )
+    }
 }

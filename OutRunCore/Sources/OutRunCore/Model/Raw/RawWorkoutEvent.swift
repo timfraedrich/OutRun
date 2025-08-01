@@ -9,4 +9,8 @@ public struct RawWorkoutEvent: Codable, Equatable {
         self.type = type
         self.timestamp = timestamp
     }
+    
+    public init(from workoutEvent: WorkoutEvent) {
+        self.init(type: workoutEvent.type, timestamp: workoutEvent.timestamp)
+    }
 }

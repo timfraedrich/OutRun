@@ -9,4 +9,11 @@ public struct RawWorkoutHeartRateDataSample: Codable, Equatable {
         self.heartRate = heartRate
         self.timestamp = timestamp
     }
+    
+    public init(from heartRateSample: WorkoutHeartRateDataSample) {
+        self.init(
+            heartRate: heartRateSample.heartRate,
+            timestamp: heartRateSample.timestamp
+        )
+    }
 }

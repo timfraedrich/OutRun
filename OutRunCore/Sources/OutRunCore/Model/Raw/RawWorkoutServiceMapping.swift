@@ -21,4 +21,14 @@ public struct RawWorkoutServiceMapping: Codable, Equatable {
         self.lastSyncDate = lastSyncDate
         self.syncStatus = syncStatus
     }
+    
+    public init(from serviceMapping: WorkoutServiceMapping) {
+        self.init(
+            service: serviceMapping.service,
+            externalId: serviceMapping.externalId,
+            externalUrl: serviceMapping.externalUrl,
+            lastSyncDate: serviceMapping.lastSyncDate,
+            syncStatus: serviceMapping.syncStatus
+        )
+    }
 }
