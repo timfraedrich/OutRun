@@ -20,14 +20,19 @@ class Database {
         )
         modelContainer = try ModelContainer(for: schema, migrationPlan: nil, configurations: config)
         
-        guard CoreStoreManager<OutRunV3>.legacyStorageExists else { return }
+        guard CoreStoreManager<OutRunV3>.legacyStorageExists(for: legacyStorageFileName) else { return }
         let manager = try await CoreStoreManager<OutRunV3>(fileName: legacyStorageFileName)
         let legacyRawWorkouts = try await manager.extractAllWorkouts().map(RawWorkout.init)
         let context = ModelContext(modelContainer)
         for rawWorkout in legacyRawWorkouts {
             insert(rawWorkout, into: context)
         }
-        try? context.save()
+        try context.save()
+        try await manager.deleteStorage()
+    }
+    
+    func fetchWorkouts() throws -> [Workout] {
+        try ModelContext(modelContainer).fetch(FetchDescriptor<Workout>())
     }
     
     func insert(_ workout: Workout) throws {
@@ -38,7 +43,7 @@ class Database {
     
     private func insert(_ rawWorkout: RawWorkout, into context: ModelContext) {
         let workout = Workout(from: rawWorkout)
-        context.insert(Workout(from: rawWorkout))
+        context.insert(workout)
         for rawRouteSample in rawWorkout.route {
             context.insert(WorkoutRouteDataSample(from: rawRouteSample, attachTo: workout))
         }
