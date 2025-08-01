@@ -8,9 +8,13 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
     
     private nonisolated static var legacyFileName: String { "OutRun.sqlite" }
     
-    nonisolated static var legacyStorageExists: Bool {
-        let storage = SQLiteStore(fileName: legacyFileName)
-        return FileManager.default.fileExists(atPath: storage.fileURL.path())
+    nonisolated static func legacyStorageURL(for filename: String?) -> URL {
+        SQLiteStore(fileName: filename ?? legacyFileName).fileURL
+    }
+    
+    nonisolated static func legacyStorageExists(for filename: String?) -> Bool {
+        let legacyStorageURL = legacyStorageURL(for: filename)
+        return FileManager.default.fileExists(atPath: legacyStorageURL.relativePath)
     }
     
     /// The primary `DataStack` used by the `DataManager`.
@@ -53,16 +57,9 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
     
     func extractAllWorkouts() async throws -> [RawDataModelV3.Workout] {
         guard DataModel.self == OutRunV3.self else { throw CoreStoreExtractionError.invalidModel }
-        return try await withCheckedThrowingContinuation { continuation in
-            dataStack.perform { transaction in
-                // we only need to export workouts, as Event models were never used in production
-                let csWorkouts = try transaction.fetchAll(From<OutRunV3.Workout>())
-                return csWorkouts.map(RawDataModelV3.Workout.init)
-            } success: { workouts in
-                continuation.resume(returning: workouts)
-            } failure: { error in
-                continuation.resume(throwing: CoreStoreExtractionError.databaseError(error: error))
-            }
+        return try await MainActor.run {
+            let csWorkouts = try dataStack.fetchAll(From<OutRunV3.Workout>())
+            return csWorkouts.map(RawDataModelV3.Workout.init)
         }
     }
     
@@ -72,6 +69,10 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
                 continuation.resume()
             }
         }
+    }
+    
+    func storageExistsOnDisk() -> Bool {
+        FileManager.default.fileExists(atPath: storage.fileURL.relativePath)
     }
     
     func deleteStorage() throws {
@@ -84,36 +85,32 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
 extension CoreStoreManager where DataModel == OutRunV1 {
     
     func insert(_ workouts: [RawDataModelV1.Workout]) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            dataStack.perform { transaction in
-                for rawWorkout in workouts {
-                    
-                    let workout = transaction.create(Into<DataModel.Workout>())
-                    workout.uuid .= rawWorkout.uuid ?? UUID()
-                    workout.workoutType .= rawWorkout.workoutType
-                    workout.distance .= rawWorkout.distance
-                    workout.startDate .= rawWorkout.startDate
-                    workout.endDate .= rawWorkout.endDate
-                    workout.burnedEnergy .= rawWorkout.burnedEnergy
-                    workout.healthKitUUID .= rawWorkout.healthKitUUID
-                    
-                    for rawRouteSample in rawWorkout.locations {
-                        let routeSample = transaction.create(Into<DataModel.RouteDataSample>())
-                        routeSample.id .= rawRouteSample.uuid ?? UUID()
-                        routeSample.latitude .= rawRouteSample.latitude
-                        routeSample.longitude .= rawRouteSample.longitude
-                        routeSample.altitude .= rawRouteSample.altitude
-                        routeSample.timestamp .= rawRouteSample.timestamp
-                        routeSample.speed .= rawRouteSample.speed
-                        routeSample.direction .= rawRouteSample.direction
-                        routeSample.workout .= workout
-                    }
+        try await MainActor.run {
+            let transaction = dataStack.beginUnsafe()
+            for rawWorkout in workouts {
+                
+                let workout = transaction.create(Into<DataModel.Workout>())
+                workout.uuid .= rawWorkout.uuid ?? UUID()
+                workout.workoutType .= rawWorkout.workoutType
+                workout.distance .= rawWorkout.distance
+                workout.startDate .= rawWorkout.startDate
+                workout.endDate .= rawWorkout.endDate
+                workout.burnedEnergy .= rawWorkout.burnedEnergy
+                workout.healthKitUUID .= rawWorkout.healthKitUUID
+                
+                for rawRouteSample in rawWorkout.locations {
+                    let routeSample = transaction.create(Into<DataModel.RouteDataSample>())
+                    routeSample.id .= rawRouteSample.uuid ?? UUID()
+                    routeSample.latitude .= rawRouteSample.latitude
+                    routeSample.longitude .= rawRouteSample.longitude
+                    routeSample.altitude .= rawRouteSample.altitude
+                    routeSample.timestamp .= rawRouteSample.timestamp
+                    routeSample.speed .= rawRouteSample.speed
+                    routeSample.direction .= rawRouteSample.direction
+                    routeSample.workout .= workout
                 }
-            } success: { workouts in
-                continuation.resume()
-            } failure: { error in
-                continuation.resume(throwing: CoreStoreInsertionError.databaseError(error: error))
             }
+            try transaction.commitAndWait()
         }
     }
 }
@@ -123,41 +120,37 @@ extension CoreStoreManager where DataModel == OutRunV1 {
 extension CoreStoreManager where DataModel == OutRunV2 {
     
     func insert(_ workouts: [RawDataModelV2.Workout]) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            dataStack.perform { transaction in
-                for rawWorkout in workouts {
-                    
-                    let workout = transaction.create(Into<DataModel.Workout>())
-                    workout.uuid .= rawWorkout.uuid ?? UUID()
-                    workout.workoutType .= rawWorkout.workoutType
-                    workout.distance .= rawWorkout.distance
-                    workout.startDate .= rawWorkout.startDate
-                    workout.endDate .= rawWorkout.endDate
-                    workout.burnedEnergy .= rawWorkout.burnedEnergy
-                    workout.isRace .= rawWorkout.isRace
-                    workout.comment .= rawWorkout.comment
-                    workout.isUserModified .= rawWorkout.isUserModified
-                    workout.healthKitUUID .= rawWorkout.healthKitUUID
-                    
-                    for rawRouteSample in rawWorkout.locations {
-                        let routeSample = transaction.create(Into<DataModel.RouteDataSample>())
-                        routeSample.uuid .= rawRouteSample.uuid ?? UUID()
-                        routeSample.latitude .= rawRouteSample.latitude
-                        routeSample.longitude .= rawRouteSample.longitude
-                        routeSample.altitude .= rawRouteSample.altitude
-                        routeSample.timestamp .= rawRouteSample.timestamp
-                        routeSample.horizontalAccuracy .= rawRouteSample.horizontalAccuracy
-                        routeSample.verticalAccuracy .= rawRouteSample.verticalAccuracy
-                        routeSample.speed .= rawRouteSample.speed
-                        routeSample.direction .= rawRouteSample.direction
-                        routeSample.workout .= workout
-                    }
+        try await MainActor.run {
+            let transaction = dataStack.beginUnsafe()
+            for rawWorkout in workouts {
+                
+                let workout = transaction.create(Into<DataModel.Workout>())
+                workout.uuid .= rawWorkout.uuid ?? UUID()
+                workout.workoutType .= rawWorkout.workoutType
+                workout.distance .= rawWorkout.distance
+                workout.startDate .= rawWorkout.startDate
+                workout.endDate .= rawWorkout.endDate
+                workout.burnedEnergy .= rawWorkout.burnedEnergy
+                workout.isRace .= rawWorkout.isRace
+                workout.comment .= rawWorkout.comment
+                workout.isUserModified .= rawWorkout.isUserModified
+                workout.healthKitUUID .= rawWorkout.healthKitUUID
+                
+                for rawRouteSample in rawWorkout.locations {
+                    let routeSample = transaction.create(Into<DataModel.RouteDataSample>())
+                    routeSample.uuid .= rawRouteSample.uuid ?? UUID()
+                    routeSample.latitude .= rawRouteSample.latitude
+                    routeSample.longitude .= rawRouteSample.longitude
+                    routeSample.altitude .= rawRouteSample.altitude
+                    routeSample.timestamp .= rawRouteSample.timestamp
+                    routeSample.horizontalAccuracy .= rawRouteSample.horizontalAccuracy
+                    routeSample.verticalAccuracy .= rawRouteSample.verticalAccuracy
+                    routeSample.speed .= rawRouteSample.speed
+                    routeSample.direction .= rawRouteSample.direction
+                    routeSample.workout .= workout
                 }
-            } success: { workouts in
-                continuation.resume()
-            } failure: { error in
-                continuation.resume(throwing: CoreStoreInsertionError.databaseError(error: error))
             }
+            try transaction.commitAndWait()
         }
     }
 }
@@ -167,59 +160,55 @@ extension CoreStoreManager where DataModel == OutRunV2 {
 extension CoreStoreManager where DataModel == OutRunV3 {
     
     func insert(_ workouts: [RawDataModelV3.Workout]) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            dataStack.perform { transaction in
-                for rawWorkout in workouts {
-                    
-                    let workout = transaction.create(Into<DataModel.Workout>())
-                    workout.uuid .= rawWorkout.uuid ?? UUID()
-                    workout.workoutType .= rawWorkout.workoutType
-                    workout.distance .= rawWorkout.distance
-                    workout.steps .= rawWorkout.steps
-                    workout.startDate .= rawWorkout.startDate
-                    workout.endDate .= rawWorkout.endDate
-                    workout.burnedEnergy .= rawWorkout.burnedEnergy
-                    workout.isRace .= rawWorkout.isRace
-                    workout.comment .= rawWorkout.comment
-                    workout.isUserModified .= rawWorkout.isUserModified
-                    workout.healthKitUUID .= rawWorkout.healthKitUUID
-                    
-                    for rawRouteSample in rawWorkout.locations {
-                        let routeSample = transaction.create(Into<DataModel.WorkoutRouteDataSample>())
-                        routeSample.uuid .= rawRouteSample.uuid ?? UUID()
-                        routeSample.latitude .= rawRouteSample.latitude
-                        routeSample.longitude .= rawRouteSample.longitude
-                        routeSample.altitude .= rawRouteSample.altitude
-                        routeSample.timestamp .= rawRouteSample.timestamp
-                        routeSample.horizontalAccuracy .= rawRouteSample.horizontalAccuracy
-                        routeSample.verticalAccuracy .= rawRouteSample.verticalAccuracy
-                        routeSample.speed .= rawRouteSample.speed
-                        routeSample.direction .= rawRouteSample.direction
-                        routeSample.workout .= workout
-                    }
-                    
-                    for rawEvent in rawWorkout.workoutEvents {
-                        let event = transaction.create(Into<DataModel.WorkoutEvent>())
-                        event.uuid .= rawEvent.uuid ?? UUID()
-                        event.startDate .= rawEvent.startDate
-                        event.endDate .= rawEvent.endDate
-                        event.eventType .= rawEvent.eventType
-                        event.workout .= workout
-                    }
-                    
-                    for rawHeartRateSample in rawWorkout.heartRates {
-                        let heartRateSample = transaction.create(Into<DataModel.WorkoutHeartRateDataSample>())
-                        heartRateSample.uuid .= rawHeartRateSample.uuid ?? UUID()
-                        heartRateSample.heartRate .= rawHeartRateSample.heartRate
-                        heartRateSample.timestamp .= rawHeartRateSample.timestamp
-                        heartRateSample.workout .= workout
-                    }
+        try await MainActor.run {
+            let transaction = dataStack.beginUnsafe()
+            for rawWorkout in workouts {
+                
+                let workout = transaction.create(Into<DataModel.Workout>())
+                workout.uuid .= rawWorkout.uuid ?? UUID()
+                workout.workoutType .= rawWorkout.workoutType
+                workout.distance .= rawWorkout.distance
+                workout.steps .= rawWorkout.steps
+                workout.startDate .= rawWorkout.startDate
+                workout.endDate .= rawWorkout.endDate
+                workout.burnedEnergy .= rawWorkout.burnedEnergy
+                workout.isRace .= rawWorkout.isRace
+                workout.comment .= rawWorkout.comment
+                workout.isUserModified .= rawWorkout.isUserModified
+                workout.healthKitUUID .= rawWorkout.healthKitUUID
+                
+                for rawRouteSample in rawWorkout.locations {
+                    let routeSample = transaction.create(Into<DataModel.WorkoutRouteDataSample>())
+                    routeSample.uuid .= rawRouteSample.uuid ?? UUID()
+                    routeSample.latitude .= rawRouteSample.latitude
+                    routeSample.longitude .= rawRouteSample.longitude
+                    routeSample.altitude .= rawRouteSample.altitude
+                    routeSample.timestamp .= rawRouteSample.timestamp
+                    routeSample.horizontalAccuracy .= rawRouteSample.horizontalAccuracy
+                    routeSample.verticalAccuracy .= rawRouteSample.verticalAccuracy
+                    routeSample.speed .= rawRouteSample.speed
+                    routeSample.direction .= rawRouteSample.direction
+                    routeSample.workout .= workout
                 }
-            } success: { workouts in
-                continuation.resume()
-            } failure: { error in
-                continuation.resume(throwing: CoreStoreInsertionError.databaseError(error: error))
+                
+                for rawEvent in rawWorkout.workoutEvents {
+                    let event = transaction.create(Into<DataModel.WorkoutEvent>())
+                    event.uuid .= rawEvent.uuid ?? UUID()
+                    event.startDate .= rawEvent.startDate
+                    event.endDate .= rawEvent.endDate
+                    event.eventType .= rawEvent.eventType
+                    event.workout .= workout
+                }
+                
+                for rawHeartRateSample in rawWorkout.heartRates {
+                    let heartRateSample = transaction.create(Into<DataModel.WorkoutHeartRateDataSample>())
+                    heartRateSample.uuid .= rawHeartRateSample.uuid ?? UUID()
+                    heartRateSample.heartRate .= rawHeartRateSample.heartRate
+                    heartRateSample.timestamp .= rawHeartRateSample.timestamp
+                    heartRateSample.workout .= workout
+                }
             }
+            try transaction.commitAndWait()
         }
     }
 }
