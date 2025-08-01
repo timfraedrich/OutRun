@@ -30,16 +30,14 @@ enum OutRunV3: CoreStoreDataModel {
                 sourceEntity: OutRunV2.Workout.identifier,
                 destinationEntity: OutRunV3.Workout.identifier,
                 transformer: { (sourceObject: CustomSchemaMappingProvider.UnsafeSourceObject, createDestinationObject: () -> CustomSchemaMappingProvider.UnsafeDestinationObject) in
-                
                     let destinationObject = createDestinationObject()
-                    
-                    destinationObject["steps"] = nil
-                    
                     destinationObject.enumerateAttributes { (attribute, sourceAttribute) in
                         if let sourceAttribute = sourceAttribute {
                             destinationObject[attribute] = sourceObject[sourceAttribute]
                         }
                     }
+                    destinationObject["dayIdentifier"] = ""
+                    destinationObject["steps"] = nil
                 }
             ),
             .insertEntity(destinationEntity: OutRunV3.WorkoutEvent.identifier),
@@ -47,7 +45,6 @@ enum OutRunV3: CoreStoreDataModel {
                 sourceEntity: OutRunV2.RouteDataSample.identifier,
                 destinationEntity: OutRunV3.WorkoutRouteDataSample.identifier,
                 transformer: { (sourceObject: CustomSchemaMappingProvider.UnsafeSourceObject, createDestinationObject: () -> CustomSchemaMappingProvider.UnsafeDestinationObject) in
-                
                     let destinationObject = createDestinationObject()
                     destinationObject.enumerateAttributes { (attribute, sourceAttribute) in
                         if let sourceAttribute = sourceAttribute {

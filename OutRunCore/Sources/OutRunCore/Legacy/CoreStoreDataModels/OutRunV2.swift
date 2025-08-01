@@ -23,35 +23,29 @@ enum OutRunV2: CoreStoreDataModel {
                 sourceEntity: OutRunV1.Workout.identifier,
                 destinationEntity: OutRunV2.Workout.identifier,
                 transformer: { (sourceObject: CustomSchemaMappingProvider.UnsafeSourceObject, createDestinationObject: () -> CustomSchemaMappingProvider.UnsafeDestinationObject) in
-                
                     let destinationObject = createDestinationObject()
-                    
-                    destinationObject["isRace"] = false
-                    destinationObject["isUserModified"] = false
-                    destinationObject["comment"] = nil
-                    
                     destinationObject.enumerateAttributes { (attribute, sourceAttribute) in
                         if let sourceAttribute = sourceAttribute {
                             destinationObject[attribute] = sourceObject[sourceAttribute]
                         }
                     }
+                    destinationObject["isRace"] = false
+                    destinationObject["isUserModified"] = false
+                    destinationObject["comment"] = nil
                 }
             ),
             .transformEntity(
                 sourceEntity: OutRunV1.RouteDataSample.identifier,
                 destinationEntity: OutRunV2.RouteDataSample.identifier,
                 transformer: { (sourceObject: CustomSchemaMappingProvider.UnsafeSourceObject, createDestinationObject: () -> CustomSchemaMappingProvider.UnsafeDestinationObject) in
-                
                     let destinationObject = createDestinationObject()
-                    
-                    destinationObject["horizontalAccuracy"] = 0
-                    destinationObject["verticalAccuracy"] = 0
-                    
                     destinationObject.enumerateAttributes { (attribute, sourceAttribute) in
                         if let sourceAttribute = sourceAttribute {
                             destinationObject[attribute] = sourceObject[sourceAttribute]
                         }
                     }
+                    destinationObject["horizontalAccuracy"] = 0
+                    destinationObject["verticalAccuracy"] = 0
                 }
             )
         ]
