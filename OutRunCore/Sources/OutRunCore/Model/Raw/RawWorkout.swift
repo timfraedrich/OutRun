@@ -17,9 +17,9 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
     public var sourceService: WorkoutService
     
     public var heartRates: [RawWorkoutHeartRateDataSample]
-    public var routeData: [RawWorkoutRouteDataSample]
+    public var route: [RawWorkoutRouteDataSample]
     public var pauses: [RawWorkoutPause]
-    public var workoutEvents: [RawWorkoutEvent]
+    public var events: [RawWorkoutEvent]
     public var serviceMappings: [RawWorkoutServiceMapping]
     
     public init(
@@ -37,9 +37,9 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
         lastEditDate: Date,
         sourceService: WorkoutService,
         heartRates: [RawWorkoutHeartRateDataSample] = [],
-        routeData: [RawWorkoutRouteDataSample] = [],
+        route: [RawWorkoutRouteDataSample] = [],
         pauses: [RawWorkoutPause] = [],
-        workoutEvents: [RawWorkoutEvent] = [],
+        events: [RawWorkoutEvent] = [],
         serviceMappings: [RawWorkoutServiceMapping] = []
     ) {
         self.id = id
@@ -56,9 +56,9 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
         self.lastEditDate = lastEditDate
         self.sourceService = sourceService
         self.heartRates = heartRates
-        self.routeData = routeData
+        self.route = route
         self.pauses = pauses
-        self.workoutEvents = workoutEvents
+        self.events = events
         self.serviceMappings = serviceMappings
     }
 }

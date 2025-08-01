@@ -39,7 +39,7 @@ class Database {
     private func insert(_ rawWorkout: RawWorkout, into context: ModelContext) {
         let workout = Workout(from: rawWorkout)
         context.insert(Workout(from: rawWorkout))
-        for rawRouteSample in rawWorkout.routeData {
+        for rawRouteSample in rawWorkout.route {
             context.insert(WorkoutRouteDataSample(from: rawRouteSample, attachTo: workout))
         }
         for rawHeartRateSample in rawWorkout.heartRates {
@@ -48,7 +48,7 @@ class Database {
         for rawPause in rawWorkout.pauses {
             context.insert(WorkoutPause(from: rawPause, attachTo: workout))
         }
-        for rawEvent in rawWorkout.workoutEvents {
+        for rawEvent in rawWorkout.events {
             context.insert(WorkoutEvent(from: rawEvent, attachTo: workout))
         }
         for rawServiceMapping in rawWorkout.serviceMappings {

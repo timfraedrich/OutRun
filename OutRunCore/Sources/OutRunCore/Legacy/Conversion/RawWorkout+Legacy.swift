@@ -18,9 +18,9 @@ extension RawWorkout {
             lastEditDate: workout.endDate,
             sourceService: .native,
             heartRates: [],
-            routeData: workout.locations.map(RawWorkoutRouteDataSample.init),
+            route: workout.locations.map(RawWorkoutRouteDataSample.init),
             pauses: [],
-            workoutEvents: [],
+            events: [],
             serviceMappings: MigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
         )
     }
@@ -38,12 +38,12 @@ extension RawWorkout {
             name: nil,
             comment: workout.comment,
             creationDate: workout.endDate,
-            lastEditDate: workout.endDate.addingTimeInterval(workout.isUserModified ? 0 : 1),
+            lastEditDate: workout.endDate.addingTimeInterval(workout.isUserModified ? 1 : 0),
             sourceService: .native,
             heartRates: [],
-            routeData: workout.locations.map(RawWorkoutRouteDataSample.init),
+            route: workout.locations.map(RawWorkoutRouteDataSample.init),
             pauses: [],
-            workoutEvents: [],
+            events: [],
             serviceMappings: MigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
         )
     }
@@ -66,12 +66,12 @@ extension RawWorkout {
             name: nil,
             comment: workout.comment,
             creationDate: workout.endDate,
-            lastEditDate: workout.endDate.addingTimeInterval(workout.isUserModified ? 0 : 1),
+            lastEditDate: workout.endDate.addingTimeInterval(workout.isUserModified ? 1 : 0),
             sourceService: .native,
             heartRates: workout.heartRates.map(RawWorkoutHeartRateDataSample.init),
-            routeData: workout.locations.map(RawWorkoutRouteDataSample.init),
+            route: workout.locations.map(RawWorkoutRouteDataSample.init),
             pauses: MigrationHelper.calculatePauses(from: pauseEvents, workoutStart: workout.startDate, workoutEnd: workout.endDate),
-            workoutEvents: workout.workoutEvents.compactMap(RawWorkoutEvent.init),
+            events: workout.workoutEvents.compactMap(RawWorkoutEvent.init),
             serviceMappings: MigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
         )
     }
