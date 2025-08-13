@@ -14,7 +14,6 @@ public class LocationService: NSObject, ObservableObject {
     init(mode: Mode = .idle) {
         self.mode = mode
         super.init()
-        logger.info("Initializing location service")
         locationManager.delegate = self
         locationManager.activityType = .fitness
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -136,7 +135,7 @@ public class LocationService: NSObject, ObservableObject {
         }
         
         /// Indicates whether the service should currently receive location updates.
-        /// - Note: This does not guaranteed that the service is actually receiving such updates.
+        /// - note: This does not guaranteed that the service is actually receiving such updates.
         public var isReceivingLocations: Bool {
             switch self {
             case .idle, .recording: true
