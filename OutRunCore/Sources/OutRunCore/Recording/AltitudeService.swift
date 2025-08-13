@@ -31,8 +31,12 @@ class AltitudeService: ObservableObject {
     /// ``status`` accordingly.
     func start() {
         switch status {
-        case .failed: return
-        case .updatingSince: reset()
+        case .failed:
+            logger.error("Tried to start altitude updates in failed state.")
+            return
+        case .updatingSince:
+            logger.fault("Started altitude updates while already updating, triggering a reset.")
+            reset()
         default: break
         }
         status = .updatingSince(.now)
@@ -47,6 +51,7 @@ class AltitudeService: ObservableObject {
                     status = .failed(error)
                 }
             }
+            logger.info("Started absolute altitude updates.")
         case .relativeAltitudeAvailable:
             altimeter.startRelativeAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
                 guard let self else { return }
@@ -57,8 +62,9 @@ class AltitudeService: ObservableObject {
                     status = .failed(error)
                 }
             }
+            logger.info("Started relative altitude updates.")
         case .noAlitudeAvailable:
-            break
+            logger.info("Altitude updates are not supported on this device.")
         }
     }
     
@@ -71,6 +77,7 @@ class AltitudeService: ObservableObject {
         }
         lastAltitude = nil
         status = .idle
+        logger.info("Reset altitude service and stopped altitude updates.")
     }
     
     // MARK: - AltitudeSample
