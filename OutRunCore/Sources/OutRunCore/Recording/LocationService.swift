@@ -7,9 +7,9 @@ public class LocationService: NSObject, ObservableObject {
     
     private let logger = Logger(category: "LocationService")
     private let locationManager = CLLocationManager()
-    @Published private(set) var status: Status = .initializing
-    @Published private(set) var mode: Mode
-    @Published private(set) var lastLocation: CLLocation?
+    @Published public private(set) var status: Status = .initializing
+    @Published public private(set) var mode: Mode
+    @Published public private(set) var lastLocation: CLLocation?
     
     init(mode: Mode = .idle) {
         self.mode = mode
