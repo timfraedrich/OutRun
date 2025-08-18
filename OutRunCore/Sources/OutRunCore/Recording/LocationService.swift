@@ -1,18 +1,26 @@
+import Combine
 import CoreLocation
 import Foundation
 import OSLog
 
 /// A class managing authorization to and the gathering of location updates.
-public class LocationService: NSObject, ObservableObject {
+public class LocationService: NSObject {
     
     private let logger = Logger(category: "LocationService")
     private let locationManager = CLLocationManager()
-    @Published public private(set) var status: Status = .initializing
-    @Published public private(set) var mode: Mode
-    @Published public private(set) var lastLocation: CLLocation?
+    private let statusSubject = CurrentValueSubject<Status, Never>(.initializing)
+    private let modeSubject: CurrentValueSubject<Mode, Never>
+    private let lastLocationSubject = CurrentValueSubject<CLLocation?, Never>(nil)
+    
+    public var status: Status { statusSubject.value }
+    public var statusPublisher: some Publisher<Status, Never> { statusSubject.eraseToAnyPublisher() }
+    public var mode: Mode { modeSubject.value }
+    public var modePublisher: some Publisher<Mode, Never> { modeSubject.eraseToAnyPublisher() }
+    public var lastLocation: CLLocation? { lastLocationSubject.value }
+    public var lastLocationPublisher: some Publisher<CLLocation?, Never> { lastLocationSubject.eraseToAnyPublisher() }
     
     init(mode: Mode = .idle) {
-        self.mode = mode
+        self.modeSubject = .init(mode)
         super.init()
         locationManager.delegate = self
         locationManager.activityType = .fitness
@@ -21,7 +29,7 @@ public class LocationService: NSObject, ObservableObject {
         locationManager.showsBackgroundLocationIndicator = true
         locationManager.pausesLocationUpdatesAutomatically = false
         // manual override as changeStatus function would (and should) reject updates during initialization
-        status = Self.status(for: locationManager.authorizationStatus, locationManager.accuracyAuthorization, and: mode)
+        statusSubject.send(Self.status(for: locationManager.authorizationStatus, locationManager.accuracyAuthorization, and: mode))
         logger.info("Location service initialized with status \(self.status.debugDescription).")
         if status.isReceivingLocations {
             locationManager.startUpdatingLocation()
@@ -30,9 +38,9 @@ public class LocationService: NSObject, ObservableObject {
     }
     
     private func changeStatus(to status: Status) {
-        guard status.canTransition, self.status != status else { return }
+        guard self.status.canTransition, self.status != status else { return }
         let oldStatus = self.status
-        self.status = status
+        statusSubject.send(status)
         logger.info("Location service status changed to \(status.debugDescription).")
         if !oldStatus.isReceivingLocations && status.isReceivingLocations {
             locationManager.startUpdatingLocation()
@@ -61,7 +69,7 @@ public class LocationService: NSObject, ObservableObject {
     public func changeMode(to mode: Mode) {
         guard self.mode != mode else { return }
         logger.info("Changing mode to \(mode.debugDescription).")
-        self.mode = mode
+        self.modeSubject.send(mode)
         locationManager.allowsBackgroundLocationUpdates = mode.allowsBackgroundLocationUpdates
         changeStatus(to: mode.correspondingStatus)
     }
@@ -178,7 +186,7 @@ extension LocationService: CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
-            lastLocation = location
+            lastLocationSubject.send(location)
         }
     }
         
@@ -187,7 +195,7 @@ extension LocationService: CLLocationManagerDelegate {
         case .locationUnknown, .network, .denied:
             logger.error("A temporary error was encountered: \(error.localizedDescription).")
         default:
-            changeStatus(to: .failed(error))
+            self.changeStatus(to: .failed(error))
         }
     }
     
