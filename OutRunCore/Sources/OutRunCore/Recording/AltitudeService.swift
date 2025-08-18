@@ -3,19 +3,27 @@ import CoreMotion
 import Foundation
 import OSLog
 
-/// A class gathering of altitude updates.
+/// A class gathering altitude updates.
 /// - note: While an approximate altitude is received with the users location, this class allows for refinement of location samples.
-class AltitudeService: ObservableObject {
+/// - warning: To use this service you must include the `NSMotionUsageDescription` key in your app’s Info.plist file and provide a usage
+/// description string for this key.
+class AltitudeService {
     
     private let logger = Logger(category: "AltitudeService")
     private let operationQueue = OperationQueue()
     private let altimeter = CMAltimeter()
-    @Published private(set) var status: Status
-    @Published private(set) var mode: Mode
-    @Published private(set) var lastAltitude: AltitudeSample?
+    private let mode: Mode
+    private let statusSubject = CurrentValueSubject<Status, Never>(.initializing)
+    private let lastAltitudeSubject = CurrentValueSubject<AltitudeSample?, Never>(nil)
+    
+    var status: Status { statusSubject.value }
+    var statusPublisher: some Publisher<Status, Never> { statusSubject.eraseToAnyPublisher() }
+    var lastAltitude: AltitudeSample? { lastAltitudeSubject.value }
+    var lastAltitudePublisher: some Publisher<AltitudeSample?, Never> { lastAltitudeSubject.eraseToAnyPublisher() }
     
     init() {
-        status = .idle
+        operationQueue.maxConcurrentOperationCount = 1
+        operationQueue.qualityOfService = .userInitiated
         mode = if CMAltimeter.isAbsoluteAltitudeAvailable() {
             .absoluteAltitudeAvailable
         } else if CMAltimeter.isRelativeAltitudeAvailable() {
@@ -23,32 +31,64 @@ class AltitudeService: ObservableObject {
         } else {
             .noAlitudeAvailable
         }
+        guard mode != .noAlitudeAvailable else {
+            statusSubject.send(.failed(AltitudeServiceError.altitudeNotAvailable))
+            logger.error("Altitude not available.")
+            return
+        }
+        updateStatus()
         logger.info("Initialized with mode: \(self.mode.debugDescription)")
+        
+    }
+    
+    /// Requests authorization to access motion and fitness data if authorization has not been granted or denied already.
+    func requestAuthorization() async throws {
+        updateStatus()
+        if status == .missingAuthorization {
+            await CoreMotionHelper.requestMotionAndFitnessAuthorization()
+            updateStatus()
+        }
+        switch status {
+        case .idle, .updatingSince: return
+        case .missingAuthorization: throw AltitudeServiceError.authorizationMissing
+        case .deniedAuthorization: throw AltitudeServiceError.authorizationDenied
+        case .restrictedAuthorization: throw AltitudeServiceError.authorizationRestricted
+        case .initializing: throw AltitudeServiceError.unknownAuthorizationStatus
+        case .failed(let error): throw error
+        }
     }
     
     /// Starts altitude updates.
     /// - warning: Calling this method while altitude data is being collected will perform a restart of the data collection and update the
     /// ``status`` accordingly.
     func start() {
+        updateStatus()
         switch status {
+        case .idle:
+            break
         case .failed:
             logger.error("Tried to start altitude updates in failed state.")
             return
         case .updatingSince:
             logger.fault("Started altitude updates while already updating, triggering a reset.")
             reset()
-        default: break
+        case .missingAuthorization, .deniedAuthorization, .restrictedAuthorization:
+            logger.error("Tried to start altitude updates with insufficient authorization")
+            return
+        case .initializing:
+            logger.error("Tried to start altitude updates before initialization was complete.")
+            return
         }
-        status = .updatingSince(.now)
+        statusSubject.send(.updatingSince(.now))
         switch mode {
         case .absoluteAltitudeAvailable:
             altimeter.startAbsoluteAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
                 guard let self else { return }
                 if let altitudeData {
-                    lastAltitude = .init(isAbsolute: true, timestamp: .now, altitude: Float(altitudeData.altitude))
+                    lastAltitudeSubject.send(.init(isAbsolute: true, timestamp: .now, altitude: Float(altitudeData.altitude)))
                 } else if let error {
                     reset()
-                    status = .failed(error)
+                    statusSubject.send(.failed(error))
                 }
             }
             logger.info("Started absolute altitude updates.")
@@ -56,10 +96,10 @@ class AltitudeService: ObservableObject {
             altimeter.startRelativeAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
                 guard let self else { return }
                 if let altitudeData {
-                    lastAltitude = .init(isAbsolute: false, timestamp: .now, altitude: Float(truncating: altitudeData.relativeAltitude))
+                    lastAltitudeSubject.send(.init(isAbsolute: false, timestamp: .now, altitude: Float(truncating: altitudeData.relativeAltitude)))
                 } else if let error {
                     reset()
-                    status = .failed(error)
+                    statusSubject.send(.failed(error))
                 }
             }
             logger.info("Started relative altitude updates.")
@@ -70,14 +110,34 @@ class AltitudeService: ObservableObject {
     
     /// Stops altitude updates and resets this class.
     func reset() {
-        switch mode {
-        case .absoluteAltitudeAvailable: altimeter.stopAbsoluteAltitudeUpdates()
-        case .relativeAltitudeAvailable: altimeter.stopRelativeAltitudeUpdates()
-        case .noAlitudeAvailable: break
+        updateStatus()
+        if case .updatingSince = status {
+            switch mode {
+            case .absoluteAltitudeAvailable: altimeter.stopAbsoluteAltitudeUpdates()
+            case .relativeAltitudeAvailable: altimeter.stopRelativeAltitudeUpdates()
+            case .noAlitudeAvailable: break
+            }
+            statusSubject.send(.idle)
         }
-        lastAltitude = nil
-        status = .idle
+        lastAltitudeSubject.send(nil)
         logger.info("Reset altitude service and stopped altitude updates.")
+    }
+    
+    private func updateStatus() {
+        let newStatus: Status = switch CMAltimeter.authorizationStatus() {
+        case .authorized:
+            if case .updatingSince(let date) = status {
+                .updatingSince(date)
+            } else {
+                .idle
+            }
+        case .notDetermined: .missingAuthorization
+        case .denied: .deniedAuthorization
+        case .restricted: .restrictedAuthorization
+        @unknown default: .failed(AltitudeServiceError.unknownAuthorizationStatus)
+        }
+        statusSubject.send(newStatus)
+        logger.info("Updated status to: \(self.status.debugDescription)")
     }
     
     // MARK: - AltitudeSample
@@ -117,7 +177,18 @@ class AltitudeService: ObservableObject {
     
     enum Status: CustomDebugStringConvertible, Equatable {
         
-        /// Waiting to collect altitude updates. Call ``AltitudeService/start()`` to start.
+        /// Preparing functionality.
+        case initializing
+        /// Cannot altitude updates due to missing authorization.
+        /// Request authorization from the user by calling ``AltitudeService/requestAuthorization()``.
+        case missingAuthorization
+        /// Cannot receive altitude updates due to system settings. Prompt the user to change this in the Settings app under
+        /// `Privacy & Security > Motion & Fitness`
+        case restrictedAuthorization
+        /// Cannot receive altitude updates due to denied authorization. Prompt the user to change this in the Settings app.
+        /// Settings can be opened by using ``UIApplication/open()`` to open ``UIApplication.openSettingsURLString``.
+        case deniedAuthorization
+        /// Ready to collect altitude updates. Call ``AltitudeService/start()`` to start.
         case idle
         /// Currently receiving altitude updates. Refer to the mode to determine which kind.
         case updatingSince(Date)
@@ -126,6 +197,10 @@ class AltitudeService: ObservableObject {
         
         var debugDescription: String {
             switch self {
+            case .initializing: ".initializing"
+            case .missingAuthorization: ".missingAuthorization"
+            case .restrictedAuthorization: ".restrictedAuthorization"
+            case .deniedAuthorization: ".deniedAuthorization"
             case .idle: ".idle"
             case .updatingSince(let date): ".updatingSince(\(date.formatted(.iso8601)))"
             case .failed(let error): ".failed(\((error as NSError).debugDescription)"
@@ -134,10 +209,26 @@ class AltitudeService: ObservableObject {
         
         static func == (lhs: Status, rhs: Status) -> Bool {
             switch (lhs, rhs) {
-            case (.idle, .idle), (.failed, .failed): true
-            case (.updatingSince(let lhsDate), .updatingSince(let rhsDate)): lhsDate == rhsDate
+            case (.initializing, .initializing),
+                (.missingAuthorization, .missingAuthorization),
+                (.restrictedAuthorization, .restrictedAuthorization),
+                (.deniedAuthorization, .deniedAuthorization),
+                (.idle, .idle),
+                (.failed, .failed):
+                true
+            case (.updatingSince(let lhsDate), .updatingSince(let rhsDate)):
+                lhsDate == rhsDate
             default: false
             }
         }
+    }
+    
+    // TODO: Localize
+    enum AltitudeServiceError: Error {
+        case altitudeNotAvailable
+        case authorizationMissing
+        case authorizationDenied
+        case authorizationRestricted
+        case unknownAuthorizationStatus
     }
 }
