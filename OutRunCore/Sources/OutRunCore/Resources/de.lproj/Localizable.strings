@@ -1,0 +1,6 @@
+"altitude_service_error_altitude_not_available" = "Höhendaten sind auf diesem Gerät nicht verfügbar.";
+"altitude_service_error_authorization_denied" = "Höhendaten können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
+"altitude_service_error_authorization_missing" = "Höhendaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";
+"altitude_service_error_authorization_restricted" = "Höhendaten können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
+"altitude_service_error_unknown_authorization_status" = "Höhendaten können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
+

@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "OutRunCore",
+    defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
         .library(name: "OutRunCore", targets: ["OutRunCore"]),

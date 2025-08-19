@@ -1,0 +1,6 @@
+"altitude_service_error_altitude_not_available" = "Altitude data is not available on this device.";
+"altitude_service_error_authorization_denied" = "Altitude data cannot be received due to denied authorization.";
+"altitude_service_error_authorization_missing" = "Altitude data cannot be received due to missing authorization.";
+"altitude_service_error_authorization_restricted" = "Altitude data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
+"altitude_service_error_unknown_authorization_status" = "Altitude data cannot be received due to an unknown authorization status.";
+

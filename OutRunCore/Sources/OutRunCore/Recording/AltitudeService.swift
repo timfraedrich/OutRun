@@ -1,6 +1,7 @@
 import Combine
 import CoreMotion
 import Foundation
+import RswiftResources
 import OSLog
 
 /// A class gathering altitude updates.
@@ -179,7 +180,7 @@ class AltitudeService {
         
         /// Preparing functionality.
         case initializing
-        /// Cannot altitude updates due to missing authorization.
+        /// Cannot receive altitude updates due to missing authorization.
         /// Request authorization from the user by calling ``AltitudeService/requestAuthorization()``.
         case missingAuthorization
         /// Cannot receive altitude updates due to system settings. Prompt the user to change this in the Settings app under
@@ -223,12 +224,32 @@ class AltitudeService {
         }
     }
     
-    // TODO: Localize
-    enum AltitudeServiceError: Error {
+    enum AltitudeServiceError: LocalizedError, CustomDebugStringConvertible {
+        
         case altitudeNotAvailable
         case authorizationMissing
         case authorizationDenied
         case authorizationRestricted
         case unknownAuthorizationStatus
+        
+        var debugDescription: String {
+            switch self {
+            case .altitudeNotAvailable: ".altitudeNotAvailable"
+            case .authorizationMissing: ".authorizationMissing"
+            case .authorizationDenied: ".authorizationDenied"
+            case .authorizationRestricted: ".authorizationRestricted"
+            case .unknownAuthorizationStatus: ".unknownAuthorizationStatus"
+            }
+        }
+        
+        var errorDescription: String? {
+            switch self {
+            case .altitudeNotAvailable: R.string.localizable.altitude_service_error_altitude_not_available()
+            case .authorizationMissing: R.string.localizable.altitude_service_error_authorization_missing()
+            case .authorizationDenied: R.string.localizable.altitude_service_error_authorization_denied()
+            case .authorizationRestricted: R.string.localizable.altitude_service_error_authorization_restricted()
+            case .unknownAuthorizationStatus: R.string.localizable.altitude_service_error_unknown_authorization_status()
+            }
+        }
     }
 }
