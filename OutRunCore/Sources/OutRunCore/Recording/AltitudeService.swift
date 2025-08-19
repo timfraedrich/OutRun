@@ -13,9 +13,9 @@ class AltitudeService {
     private let logger = Logger(category: "AltitudeService")
     private let operationQueue = OperationQueue()
     private let altimeter = CMAltimeter()
-    private let mode: Mode
     private let statusSubject = CurrentValueSubject<Status, Never>(.initializing)
     private let lastAltitudeSubject = CurrentValueSubject<AltitudeSample?, Never>(nil)
+    let mode: Mode
     
     var status: Status { statusSubject.value }
     var statusPublisher: some Publisher<Status, Never> { statusSubject.eraseToAnyPublisher() }
@@ -39,7 +39,6 @@ class AltitudeService {
         }
         updateStatus()
         logger.info("Initialized with mode: \(self.mode.debugDescription)")
-        
     }
     
     /// Requests authorization to access motion and fitness data if authorization has not been granted or denied already.
