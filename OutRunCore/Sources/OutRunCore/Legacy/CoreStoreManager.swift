@@ -30,7 +30,6 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
             migrationMappingProviders: DataModel.migrationChain.compactMap { $0.mappingProvider }
         )
         let migrationChain = DataModel.migrationChain
-        guard let currentModel = migrationChain.last else { throw CoreStoreSetupError.failedToInitializeDataStack }
         let schemata = migrationChain.map { $0.schema }
         let versionIdentifiers = migrationChain.map { $0.identifier }
         var migrationDictionary: [String: String] = [:]
@@ -40,7 +39,7 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
         let schemaHistory = SchemaHistory(
             allSchema: schemata,
             migrationChain: .init(migrationDictionary),
-            exactCurrentModelVersion: currentModel.identifier
+            exactCurrentModelVersion: DataModel.identifier
         )
         dataStack = .init(schemaHistory: schemaHistory)
         try await withCheckedThrowingContinuation { continuation in
@@ -52,14 +51,6 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
                     continuation.resume(throwing: error)
                 }
             })
-        }
-    }
-    
-    func extractAllWorkouts() async throws -> [RawDataModelV3.Workout] {
-        guard DataModel.self == OutRunV3.self else { throw CoreStoreExtractionError.invalidModel }
-        return try await MainActor.run {
-            let csWorkouts = try dataStack.fetchAll(From<OutRunV3.Workout>())
-            return csWorkouts.map(RawDataModelV3.Workout.init)
         }
     }
     
@@ -209,6 +200,13 @@ extension CoreStoreManager where DataModel == OutRunV3 {
                 }
             }
             try transaction.commitAndWait()
+        }
+    }
+    
+    func extractAllWorkouts() async throws -> [RawDataModelV3.Workout] {
+        return try await MainActor.run {
+            let csWorkouts = try dataStack.fetchAll(From<OutRunV3.Workout>())
+            return csWorkouts.map(RawDataModelV3.Workout.init)
         }
     }
 }
