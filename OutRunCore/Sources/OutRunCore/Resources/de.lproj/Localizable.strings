@@ -8,4 +8,9 @@
 "step_service_error_authorization_missing" = "Schrittdaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";
 "step_service_error_authorization_restricted" = "Schrittdaten können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
 "step_service_error_unknown_authorization_status" = "Schrittdaten können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
+"motion_activity_service_error_activity_not_available" = "Daten zur Bewegungsaktivität sind auf diesem Gerät nicht verfügbar.";
+"motion_activity_service_error_authorization_denied" = "Daten zur Bewegungsaktivität können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
+"motion_activity_service_error_authorization_missing" = "Daten zur Bewegungsaktivität können aufgrund fehlender Berechtigung nicht abgerufen werden.";
+"motion_activity_service_error_authorization_restricted" = "Daten zur Bewegungsaktivität können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
+"motion_activity_service_error_unknown_authorization_status" = "Daten zur Bewegungsaktivität können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
 

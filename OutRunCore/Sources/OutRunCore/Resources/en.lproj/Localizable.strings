@@ -8,3 +8,8 @@
 "step_service_error_authorization_missing" = "Step data cannot be received due to missing authorization.";
 "step_service_error_authorization_restricted" = "Step data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "step_service_error_unknown_authorization_status" = "Step data cannot be received due to an unknown authorization status.";
+"motion_activity_service_error_activity_not_available" = "Motion activity data is not available on this device.";
+"motion_activity_service_error_authorization_denied" = "Motion activity data cannot be received due to denied authorization.";
+"motion_activity_service_error_authorization_missing" = "Motion activity data cannot be received due to missing authorization.";
+"motion_activity_service_error_authorization_restricted" = "Motion activity data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
+"motion_activity_service_error_unknown_authorization_status" = "Motion activity data cannot be received due to an unknown authorization status.";
