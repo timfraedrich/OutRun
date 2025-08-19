@@ -29,7 +29,7 @@ struct LegacyMigrationTests {
     func migrateFromLegacyV1() async throws {
         let exampleData = try readV1ExampleData()
         let legacyStorageFileName = "V1Migration"
-        let manager: CoreStoreManager<OutRunV1> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
+        let manager: LegacyDatabase<LegacyDataModelV1> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
         try await manager.insert(exampleData)
         await manager.close()
         #expect(await manager.storageExistsOnDisk())
@@ -42,7 +42,7 @@ struct LegacyMigrationTests {
     func migrateFromLegacyV2() async throws {
         let exampleData = try readV2ExampleData()
         let legacyStorageFileName = "V2Migration"
-        let manager: CoreStoreManager<OutRunV2> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
+        let manager: LegacyDatabase<LegacyDataModelV2> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
         try await manager.insert(exampleData)
         await manager.close()
         #expect(await manager.storageExistsOnDisk())
@@ -55,7 +55,7 @@ struct LegacyMigrationTests {
     func migrateFromLegacyV3() async throws {
         let exampleData = try readV3ExampleData()
         let legacyStorageFileName = "V3Migration"
-        let manager: CoreStoreManager<OutRunV3> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
+        let manager: LegacyDatabase<LegacyDataModelV3> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
         try await manager.insert(exampleData)
         await manager.close()
         #expect(await manager.storageExistsOnDisk())
@@ -106,13 +106,13 @@ struct LegacyMigrationTests {
         try readExpectedResults(filename: "ExpectationOutRunV3")
     }
     
-    private func prepareLegacyDataManager<DataModel: CoreStoreDataModel>(legacyStorageFileName: String) async throws -> CoreStoreManager<DataModel> {
-        let legacyStorageURL = CoreStoreManager<DataModel>.legacyStorageURL(for: legacyStorageFileName)
+    private func prepareLegacyDataManager<DataModel: CoreStoreDataModel>(legacyStorageFileName: String) async throws -> LegacyDatabase<DataModel> {
+        let legacyStorageURL = LegacyDatabase<DataModel>.legacyStorageURL(for: legacyStorageFileName)
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: legacyStorageURL.relativePath) {
             try fileManager.removeItem(atPath: legacyStorageURL.relativePath)
         }
-        return try await CoreStoreManager<DataModel>(fileName: legacyStorageFileName)
+        return try await LegacyDatabase<DataModel>(fileName: legacyStorageFileName)
     }
     
     private func checkMigratedData(actual actualWorkouts: [Workout], expected expectedWorkouts: [RawWorkout]) throws {

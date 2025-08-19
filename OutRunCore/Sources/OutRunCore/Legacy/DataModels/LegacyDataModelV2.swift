@@ -1,27 +1,27 @@
 @preconcurrency import CoreStore
 import Foundation
 
-enum OutRunV2: CoreStoreDataModel {
+enum LegacyDataModelV2: LegacyDataModel {
     
     static let identifier = "OutRunV2"
     static let schema = CoreStoreSchema(
-        modelVersion: OutRunV2.identifier,
+        modelVersion: LegacyDataModelV2.identifier,
         entities: [
-            Entity<OutRunV2.Workout>(OutRunV2.Workout.identifier),
-            Entity<OutRunV2.RouteDataSample>(OutRunV2.RouteDataSample.identifier)
+            Entity<LegacyDataModelV2.Workout>(LegacyDataModelV2.Workout.identifier),
+            Entity<LegacyDataModelV2.RouteDataSample>(LegacyDataModelV2.RouteDataSample.identifier)
         ],
         versionLock: [
-            OutRunV2.RouteDataSample.identifier: [0x865fb73f2cdbf5f7, 0x322dae8d9552dfd8, 0x8c36786459eb5f29, 0xad1726d869fe374d],
-            OutRunV2.Workout.identifier: [0x90b4ea34c3fa02ba, 0xd0fc71464bbbc8bf, 0xe102925a95892881, 0x203a9cb9289fd3a7]
+            LegacyDataModelV2.RouteDataSample.identifier: [0x865fb73f2cdbf5f7, 0x322dae8d9552dfd8, 0x8c36786459eb5f29, 0xad1726d869fe374d],
+            LegacyDataModelV2.Workout.identifier: [0x90b4ea34c3fa02ba, 0xd0fc71464bbbc8bf, 0xe102925a95892881, 0x203a9cb9289fd3a7]
         ]
     )
     static let mappingProvider: CustomSchemaMappingProvider? = CustomSchemaMappingProvider(
-        from: OutRunV1.identifier,
-        to: OutRunV2.identifier,
+        from: LegacyDataModelV1.identifier,
+        to: LegacyDataModelV2.identifier,
         entityMappings: [
             .transformEntity(
-                sourceEntity: OutRunV1.Workout.identifier,
-                destinationEntity: OutRunV2.Workout.identifier,
+                sourceEntity: LegacyDataModelV1.Workout.identifier,
+                destinationEntity: LegacyDataModelV2.Workout.identifier,
                 transformer: { (sourceObject: CustomSchemaMappingProvider.UnsafeSourceObject, createDestinationObject: () -> CustomSchemaMappingProvider.UnsafeDestinationObject) in
                     let destinationObject = createDestinationObject()
                     destinationObject.enumerateAttributes { (attribute, sourceAttribute) in
@@ -35,8 +35,8 @@ enum OutRunV2: CoreStoreDataModel {
                 }
             ),
             .transformEntity(
-                sourceEntity: OutRunV1.RouteDataSample.identifier,
-                destinationEntity: OutRunV2.RouteDataSample.identifier,
+                sourceEntity: LegacyDataModelV1.RouteDataSample.identifier,
+                destinationEntity: LegacyDataModelV2.RouteDataSample.identifier,
                 transformer: { (sourceObject: CustomSchemaMappingProvider.UnsafeSourceObject, createDestinationObject: () -> CustomSchemaMappingProvider.UnsafeDestinationObject) in
                     let destinationObject = createDestinationObject()
                     destinationObject.enumerateAttributes { (attribute, sourceAttribute) in
@@ -50,7 +50,7 @@ enum OutRunV2: CoreStoreDataModel {
             )
         ]
     )
-    static let migrationChain: [any CoreStoreDataModel.Type] = [OutRunV1.self, OutRunV2.self]
+    static let migrationChain: [any LegacyDataModel.Type] = [LegacyDataModelV1.self, LegacyDataModelV2.self]
     
     // MARK: Workout
     class Workout: CoreStoreObject {
@@ -69,7 +69,7 @@ enum OutRunV2: CoreStoreDataModel {
         let burnedEnergy = Value.Optional<Double>("burnedEnergy")
         let healthKitUUID = Value.Optional<UUID>("healthKitID")
         
-        let routeDataSamples = Relationship.ToManyOrdered<OutRunV2.RouteDataSample>("routeDataSamples", inverse: { $0.workout })
+        let routeDataSamples = Relationship.ToManyOrdered<LegacyDataModelV2.RouteDataSample>("routeDataSamples", inverse: { $0.workout })
         
     }
     
@@ -88,7 +88,7 @@ enum OutRunV2: CoreStoreDataModel {
         let speed = Value.Required<Double>("speed", initial: -1)
         let direction = Value.Required<Double>("direction", initial: -1)
         
-        let workout = Relationship.ToOne<OutRunV2.Workout>("workout")
+        let workout = Relationship.ToOne<LegacyDataModelV2.Workout>("workout")
         
     }
     

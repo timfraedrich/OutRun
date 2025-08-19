@@ -1,22 +1,22 @@
 @preconcurrency import CoreStore
 import Foundation
 
-enum OutRunV1: CoreStoreDataModel {
+enum LegacyDataModelV1: LegacyDataModel {
     
     static let identifier = "OutRunV1"
     static let schema = CoreStoreSchema(
-        modelVersion: OutRunV1.identifier,
+        modelVersion: LegacyDataModelV1.identifier,
         entities: [
-            Entity<OutRunV1.Workout>(OutRunV1.Workout.identifier),
-            Entity<OutRunV1.RouteDataSample>(OutRunV1.RouteDataSample.identifier)
+            Entity<LegacyDataModelV1.Workout>(LegacyDataModelV1.Workout.identifier),
+            Entity<LegacyDataModelV1.RouteDataSample>(LegacyDataModelV1.RouteDataSample.identifier)
         ],
         versionLock: [
-            OutRunV1.RouteDataSample.identifier: [0xc916902e15f798ae, 0x9442db47c2de4ef2, 0x85478c6d328fdb99, 0x9829e4d715772eda],
-            OutRunV1.Workout.identifier: [0xc693e96b19a41fc7, 0x6efcd5a65d69bc94, 0x947466048287185e, 0x52c58ad8b3e00d36]
+            LegacyDataModelV1.RouteDataSample.identifier: [0xc916902e15f798ae, 0x9442db47c2de4ef2, 0x85478c6d328fdb99, 0x9829e4d715772eda],
+            LegacyDataModelV1.Workout.identifier: [0xc693e96b19a41fc7, 0x6efcd5a65d69bc94, 0x947466048287185e, 0x52c58ad8b3e00d36]
         ]
     )
     static let mappingProvider: CustomSchemaMappingProvider? = nil
-    static let migrationChain: [any CoreStoreDataModel.Type] = [OutRunV1.self]
+    static let migrationChain: [any LegacyDataModel.Type] = [LegacyDataModelV1.self]
     
     // MARK: Workout
     class Workout: CoreStoreObject {
@@ -32,7 +32,7 @@ enum OutRunV1: CoreStoreDataModel {
         let burnedEnergy = Value.Optional<Double>("burnedEnergy")
         let healthKitUUID = Value.Optional<UUID>("healthKitID")
         
-        let routeDataSamples = Relationship.ToManyOrdered<OutRunV1.RouteDataSample>("routeDataSamples", inverse: { $0.workout })
+        let routeDataSamples = Relationship.ToManyOrdered<LegacyDataModelV1.RouteDataSample>("routeDataSamples", inverse: { $0.workout })
         
     }
     
@@ -49,7 +49,7 @@ enum OutRunV1: CoreStoreDataModel {
         let speed = Value.Required<Double>("speed", initial: -1)
         let direction = Value.Required<Double>("direction", initial: -1)
         
-        let workout = Relationship.ToOne<OutRunV1.Workout>("workout")
+        let workout = Relationship.ToOne<LegacyDataModelV1.Workout>("workout")
         
     }
     

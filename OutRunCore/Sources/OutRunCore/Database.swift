@@ -20,8 +20,8 @@ class Database {
         )
         modelContainer = try ModelContainer(for: schema, migrationPlan: nil, configurations: config)
         
-        guard CoreStoreManager<OutRunV3>.legacyStorageExists(for: legacyStorageFileName) else { return }
-        let manager = try await CoreStoreManager<OutRunV3>(fileName: legacyStorageFileName)
+        guard LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: legacyStorageFileName) else { return }
+        let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
         let legacyRawWorkouts = try await manager.extractAllWorkouts().map(RawWorkout.init)
         let context = ModelContext(modelContainer)
         for rawWorkout in legacyRawWorkouts {

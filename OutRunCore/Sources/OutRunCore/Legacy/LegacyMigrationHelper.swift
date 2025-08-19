@@ -1,7 +1,7 @@
 import Foundation
 import NIOCore
 
-enum MigrationHelper {
+enum LegacyMigrationHelper {
     
     /**
      Computes pauses from workout event data.

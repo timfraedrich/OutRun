@@ -4,7 +4,7 @@ import Foundation
 
 /// A structure holding static instances and methods for database management and manipulation
 @MainActor
-class CoreStoreManager<DataModel: CoreStoreDataModel> {
+class LegacyDatabase<DataModel: LegacyDataModel> {
     
     private nonisolated static var legacyFileName: String { "OutRun.sqlite" }
     
@@ -73,9 +73,9 @@ class CoreStoreManager<DataModel: CoreStoreDataModel> {
 
 // MARK: - OutRunV1 Object Insertion
 
-extension CoreStoreManager where DataModel == OutRunV1 {
+extension LegacyDatabase where DataModel == LegacyDataModelV1 {
     
-    func insert(_ workouts: [RawDataModelV1.Workout]) async throws {
+    func insert(_ workouts: [LegacyRawDataModelV1.Workout]) async throws {
         try await MainActor.run {
             let transaction = dataStack.beginUnsafe()
             for rawWorkout in workouts {
@@ -108,9 +108,9 @@ extension CoreStoreManager where DataModel == OutRunV1 {
 
 // MARK: - OutRunV2 Object Insertion
 
-extension CoreStoreManager where DataModel == OutRunV2 {
+extension LegacyDatabase where DataModel == LegacyDataModelV2 {
     
-    func insert(_ workouts: [RawDataModelV2.Workout]) async throws {
+    func insert(_ workouts: [LegacyRawDataModelV2.Workout]) async throws {
         try await MainActor.run {
             let transaction = dataStack.beginUnsafe()
             for rawWorkout in workouts {
@@ -148,9 +148,9 @@ extension CoreStoreManager where DataModel == OutRunV2 {
 
 // MARK: - OutRunV3 Object Insertion
 
-extension CoreStoreManager where DataModel == OutRunV3 {
+extension LegacyDatabase where DataModel == LegacyDataModelV3 {
     
-    func insert(_ workouts: [RawDataModelV3.Workout]) async throws {
+    func insert(_ workouts: [LegacyRawDataModelV3.Workout]) async throws {
         try await MainActor.run {
             let transaction = dataStack.beginUnsafe()
             for rawWorkout in workouts {
@@ -203,10 +203,10 @@ extension CoreStoreManager where DataModel == OutRunV3 {
         }
     }
     
-    func extractAllWorkouts() async throws -> [RawDataModelV3.Workout] {
+    func extractAllWorkouts() async throws -> [LegacyRawDataModelV3.Workout] {
         return try await MainActor.run {
-            let csWorkouts = try dataStack.fetchAll(From<OutRunV3.Workout>())
-            return csWorkouts.map(RawDataModelV3.Workout.init)
+            let csWorkouts = try dataStack.fetchAll(From<LegacyDataModelV3.Workout>())
+            return csWorkouts.map(LegacyRawDataModelV3.Workout.init)
         }
     }
 }

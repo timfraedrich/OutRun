@@ -2,7 +2,7 @@ import Foundation
 
 extension RawWorkoutRouteDataSample {
     
-    init(from routeDataSample: RawDataModelV1.RouteDataSample) {
+    init(from routeDataSample: LegacyRawDataModelV1.RouteDataSample) {
         self.init(
             timestamp: routeDataSample.timestamp,
             latitude: routeDataSample.latitude,
@@ -14,7 +14,7 @@ extension RawWorkoutRouteDataSample {
         )
     }
     
-    init(from routeDataSample: RawDataModelV2.RouteDataSample) {
+    init(from routeDataSample: LegacyRawDataModelV2.RouteDataSample) {
         self.init(
             timestamp: routeDataSample.timestamp,
             latitude: routeDataSample.latitude,
@@ -26,7 +26,7 @@ extension RawWorkoutRouteDataSample {
         )
     }
     
-    init(from routeDataSample: RawDataModelV3.WorkoutRouteDataSample) {
+    init(from routeDataSample: LegacyRawDataModelV3.WorkoutRouteDataSample) {
         self.init(
             timestamp: routeDataSample.timestamp,
             latitude: routeDataSample.latitude,

@@ -2,14 +2,14 @@ import Foundation
 
 extension RawWorkout {
     
-    init(from workout: RawDataModelV1.Workout) {
+    init(from workout: LegacyRawDataModelV1.Workout) {
         self.init(
             id: workout.uuid ?? UUID(),
             type: .init(rawValue: workout.workoutType),
             distance: workout.distance,
             startDate: workout.startDate,
             endDate: workout.endDate,
-            energy: MigrationHelper.convertKcalToJoules(workout.burnedEnergy),
+            energy: LegacyMigrationHelper.convertKcalToJoules(workout.burnedEnergy),
             steps: nil,
             isRace: false,
             name: nil,
@@ -21,18 +21,18 @@ extension RawWorkout {
             route: workout.locations.map(RawWorkoutRouteDataSample.init),
             pauses: [],
             events: [],
-            serviceMappings: MigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
+            serviceMappings: LegacyMigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
         )
     }
     
-    init(from workout: RawDataModelV2.Workout) {
+    init(from workout: LegacyRawDataModelV2.Workout) {
         self.init(
             id: workout.uuid ?? UUID(),
             type: .init(rawValue: workout.workoutType),
             distance: workout.distance,
             startDate: workout.startDate,
             endDate: workout.endDate,
-            energy: MigrationHelper.convertKcalToJoules(workout.burnedEnergy),
+            energy: LegacyMigrationHelper.convertKcalToJoules(workout.burnedEnergy),
             steps: nil,
             isRace: workout.isRace,
             name: nil,
@@ -44,13 +44,13 @@ extension RawWorkout {
             route: workout.locations.map(RawWorkoutRouteDataSample.init),
             pauses: [],
             events: [],
-            serviceMappings: MigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
+            serviceMappings: LegacyMigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
         )
     }
     
-    init(from workout: RawDataModelV3.Workout) {
-        let pauseEvents = workout.workoutEvents.compactMap { workoutEvent -> MigrationHelper.PauseEvent? in
-            guard let pauseEventType = MigrationHelper.PauseEvent.PauseEventType(legacyEventType: .init(rawValue: workoutEvent.eventType))
+    init(from workout: LegacyRawDataModelV3.Workout) {
+        let pauseEvents = workout.workoutEvents.compactMap { workoutEvent -> LegacyMigrationHelper.PauseEvent? in
+            guard let pauseEventType = LegacyMigrationHelper.PauseEvent.PauseEventType(legacyEventType: .init(rawValue: workoutEvent.eventType))
             else { return nil }
             return .init(date: workoutEvent.startDate, type: pauseEventType)
         }
@@ -60,7 +60,7 @@ extension RawWorkout {
             distance: workout.distance,
             startDate: workout.startDate,
             endDate: workout.endDate,
-            energy: workout.burnedEnergy.map(MigrationHelper.convertKcalToJoules),
+            energy: workout.burnedEnergy.map(LegacyMigrationHelper.convertKcalToJoules),
             steps: workout.steps,
             isRace: workout.isRace,
             name: nil,
@@ -70,9 +70,9 @@ extension RawWorkout {
             sourceService: .native,
             heartRates: workout.heartRates.map(RawWorkoutHeartRateDataSample.init),
             route: workout.locations.map(RawWorkoutRouteDataSample.init),
-            pauses: MigrationHelper.calculatePauses(from: pauseEvents, workoutStart: workout.startDate, workoutEnd: workout.endDate),
+            pauses: LegacyMigrationHelper.calculatePauses(from: pauseEvents, workoutStart: workout.startDate, workoutEnd: workout.endDate),
             events: workout.workoutEvents.compactMap(RawWorkoutEvent.init),
-            serviceMappings: MigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
+            serviceMappings: LegacyMigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
         )
     }
 }

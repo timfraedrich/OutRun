@@ -1,6 +1,6 @@
 import Foundation
 
-enum RawDataModelV3 {
+enum LegacyRawDataModelV3 {
     
     struct Workout: Codable {
         let uuid: UUID?
@@ -49,7 +49,7 @@ enum RawDataModelV3 {
             self.heartRates = heartRates
         }
         
-        init(workout: OutRunV3.Workout) {
+        init(workout: LegacyDataModelV3.Workout) {
             uuid = workout.uuid.value
             workoutType = workout.workoutType.value
             startDate = workout.startDate.value
@@ -80,7 +80,7 @@ enum RawDataModelV3 {
             self.endDate = endDate
         }
         
-        init(workoutEvent: OutRunV3.WorkoutEvent) {
+        init(workoutEvent: LegacyDataModelV3.WorkoutEvent) {
             uuid = workoutEvent.uuid.value
             eventType = workoutEvent.eventType.value
             startDate = workoutEvent.startDate.value
@@ -121,7 +121,7 @@ enum RawDataModelV3 {
             self.direction = direction
         }
         
-        init(routeDataSample: OutRunV3.WorkoutRouteDataSample) {
+        init(routeDataSample: LegacyDataModelV3.WorkoutRouteDataSample) {
             uuid = routeDataSample.uuid.value
             timestamp = routeDataSample.timestamp.value
             latitude = routeDataSample.latitude.value
@@ -145,7 +145,7 @@ enum RawDataModelV3 {
             self.timestamp = timestamp
         }
         
-        init(heartRateDataSample: OutRunV3.WorkoutHeartRateDataSample) {
+        init(heartRateDataSample: LegacyDataModelV3.WorkoutHeartRateDataSample) {
             uuid = heartRateDataSample.uuid.value
             heartRate = heartRateDataSample.heartRate.value
             timestamp = heartRateDataSample.timestamp.value
@@ -169,7 +169,7 @@ enum RawDataModelV3 {
             self.workouts = workouts
         }
         
-        init(event: OutRunV3.Event) {
+        init(event: LegacyDataModelV3.Event) {
             uuid = event.uuid.value
             title = event.title.value
             comment = event.comment.value

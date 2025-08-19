@@ -21,7 +21,7 @@ struct PauseEventConversionTests {
     @Test("No Pause Events", arguments: startDates)
     func noPauseEvents(start: Date) {
         let end = start.addingTimeInterval(10)
-        let pauses = MigrationHelper.calculatePauses(from: [], workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: [], workoutStart: start, workoutEnd: end)
         #expect(pauses.isEmpty)
     }
     
@@ -29,11 +29,11 @@ struct PauseEventConversionTests {
     func fullAutoPause(start: Date) {
         let duration: TimeInterval = 10
         let end = start.addingTimeInterval(duration)
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start, type: .pause),
             .init(date: end, type: .resume),
         ]
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start)
         #expect(pauses[0].endDate == end)
@@ -49,12 +49,12 @@ struct PauseEventConversionTests {
         let pauseStart = start.addingTimeInterval(5)
         let pauseEnd = start.addingTimeInterval(15)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: pauseStart, type: .pause),
             .init(date: pauseEnd, type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == pauseStart)
         #expect(pauses[0].endDate == pauseEnd)
@@ -69,12 +69,12 @@ struct PauseEventConversionTests {
         let pauseStart = start.addingTimeInterval(3)
         let pauseEnd = start.addingTimeInterval(11)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: pauseStart, type: .autoPause),
             .init(date: pauseEnd, type: .autoResume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == pauseStart)
         #expect(pauses[0].endDate == pauseEnd)
@@ -86,7 +86,7 @@ struct PauseEventConversionTests {
     func multipleNonOverlappingPauses(start: Date) {
         let end = start.addingTimeInterval(100)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(10), type: .pause),
             .init(date: start.addingTimeInterval(20), type: .resume),
             .init(date: start.addingTimeInterval(40), type: .autoPause),
@@ -95,7 +95,7 @@ struct PauseEventConversionTests {
             .init(date: start.addingTimeInterval(80), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 3)
         
         let sortedPauses = pauses.sorted { $0.startDate < $1.startDate }
@@ -108,7 +108,7 @@ struct PauseEventConversionTests {
     func mixedManualAndAutoPauses(start: Date) {
         let end = start.addingTimeInterval(60)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(5), type: .autoPause),
             .init(date: start.addingTimeInterval(15), type: .autoResume),
             .init(date: start.addingTimeInterval(25), type: .pause),
@@ -117,7 +117,7 @@ struct PauseEventConversionTests {
             .init(date: start.addingTimeInterval(55), type: .autoResume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 3)
         
         let sortedPauses = pauses.sorted { $0.startDate < $1.startDate }
@@ -132,14 +132,14 @@ struct PauseEventConversionTests {
     func manualOverlappingAuto(start: Date) {
         let end = start.addingTimeInterval(50)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(5), type: .autoPause),
             .init(date: start.addingTimeInterval(15), type: .pause),
             .init(date: start.addingTimeInterval(25), type: .resume),
             .init(date: start.addingTimeInterval(35), type: .autoResume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 3)
         #expect(pauses[0].userInitiated == false)
         #expect(pauses[0].startDate == start.addingTimeInterval(5))
@@ -156,14 +156,14 @@ struct PauseEventConversionTests {
     func autoPauseThenManual(start: Date) {
         let end = start.addingTimeInterval(50)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(5), type: .autoPause),
             .init(date: start.addingTimeInterval(15), type: .pause),
             .init(date: start.addingTimeInterval(25), type: .resume),
             .init(date: start.addingTimeInterval(35), type: .autoResume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         let firstAutoPause = pauses.first { !$0.userInitiated }
         let lastAutoPause = pauses.last { !$0.userInitiated }
         let manualPause = pauses.first { $0.userInitiated }
@@ -178,14 +178,14 @@ struct PauseEventConversionTests {
     func multipleOverlappingManualPauses(start: Date) {
         let end = start.addingTimeInterval(60)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(10), type: .pause),
             .init(date: start.addingTimeInterval(15), type: .pause),
             .init(date: start.addingTimeInterval(25), type: .resume),
             .init(date: start.addingTimeInterval(30), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].userInitiated == true)
         #expect(pauses[0].startDate == start.addingTimeInterval(10))
@@ -200,12 +200,12 @@ struct PauseEventConversionTests {
         let pauseStart = start.addingTimeInterval(-10)
         let pauseEnd = start.addingTimeInterval(15)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: pauseStart, type: .pause),
             .init(date: pauseEnd, type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start)
         #expect(pauses[0].endDate == pauseEnd)
@@ -217,12 +217,12 @@ struct PauseEventConversionTests {
         let pauseStart = start.addingTimeInterval(30)
         let pauseEnd = start.addingTimeInterval(70)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: pauseStart, type: .pause),
             .init(date: pauseEnd, type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == pauseStart)
         #expect(pauses[0].endDate == end)
@@ -232,12 +232,12 @@ struct PauseEventConversionTests {
     func pauseSpansEntireWorkout(start: Date) {
         let end = start.addingTimeInterval(30)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start, type: .pause),
             .init(date: end, type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start)
         #expect(pauses[0].endDate == end)
@@ -247,7 +247,7 @@ struct PauseEventConversionTests {
     func eventsOutsideWorkoutRange(start: Date) {
         let end = start.addingTimeInterval(50)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(-20), type: .pause),
             .init(date: start.addingTimeInterval(-10), type: .resume),
             .init(date: start.addingTimeInterval(10), type: .pause),
@@ -256,7 +256,7 @@ struct PauseEventConversionTests {
             .init(date: start.addingTimeInterval(70), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start.addingTimeInterval(10))
         #expect(pauses[0].endDate == start.addingTimeInterval(20))
@@ -269,12 +269,12 @@ struct PauseEventConversionTests {
         let end = start.addingTimeInterval(50)
         let minimumDuration: TimeInterval = 10
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(10), type: .pause),
             .init(date: start.addingTimeInterval(15), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end, minimumDuration: minimumDuration)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end, minimumDuration: minimumDuration)
         #expect(pauses.isEmpty)
     }
     
@@ -283,7 +283,7 @@ struct PauseEventConversionTests {
         let end = start.addingTimeInterval(100)
         let minimumDuration: TimeInterval = 10
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(5), type: .pause),
             .init(date: start.addingTimeInterval(10), type: .resume),
             .init(date: start.addingTimeInterval(20), type: .pause),
@@ -292,7 +292,7 @@ struct PauseEventConversionTests {
             .init(date: start.addingTimeInterval(55), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end, minimumDuration: minimumDuration)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end, minimumDuration: minimumDuration)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start.addingTimeInterval(20))
         #expect(pauses[0].endDate == start.addingTimeInterval(35))
@@ -304,11 +304,11 @@ struct PauseEventConversionTests {
     func pauseWithoutResume(start: Date) {
         let end = start.addingTimeInterval(50)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(10), type: .pause),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start.addingTimeInterval(10))
         #expect(pauses[0].endDate == end)
@@ -318,11 +318,11 @@ struct PauseEventConversionTests {
     func resumeWithoutPause(start: Date) {
         let end = start.addingTimeInterval(50)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(10), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.isEmpty)
     }
     
@@ -330,13 +330,13 @@ struct PauseEventConversionTests {
     func multiplePauseEvents(start: Date) {
         let end = start.addingTimeInterval(50)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(10), type: .pause),
             .init(date: start.addingTimeInterval(15), type: .pause),
             .init(date: start.addingTimeInterval(30), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start.addingTimeInterval(10))
         #expect(pauses[0].endDate == end)
@@ -346,14 +346,14 @@ struct PauseEventConversionTests {
     func outOfOrderEvents(start: Date) {
         let end = start.addingTimeInterval(50)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(40), type: .resume),
             .init(date: start.addingTimeInterval(20), type: .resume),
             .init(date: start.addingTimeInterval(10), type: .pause),
             .init(date: start.addingTimeInterval(30), type: .pause),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 2)
         
         let sortedPauses = pauses.sorted { $0.startDate < $1.startDate }
@@ -370,12 +370,12 @@ struct PauseEventConversionTests {
         let end = start.addingTimeInterval(50)
         let pauseTime = start.addingTimeInterval(25)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: pauseTime, type: .pause),
             .init(date: pauseTime, type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 0)
     }
     
@@ -383,12 +383,12 @@ struct PauseEventConversionTests {
     func veryShortWorkout(start: Date) {
         let end = start.addingTimeInterval(0.5)
         
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(0.1), type: .pause),
             .init(date: start.addingTimeInterval(0.4), type: .resume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end)
         #expect(pauses.count == 1)
         #expect(pauses[0].startDate == start.addingTimeInterval(0.1))
         #expect(pauses[0].endDate == start.addingTimeInterval(0.4))
@@ -399,7 +399,7 @@ struct PauseEventConversionTests {
     @Test("Documentation Example", arguments: startDates)
     func documentationExample(start: Date) {
         let end = start.addingTimeInterval(205)
-        let events: [MigrationHelper.PauseEvent] = [
+        let events: [LegacyMigrationHelper.PauseEvent] = [
             .init(date: start.addingTimeInterval(-10), type: .autoPause),
             .init(date: start.addingTimeInterval(5), type: .autoResume),
             .init(date: start.addingTimeInterval(30), type: .pause),
@@ -416,7 +416,7 @@ struct PauseEventConversionTests {
             .init(date: start.addingTimeInterval(215), type: .autoResume),
         ]
         
-        let pauses = MigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end, minimumDuration: 10)
+        let pauses = LegacyMigrationHelper.calculatePauses(from: events, workoutStart: start, workoutEnd: end, minimumDuration: 10)
         
         #expect(pauses.count == 3)
         #expect(pauses[0].userInitiated == true)

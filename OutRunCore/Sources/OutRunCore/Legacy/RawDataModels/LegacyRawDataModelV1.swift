@@ -1,6 +1,6 @@
 import Foundation
 
-enum RawDataModelV1 {
+enum LegacyRawDataModelV1 {
     
     struct Workout: Codable {
         let uuid: UUID?
