@@ -85,7 +85,7 @@ class AltitudeService {
             altimeter.startAbsoluteAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
                 guard let self else { return }
                 if let altitudeData {
-                    lastAltitudeSubject.send(.init(isAbsolute: true, timestamp: .now, altitude: Float(altitudeData.altitude)))
+                    lastAltitudeSubject.send(.init(isAbsolute: true, timestamp: .now, altitude: altitudeData.altitude))
                 } else if let error {
                     reset()
                     statusSubject.send(.failed(error))
@@ -96,7 +96,7 @@ class AltitudeService {
             altimeter.startRelativeAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
                 guard let self else { return }
                 if let altitudeData {
-                    lastAltitudeSubject.send(.init(isAbsolute: false, timestamp: .now, altitude: Float(truncating: altitudeData.relativeAltitude)))
+                    lastAltitudeSubject.send(.init(isAbsolute: false, timestamp: .now, altitude: altitudeData.relativeAltitude.doubleValue))
                 } else if let error {
                     reset()
                     statusSubject.send(.failed(error))
@@ -149,7 +149,7 @@ class AltitudeService {
         /// The timestamp at which the altitude was recorded.
         let timestamp: Date
         /// The relative value of the altitude.
-        let altitude: Float
+        let altitude: Double
     }
     
     // MARK: - Mode
@@ -163,6 +163,13 @@ class AltitudeService {
         case relativeAltitudeAvailable
         /// Absolute altitude will be observed and published upon request.
         case absoluteAltitudeAvailable
+        
+        var altitudeAvailable: Bool {
+            switch self {
+            case .absoluteAltitudeAvailable, .relativeAltitudeAvailable: true
+            case .noAlitudeAvailable: false
+            }
+        }
         
         var debugDescription: String {
             switch self {
@@ -194,6 +201,10 @@ class AltitudeService {
         case updatingSince(Date)
         /// Failed with the specified error.
         case failed(Error)
+        
+        var isCollectingData: Bool {
+            if case .updatingSince = self { true } else { false }
+        }
         
         var debugDescription: String {
             switch self {

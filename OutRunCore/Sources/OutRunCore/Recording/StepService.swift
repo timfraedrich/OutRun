@@ -133,6 +133,10 @@ class StepService {
         /// Failed with the specified error.
         case failed(Error)
         
+        var isCollectingData: Bool {
+            if case .updatingSince = self { true } else { false }
+        }
+        
         var debugDescription: String {
             switch self {
             case .initializing: ".initializing"
@@ -162,6 +166,7 @@ class StepService {
     }
     
     // MARK: - StepServiceError
+    
     enum StepServiceError: LocalizedError, CustomDebugStringConvertible {
         
         case stepsNotAvailable

@@ -151,6 +151,14 @@ public class LocationService: NSObject {
             }
         }
         
+        /// Indicates whether sufficient permission to record location data was granted by the user.
+        public var locationAuthorizationSufficient: Bool {
+            switch self {
+            case .missingAuthorization, .restrictedAuthorization, .deniedAuthorization: false
+            default: true
+            }
+        }
+        
         public var debugDescription: String {
             switch self {
             case .initializing: ".initializing"

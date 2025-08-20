@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 import SwiftData
 
@@ -43,6 +44,19 @@ public class WorkoutRouteDataSample: Equatable {
             horizontalAccuracy: rawRouteSample.horizontalAccuracy,
             verticalAccuracy: rawRouteSample.verticalAccuracy,
             speed: rawRouteSample.speed,
+            workout: workout
+        )
+    }
+    
+    convenience init(from location: CLLocation, attachTo workout: Workout) {
+        self.init(
+            timestamp: location.timestamp,
+            latitude: location.coordinate.latitude,
+            longitude: location.coordinate.longitude,
+            altitude: Float(location.altitude),
+            horizontalAccuracy: Float(location.horizontalAccuracy),
+            verticalAccuracy: Float(location.verticalAccuracy),
+            speed: Float(location.speed),
             workout: workout
         )
     }
