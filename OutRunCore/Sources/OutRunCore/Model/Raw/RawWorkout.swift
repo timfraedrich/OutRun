@@ -8,7 +8,7 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
     public var startDate: Date
     public var endDate: Date?
     public var energy: Double?
-    public var steps: Int?
+    public var repetitions: Int?
     public var isRace: Bool
     public var name: String?
     public var comment: String?
@@ -29,7 +29,7 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
         startDate: Date,
         endDate: Date?,
         energy: Double?,
-        steps: Int?,
+        repetitions: Int?,
         isRace: Bool,
         name: String?,
         comment: String?,
@@ -48,7 +48,7 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
         self.startDate = startDate
         self.endDate = endDate
         self.energy = energy
-        self.steps = steps
+        self.repetitions = repetitions
         self.isRace = isRace
         self.name = name
         self.comment = comment
@@ -70,7 +70,7 @@ public struct RawWorkout: Codable, Equatable, Identifiable {
             startDate: workout.startDate,
             endDate: workout.endDate,
             energy: workout.energy,
-            steps: workout.steps,
+            repetitions: workout.repetitions,
             isRace: workout.isRace,
             name: workout.name,
             comment: workout.comment,

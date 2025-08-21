@@ -13,7 +13,8 @@ public class Workout: Equatable, Identifiable {
     public var endDate: Date?
     /// - note: Energy is provided in joules, if nil no energy was recorded.
     public var energy: Double?
-    public var steps: Int?
+    /// - note: Repetitions can be steps or cycle strokes depending on the workout type.
+    public var repetitions: Int?
     public var isRace: Bool
     
     public var name: String?
@@ -35,7 +36,7 @@ public class Workout: Equatable, Identifiable {
         startDate: Date,
         endDate: Date?,
         energy: Double?,
-        steps: Int?,
+        repetitions: Int?,
         isRace: Bool,
         name: String?,
         comment: String? = nil,
@@ -49,7 +50,7 @@ public class Workout: Equatable, Identifiable {
         self.startDate = startDate
         self.endDate = endDate
         self.energy = energy
-        self.steps = steps
+        self.repetitions = repetitions
         self.isRace = isRace
         self.name = name
         self.comment = comment
@@ -68,7 +69,7 @@ public class Workout: Equatable, Identifiable {
             startDate: rawWorkout.startDate,
             endDate: rawWorkout.endDate,
             energy: rawWorkout.energy,
-            steps: rawWorkout.steps,
+            repetitions: rawWorkout.repetitions,
             isRace: rawWorkout.isRace,
             name: rawWorkout.name,
             comment: rawWorkout.comment,
