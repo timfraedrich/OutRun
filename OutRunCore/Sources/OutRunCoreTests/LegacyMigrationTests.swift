@@ -74,15 +74,15 @@ struct LegacyMigrationTests {
         return try JSONDecoder().decode(LegacyBackup<C>.self, from: data).workoutData
     }
     
-    private func readV1ExampleData() throws -> [RawDataModelV1.Workout] {
+    private func readV1ExampleData() throws -> [LegacyRawDataModelV1.Workout] {
         try readExampleData(filename: "OutRunV1")
     }
     
-    private func readV2ExampleData() throws -> [RawDataModelV2.Workout] {
+    private func readV2ExampleData() throws -> [LegacyRawDataModelV2.Workout] {
         try readExampleData(filename: "OutRunV2")
     }
     
-    private func readV3ExampleData() throws -> [RawDataModelV3.Workout] {
+    private func readV3ExampleData() throws -> [LegacyRawDataModelV3.Workout] {
         try readExampleData(filename: "OutRunV3")
     }
     
@@ -106,7 +106,7 @@ struct LegacyMigrationTests {
         try readExpectedResults(filename: "ExpectationOutRunV3")
     }
     
-    private func prepareLegacyDataManager<DataModel: CoreStoreDataModel>(legacyStorageFileName: String) async throws -> LegacyDatabase<DataModel> {
+    private func prepareLegacyDataManager<DataModel: LegacyDataModel>(legacyStorageFileName: String) async throws -> LegacyDatabase<DataModel> {
         let legacyStorageURL = LegacyDatabase<DataModel>.legacyStorageURL(for: legacyStorageFileName)
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: legacyStorageURL.relativePath) {
