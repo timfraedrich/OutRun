@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RawWorkoutServiceMapping: Codable, Equatable {
+public struct RawWorkoutServiceMapping: Codable, Equatable, Sendable {
     
     public var service: WorkoutService
     public var externalId: String

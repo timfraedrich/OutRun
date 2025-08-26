@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RawWorkoutRouteDataSample: Codable, Equatable {
+public struct RawWorkoutRouteDataSample: Codable, Equatable, Sendable {
     
     public var timestamp: Date
     public var latitude: Double

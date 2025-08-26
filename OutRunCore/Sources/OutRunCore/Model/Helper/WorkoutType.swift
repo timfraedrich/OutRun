@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Equatable, RawRepresentable {
+public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Equatable, RawRepresentable, Sendable {
     
     case running
     case walking

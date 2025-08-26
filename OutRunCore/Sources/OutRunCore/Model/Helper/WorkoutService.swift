@@ -1,6 +1,6 @@
 import Foundation
 
-public enum WorkoutService: Codable, Equatable, Hashable {
+public enum WorkoutService: Codable, Equatable, Hashable, Sendable {
     
     case appleHealth
     case imported

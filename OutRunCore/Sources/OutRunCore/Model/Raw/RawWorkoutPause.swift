@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RawWorkoutPause: Codable, Equatable {
+public struct RawWorkoutPause: Codable, Equatable, Sendable {
     
     public var startDate: Date
     public var endDate: Date
