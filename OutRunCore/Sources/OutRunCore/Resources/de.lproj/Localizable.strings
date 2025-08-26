@@ -3,6 +3,7 @@
 "altitude_service_error_authorization_missing" = "Höhendaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";
 "altitude_service_error_authorization_restricted" = "Höhendaten können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
 "altitude_service_error_unknown_authorization_status" = "Höhendaten können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
+"database_error_object_not_found" = "Das Objekt konnte in der Datenbank nicht gefunden werden.";
 "step_service_error_steps_not_available" = "Schrittdaten sind auf diesem Gerät nicht verfügbar.";
 "step_service_error_authorization_denied" = "Schrittdaten können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
 "step_service_error_authorization_missing" = "Schrittdaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";

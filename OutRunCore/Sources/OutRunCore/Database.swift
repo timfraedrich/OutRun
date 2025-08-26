@@ -30,6 +30,58 @@ actor Database {
         try await manager.deleteStorage()
     }
     
+    // MARK: Recording
+    
+    func initializeWorkout(with type: WorkoutType, startDate: Date) throws -> UUID {
+        let workout = Workout(
+            type: type,
+            distance: .zero,
+            startDate: startDate,
+            endDate: nil,
+            energy: nil,
+            repetitions: nil,
+            isRace: false,
+            name: nil,
+            comment: nil,
+            creationDate: .now,
+            sourceService: .native
+        )
+        modelContext.insert(workout)
+        try modelContext.save()
+        return workout.id
+    }
+    
+    func addRouteSample(
+        _ sample: RawWorkoutRouteDataSample,
+        toWorkoutWith identifier: UUID,
+        addedDistance: Double,
+        updatedEnergy: Double? = nil,
+        updatedRepetitions: Int? = nil
+    ) throws {
+        let workout = try fetchWorkout(with: identifier)
+        modelContext.insert(WorkoutRouteDataSample(from: sample, attachTo: workout))
+        workout.distance += addedDistance
+        if let updatedEnergy = updatedEnergy { workout.energy = updatedEnergy }
+        if let updatedRepetitions = updatedRepetitions { workout.repetitions = updatedRepetitions }
+        workout.lastEditDate = .now
+        try modelContext.save()
+    }
+    
+    func addPause(_ pause: RawWorkoutPause, toWorkoutWith identifier: UUID) throws {
+        let workout = try fetchWorkout(with: identifier)
+        modelContext.insert(WorkoutPause(from: pause, attachTo: workout))
+        workout.lastEditDate = .now
+        try modelContext.save()
+    }
+    
+    func finalizeWorkout(with identifier: UUID, endDate: Date) throws -> RawWorkout {
+        let workout = try fetchWorkout(with: identifier)
+        workout.endDate = endDate
+        workout.lastEditDate = .now
+        try modelContext.save()
+        return RawWorkout(workout: workout)
+    }
+    
     // MARK: Internal
     
     private func insert(_ rawWorkout: RawWorkout) {
@@ -52,9 +104,36 @@ actor Database {
         }
     }
     
+    private func fetchWorkout(with identifier: UUID) throws -> Workout {
+        let descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
+        guard let workout = try modelContext.fetch(descriptor).first else {
+            throw DatabaseError.objectNotFound
+        }
+        return workout
+    }
+    
     // MARK: Testing
     
     func fetchWorkouts() throws -> [RawWorkout] {
         try modelContext.fetch(FetchDescriptor<Workout>()).map(RawWorkout.init)
+    }
+    
+    // MARK: DatabaseError
+    
+    enum DatabaseError: LocalizedError, CustomDebugStringConvertible {
+        
+        case objectNotFound
+        
+        var debugDescription: String {
+            switch self {
+            case .objectNotFound: ".objectNotFound"
+            }
+        }
+        
+        var errorDescription: String? {
+            switch self {
+            case .objectNotFound: R.string.localizable.database_error_object_not_found()
+            }
+        }
     }
 }

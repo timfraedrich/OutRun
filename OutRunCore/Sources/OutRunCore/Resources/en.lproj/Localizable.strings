@@ -3,6 +3,7 @@
 "altitude_service_error_authorization_missing" = "Altitude data cannot be received due to missing authorization.";
 "altitude_service_error_authorization_restricted" = "Altitude data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "altitude_service_error_unknown_authorization_status" = "Altitude data cannot be received due to an unknown authorization status.";
+"database_error_object_not_found" = "The object could not be found in the database.";
 "step_service_error_steps_not_available" = "Step data is not available on this device.";
 "step_service_error_authorization_denied" = "Step data cannot be received due to denied authorization.";
 "step_service_error_authorization_missing" = "Step data cannot be received due to missing authorization.";
