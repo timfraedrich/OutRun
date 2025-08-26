@@ -35,7 +35,7 @@ struct LegacyMigrationTests {
         #expect(await manager.storageExistsOnDisk())
         let database = try await Database(isStoredInMemoryOnly: true, legacyStorageFileName: legacyStorageFileName)
         #expect(!(await manager.storageExistsOnDisk()))
-        try checkMigratedData(actual: try database.fetchWorkouts(), expected: try readV1ExpectedResults())
+        try checkMigratedData(actual: try await database.fetchWorkouts(), expected: try readV1ExpectedResults())
     }
     
     @Test("Migrate From Legacy Database V2")
@@ -48,7 +48,7 @@ struct LegacyMigrationTests {
         #expect(await manager.storageExistsOnDisk())
         let database = try await Database(isStoredInMemoryOnly: true, legacyStorageFileName: legacyStorageFileName)
         #expect(!(await manager.storageExistsOnDisk()))
-        try checkMigratedData(actual: try database.fetchWorkouts(), expected: try readV2ExpectedResults())
+        try checkMigratedData(actual: try await database.fetchWorkouts(), expected: try readV2ExpectedResults())
     }
     
     @Test("Migrate From Legacy Database V3")
@@ -61,7 +61,7 @@ struct LegacyMigrationTests {
         #expect(await manager.storageExistsOnDisk())
         let database = try await Database(isStoredInMemoryOnly: true, legacyStorageFileName: legacyStorageFileName)
         #expect(!(await manager.storageExistsOnDisk()))
-        try checkMigratedData(actual: try database.fetchWorkouts(), expected: try readV3ExpectedResults())
+        try checkMigratedData(actual: try await database.fetchWorkouts(), expected: try readV3ExpectedResults())
     }
     
     // MARK: Helper Methods
@@ -115,10 +115,9 @@ struct LegacyMigrationTests {
         return try await LegacyDatabase<DataModel>(fileName: legacyStorageFileName)
     }
     
-    private func checkMigratedData(actual actualWorkouts: [Workout], expected expectedWorkouts: [RawWorkout]) throws {
+    private func checkMigratedData(actual actualWorkouts: [RawWorkout], expected expectedWorkouts: [RawWorkout]) throws {
         let sortDescriptor = SortDescriptor<RawWorkout>(\.startDate)
-        let rawWorkouts = actualWorkouts.map(RawWorkout.init)
-        #expect(Set(rawWorkouts.map(\.id)) == Set(expectedWorkouts.map(\.id)))
-        #expect(rawWorkouts.sorted(using: sortDescriptor) == expectedWorkouts.sorted(using: sortDescriptor))
+        #expect(Set(actualWorkouts.map(\.id)) == Set(expectedWorkouts.map(\.id)))
+        #expect(actualWorkouts.sorted(using: sortDescriptor) == expectedWorkouts.sorted(using: sortDescriptor))
     }
 }

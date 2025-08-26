@@ -1,8 +1,8 @@
+import Foundation
 import SwiftData
 
-class Database {
-    
-    let modelContainer: ModelContainer
+@ModelActor
+actor Database {
     
     init(
         isStoredInMemoryOnly: Bool = false,
@@ -18,46 +18,43 @@ class Database {
             groupContainer: groupContainer,
             cloudKitDatabase: .none
         )
-        modelContainer = try ModelContainer(for: schema, migrationPlan: nil, configurations: config)
+        self.init(modelContainer: try ModelContainer(for: schema, migrationPlan: nil, configurations: config))
         
         guard LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: legacyStorageFileName) else { return }
         let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
         let legacyRawWorkouts = try await manager.extractAllWorkouts().map(RawWorkout.init)
-        let context = ModelContext(modelContainer)
         for rawWorkout in legacyRawWorkouts {
-            insert(rawWorkout, into: context)
+            insert(rawWorkout)
         }
-        try context.save()
+        try modelContext.save()
         try await manager.deleteStorage()
     }
     
-    func fetchWorkouts() throws -> [Workout] {
-        try ModelContext(modelContainer).fetch(FetchDescriptor<Workout>())
-    }
+    // MARK: Internal
     
-    func insert(_ workout: Workout) throws {
-        let context = ModelContext(modelContainer)
-        context.insert(workout)
-        try context.save()
-    }
-    
-    private func insert(_ rawWorkout: RawWorkout, into context: ModelContext) {
+    private func insert(_ rawWorkout: RawWorkout) {
         let workout = Workout(from: rawWorkout)
-        context.insert(workout)
+        modelContext.insert(workout)
         for rawRouteSample in rawWorkout.route {
-            context.insert(WorkoutRouteDataSample(from: rawRouteSample, attachTo: workout))
+            modelContext.insert(WorkoutRouteDataSample(from: rawRouteSample, attachTo: workout))
         }
         for rawHeartRateSample in rawWorkout.heartRates {
-            context.insert(WorkoutHeartRateDataSample(from: rawHeartRateSample, attachTo: workout))
+            modelContext.insert(WorkoutHeartRateDataSample(from: rawHeartRateSample, attachTo: workout))
         }
         for rawPause in rawWorkout.pauses {
-            context.insert(WorkoutPause(from: rawPause, attachTo: workout))
+            modelContext.insert(WorkoutPause(from: rawPause, attachTo: workout))
         }
         for rawEvent in rawWorkout.events {
-            context.insert(WorkoutEvent(from: rawEvent, attachTo: workout))
+            modelContext.insert(WorkoutEvent(from: rawEvent, attachTo: workout))
         }
         for rawServiceMapping in rawWorkout.serviceMappings {
-            context.insert(WorkoutServiceMapping(from: rawServiceMapping, attachTo: workout))
+            modelContext.insert(WorkoutServiceMapping(from: rawServiceMapping, attachTo: workout))
         }
+    }
+    
+    // MARK: Testing
+    
+    func fetchWorkouts() throws -> [RawWorkout] {
+        try modelContext.fetch(FetchDescriptor<Workout>()).map(RawWorkout.init)
     }
 }
