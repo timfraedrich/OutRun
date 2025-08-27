@@ -24,7 +24,7 @@ actor Database {
         let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
         let legacyRawWorkouts = try await manager.extractAllWorkouts().map(RawWorkout.init)
         for rawWorkout in legacyRawWorkouts {
-            insert(rawWorkout)
+            try insert(rawWorkout)
         }
         try modelContext.save()
         try await manager.deleteStorage()
@@ -49,6 +49,16 @@ actor Database {
         modelContext.insert(workout)
         try modelContext.save()
         return workout.id
+    }
+    
+    func continueWorkout(with identifier: UUID, continueDate: Date) throws -> RawWorkout {
+        let workout = try fetchWorkout(with: identifier)
+        guard let endDate = workout.endDate else { throw DatabaseError.workoutNotFinished }
+        workout.endDate = nil
+        modelContext.insert(WorkoutPause(startDate: endDate, endDate: continueDate, userInitiated: true, workout: workout))
+        workout.lastEditDate = .now
+        try modelContext.save()
+        return RawWorkout(workout: workout)
     }
     
     func addRouteSample(
@@ -84,7 +94,17 @@ actor Database {
     
     // MARK: Internal
     
-    private func insert(_ rawWorkout: RawWorkout) {
+    private func fetchWorkout(with identifier: UUID) throws -> Workout {
+        let descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
+        guard let workout = try modelContext.fetch(descriptor).first else {
+            throw DatabaseError.objectNotFound
+        }
+        return workout
+    }
+    
+    // MARK: Testing
+    
+    func insert(_ rawWorkout: RawWorkout) throws {
         let workout = Workout(from: rawWorkout)
         modelContext.insert(workout)
         for rawRouteSample in rawWorkout.route {
@@ -102,17 +122,8 @@ actor Database {
         for rawServiceMapping in rawWorkout.serviceMappings {
             modelContext.insert(WorkoutServiceMapping(from: rawServiceMapping, attachTo: workout))
         }
+        try modelContext.save()
     }
-    
-    private func fetchWorkout(with identifier: UUID) throws -> Workout {
-        let descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
-        guard let workout = try modelContext.fetch(descriptor).first else {
-            throw DatabaseError.objectNotFound
-        }
-        return workout
-    }
-    
-    // MARK: Testing
     
     func fetchWorkouts() throws -> [RawWorkout] {
         try modelContext.fetch(FetchDescriptor<Workout>()).map(RawWorkout.init)
@@ -122,17 +133,22 @@ actor Database {
     
     enum DatabaseError: LocalizedError, CustomDebugStringConvertible {
         
+        /// The object was not found in the database.
         case objectNotFound
+        /// The function ``Database/continueWorkout(with:continueDate:)`` was called on a workout that has not been finished.
+        case workoutNotFinished
         
         var debugDescription: String {
             switch self {
             case .objectNotFound: ".objectNotFound"
+            case .workoutNotFinished: ".workoutNotFinished"
             }
         }
         
         var errorDescription: String? {
             switch self {
             case .objectNotFound: R.string.localizable.database_error_object_not_found()
+            case .workoutNotFinished: R.string.localizable.database_error_workout_not_finished()
             }
         }
     }
