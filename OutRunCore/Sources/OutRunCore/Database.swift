@@ -69,6 +69,7 @@ actor Database {
         updatedRepetitions: Int? = nil
     ) throws {
         let workout = try fetchWorkout(with: identifier)
+        guard workout.endDate == nil else { throw DatabaseError.workoutAlreadyFinished }
         modelContext.insert(WorkoutRouteDataSample(from: sample, attachTo: workout))
         workout.distance += addedDistance
         if let updatedEnergy = updatedEnergy { workout.energy = updatedEnergy }
@@ -79,17 +80,25 @@ actor Database {
     
     func addPause(_ pause: RawWorkoutPause, toWorkoutWith identifier: UUID) throws {
         let workout = try fetchWorkout(with: identifier)
+        guard workout.endDate == nil else { throw DatabaseError.workoutAlreadyFinished }
         modelContext.insert(WorkoutPause(from: pause, attachTo: workout))
         workout.lastEditDate = .now
         try modelContext.save()
     }
     
-    func finalizeWorkout(with identifier: UUID, endDate: Date) throws -> RawWorkout {
+    func finalizeWorkout(with identifier: UUID, endDate: Date) throws -> RawWorkout? {
         let workout = try fetchWorkout(with: identifier)
-        workout.endDate = endDate
-        workout.lastEditDate = .now
-        try modelContext.save()
-        return RawWorkout(workout: workout)
+        guard workout.endDate == nil else { throw DatabaseError.workoutAlreadyFinished }
+        if workout.distance > .zero {
+            workout.endDate = endDate
+            workout.lastEditDate = .now
+            try modelContext.save()
+            return RawWorkout(workout: workout)
+        } else {
+            modelContext.delete(workout)
+            try modelContext.save()
+            return nil
+        }
     }
     
     // MARK: Internal
@@ -137,11 +146,14 @@ actor Database {
         case objectNotFound
         /// The function ``Database/continueWorkout(with:continueDate:)`` was called on a workout that has not been finished.
         case workoutNotFinished
+        /// Functions meant for manipulation during recording were called after a workout had already been finished.
+        case workoutAlreadyFinished
         
         var debugDescription: String {
             switch self {
             case .objectNotFound: ".objectNotFound"
             case .workoutNotFinished: ".workoutNotFinished"
+            case .workoutAlreadyFinished: ".workoutAlreadyFinished"
             }
         }
         
@@ -149,6 +161,7 @@ actor Database {
             switch self {
             case .objectNotFound: R.string.localizable.database_error_object_not_found()
             case .workoutNotFinished: R.string.localizable.database_error_workout_not_finished()
+            case .workoutAlreadyFinished: R.string.localizable.database_error_workout_already_finished()
             }
         }
     }
