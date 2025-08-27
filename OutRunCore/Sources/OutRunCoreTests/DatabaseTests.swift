@@ -36,6 +36,28 @@ struct DatabaseTests {
         #expect(resultWorkout == exampleWorkout)
     }
     
+    @Test("Continue Workout Recording")
+    func continueWorkoutRecording() async throws {
+        let exampleWorkout = try readExampleWorkout()
+        guard let endDate = exampleWorkout.endDate else { throw "Example workout has no end date." }
+        let database = try await Database(isStoredInMemoryOnly: true)
+        try await database.insert(exampleWorkout)
+        let continueDate = endDate.addingTimeInterval(37)
+        _ = try await database.continueWorkout(with: exampleWorkout.id, continueDate: continueDate)
+        let newEndDate = continueDate.addingTimeInterval(10)
+        var resultWorkout = try await database.finalizeWorkout(with: exampleWorkout.id, endDate: newEndDate)
+        #expect(resultWorkout.endDate == newEndDate)
+        #expect(resultWorkout.pauses.count == exampleWorkout.pauses.count + 1)
+        guard let lastPause = resultWorkout.pauses.sorted(by: { $0.endDate < $1.endDate }).last else {
+            throw "Result workout has no pauses."
+        }
+        #expect(lastPause.startDate == endDate && lastPause.endDate == continueDate)
+        resultWorkout.pauses.removeAll { $0 == lastPause }
+        resultWorkout.endDate = endDate
+        resultWorkout.lastEditDate = exampleWorkout.lastEditDate
+        #expect(resultWorkout == exampleWorkout)
+    }
+    
     private static let exampleWorkoutFileName = "ExampleWorkout"
     
     private func readExampleWorkout() throws -> RawWorkout {
