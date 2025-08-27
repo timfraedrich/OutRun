@@ -32,6 +32,9 @@ actor Database {
     
     // MARK: Recording
     
+    /// Initializes a workout for live recording.
+    /// - returns: The identifier of the initialized workout.
+    /// - throws: Throws if saving the workout fails.
     func initializeWorkout(with type: WorkoutType, startDate: Date) throws -> UUID {
         let workout = Workout(
             type: type,
@@ -51,6 +54,12 @@ actor Database {
         return workout.id
     }
     
+    /// Continues a workout that has previously been finished.
+    /// - returns: The current state of the workout to restore the recording process.
+    /// - throws: Throws if the workout cannot be found, is not yet finished or saving changes fails.
+    /// - note: A user initiated pause from the current endDate to the continueDate is added to the workout to indicate that the user
+    /// interrupted the recording process. This can lead to a very long pause in the workout. For UX reasons the user should only be able to
+    /// continue very recently finished workouts.
     func continueWorkout(with identifier: UUID, continueDate: Date) throws -> RawWorkout {
         let workout = try fetchWorkout(with: identifier)
         guard let endDate = workout.endDate else { throw DatabaseError.workoutNotFinished }
@@ -61,6 +70,8 @@ actor Database {
         return RawWorkout(workout: workout)
     }
     
+    /// Adds a route sample to a workout currently being recorded.
+    /// - throws: Throws if the workout cannot be found, is already finished or saving it fails.
     func addRouteSample(
         _ sample: RawWorkoutRouteDataSample,
         toWorkoutWith identifier: UUID,
@@ -78,6 +89,8 @@ actor Database {
         try modelContext.save()
     }
     
+    /// Adds a pause to a workout currently being recorded.
+    /// - throws: Throws if the workout cannot be found, is already finished or saving it fails.
     func addPause(_ pause: RawWorkoutPause, toWorkoutWith identifier: UUID) throws {
         let workout = try fetchWorkout(with: identifier)
         guard workout.endDate == nil else { throw DatabaseError.workoutAlreadyFinished }
@@ -86,6 +99,9 @@ actor Database {
         try modelContext.save()
     }
     
+    /// Finalizes a workout currently being recorded and saves or discards it based on the recorded distance.
+    /// - returns: A `RawWorkout` representing the final recorded workout if the recorded distance is larger than zero, `nil` otherwise.
+    /// - throws: Throws if the workout cannot be found, is already finished or saving it fails.
     func finalizeWorkout(with identifier: UUID, endDate: Date) throws -> RawWorkout? {
         let workout = try fetchWorkout(with: identifier)
         guard workout.endDate == nil else { throw DatabaseError.workoutAlreadyFinished }
