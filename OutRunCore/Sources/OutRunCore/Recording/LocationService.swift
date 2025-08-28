@@ -50,7 +50,7 @@ public class LocationService: NSObject {
             logger.info("Stop of location updates was requested.")
         }
         if case .failed(let error) = status {
-            logger.critical("Location service failed with error: \((error as NSError).debugDescription)")
+            logger.critical("Location service failed with error: \((error as CustomDebugStringConvertible).debugDescription)")
         }
     }
     
@@ -167,7 +167,7 @@ public class LocationService: NSObject {
             case .deniedAuthorization: ".deniedAuthorization"
             case .idle: ".idle"
             case .recording: ".recording"
-            case .failed(let error): ".failed(\((error as NSError).debugDescription)"
+            case .failed(let error): ".failed(\((error as CustomDebugStringConvertible).debugDescription)"
             }
         }
         

@@ -145,7 +145,7 @@ class StepService {
             case .deniedAuthorization: ".deniedAuthorization"
             case .idle: ".idle"
             case .updatingSince(let date): ".updatingSince(\(date.formatted(.iso8601)))"
-            case .failed(let error): ".failed(\((error as NSError).debugDescription)"
+            case .failed(let error): ".failed(\((error as CustomDebugStringConvertible).debugDescription)"
             }
         }
         
