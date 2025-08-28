@@ -1,24 +1,16 @@
+import Combine
 import Foundation
 import SwiftData
 
-@ModelActor
-actor Database {
+actor Database: ModelActor {
     
-    init(
-        isStoredInMemoryOnly: Bool = false,
-        groupContainer: ModelConfiguration.GroupContainer = .automatic,
-        legacyStorageFileName: String? = nil
-    ) async throws {
-        
-        let schema = Schema(versionedSchema: ModelSchema.self)
-        let config = ModelConfiguration(
-            schema: schema,
-            isStoredInMemoryOnly: isStoredInMemoryOnly,
-            allowsSave: true,
-            groupContainer: groupContainer,
-            cloudKitDatabase: .none
-        )
-        self.init(modelContainer: try ModelContainer(for: schema, migrationPlan: nil, configurations: config))
+    public nonisolated let modelContainer: ModelContainer
+    public nonisolated let modelExecutor: any ModelExecutor
+    
+    init(modelContainer: ModelContainer, legacyStorageFileName: String? = nil) async throws {
+        self.modelContainer = modelContainer
+        let modelContext = ModelContext(modelContainer)
+        modelExecutor = DefaultSerialModelExecutor(modelContext: modelContext)
         
         guard LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: legacyStorageFileName) else { return }
         let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
@@ -129,6 +121,17 @@ actor Database {
     
     // MARK: Testing
     
+    init(
+        isStoredInMemoryOnly: Bool = false,
+        groupContainer: ModelConfiguration.GroupContainer = .automatic,
+        legacyStorageFileName: String? = nil
+    ) async throws {
+        try await self.init(
+            modelContainer: try Self.modelContainer(isStoredInMemoryOnly: isStoredInMemoryOnly, groupContainer: groupContainer),
+            legacyStorageFileName: legacyStorageFileName
+        )
+    }
+    
     func insert(_ rawWorkout: RawWorkout) throws {
         let workout = Workout(from: rawWorkout)
         modelContext.insert(workout)
@@ -180,5 +183,24 @@ actor Database {
             case .workoutAlreadyFinished: R.string.localizable.database_error_workout_already_finished()
             }
         }
+    }
+    
+    // MARK: Static
+    
+    static func modelContainer(
+        isStoredInMemoryOnly: Bool = false,
+        groupContainer: ModelConfiguration.GroupContainer = .automatic
+    ) throws -> ModelContainer {
+        // If migrations get added, prevent extensions to automatically migrate to avoid crashes.
+        // See https://developer.apple.com/forums/thread/773637?answerId=824240022#824240022 to handle this properly.
+        let schema = Schema(versionedSchema: ModelSchema.self)
+        let config = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: isStoredInMemoryOnly,
+            allowsSave: true,
+            groupContainer: groupContainer,
+            cloudKitDatabase: .none
+        )
+        return try ModelContainer(for: schema, migrationPlan: nil, configurations: config)
     }
 }
