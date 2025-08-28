@@ -21,7 +21,6 @@ public enum WorkoutEventType: Codable, CustomDebugStringConvertible, Equatable, 
         self.init(rawValue: rawValue ?? -1)
     }
     
-    // TODO: Extract from database package
     public init?(healthType: HKWorkoutEventType) {
         switch healthType {
         case .lap: self = .lap
@@ -49,7 +48,6 @@ public enum WorkoutEventType: Codable, CustomDebugStringConvertible, Equatable, 
         }
     }
     
-    // TODO: Extract from database package
     public var healthKitType: HKWorkoutEventType? {
         switch self {
         case .lap: .lap

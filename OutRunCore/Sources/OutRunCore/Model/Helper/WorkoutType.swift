@@ -25,7 +25,6 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Eq
         self.init(rawValue: rawValue ?? -1)
     }
     
-    // TODO: Extract from database package
     public init?(hkType: HKWorkoutActivityType) {
         switch hkType {
         case .running: self = .running
@@ -59,7 +58,6 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Eq
         }
     }
     
-    // TODO: Extract from database package
     // TODO: Revisit values
     public var METSpeedMultiplier: Double {
         switch self {
@@ -71,7 +69,6 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Eq
         }
     }
     
-    // TODO: Extract from database package
     public var healthKitType: HKWorkoutActivityType {
         switch self {
         case .running: .running
@@ -83,7 +80,6 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Eq
         }
     }
     
-    // TODO: Extract from database package
     public var healthKitDistanceType: HKQuantityType? {
         switch self {
         case .running, .walking, .hiking: .init(.distanceWalkingRunning)
