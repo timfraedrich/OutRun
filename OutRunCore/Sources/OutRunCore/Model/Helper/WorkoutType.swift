@@ -91,4 +91,18 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Eq
         default: nil
         }
     }
+    
+    public var supportsAutomaticPause: Bool {
+        automaticPauseThresholds != nil
+    }
+    
+    public var automaticPauseThresholds: (pauseThreshold: Double, resumeThreshold: Double)? {
+        let kilometersPerHour = Calculation.calculateBaseSpeedUnitValue(kilometersPerHour:)
+        return switch self {
+        case .running: (kilometersPerHour(4), kilometersPerHour(5))
+        case .walking: (kilometersPerHour(1.5), kilometersPerHour(2))
+        case .cycling: (kilometersPerHour(9), kilometersPerHour(12))
+        case .hiking, .skating, .unknown: nil
+        }
+    }
 }

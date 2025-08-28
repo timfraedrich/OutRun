@@ -16,3 +16,17 @@
 "motion_activity_service_error_authorization_missing" = "Motion activity data cannot be received due to missing authorization.";
 "motion_activity_service_error_authorization_restricted" = "Motion activity data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "motion_activity_service_error_unknown_authorization_status" = "Motion activity data cannot be received due to an unknown authorization status.";
+"workout_recorder_error_already_paused" = "The workout is already paused.";
+"workout_recorder_error_already_recording" = "A workout is already being recorded.";
+"workout_recorder_error_in_failed_state" = "Cannot record a workout at this moment. A restart of this app might solve the underlying problem.";
+"workout_recorder_error_invalid_status_transition" = "The performed action is not allowed in the current state.";
+"workout_recorder_error_location_authorization_insufficient" = "The recording could not be started, as the location authorization is insufficient.";
+"workout_recorder_error_not_initialized" = "The app was not ready for recording yet, please try again.";
+"workout_recorder_error_not_paused" = "The workout is not paused.";
+"workout_recorder_error_not_recording" = "No workout is being recorded.";
+"workout_recorder_status_failed" = "Error";
+"workout_recorder_status_idle" = "Ready";
+"workout_recorder_status_initializing" = "Loading";
+"workout_recorder_status_paused_automatic" = "Auto paused";
+"workout_recorder_status_paused_manual" = "Paused";
+"workout_recorder_status_recording" = "Recording";

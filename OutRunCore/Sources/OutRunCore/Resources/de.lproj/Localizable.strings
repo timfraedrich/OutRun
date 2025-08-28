@@ -16,4 +16,19 @@
 "motion_activity_service_error_authorization_missing" = "Daten zur Bewegungsaktivität können aufgrund fehlender Berechtigung nicht abgerufen werden.";
 "motion_activity_service_error_authorization_restricted" = "Daten zur Bewegungsaktivität können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
 "motion_activity_service_error_unknown_authorization_status" = "Daten zur Bewegungsaktivität können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
+"workout_recorder_error_already_paused" = "Das Workout ist bereits pausiert.";
+"workout_recorder_error_already_recording" = "Das Workout wird bereits aufgezeichnet.";
+"workout_recorder_error_in_failed_state" = "Es kann gerade kein Workout aufgezeichnet werden. Ein Neustart könnte das Problem beheben.";
+"workout_recorder_error_invalid_status_transition" = "Diese Aktion ist im aktuellen Zustand nicht möglich.";
+"workout_recorder_error_location_authorization_insufficient" = "Die Aufzeichnung konnte nicht gestartet werden, da keine ausreichende Standort-Berechtigung erteilt wurde.";
+"workout_recorder_error_not_initialized" = "Die App war noch nicht bereit für die Aufzeichnung, bitte erneut versuchen.";
+"workout_recorder_error_not_paused" = "Das Workout ist nicht pausiert.";
+"workout_recorder_error_not_recording" = "Es wird gerade kein Workout aufgezeichnet.";
+"workout_recorder_status_failed" = "Fehler";
+"workout_recorder_status_idle" = "Bereit";
+"workout_recorder_status_initializing" = "Lädt";
+"workout_recorder_status_paused_automatic" = "Auto pausiert";
+"workout_recorder_status_paused_manual" = "Pausiert";
+"workout_recorder_status_recording" = "Nimmt auf";
+
 
