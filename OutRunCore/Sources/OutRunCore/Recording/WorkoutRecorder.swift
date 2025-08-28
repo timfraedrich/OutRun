@@ -121,10 +121,10 @@ public class WorkoutRecorder {
             } else {
                 try transition(to: .recording)
             }
-            logger.info("\(identifier == nil ? "Continued" : "Started") recording workout.")
+            logger.info("\(identifier == nil ? "Started" : "Continued") recording workout.")
         } catch {
             let errorDescription = (error as CustomDebugStringConvertible).debugDescription
-            logger.error("Failed to \(identifier == nil ? "continue" : "start") recording workout: \(errorDescription).")
+            logger.error("Failed to \(identifier == nil ? "start" : "continue") recording workout: \(errorDescription).")
             throw error
         }
     }
