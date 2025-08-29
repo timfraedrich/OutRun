@@ -10,6 +10,10 @@ public class WorkoutPause: Equatable {
     
     @Relationship(deleteRule: .nullify) public var workout: Workout
     
+    public var duration: TimeInterval {
+        startDate.distance(to: endDate)
+    }
+    
     public init(startDate: Date, endDate: Date, userInitiated: Bool, workout: Workout) {
         self.startDate = startDate
         self.endDate = endDate
