@@ -48,3 +48,9 @@
 "workout_recorder_status_paused_automatic" = "Auto pausiert";
 "workout_recorder_status_paused_manual" = "Pausiert";
 "workout_recorder_status_recording" = "Nimmt auf";
+"workout_type_cycling" = "Radfahren";
+"workout_type_hiking" = "Wandern";
+"workout_type_running" = "Laufen";
+"workout_type_skating" = "Skaten";
+"workout_type_unknown" = "Unbekannt";
+"workout_type_walking" = "Gehen";

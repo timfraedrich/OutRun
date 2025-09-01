@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Equatable, RawRepresentable, Sendable {
+public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, CustomStringConvertible, Equatable, RawRepresentable, Sendable {
     
     case running
     case walking
@@ -44,6 +44,17 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Eq
         case .skating: 3
         case .hiking: 4
         case .unknown: -1
+        }
+    }
+    
+    public var description: String {
+        switch self {
+        case .running: R.string.localizable.workout_type_running()
+        case .walking: R.string.localizable.workout_type_walking()
+        case .cycling: R.string.localizable.workout_type_cycling()
+        case .skating: R.string.localizable.workout_type_skating()
+        case .hiking: R.string.localizable.workout_type_hiking()
+        case .unknown: R.string.localizable.workout_type_unknown()
         }
     }
     
