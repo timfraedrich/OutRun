@@ -1,10 +1,10 @@
 import Foundation
 
-public enum WorkoutMetric {
+public enum WorkoutMetric: CustomStringConvertible {
     
     case distance
-    case ascend
-    case descend
+    case ascent
+    case descent
     case repetitions
     
     case date
@@ -20,20 +20,39 @@ public enum WorkoutMetric {
     case energy
     case energyPerMinute
     
-    // TODO: add chaching (uuid_lasteditdate_metric)
+    public var description: String {
+        switch self {
+        case .distance: R.string.localizable.workout_metric_distance()
+        case .ascent: R.string.localizable.workout_metric_ascent()
+        case .descent: R.string.localizable.workout_metric_descent()
+        case .repetitions: R.string.localizable.workout_metric_repetitions()
+        case .date: R.string.localizable.workout_metric_date()
+        case .activeDuration: R.string.localizable.workout_metric_active_duration()
+        case .pauseDuration: R.string.localizable.workout_metric_pause_duration()
+        case .pace: R.string.localizable.workout_metric_pace()
+        case .startTime: R.string.localizable.workout_metric_start_time()
+        case .endTime: R.string.localizable.workout_metric_end_time()
+        case .averageSpeed: R.string.localizable.workout_metric_average_speed()
+        case .topSpeed: R.string.localizable.workout_metric_top_speed()
+        case .energy: R.string.localizable.workout_metric_energy()
+        case .energyPerMinute: R.string.localizable.workout_metric_energy_per_minute()
+        }
+    }
+    
+    // TODO: add caching (uuid_lasteditdate_metric)
     public func value(for workout: Workout) -> ValueRepresentation? {
         switch self {
         case .distance:
             .longDistanceMeasurement(.init(value: workout.distance, unit: .meters))
-        case .ascend:
-            if let ascend = elevation(for: workout)?.ascend {
-                .shortDistanceMeasurement(.init(value: Double(ascend), unit: .meters))
+        case .ascent:
+            if let ascent = elevation(for: workout)?.ascent {
+                .shortDistanceMeasurement(.init(value: Double(ascent), unit: .meters))
             } else {
                 nil
             }
-        case .descend:
-            if let descend = elevation(for: workout)?.descend {
-                .shortDistanceMeasurement(.init(value: Double(descend), unit: .meters))
+        case .descent:
+            if let descent = elevation(for: workout)?.descent {
+                .shortDistanceMeasurement(.init(value: Double(descent), unit: .meters))
             } else {
                 nil
             }

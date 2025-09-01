@@ -17,7 +17,7 @@ enum Calculation {
         UnitSpeed.kilometersPerHour.converter.baseUnitValue(fromValue: kilometersPerHour)
     }
     
-    typealias ElevationTouple = (ascend: Float, descend: Float)
+    typealias ElevationTouple = (ascent: Float, descent: Float)
     
     /// Computes the elevation changes (ascending and descending) from altitudes of a workouts route
     /// - parameter altitudes: the provided elevations from the route data samples
@@ -25,7 +25,7 @@ enum Calculation {
     /// least two values.
     static func calculateElevationData(from altitudes: [Float]) -> ElevationTouple? {
         guard !altitudes.isEmpty, altitudes.count > 1 else { return nil }
-        var ascend: Float = 0, descend: Float = 0
+        var ascent: Float = 0, descent: Float = 0
         let threshold: Float = 0.5 // a threshold to filter slight variation due to measurment errors
         var lastConsideredRoundedAltitude: Float?
         for (i, value) in altitudes.enumerated() {
@@ -42,12 +42,12 @@ enum Calculation {
             let difference = roundedAltitude - lastRounded
             guard abs(difference) >= threshold else { continue }
             if difference > 0 {
-                ascend += difference
+                ascent += difference
             } else if difference < 0 {
-                descend += -difference
+                descent += -difference
             }
             lastConsideredRoundedAltitude = roundedAltitude
         }
-        return (ascend, descend)
+        return (ascent, descent)
     }
 }
