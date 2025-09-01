@@ -6,6 +6,8 @@
 "database_error_object_not_found" = "The object could not be found in the database.";
 "database_error_workout_not_finished" = "The workout could not be continued, as it has not been finished.";
 "database_error_workout_already_finished" = "The recorded change could not be saved, as the workout has already been finished.";
+"date_today" = "Today";
+"date_yesterday" = "Yesterday";
 "step_service_error_steps_not_available" = "Step data is not available on this device.";
 "step_service_error_authorization_denied" = "Step data cannot be received due to denied authorization.";
 "step_service_error_authorization_missing" = "Step data cannot be received due to missing authorization.";
@@ -30,3 +32,4 @@
 "workout_recorder_status_paused_automatic" = "Auto paused";
 "workout_recorder_status_paused_manual" = "Paused";
 "workout_recorder_status_recording" = "Recording";
+

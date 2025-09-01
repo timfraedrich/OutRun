@@ -6,6 +6,8 @@
 "database_error_object_not_found" = "Das Objekt konnte in der Datenbank nicht gefunden werden.";
 "database_error_workout_already_finished" = "Die Änderung während des Aufzeichnens konnte nicht gespeichert werden, da das Workout bereits abgeschlossen wurde.";
 "database_error_workout_not_finished" = "Das Workout konnte nicht fortgeführt werden, da es noch nicht beendet wurde.";
+"date_today" = "Heute";
+"date_yesterday" = "Gestern";
 "step_service_error_steps_not_available" = "Schrittdaten sind auf diesem Gerät nicht verfügbar.";
 "step_service_error_authorization_denied" = "Schrittdaten können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
 "step_service_error_authorization_missing" = "Schrittdaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";
@@ -30,5 +32,3 @@
 "workout_recorder_status_paused_automatic" = "Auto pausiert";
 "workout_recorder_status_paused_manual" = "Pausiert";
 "workout_recorder_status_recording" = "Nimmt auf";
-
-
