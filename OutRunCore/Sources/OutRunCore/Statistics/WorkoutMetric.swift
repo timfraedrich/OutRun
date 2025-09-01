@@ -66,12 +66,12 @@ public enum WorkoutMetric: CustomStringConvertible {
             .day(workout.startDate)
         case .activeDuration:
             if let duration = activeDuration(for: workout) {
-                .hourDuration(duration)
+                .duration(duration)
             } else {
                 nil
             }
         case .pauseDuration:
-            .hourDuration(pauseDuration(for: workout))
+            .duration(pauseDuration(for: workout))
         case .pace:
             .paceMeasurement(averageSpeed(for: workout))
         case .startTime:
@@ -152,10 +152,8 @@ public enum WorkoutMetric: CustomStringConvertible {
         case day(Date)
         /// Represents a date that should be formatted as a time of day.
         case timeOfDay(Date)
-        /// Represents a duration that should be formatted as minutes and seconds.
-        case minuteDuration(TimeInterval)
         /// Represents a duration that is most likely under one day and should be formatted as hours, minutes and seconds.
-        case hourDuration(TimeInterval)
+        case duration(TimeInterval)
         /// Represents a speed that should be formatted as conventional.
         case speedMeasurement(Measurement<UnitSpeed>)
         /// Represents a speed that should be formatted as a pace (duration / major distance unit)

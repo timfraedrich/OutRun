@@ -48,11 +48,7 @@ public struct WorkoutMetricText: View {
             RelativeDayDateText(date)
         case .timeOfDay(let date):
             Text(date, format: .dateTime.hour().minute())
-        case .minuteDuration(let duration):
-            if let formattedDuration = format(duration, using: [.minute, .second]) {
-                Text(formattedDuration)
-            }
-        case .hourDuration(let duration):
+        case .duration(let duration):
             if let formattedDuration = format(duration, using: [.hour, .minute, .second]) {
                 Text(formattedDuration)
             }
@@ -70,12 +66,8 @@ public struct WorkoutMetricText: View {
         }
     }
     
-    public init(metricValue: WorkoutMetric.ValueRepresentation?) {
+    public init(metricValue: WorkoutMetric.ValueRepresentation) {
         self.metricValue = metricValue
-    }
-    
-    public init(metric: WorkoutMetric, for workout: Workout) {
-        self.init(metricValue: metric.value(for: workout))
     }
 }
 
@@ -86,8 +78,7 @@ public struct WorkoutMetricText: View {
         WorkoutMetricText(metricValue: .integerValue(42))
         WorkoutMetricText(metricValue: .day(.now))
         WorkoutMetricText(metricValue: .timeOfDay(.now))
-        WorkoutMetricText(metricValue: .minuteDuration(4 * 60 + 20))
-        WorkoutMetricText(metricValue: .hourDuration(42 * 60 + 42))
+        WorkoutMetricText(metricValue: .duration(42 * 60 + 42))
         WorkoutMetricText(metricValue: .speedMeasurement(.init(value: 5.1, unit: .metersPerSecond)))
         WorkoutMetricText(metricValue: .paceMeasurement(.init(value: 14 / 3.6, unit: .metersPerSecond)))
         WorkoutMetricText(metricValue: .energyMeasurement(.init(value: 2300 * 1000, unit: .joules)))
