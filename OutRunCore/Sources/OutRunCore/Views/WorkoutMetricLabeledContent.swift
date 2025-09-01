@@ -49,6 +49,7 @@ public struct WorkoutMetricLabeledContent<Label: View>: View {
 
 #Preview {
     VStack {
+        WorkoutMetricLabeledContent("Type", metricValue: .type(.running))
         WorkoutMetricLabeledContent("Distance", metricValue: .longDistanceMeasurement(.init(value: 4.2 * 1000, unit: .meters)))
         WorkoutMetricLabeledContent("Ascent", metricValue: .shortDistanceMeasurement(.init(value: 42, unit: .meters)))
         WorkoutMetricLabeledContent("Steps", metricValue: .integerValue(42))

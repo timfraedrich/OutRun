@@ -34,6 +34,7 @@
 "workout_metric_repetitions_cycle_strokes" = "Pedalanschläge";
 "workout_metric_start_time" = "Startzeit";
 "workout_metric_top_speed" = "Höchstgeschw.";
+"workout_metric_type" = "Typ";
 "workout_recorder_error_already_paused" = "Das Workout ist bereits pausiert.";
 "workout_recorder_error_already_recording" = "Das Workout wird bereits aufgezeichnet.";
 "workout_recorder_error_in_failed_state" = "Es kann gerade kein Workout aufgezeichnet werden. Ein Neustart könnte das Problem beheben.";

@@ -34,6 +34,7 @@
 "workout_metric_repetitions_cycle_strokes" = "Strokes";
 "workout_metric_start_time" = "Start time";
 "workout_metric_top_speed" = "Top speed";
+"workout_metric_type" = "Type";
 "workout_recorder_error_already_paused" = "The workout is already paused.";
 "workout_recorder_error_already_recording" = "A workout is already being recorded.";
 "workout_recorder_error_in_failed_state" = "Cannot record a workout at this moment. A restart of this app might solve the underlying problem.";

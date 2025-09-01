@@ -38,6 +38,8 @@ public struct WorkoutMetricText: View {
     
     public var body: some View {
         switch metricValue {
+        case .type(let type):
+            Text(type.description)
         case .longDistanceMeasurement(let measurement):
             Text(measurement.converted(to: longDistanceUnit), format: standardMeasurementFormat(UnitLength.self))
         case .shortDistanceMeasurement(let measurement):
@@ -73,6 +75,7 @@ public struct WorkoutMetricText: View {
 
 #Preview {
     VStack {
+        WorkoutMetricText(metricValue: .type(.running))
         WorkoutMetricText(metricValue: .longDistanceMeasurement(.init(value: 4.2 * 1000, unit: .meters)))
         WorkoutMetricText(metricValue: .shortDistanceMeasurement(.init(value: 42, unit: .meters)))
         WorkoutMetricText(metricValue: .integerValue(42))

@@ -2,6 +2,8 @@ import Foundation
 
 public enum WorkoutMetric: CustomStringConvertible {
     
+    case type
+    
     case distance
     case ascent
     case descent
@@ -22,6 +24,7 @@ public enum WorkoutMetric: CustomStringConvertible {
     
     public var description: String {
         switch self {
+        case .type: R.string.localizable.workout_metric_type()
         case .distance: R.string.localizable.workout_metric_distance()
         case .ascent: R.string.localizable.workout_metric_ascent()
         case .descent: R.string.localizable.workout_metric_descent()
@@ -42,6 +45,8 @@ public enum WorkoutMetric: CustomStringConvertible {
     // TODO: add caching (uuid_lasteditdate_metric)
     public func value(for workout: Workout) -> ValueRepresentation? {
         switch self {
+        case .type:
+            .type(workout.type)
         case .distance:
             .longDistanceMeasurement(.init(value: workout.distance, unit: .meters))
         case .ascent:
@@ -142,6 +147,8 @@ public enum WorkoutMetric: CustomStringConvertible {
     }
     
     public enum ValueRepresentation {
+        /// Represents the workout type
+        case type(WorkoutType)
         /// Represents long distances such as the distance covered during a workout.
         case longDistanceMeasurement(Measurement<UnitLength>)
         /// Represents short distances such as altitude changes.
