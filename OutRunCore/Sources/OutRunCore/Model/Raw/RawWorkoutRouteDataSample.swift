@@ -1,7 +1,7 @@
 import CoreLocation
 import Foundation
 
-public struct RawWorkoutRouteDataSample: Codable, Equatable, Sendable {
+public struct RawWorkoutRouteDataSample: Codable, Sendable, WorkoutRouteDataSampleProtocol {
     
     public var timestamp: Date
     public var latitude: Double

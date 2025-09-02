@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class WorkoutServiceMapping: Equatable {
+public class WorkoutServiceMapping: WorkoutServiceMappingProtocol {
     
     public var service: WorkoutService
     public var externalId: String

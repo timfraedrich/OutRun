@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class WorkoutEvent: Equatable {
+public class WorkoutEvent: WorkoutEventProtocol {
     
     public var type: WorkoutEventType
     public var timestamp: Date

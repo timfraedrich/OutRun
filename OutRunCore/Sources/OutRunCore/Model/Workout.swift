@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class Workout: Equatable, Identifiable {
+public class Workout: WorkoutProtocol {
     
     @Attribute(.unique) public private(set) var id: UUID
     

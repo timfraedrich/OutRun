@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RawWorkoutEvent: Codable, Equatable, Sendable {
+public struct RawWorkoutEvent: Codable, Sendable, WorkoutEventProtocol {
     
     public var type: WorkoutEventType
     public var timestamp: Date

@@ -3,7 +3,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class WorkoutRouteDataSample: Equatable {
+public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
     
     public var timestamp: Date
     public var latitude: Double

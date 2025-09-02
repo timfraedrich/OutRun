@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class WorkoutPause: Equatable {
+public class WorkoutPause: WorkoutPauseProtocol {
     
     public var startDate: Date
     public var endDate: Date

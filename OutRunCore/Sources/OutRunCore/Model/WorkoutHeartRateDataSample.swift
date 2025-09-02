@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class WorkoutHeartRateDataSample: Equatable {
+public class WorkoutHeartRateDataSample: WorkoutHeartRateDataSampleProtocol {
     
     public var heartRate: UInt8
     public var timestamp: Date

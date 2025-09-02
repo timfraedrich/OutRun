@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RawWorkoutHeartRateDataSample: Codable, Equatable, Sendable {
+public struct RawWorkoutHeartRateDataSample: Codable, Sendable, WorkoutHeartRateDataSampleProtocol {
     
     public var heartRate: UInt8
     public var timestamp: Date

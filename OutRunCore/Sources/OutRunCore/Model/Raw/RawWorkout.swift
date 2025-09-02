@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RawWorkout: Codable, Equatable, Identifiable, Sendable {
+public struct RawWorkout: Codable, Sendable, WorkoutProtocol {
     
     public var id: UUID
     public var type: WorkoutType
