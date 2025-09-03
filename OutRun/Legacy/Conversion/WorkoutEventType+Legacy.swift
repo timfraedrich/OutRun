@@ -1,3 +1,5 @@
+import OutRunCore
+
 extension WorkoutEventType {
     
     init?(from legacyWorkoutEventType: LegacyWorkoutEventType) {

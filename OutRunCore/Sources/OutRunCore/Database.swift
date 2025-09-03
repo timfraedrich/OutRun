@@ -7,19 +7,10 @@ actor Database: ModelActor {
     public nonisolated let modelContainer: ModelContainer
     public nonisolated let modelExecutor: any ModelExecutor
     
-    init(modelContainer: ModelContainer, legacyStorageFileName: String? = nil) async throws {
+    init(modelContainer: ModelContainer) async throws {
         self.modelContainer = modelContainer
         let modelContext = ModelContext(modelContainer)
         modelExecutor = DefaultSerialModelExecutor(modelContext: modelContext)
-        
-        guard LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: legacyStorageFileName) else { return }
-        let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
-        let legacyRawWorkouts = try await manager.extractAllWorkouts().map(RawWorkout.init)
-        for rawWorkout in legacyRawWorkouts {
-            try insert(rawWorkout)
-        }
-        try modelContext.save()
-        try await manager.deleteStorage()
     }
     
     // MARK: Recording
@@ -123,12 +114,10 @@ actor Database: ModelActor {
     
     init(
         isStoredInMemoryOnly: Bool = false,
-        groupContainer: ModelConfiguration.GroupContainer = .automatic,
-        legacyStorageFileName: String? = nil
+        groupContainer: ModelConfiguration.GroupContainer = .automatic
     ) async throws {
         try await self.init(
-            modelContainer: try Self.modelContainer(isStoredInMemoryOnly: isStoredInMemoryOnly, groupContainer: groupContainer),
-            legacyStorageFileName: legacyStorageFileName
+            modelContainer: try Self.modelContainer(isStoredInMemoryOnly: isStoredInMemoryOnly, groupContainer: groupContainer)
         )
     }
     
