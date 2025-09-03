@@ -16,7 +16,18 @@
 		22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E252DEA0EA400CCF525 /* OutRunCore */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		223D71C62E6889BF0088F92C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22BC117A2DE61964008B0A4C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22BC11812DE61964008B0A4C;
+			remoteInfo = OutRun;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		223D71C22E6889BF0088F92C /* OutRunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutRunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		224B42562E1EC7EA0089C1B1 /* OutRunCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OutRunCore; sourceTree = "<group>"; };
 		22BC11822DE61964008B0A4C /* OutRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -32,6 +43,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		223D71C32E6889BF0088F92C /* OutRunTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OutRunTests;
+			sourceTree = "<group>";
+		};
 		22AD53FA2DE626EA007297E7 /* OutRun */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -43,6 +59,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		223D71BF2E6889BF0088F92C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22BC117F2DE61964008B0A4C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -65,6 +88,7 @@
 			children = (
 				22AD53FA2DE626EA007297E7 /* OutRun */,
 				224B42562E1EC7EA0089C1B1 /* OutRunCore */,
+				223D71C32E6889BF0088F92C /* OutRunTests */,
 				22BC11832DE61964008B0A4C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				22BC11822DE61964008B0A4C /* OutRun.app */,
+				223D71C22E6889BF0088F92C /* OutRunTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,6 +105,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		223D71C12E6889BF0088F92C /* OutRunTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 223D71C82E6889BF0088F92C /* Build configuration list for PBXNativeTarget "OutRunTests" */;
+			buildPhases = (
+				223D71BE2E6889BF0088F92C /* Sources */,
+				223D71BF2E6889BF0088F92C /* Frameworks */,
+				223D71C02E6889BF0088F92C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				223D71C72E6889BF0088F92C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				223D71C32E6889BF0088F92C /* OutRunTests */,
+			);
+			name = OutRunTests;
+			packageProductDependencies = (
+			);
+			productName = OutRunTests;
+			productReference = 223D71C22E6889BF0088F92C /* OutRunTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		22BC11812DE61964008B0A4C /* OutRun */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22BC118D2DE61965008B0A4C /* Build configuration list for PBXNativeTarget "OutRun" */;
@@ -119,6 +167,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					223D71C12E6889BF0088F92C = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 22BC11812DE61964008B0A4C;
+					};
 					22BC11812DE61964008B0A4C = {
 						CreatedOnToolsVersion = 16.3;
 					};
@@ -164,11 +216,19 @@
 			projectRoot = "";
 			targets = (
 				22BC11812DE61964008B0A4C /* OutRun */,
+				223D71C12E6889BF0088F92C /* OutRunTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		223D71C02E6889BF0088F92C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22BC11802DE61964008B0A4C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -179,6 +239,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		223D71BE2E6889BF0088F92C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22BC117E2DE61964008B0A4C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -188,7 +255,67 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		223D71C72E6889BF0088F92C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22BC11812DE61964008B0A4C /* OutRun */;
+			targetProxy = 223D71C62E6889BF0088F92C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		223D71C92E6889BF0088F92C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QT27QDFZ7N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRunTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OutRun.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OutRun";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		223D71CA2E6889BF0088F92C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QT27QDFZ7N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRunTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OutRun.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OutRun";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
 		22BC118B2DE61965008B0A4C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -387,6 +514,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		223D71C82E6889BF0088F92C /* Build configuration list for PBXNativeTarget "OutRunTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				223D71C92E6889BF0088F92C /* Debug */,
+				223D71CA2E6889BF0088F92C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		22BC117D2DE61964008B0A4C /* Build configuration list for PBXProject "OutRun" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
