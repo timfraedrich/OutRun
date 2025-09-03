@@ -4,6 +4,20 @@ import OutRunCore
 
 enum LegacyMigrationHelper {
     
+    private static var legacyStorageFileName: String { "OutRun.sqlite" }
+    
+    static var isLegacyMigrationAppropriate: Bool {
+        LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: legacyStorageFileName)
+    }
+    
+    static func performLegacyMigration(for legacyStorageFileName: String = legacyStorageFileName, core: OutRunCore) async throws {
+        guard LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: legacyStorageFileName) else { return }
+        let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
+        let legacyWorkouts = try await manager.extractAllWorkouts().map(RawWorkout.init)
+        try await core.insert(legacyWorkouts)
+        try await manager.deleteStorage()
+    }
+    
     /**
      Computes pauses from workout event data.
      - parameter events: The events from which the pauses are supposed to be calculated

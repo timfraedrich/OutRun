@@ -22,10 +22,6 @@ import Foundation
 
 extension Date {
     
-    func distance(to date: Date) -> TimeInterval {
-        return abs(date.timeIntervalSince(self))
-    }
-    
     func isSameDay(to compareDate: Date = Date()) -> Bool {
         compareDaysOnly(to: compareDate, with: [.year, .month, .day]) == 0
     }

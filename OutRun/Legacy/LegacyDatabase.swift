@@ -6,13 +6,11 @@ import Foundation
 @MainActor
 class LegacyDatabase<DataModel: LegacyDataModel> {
     
-    private nonisolated static var legacyFileName: String { "OutRun.sqlite" }
-    
-    nonisolated static func legacyStorageURL(for filename: String?) -> URL {
-        SQLiteStore(fileName: filename ?? legacyFileName).fileURL
+    nonisolated static func legacyStorageURL(for filename: String) -> URL {
+        SQLiteStore(fileName: filename).fileURL
     }
     
-    nonisolated static func legacyStorageExists(for filename: String?) -> Bool {
+    nonisolated static func legacyStorageExists(for filename: String) -> Bool {
         let legacyStorageURL = legacyStorageURL(for: filename)
         return FileManager.default.fileExists(atPath: legacyStorageURL.relativePath)
     }
@@ -24,9 +22,9 @@ class LegacyDatabase<DataModel: LegacyDataModel> {
     /// static optional instance of the local storage holding the workout data
     private var storage: SQLiteStore
     
-    init(fileName: String? = nil) async throws {
+    init(fileName: String) async throws {
         storage = .init(
-            fileName: fileName ?? Self.legacyFileName,
+            fileName: fileName,
             migrationMappingProviders: DataModel.migrationChain.compactMap { $0.mappingProvider }
         )
         let migrationChain = DataModel.migrationChain

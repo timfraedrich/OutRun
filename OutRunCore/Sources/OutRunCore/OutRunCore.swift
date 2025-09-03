@@ -9,19 +9,19 @@ public class OutRunCore: ObservableObject {
     
     @Published public var status: Status = .initializing
     
-    private var database: Database?
-    private var altitudeService: AltitudeService?
-    private var stepService: StepService?
-    public private(set) var locationService: LocationService?
-    public private(set) var workoutRecorder: WorkoutRecorder?
+    private(set) var database: Database?
+    private(set) var altitudeService: AltitudeService?
+    private(set) var stepService: StepService?
+    private(set) var locationService: LocationService?
+    private(set) var workoutRecorder: WorkoutRecorder?
     
     private let logger = Logger(category: "OutRunCore")
     let modelContainer: ModelContainer
     
     // TODO: check if workout source is apple health and reimport
-    public init() {
+    public init(isStoredInMemoryOnly: Bool = false) {
         do {
-            modelContainer = try Database.modelContainer()
+            modelContainer = try Database.modelContainer(isStoredInMemoryOnly: isStoredInMemoryOnly)
         } catch {
             // the reason we allow the app to crash in this instance is that creating the ModelContainer instance should only fail under
             // extreme circumstances (e.g. way too little disk space or concurrent migrations). For now there are no migrations and such
@@ -55,9 +55,26 @@ public class OutRunCore: ObservableObject {
         }
     }
     
-    public enum Status {
+    public func insert(_ workouts: [RawWorkout]) async throws {
+        guard status == .initialized, let database else { throw OutRunCoreError.notInitialized }
+        try await database.insert(workouts)
+    }
+    
+    public enum OutRunCoreError: Error {
+        case notInitialized
+    }
+    
+    public enum Status: Equatable, Sendable {
+        
         case initializing
         case initialized
         case failed(Error)
+        
+        public static func == (lhs: OutRunCore.Status, rhs: OutRunCore.Status) -> Bool {
+            switch (lhs, rhs) {
+            case (.initializing, .initializing), (.initialized, .initialized), (.failed, .failed): true
+            default: false
+            }
+        }
     }
 }

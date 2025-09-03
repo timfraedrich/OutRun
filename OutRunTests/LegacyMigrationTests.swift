@@ -2,9 +2,10 @@ import Foundation
 @testable import OutRun
 @testable import OutRunCore
 import Testing
+internal import Combine
 
 @Suite("Legacy Database Migration Tests")
-struct LegacyMigrationTests {
+class LegacyMigrationTests {
     
     @Test("Check Example Data")
     func checkExampleData() throws {
@@ -34,9 +35,8 @@ struct LegacyMigrationTests {
         try await manager.insert(exampleData)
         await manager.close()
         #expect(await manager.storageExistsOnDisk())
-        let database = try await Database(isStoredInMemoryOnly: true, legacyStorageFileName: legacyStorageFileName)
+        try await migrateAndCheckResults(for: legacyStorageFileName, and: try readV1ExpectedResults())
         #expect(!(await manager.storageExistsOnDisk()))
-        try checkMigratedData(actual: try await database.fetchWorkouts(), expected: try readV1ExpectedResults())
     }
     
     @Test("Migrate From Legacy Database V2")
@@ -47,9 +47,8 @@ struct LegacyMigrationTests {
         try await manager.insert(exampleData)
         await manager.close()
         #expect(await manager.storageExistsOnDisk())
-        let database = try await Database(isStoredInMemoryOnly: true, legacyStorageFileName: legacyStorageFileName)
+        try await migrateAndCheckResults(for: legacyStorageFileName, and: try readV2ExpectedResults())
         #expect(!(await manager.storageExistsOnDisk()))
-        try checkMigratedData(actual: try await database.fetchWorkouts(), expected: try readV2ExpectedResults())
     }
     
     @Test("Migrate From Legacy Database V3")
@@ -60,15 +59,15 @@ struct LegacyMigrationTests {
         try await manager.insert(exampleData)
         await manager.close()
         #expect(await manager.storageExistsOnDisk())
-        let database = try await Database(isStoredInMemoryOnly: true, legacyStorageFileName: legacyStorageFileName)
+        try await migrateAndCheckResults(for: legacyStorageFileName, and: try readV3ExpectedResults())
         #expect(!(await manager.storageExistsOnDisk()))
-        try checkMigratedData(actual: try await database.fetchWorkouts(), expected: try readV3ExpectedResults())
     }
     
     // MARK: Helper Methods
     
     private func readExampleData<C: Codable>(filename: String) throws -> [C] {
-        guard let url = Bundle.module.url(forResource: filename, withExtension: "json") else {
+        let testBundle = Bundle(for: type(of: self))
+        guard let url = testBundle.url(forResource: filename, withExtension: "json") else {
             throw "Invalid URL for example workouts json file."
         }
         let data = try Data(contentsOf: url)
@@ -88,7 +87,8 @@ struct LegacyMigrationTests {
     }
     
     private func readExpectedResults(filename: String) throws -> [RawWorkout] {
-        guard let url = Bundle.module.url(forResource: filename, withExtension: "json") else {
+        let testBundle = Bundle(for: type(of: self))
+        guard let url = testBundle.url(forResource: filename, withExtension: "json") else {
             throw "Invalid URL for expected results json file."
         }
         let data = try Data(contentsOf: url)
@@ -114,6 +114,17 @@ struct LegacyMigrationTests {
             try fileManager.removeItem(atPath: legacyStorageURL.relativePath)
         }
         return try await LegacyDatabase<DataModel>(fileName: legacyStorageFileName)
+    }
+    
+    private func migrateAndCheckResults(for legacyStorageFileName: String, and expectedResults: [RawWorkout]) async throws {
+        let core = await OutRunCore(isStoredInMemoryOnly: true)
+        var iterator = await core.$status.values.makeAsyncIterator()
+        while await iterator.next() == .initializing {}
+        let status = await core.status
+        #expect(status == .initialized)
+        guard let database = await core.database else { throw "Database was not initialized." }
+        try await LegacyMigrationHelper.performLegacyMigration(for: legacyStorageFileName, core: core)
+        try checkMigratedData(actual: try await database.fetchWorkouts(), expected: expectedResults)
     }
     
     private func checkMigratedData(actual actualWorkouts: [RawWorkout], expected expectedWorkouts: [RawWorkout]) throws {
