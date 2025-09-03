@@ -19,6 +19,7 @@
 //
 
 import CoreStore
+import Foundation
 
 protocol ORDataType: CoreStoreObject {
     

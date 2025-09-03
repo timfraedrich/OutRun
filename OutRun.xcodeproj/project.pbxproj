@@ -8,16 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22AD54992DE6274B007297E7 /* OutRunCore */; };
-		22AD549C2DE6274B007297E7 /* OutRunDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 22AD549B2DE6274B007297E7 /* OutRunDatabase */; };
-		22AD549E2DE6274B007297E7 /* OutRunRecording in Frameworks */ = {isa = PBXBuildFile; productRef = 22AD549D2DE6274B007297E7 /* OutRunRecording */; };
 		22BC132F2DE619DE008B0A4C /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC132E2DE619DE008B0A4C /* Cache */; };
 		22BC13322DE619E7008B0A4C /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC13312DE619E7008B0A4C /* CoreStore */; };
 		22BC14D02DE61D42008B0A4C /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14CF2DE61D42008B0A4C /* CombineExt */; };
 		22BC14D32DE61DA0008B0A4C /* CoreGPX in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14D22DE61DA0008B0A4C /* CoreGPX */; };
 		22BC14D62DE61DBA008B0A4C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14D52DE61DBA008B0A4C /* SnapKit */; };
 		22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E252DEA0EA400CCF525 /* OutRunCore */; };
-		22E72E282DEA0EA400CCF525 /* OutRunDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E272DEA0EA400CCF525 /* OutRunDatabase */; };
-		22E72E2A2DEA0EA400CCF525 /* OutRunRecording in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E292DEA0EA400CCF525 /* OutRunRecording */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,15 +47,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22E72E282DEA0EA400CCF525 /* OutRunDatabase in Frameworks */,
 				22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */,
 				22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */,
-				22AD549E2DE6274B007297E7 /* OutRunRecording in Frameworks */,
 				22BC132F2DE619DE008B0A4C /* Cache in Frameworks */,
 				22BC14D02DE61D42008B0A4C /* CombineExt in Frameworks */,
 				22BC13322DE619E7008B0A4C /* CoreStore in Frameworks */,
-				22E72E2A2DEA0EA400CCF525 /* OutRunRecording in Frameworks */,
-				22AD549C2DE6274B007297E7 /* OutRunDatabase in Frameworks */,
 				22BC14D32DE61DA0008B0A4C /* CoreGPX in Frameworks */,
 				22BC14D62DE61DBA008B0A4C /* SnapKit in Frameworks */,
 			);
@@ -111,11 +103,7 @@
 				22BC14D22DE61DA0008B0A4C /* CoreGPX */,
 				22BC14D52DE61DBA008B0A4C /* SnapKit */,
 				22AD54992DE6274B007297E7 /* OutRunCore */,
-				22AD549B2DE6274B007297E7 /* OutRunDatabase */,
-				22AD549D2DE6274B007297E7 /* OutRunRecording */,
 				22E72E252DEA0EA400CCF525 /* OutRunCore */,
-				22E72E272DEA0EA400CCF525 /* OutRunDatabase */,
-				22E72E292DEA0EA400CCF525 /* OutRunRecording */,
 			);
 			productName = OutRun;
 			productReference = 22BC11822DE61964008B0A4C /* OutRun.app */;
@@ -128,7 +116,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1630;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					22BC11812DE61964008B0A4C = {
@@ -355,7 +343,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -392,7 +380,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -474,14 +462,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = OutRunCore;
 		};
-		22AD549B2DE6274B007297E7 /* OutRunDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OutRunDatabase;
-		};
-		22AD549D2DE6274B007297E7 /* OutRunRecording */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OutRunRecording;
-		};
 		22BC132E2DE619DE008B0A4C /* Cache */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 22BC132D2DE619DE008B0A4C /* XCRemoteSwiftPackageReference "Cache" */;
@@ -510,14 +490,6 @@
 		22E72E252DEA0EA400CCF525 /* OutRunCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OutRunCore;
-		};
-		22E72E272DEA0EA400CCF525 /* OutRunDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OutRunDatabase;
-		};
-		22E72E292DEA0EA400CCF525 /* OutRunRecording */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OutRunRecording;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
