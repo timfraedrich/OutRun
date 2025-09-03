@@ -34,7 +34,7 @@ public struct WorkoutMetricLabeledContent<Label: View>: View {
     /// This optional initializer tries to get the metric value based on the provided metric and workout.
     /// - note: If no value is available based on the metric and workout this will result in no view being displayed. This initializer
     /// should therefore only be used if a missing metrics not being rendered at all is expected behaviour.
-    public init?(_ metric: WorkoutMetric, for workout: Workout) where Label == Text {
+    public init?(_ metric: WorkoutMetric, for workout: any WorkoutProtocol) where Label == Text {
         guard let metricValue = metric.value(for: workout) else { return nil }
         let title = if metric == .repetitions, workout.type == .cycling {
             R.string.localizable.workout_metric_repetitions_cycle_strokes()
