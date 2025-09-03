@@ -27,7 +27,7 @@ struct SetupView: View {
     var body: some View {
         AxisGeometryReader(axis: .horizontal) { outerWidth in
             VStack {
-                ProgressView(progress: viewModel.stepIndex, total: viewModel.numberOfSteps)
+                CustomProgressView(progress: viewModel.stepIndex, total: viewModel.numberOfSteps)
                 
                 GeometryReader { geometry in
                     let innerWidth = geometry.size.width

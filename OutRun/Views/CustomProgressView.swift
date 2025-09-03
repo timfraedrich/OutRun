@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-struct ProgressView: View {
+struct CustomProgressView: View {
     
     var progress: Int
     let total: Int
