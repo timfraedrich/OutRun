@@ -29,7 +29,8 @@ struct DatabaseTests {
                 try await database.addPause(sample, toWorkoutWith: identifier)
             }
         }
-        var resultWorkout = try await database.finalizeWorkout(with: identifier, endDate: endDate)
+        guard var resultWorkout = try await database.finalizeWorkout(with: identifier, endDate: endDate)
+        else { throw "Workout was incorrectly discarded" }
         resultWorkout.id = exampleWorkout.id
         resultWorkout.creationDate = exampleWorkout.creationDate
         resultWorkout.lastEditDate = exampleWorkout.lastEditDate
@@ -45,7 +46,8 @@ struct DatabaseTests {
         let continueDate = endDate.addingTimeInterval(37)
         _ = try await database.continueWorkout(with: exampleWorkout.id, continueDate: continueDate)
         let newEndDate = continueDate.addingTimeInterval(10)
-        var resultWorkout = try await database.finalizeWorkout(with: exampleWorkout.id, endDate: newEndDate)
+        guard var resultWorkout = try await database.finalizeWorkout(with: exampleWorkout.id, endDate: newEndDate)
+        else { throw "Workout was incorrectly discarded" }
         #expect(resultWorkout.endDate == newEndDate)
         #expect(resultWorkout.pauses.count == exampleWorkout.pauses.count + 1)
         guard let lastPause = resultWorkout.pauses.sorted(by: { $0.endDate < $1.endDate }).last else {
