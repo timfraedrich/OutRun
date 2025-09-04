@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		223D71EE2E68B1C90088F92C /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 223D71ED2E68B1C90088F92C /* RswiftLibrary */; };
 		22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22AD54992DE6274B007297E7 /* OutRunCore */; };
 		22BC132F2DE619DE008B0A4C /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC132E2DE619DE008B0A4C /* Cache */; };
 		22BC13322DE619E7008B0A4C /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC13312DE619E7008B0A4C /* CoreStore */; };
@@ -71,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */,
+				223D71EE2E68B1C90088F92C /* RswiftLibrary in Frameworks */,
 				22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */,
 				22BC132F2DE619DE008B0A4C /* Cache in Frameworks */,
 				22BC14D02DE61D42008B0A4C /* CombineExt in Frameworks */,
@@ -139,6 +141,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				223D71F02E68B1DB0088F92C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				22AD53FA2DE626EA007297E7 /* OutRun */,
@@ -152,6 +155,7 @@
 				22BC14D52DE61DBA008B0A4C /* SnapKit */,
 				22AD54992DE6274B007297E7 /* OutRunCore */,
 				22E72E252DEA0EA400CCF525 /* OutRunCore */,
+				223D71ED2E68B1C90088F92C /* RswiftLibrary */,
 			);
 			productName = OutRun;
 			productReference = 22BC11822DE61964008B0A4C /* OutRun.app */;
@@ -209,6 +213,7 @@
 				22BC14D12DE61DA0008B0A4C /* XCRemoteSwiftPackageReference "CoreGPX" */,
 				22BC14D42DE61DBA008B0A4C /* XCRemoteSwiftPackageReference "SnapKit" */,
 				224B42572E1EC8B10089C1B1 /* XCLocalSwiftPackageReference "OutRunCore" */,
+				223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 22BC11832DE61964008B0A4C /* Products */;
@@ -260,6 +265,10 @@
 			isa = PBXTargetDependency;
 			target = 22BC11812DE61964008B0A4C /* OutRun */;
 			targetProxy = 223D71C62E6889BF0088F92C /* PBXContainerItemProxy */;
+		};
+		223D71F02E68B1DB0088F92C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 223D71EF2E68B1DB0088F92C /* RswiftGenerateInternalResources */;
 		};
 /* End PBXTargetDependency section */
 
@@ -551,6 +560,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.8.0;
+			};
+		};
 		22BC132D2DE619DE008B0A4C /* XCRemoteSwiftPackageReference "Cache" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hyperoslo/Cache";
@@ -594,6 +611,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		223D71ED2E68B1C90088F92C /* RswiftLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */;
+			productName = RswiftLibrary;
+		};
+		223D71EF2E68B1DB0088F92C /* RswiftGenerateInternalResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */;
+			productName = "plugin:RswiftGenerateInternalResources";
+		};
 		22AD54992DE6274B007297E7 /* OutRunCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OutRunCore;
