@@ -9,11 +9,6 @@
 /* Begin PBXBuildFile section */
 		223D71EE2E68B1C90088F92C /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 223D71ED2E68B1C90088F92C /* RswiftLibrary */; };
 		22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22AD54992DE6274B007297E7 /* OutRunCore */; };
-		22BC132F2DE619DE008B0A4C /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC132E2DE619DE008B0A4C /* Cache */; };
-		22BC13322DE619E7008B0A4C /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC13312DE619E7008B0A4C /* CoreStore */; };
-		22BC14D02DE61D42008B0A4C /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14CF2DE61D42008B0A4C /* CombineExt */; };
-		22BC14D32DE61DA0008B0A4C /* CoreGPX in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14D22DE61DA0008B0A4C /* CoreGPX */; };
-		22BC14D62DE61DBA008B0A4C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22BC14D52DE61DBA008B0A4C /* SnapKit */; };
 		22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E252DEA0EA400CCF525 /* OutRunCore */; };
 /* End PBXBuildFile section */
 
@@ -74,11 +69,6 @@
 				22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */,
 				223D71EE2E68B1C90088F92C /* RswiftLibrary in Frameworks */,
 				22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */,
-				22BC132F2DE619DE008B0A4C /* Cache in Frameworks */,
-				22BC14D02DE61D42008B0A4C /* CombineExt in Frameworks */,
-				22BC13322DE619E7008B0A4C /* CoreStore in Frameworks */,
-				22BC14D32DE61DA0008B0A4C /* CoreGPX in Frameworks */,
-				22BC14D62DE61DBA008B0A4C /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,11 +138,6 @@
 			);
 			name = OutRun;
 			packageProductDependencies = (
-				22BC132E2DE619DE008B0A4C /* Cache */,
-				22BC13312DE619E7008B0A4C /* CoreStore */,
-				22BC14CF2DE61D42008B0A4C /* CombineExt */,
-				22BC14D22DE61DA0008B0A4C /* CoreGPX */,
-				22BC14D52DE61DBA008B0A4C /* SnapKit */,
 				22AD54992DE6274B007297E7 /* OutRunCore */,
 				22E72E252DEA0EA400CCF525 /* OutRunCore */,
 				223D71ED2E68B1C90088F92C /* RswiftLibrary */,
@@ -207,11 +192,6 @@
 			mainGroup = 22BC11792DE61964008B0A4C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				22BC132D2DE619DE008B0A4C /* XCRemoteSwiftPackageReference "Cache" */,
-				22BC13302DE619E7008B0A4C /* XCRemoteSwiftPackageReference "CoreStore" */,
-				22BC14CE2DE61D42008B0A4C /* XCRemoteSwiftPackageReference "CombineExt" */,
-				22BC14D12DE61DA0008B0A4C /* XCRemoteSwiftPackageReference "CoreGPX" */,
-				22BC14D42DE61DBA008B0A4C /* XCRemoteSwiftPackageReference "SnapKit" */,
 				224B42572E1EC8B10089C1B1 /* XCLocalSwiftPackageReference "OutRunCore" */,
 				223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */,
 			);
@@ -568,46 +548,6 @@
 				minimumVersion = 7.8.0;
 			};
 		};
-		22BC132D2DE619DE008B0A4C /* XCRemoteSwiftPackageReference "Cache" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hyperoslo/Cache";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.4.0;
-			};
-		};
-		22BC13302DE619E7008B0A4C /* XCRemoteSwiftPackageReference "CoreStore" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JohnEstropia/CoreStore";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.3.0;
-			};
-		};
-		22BC14CE2DE61D42008B0A4C /* XCRemoteSwiftPackageReference "CombineExt" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CombineCommunity/CombineExt";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.1;
-			};
-		};
-		22BC14D12DE61DA0008B0A4C /* XCRemoteSwiftPackageReference "CoreGPX" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/vincentneo/CoreGPX";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.3;
-			};
-		};
-		22BC14D42DE61DBA008B0A4C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -624,31 +564,6 @@
 		22AD54992DE6274B007297E7 /* OutRunCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OutRunCore;
-		};
-		22BC132E2DE619DE008B0A4C /* Cache */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 22BC132D2DE619DE008B0A4C /* XCRemoteSwiftPackageReference "Cache" */;
-			productName = Cache;
-		};
-		22BC13312DE619E7008B0A4C /* CoreStore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 22BC13302DE619E7008B0A4C /* XCRemoteSwiftPackageReference "CoreStore" */;
-			productName = CoreStore;
-		};
-		22BC14CF2DE61D42008B0A4C /* CombineExt */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 22BC14CE2DE61D42008B0A4C /* XCRemoteSwiftPackageReference "CombineExt" */;
-			productName = CombineExt;
-		};
-		22BC14D22DE61DA0008B0A4C /* CoreGPX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 22BC14D12DE61DA0008B0A4C /* XCRemoteSwiftPackageReference "CoreGPX" */;
-			productName = CoreGPX;
-		};
-		22BC14D52DE61DBA008B0A4C /* SnapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 22BC14D42DE61DBA008B0A4C /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
 		};
 		22E72E252DEA0EA400CCF525 /* OutRunCore */ = {
 			isa = XCSwiftPackageProductDependency;
