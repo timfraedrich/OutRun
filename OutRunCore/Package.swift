@@ -11,7 +11,6 @@ let package = Package(
         .library(name: "OutRunCore", targets: ["OutRunCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/JohnEstropia/CoreStore", from: "7.3.0"),
         .package(url: "https://github.com/mac-cain13/R.swift.git", from: "7.8.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.84.0"),
     ],
@@ -19,7 +18,6 @@ let package = Package(
         .target(
             name: "OutRunCore",
             dependencies: [
-                "CoreStore",
                 .product(name: "RswiftLibrary", package: "r.swift"),
                 .product(name: "NIOCore", package: "swift-nio")
             ],
