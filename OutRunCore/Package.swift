@@ -13,13 +13,15 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/mac-cain13/R.swift.git", from: "7.8.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.84.0"),
+        .package(url: "https://github.com/pointfreeco/swift-perception", from: "2.0.6"),
     ],
     targets: [
         .target(
             name: "OutRunCore",
             dependencies: [
                 .product(name: "RswiftLibrary", package: "r.swift"),
-                .product(name: "NIOCore", package: "swift-nio")
+                .product(name: "NIOCore", package: "swift-nio"),
+                .product(name: "Perception", package: "swift-perception"),
             ],
             plugins: [.plugin(name: "RswiftGenerateInternalResources", package: "r.swift")]
         ),
