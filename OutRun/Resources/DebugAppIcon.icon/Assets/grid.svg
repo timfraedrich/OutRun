@@ -1,25 +1,3 @@
 <svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g opacity="0.5">
-<g opacity="0.75">
-<g clip-path="url(#clip0_549_549)">
-<path d="M0 703H1024" stroke="white" stroke-width="4"/>
-<path d="M0 512H1024" stroke="white" stroke-width="4"/>
-<path d="M0 321H1024" stroke="white" stroke-width="4"/>
-<path d="M703 1024V0" stroke="white" stroke-width="4"/>
-<path d="M512 1024V0" stroke="white" stroke-width="4"/>
-<path d="M321 1024V0" stroke="white" stroke-width="4"/>
-<path d="M1024 1024L0 0" stroke="white" stroke-width="4"/>
-<path d="M0 1024L1024 0" stroke="white" stroke-width="4"/>
-<rect x="67" y="67" width="890" height="890" stroke="white" stroke-width="4"/>
-<circle cx="512" cy="512" r="191" stroke="white" stroke-width="4"/>
-<circle cx="512" cy="512" r="269" stroke="white" stroke-width="4"/>
-<circle cx="512" cy="512" r="445" stroke="white" stroke-width="4"/>
-</g>
-</g>
-</g>
-<defs>
-<clipPath id="clip0_549_549">
-<rect width="1024" height="1024" rx="228" fill="white"/>
-</clipPath>
-</defs>
+<path d="M1024 1024L0 0M0 1024L1024 0M0 768H1024M0 896H1024M0 640H1024M0 512H1024M0 384H1024M0 256H1024M0 128H1024M896 1024V0M768 1024V0M640 1024V0M512 1024V0M384 1024V0M256 1024V0M128 1024V0M922 512C922 738.437 738.437 922 512 922C285.563 922 102 738.437 102 512C102 285.563 285.563 102 512 102C738.437 102 922 285.563 922 512ZM768 512C768 653.385 653.385 768 512 768C370.615 768 256 653.385 256 512C256 370.615 370.615 256 512 256C653.385 256 768 370.615 768 512ZM616 514C616 570.333 570.333 616 514 616C457.667 616 412 570.333 412 514C412 457.667 457.667 412 514 412C570.333 412 616 457.667 616 514Z" stroke="white" stroke-width="4"/>
 </svg>

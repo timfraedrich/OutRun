@@ -10,28 +10,19 @@
           "name" : "glyph"
         },
         {
-          "blend-mode" : "normal",
-          "fill-specializations" : [
+          "fill" : "none",
+          "glass" : false,
+          "image-name" : "grid.svg",
+          "name" : "grid",
+          "opacity-specializations" : [
             {
-              "value" : "none"
+              "value" : 0.5
             },
             {
               "appearance" : "dark",
-              "value" : "none"
+              "value" : 0.25
             }
-          ],
-          "glass" : false,
-          "hidden" : false,
-          "image-name" : "grid.svg",
-          "name" : "grid",
-          "opacity" : 1,
-          "position" : {
-            "scale" : 1,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
+          ]
         }
       ],
       "shadow" : {
