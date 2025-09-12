@@ -1,24 +1,20 @@
 import Foundation
 
-public enum WorkoutMetric: CustomStringConvertible {
+public enum WorkoutMetric: CustomStringConvertible, Sendable {
     
     case type
-    
     case distance
     case ascent
     case descent
     case repetitions
-    
     case date
     case activeDuration
     case pauseDuration
     case pace
     case startTime
     case endTime
-    
     case averageSpeed
     case topSpeed
-    
     case energy
     case energyPerMinute
     
@@ -111,42 +107,40 @@ public enum WorkoutMetric: CustomStringConvertible {
     }
     
     private func pauseDuration(for workout: any WorkoutProtocol) -> TimeInterval {
-        workout.pauses.reduce(TimeInterval(), { $0 + $1.duration })
+        Calculation.calculatePauseDuration(pauses: workout.pauses)
     }
     
     private func activeDuration(for workout: any WorkoutProtocol) -> TimeInterval? {
-        guard let endDate = workout.endDate else { return nil }
-        return workout.startDate.distance(to: endDate) - pauseDuration(for: workout)
+        Calculation.calculateActiveDuration(startDate: workout.startDate, endDate: workout.endDate, pauses: workout.pauses)
     }
     
     private func averageSpeed(for workout: any WorkoutProtocol) -> Measurement<UnitSpeed> {
-        guard let activeDuration = activeDuration(for: workout), activeDuration > 0, workout.distance > 0
-        else { return .init(value: 0, unit: .metersPerSecond) }
-        return .init(value: workout.distance / activeDuration, unit: .metersPerSecond)
+        Calculation.calculateAverageSpeed(
+            distance: workout.distance,
+            startDate: workout.startDate,
+            endDate: workout.endDate ?? .now,
+            pauses: workout.pauses
+        )
     }
     
     private func topSpeed(for workout: any WorkoutProtocol) -> Measurement<UnitSpeed>? {
-        var topSpeed: Float?
-        for routeSample in workout.route where routeSample.speed > 0 {
-            guard topSpeed == nil || routeSample.speed > topSpeed ?? 0 else { continue }
-            topSpeed = routeSample.speed
-        }
-        guard let topSpeed else { return nil }
-        return .init(value: Double(topSpeed), unit: .metersPerSecond)
+        Calculation.calculateTopSpeed(route: workout.route)
     }
     
     private func energyPerMinute(for workout: any WorkoutProtocol) -> Measurement<UnitEnergy>? {
-        guard let energy = workout.energy, let activeDuration = activeDuration(for: workout) else { return nil }
-        let minutes = UnitDuration.minutes.converter.value(fromBaseUnitValue: activeDuration)
-        return .init(value: energy / minutes, unit: .joules)
+        Calculation.calculateEnergyPerMinute(
+            energy: workout.energy,
+            startDate: workout.startDate,
+            endDate: workout.endDate,
+            pauses: workout.pauses
+        )
     }
     
     private func elevation(for workout: any WorkoutProtocol) -> Calculation.ElevationTouple? {
-        let altitudes = workout.route.compactMap({ $0.altitude > 0 ? $0.altitude : nil })
-        return Calculation.calculateElevationData(from: altitudes)
+        Calculation.calculateElevationData(from: workout.route)
     }
     
-    public enum ValueRepresentation {
+    public enum ValueRepresentation: Sendable {
         /// Represents the workout type
         case type(WorkoutType)
         /// Represents long distances such as the distance covered during a workout.
@@ -161,6 +155,9 @@ public enum WorkoutMetric: CustomStringConvertible {
         case timeOfDay(Date)
         /// Represents a duration that is most likely under one day and should be formatted as hours, minutes and seconds.
         case duration(TimeInterval)
+        /// Represents a currently increasing duration that is most likely under one day and should be formatted as hours, minutes and
+        /// seconds. The duration displayed should account for the offset.
+        case increasingDuration(_ since: Date, _ offset: TimeInterval)
         /// Represents a speed that should be formatted as conventional.
         case speedMeasurement(Measurement<UnitSpeed>)
         /// Represents a speed that should be formatted as a pace (duration / major distance unit)

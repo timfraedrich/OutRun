@@ -28,7 +28,7 @@ enum Calculation {
         var ascent: Float = 0, descent: Float = 0
         let threshold: Float = 0.5 // a threshold to filter slight variation due to measurment errors
         var lastConsideredRoundedAltitude: Float?
-        for (i, value) in altitudes.enumerated() {
+        for i in altitudes.indices {
             var sum: Float = 0, count: Float = 0
             for j in (i - 5)...(i + 5) where i >= 0 && i < altitudes.count {
                 sum += altitudes[j]
@@ -49,5 +49,43 @@ enum Calculation {
             lastConsideredRoundedAltitude = roundedAltitude
         }
         return (ascent, descent)
+    }
+    
+    static func calculatePauseDuration(pauses: [any WorkoutPauseProtocol]) -> TimeInterval {
+        pauses.reduce(TimeInterval(), { $0 + $1.duration })
+    }
+    
+    static func calculateActiveDuration(startDate: Date, endDate: Date?, pauses: [any WorkoutPauseProtocol]) -> TimeInterval? {
+        guard let endDate else { return nil }
+        return startDate.distance(to: endDate) - calculatePauseDuration(pauses: pauses)
+    }
+    
+    static func calculateAverageSpeed(distance: Double, startDate: Date, endDate: Date?, pauses: [any WorkoutPauseProtocol]) -> Measurement<UnitSpeed> {
+        let activeDuration = calculateActiveDuration(startDate: startDate, endDate: endDate, pauses: pauses)
+        guard let activeDuration, activeDuration > 0, distance > 0
+        else { return .init(value: 0, unit: .metersPerSecond) }
+        return .init(value: distance / activeDuration, unit: .metersPerSecond)
+    }
+    
+    static func calculateTopSpeed(route: [any WorkoutRouteDataSampleProtocol]) -> Measurement<UnitSpeed>? {
+        var topSpeed: Float?
+        for routeSample in route where routeSample.speed > 0 {
+            guard topSpeed == nil || routeSample.speed > topSpeed ?? 0 else { continue }
+            topSpeed = routeSample.speed
+        }
+        guard let topSpeed else { return nil }
+        return .init(value: Double(topSpeed), unit: .metersPerSecond)
+    }
+    
+    static func calculateEnergyPerMinute(energy: Double?, startDate: Date, endDate: Date?, pauses: [any WorkoutPauseProtocol]) -> Measurement<UnitEnergy>? {
+        guard let energy, let activeDuration = calculateActiveDuration(startDate: startDate, endDate: endDate, pauses: pauses)
+        else { return nil }
+        let minutes = UnitDuration.minutes.converter.value(fromBaseUnitValue: activeDuration)
+        return .init(value: energy / minutes, unit: .joules)
+    }
+    
+    static func calculateElevationData(from route: [any WorkoutRouteDataSampleProtocol]) -> Calculation.ElevationTouple? {
+        let altitudes = route.compactMap({ $0.altitude > 0 ? $0.altitude : nil })
+        return Calculation.calculateElevationData(from: altitudes)
     }
 }

@@ -29,6 +29,7 @@ public struct WorkoutMetricText: View {
         formatter.allowedUnits = allowedUnits
         formatter.unitsStyle = .positional
         formatter.zeroFormattingBehavior = .pad
+        let duration: TimeInterval = if duration.isFinite, !duration.isNaN { duration } else { .zero }
         var formattedDuration = formatter.string(from: duration)
         if formattedDuration?.hasPrefix("0") ?? false {
             formattedDuration?.removeFirst()
@@ -53,6 +54,12 @@ public struct WorkoutMetricText: View {
         case .duration(let duration):
             if let formattedDuration = format(duration, using: [.hour, .minute, .second]) {
                 Text(formattedDuration)
+            }
+        case .increasingDuration(let startDate, let offset):
+            TimelineView(.animation) { context in
+                if let formattedDuration = format(startDate.addingTimeInterval(offset).distance(to: context.date), using: [.hour, .minute, .second]) {
+                    Text(formattedDuration)
+                }
             }
         case .speedMeasurement(let measurement):
             Text(measurement.converted(to: speedUnit), format: standardMeasurementFormat(UnitSpeed.self))
@@ -82,6 +89,7 @@ public struct WorkoutMetricText: View {
         WorkoutMetricText(metricValue: .day(.now))
         WorkoutMetricText(metricValue: .timeOfDay(.now))
         WorkoutMetricText(metricValue: .duration(42 * 60 + 42))
+        WorkoutMetricText(metricValue: .increasingDuration(.now, -1000))
         WorkoutMetricText(metricValue: .speedMeasurement(.init(value: 5.1, unit: .metersPerSecond)))
         WorkoutMetricText(metricValue: .paceMeasurement(.init(value: 14 / 3.6, unit: .metersPerSecond)))
         WorkoutMetricText(metricValue: .energyMeasurement(.init(value: 2300 * 1000, unit: .joules)))
