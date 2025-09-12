@@ -4,12 +4,12 @@ import SwiftData
 
 public struct OutRunCoreScene<Content: View>: Scene {
     
-    @ObservedObject private var core: OutRunCore
+    @State private var core: OutRunCore
     private let makeContent: (OutRunCore.Status) -> Content
     
     public var body: some Scene {
         WindowGroup {
-            makeContent(core.status).environmentObject(core)
+            makeContent(core.status).environment(core)
         }
         .modelContainer(core.modelContainer)
     }

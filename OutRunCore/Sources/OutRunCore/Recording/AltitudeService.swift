@@ -8,37 +8,38 @@ import OSLog
 /// - note: While an approximate altitude is received with the users location, this class allows for refinement of location samples.
 /// - warning: To use this service you must include the `NSMotionUsageDescription` key in your app’s Info.plist file and provide a usage
 /// description string for this key.
+@Observable
+@RecordingActor
 class AltitudeService {
     
-    private let logger = Logger(category: "AltitudeService")
-    private let operationQueue = OperationQueue()
-    private let altimeter = CMAltimeter()
-    private let statusSubject = CurrentValueSubject<Status, Never>(.initializing)
-    private let lastAltitudeSubject = CurrentValueSubject<AltitudeSample?, Never>(nil)
-    let mode: Mode
-    
-    var status: Status { statusSubject.value }
-    var statusPublisher: some Publisher<Status, Never> { statusSubject.eraseToAnyPublisher() }
-    var lastAltitude: AltitudeSample? { lastAltitudeSubject.value }
-    var lastAltitudePublisher: some Publisher<AltitudeSample?, Never> { lastAltitudeSubject.eraseToAnyPublisher() }
-    
-    init() {
-        operationQueue.maxConcurrentOperationCount = 1
-        operationQueue.qualityOfService = .userInitiated
-        mode = if CMAltimeter.isAbsoluteAltitudeAvailable() {
+    static var mode: Mode {
+        if CMAltimeter.isAbsoluteAltitudeAvailable() {
             .absoluteAltitudeAvailable
         } else if CMAltimeter.isRelativeAltitudeAvailable() {
             .relativeAltitudeAvailable
         } else {
             .noAlitudeAvailable
         }
-        guard mode != .noAlitudeAvailable else {
-            statusSubject.send(.failed(AltitudeServiceError.altitudeNotAvailable))
+    }
+    
+    private let logger = Logger(category: "AltitudeService")
+    private let operationQueue = OperationQueue()
+    private let altimeter = CMAltimeter()
+    
+    var status: Status = .initializing
+    var altitude: AltitudeSample?
+    
+    init() {
+        operationQueue.maxConcurrentOperationCount = 1
+        operationQueue.qualityOfService = .userInitiated
+        
+        guard Self.mode != .noAlitudeAvailable else {
+            status = .failed(AltitudeServiceError.altitudeNotAvailable)
             logger.error("Altitude not available.")
             return
         }
         updateStatus()
-        logger.info("Initialized with mode: \(self.mode.debugDescription)")
+        logger.info("Initialized with mode: \(Self.mode.debugDescription)")
     }
     
     /// Requests authorization to access motion and fitness data if authorization has not been granted or denied already.
@@ -58,10 +59,19 @@ class AltitudeService {
         }
     }
     
+    /// Change whether the service should collect altitude data.
+    func changeShouldRecord(_ shouldRecord: Bool) {
+        if shouldRecord, !status.isCollectingData {
+            start()
+        } else if !shouldRecord, status.isCollectingData {
+            reset()
+        }
+    }
+    
     /// Starts altitude updates.
     /// - warning: Calling this method while altitude data is being collected will perform a restart of the data collection and update the
     /// ``status`` accordingly.
-    func start() {
+    private func start() {
         updateStatus()
         switch status {
         case .idle:
@@ -79,16 +89,16 @@ class AltitudeService {
             logger.error("Tried to start altitude updates before initialization was complete.")
             return
         }
-        statusSubject.send(.updatingSince(.now))
-        switch mode {
+        status = .updatingSince(.now)
+        switch Self.mode {
         case .absoluteAltitudeAvailable:
             altimeter.startAbsoluteAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
                 guard let self else { return }
                 if let altitudeData {
-                    lastAltitudeSubject.send(.init(isAbsolute: true, timestamp: .now, altitude: altitudeData.altitude))
+                    altitude = .init(isAbsolute: true, timestamp: .now, altitude: altitudeData.altitude)
                 } else if let error {
                     reset()
-                    statusSubject.send(.failed(error))
+                    status = .failed(error)
                 }
             }
             logger.info("Started absolute altitude updates.")
@@ -96,10 +106,10 @@ class AltitudeService {
             altimeter.startRelativeAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
                 guard let self else { return }
                 if let altitudeData {
-                    lastAltitudeSubject.send(.init(isAbsolute: false, timestamp: .now, altitude: altitudeData.relativeAltitude.doubleValue))
+                    altitude = .init(isAbsolute: false, timestamp: .now, altitude: altitudeData.relativeAltitude.doubleValue)
                 } else if let error {
                     reset()
-                    statusSubject.send(.failed(error))
+                    status = .failed(error)
                 }
             }
             logger.info("Started relative altitude updates.")
@@ -109,17 +119,17 @@ class AltitudeService {
     }
     
     /// Stops altitude updates and resets this class.
-    func reset() {
+    private func reset() {
         updateStatus()
         if case .updatingSince = status {
-            switch mode {
+            switch Self.mode {
             case .absoluteAltitudeAvailable: altimeter.stopAbsoluteAltitudeUpdates()
             case .relativeAltitudeAvailable: altimeter.stopRelativeAltitudeUpdates()
             case .noAlitudeAvailable: break
             }
-            statusSubject.send(.idle)
+            status = .idle
         }
-        lastAltitudeSubject.send(nil)
+        altitude = nil
         logger.info("Reset altitude service and stopped altitude updates.")
     }
     
@@ -136,7 +146,7 @@ class AltitudeService {
         case .restricted: .restrictedAuthorization
         @unknown default: .failed(AltitudeServiceError.unknownAuthorizationStatus)
         }
-        statusSubject.send(newStatus)
+        status = newStatus
         logger.info("Updated status to: \(self.status.debugDescription)")
     }
     

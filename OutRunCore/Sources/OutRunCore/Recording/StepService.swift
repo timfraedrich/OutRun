@@ -1,4 +1,3 @@
-import Combine
 import CoreMotion
 import Foundation
 import OSLog
@@ -6,26 +5,21 @@ import OSLog
 /// A class gathering step data.
 /// - warning: To use this service you must include the `NSMotionUsageDescription` key in your app’s Info.plist file and provide a usage
 /// description string for this key.
+@Observable
+@RecordingActor
 class StepService {
         
     private let logger = Logger(category: "StepService")
-    private let operationQueue = OperationQueue()
     private let pedometer = CMPedometer()
-    private let statusSubject = CurrentValueSubject<Status, Never>(.initializing)
-    private let stepCountSubject = CurrentValueSubject<Int?, Never>(nil)
     let stepsAvailable: Bool
     
-    var status: Status { statusSubject.value }
-    var statusPublisher: some Publisher<Status, Never> { statusSubject.eraseToAnyPublisher() }
-    var stepCount: Int? { stepCountSubject.value }
-    var stepCountPublisher: some Publisher<Int?, Never> { stepCountSubject.eraseToAnyPublisher() }
+    var status: Status = .initializing
+    var stepCount: Int? = nil
     
     init() {
-        operationQueue.maxConcurrentOperationCount = 1
-        operationQueue.qualityOfService = .userInitiated
         stepsAvailable = CMPedometer.isStepCountingAvailable()
         guard stepsAvailable else {
-            statusSubject.send(.failed(StepServiceError.stepsNotAvailable))
+            status = .failed(StepServiceError.stepsNotAvailable)
             logger.error("Steps not available.")
             return
         }
@@ -50,10 +44,19 @@ class StepService {
         }
     }
     
+    /// Change whether the service should collect step data.
+    func changeShouldRecord(_ shouldRecord: Bool, lastStartDate: Date?) {
+        if shouldRecord, !status.isCollectingData, let lastStartDate {
+            start(from: lastStartDate)
+        } else if !shouldRecord, status.isCollectingData {
+            reset()
+        }
+    }
+    
     /// Starts step data collection from the given date.
     /// - warning: Calling this method while step data is being collected will perform a restart of the data collection and update the
     /// ``status`` accordingly.
-    func start(from date: Date) {
+    private func start(from date: Date) {
         updateStatus()
         switch status {
         case .idle:
@@ -71,26 +74,26 @@ class StepService {
             logger.error("Tried to start step data collection before initialization was complete.")
             return
         }
-        statusSubject.send(.updatingSince(.now))
+        status = .updatingSince(.now)
         pedometer.startUpdates(from: date) { [weak self] data, error in
             guard let self else { return }
             if let data {
-                stepCountSubject.send(data.numberOfSteps.intValue)
+                stepCount = data.numberOfSteps.intValue
             } else if let error {
                 reset()
-                statusSubject.send(.failed(error))
+                status = .failed(error)
             }
         }
     }
     
     /// Stops step data collection and resets this class.
-    func reset() {
+    private func reset() {
         updateStatus()
         if case .updatingSince = status {
             pedometer.stopUpdates()
-            statusSubject.send(.idle)
+            status = .idle
         }
-        stepCountSubject.send(nil)
+        stepCount = nil
         logger.info("Reset step service and stopped step data collection.")
     }
     
@@ -107,7 +110,7 @@ class StepService {
         case .restricted: .restrictedAuthorization
         @unknown default: .failed(StepServiceError.unknownAuthorizationStatus)
         }
-        statusSubject.send(newStatus)
+        status = newStatus
         logger.info("Updated status to: \(self.status.debugDescription)")
     }
     

@@ -2,18 +2,16 @@ import Combine
 import SwiftData
 import OSLog
 
+@Observable
 @MainActor
-public class OutRunCore: ObservableObject {
+public class OutRunCore {
     
     static nonisolated let moduleIdentifier = "software.tfr.running-core"
     
-    @Published public var status: Status = .initializing
+    public var status: Status = .initializing
     
-    private(set) var database: Database?
-    private(set) var altitudeService: AltitudeService?
-    private(set) var stepService: StepService?
-    private(set) var locationService: LocationService?
-    private(set) var workoutRecorder: WorkoutRecorder?
+    @ObservationIgnored private var database: Database?
+    @ObservationIgnored public var recorder: WorkoutRecorder?
     
     private let logger = Logger(category: "OutRunCore")
     let modelContainer: ModelContainer
@@ -29,25 +27,16 @@ public class OutRunCore: ObservableObject {
             logger.critical("Failed to initialize ModelContainer: \(error)")
             fatalError("Failed to initialize ModelContainer")
         }
-        Task { @MainActor in
+        Task {
             do {
-                let database = try await Task.detached { [modelContainer] in
-                    return try await Database(modelContainer: modelContainer)
-                }.value
-                let locationService = LocationService()
-                let altitudeService = AltitudeService()
-                let stepService = StepService()
-                let workoutRecorder = WorkoutRecorder(
+                let database = try await Database(modelContainer: modelContainer)
+                self.recorder = await WorkoutRecorder(
                     database: database,
-                    locationService: locationService,
-                    altitudeService: altitudeService,
-                    stepService: stepService
+                    locationService: .init(),
+                    altitudeService: .init(),
+                    stepService: .init()
                 )
                 self.database = database
-                self.locationService = locationService
-                self.altitudeService = altitudeService
-                self.stepService = stepService
-                self.workoutRecorder = workoutRecorder
                 self.status = .initialized
             } catch {
                 self.status = .failed(error)

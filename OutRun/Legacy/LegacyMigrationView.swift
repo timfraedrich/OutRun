@@ -13,7 +13,7 @@ import SwiftUI
 /// ```
 struct LegacyMigrationView: View {
     
-    @EnvironmentObject private var core: OutRunCore
+    @Environment(OutRunCore.self) private var core
     
     @State private var isMigrationAppropriate: Bool
     @State private var progress: Double = 0

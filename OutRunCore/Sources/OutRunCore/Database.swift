@@ -18,7 +18,7 @@ actor Database: ModelActor {
     /// Initializes a workout for live recording.
     /// - returns: The identifier of the initialized workout.
     /// - throws: Throws if saving the workout fails.
-    func initializeWorkout(with type: WorkoutType, startDate: Date) throws -> UUID {
+    func initializeWorkout(with type: WorkoutType, startDate: Date) throws -> RawWorkout {
         let workout = Workout(
             type: type,
             distance: .zero,
@@ -34,7 +34,7 @@ actor Database: ModelActor {
         )
         modelContext.insert(workout)
         try modelContext.save()
-        return workout.id
+        return RawWorkout(workout: workout)
     }
     
     /// Continues a workout that has previously been finished.
@@ -58,14 +58,14 @@ actor Database: ModelActor {
     func addRouteSample(
         _ sample: RawWorkoutRouteDataSample,
         toWorkoutWith identifier: UUID,
-        addedDistance: Double,
-        updatedEnergy: Double? = nil,
-        updatedRepetitions: Int? = nil
+        updatedDistance: Double,
+        updatedEnergy: Double?,
+        updatedRepetitions: Int?
     ) throws {
         let workout = try fetchWorkout(with: identifier)
         guard workout.endDate == nil else { throw DatabaseError.workoutAlreadyFinished }
         modelContext.insert(WorkoutRouteDataSample(from: sample, attachTo: workout))
-        workout.distance += addedDistance
+        workout.distance = updatedDistance
         if let updatedEnergy = updatedEnergy { workout.energy = updatedEnergy }
         if let updatedRepetitions = updatedRepetitions { workout.repetitions = updatedRepetitions }
         workout.lastEditDate = .now
@@ -98,6 +98,19 @@ actor Database: ModelActor {
             try modelContext.save()
             return nil
         }
+    }
+    
+    /// Tries to fetch an unfinished workout to recover the recording process after termination.
+    /// - returns: An unfinished `RawWorkout` representing the current state in the database with a pause inserted from the `lastEditDate`
+    /// to the `recoveryDate` provided.
+    /// - throws: Throws if the fetching process or saving the workout after inserting the pause fails. The method will **not** throw if
+    /// there is no workout to recover.
+    func recoverUnfinishedWorkout(recoveryDate: Date) throws -> RawWorkout? {
+        let descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.endDate == nil })
+        guard let workout = try modelContext.fetch(descriptor).first else { return nil }
+        modelContext.insert(WorkoutPause(startDate: workout.lastEditDate, endDate: recoveryDate, userInitiated: false, workout: workout))
+        try modelContext.save()
+        return RawWorkout(workout: workout)
     }
     
     func insert(_ rawWorkouts: [RawWorkout]) throws {
