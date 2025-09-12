@@ -4,8 +4,15 @@ import SwiftUI
 @main
 struct OutRunApp: App {
     
+    private let config: OutRunCoreConfiguration = .init(
+        containerName: "OutRun",
+        isStoredInMemoryOnly: false,
+        appGroupIdentifier: nil,
+        recordableDataTypes: .all
+    )
+    
     var body: some Scene {
-        OutRunCoreScene { status in
+        OutRunCoreScene(config: config) { status in
             switch status {
             case .initializing:
                 ProgressView().progressViewStyle(.circular)

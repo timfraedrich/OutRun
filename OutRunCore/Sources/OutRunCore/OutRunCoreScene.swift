@@ -5,7 +5,7 @@ import SwiftData
 public struct OutRunCoreScene<Content: View>: Scene {
     
     @State private var core: OutRunCore
-    private let makeContent: (OutRunCore.Status) -> Content
+    private let makeContent: (OutRunCoreStatus) -> Content
     
     public var body: some Scene {
         WindowGroup {
@@ -14,8 +14,8 @@ public struct OutRunCoreScene<Content: View>: Scene {
         .modelContainer(core.modelContainer)
     }
     
-    public init(@ViewBuilder makeContent: @escaping (OutRunCore.Status) -> Content) {
-        self.core = OutRunCore()
+    public init(config: OutRunCoreConfiguration, @ViewBuilder makeContent: @escaping (OutRunCore.Status) -> Content) {
+        self.core = OutRunCore(config: config)
         self.makeContent = makeContent
     }
 }

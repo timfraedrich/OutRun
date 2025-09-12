@@ -153,7 +153,7 @@ actor Database: ModelActor {
         groupContainer: ModelConfiguration.GroupContainer = .automatic
     ) async throws {
         try await self.init(
-            modelContainer: try Self.modelContainer(isStoredInMemoryOnly: isStoredInMemoryOnly, groupContainer: groupContainer)
+            modelContainer: try Self.modelContainer(name: nil, isStoredInMemoryOnly: isStoredInMemoryOnly, groupContainer: groupContainer)
         )
     }
     
@@ -196,6 +196,7 @@ actor Database: ModelActor {
     // MARK: Static
     
     static func modelContainer(
+        name: String?,
         isStoredInMemoryOnly: Bool = false,
         groupContainer: ModelConfiguration.GroupContainer = .automatic
     ) throws -> ModelContainer {
@@ -203,6 +204,7 @@ actor Database: ModelActor {
         // See https://developer.apple.com/forums/thread/773637?answerId=824240022#824240022 to handle this properly.
         let schema = Schema(versionedSchema: ModelSchema.self)
         let config = ModelConfiguration(
+            name,
             schema: schema,
             isStoredInMemoryOnly: isStoredInMemoryOnly,
             allowsSave: true,
