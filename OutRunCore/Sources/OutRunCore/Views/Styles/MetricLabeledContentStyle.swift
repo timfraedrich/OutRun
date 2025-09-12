@@ -12,7 +12,7 @@ public struct MetricLabeledContentStyle: LabeledContentStyle {
         VStack(alignment: .leading, spacing: .zero) {
             configuration.label
                 .textCase(.uppercase)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.tertiary)
                 .font(size.labelFont)
             configuration.content
                 .foregroundStyle(.primary)
