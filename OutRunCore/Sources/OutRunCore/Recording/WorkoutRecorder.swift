@@ -7,13 +7,14 @@ import Perception
 /// A class for recording and monitoring the progress of a workout.
 /// - warning: Before this class can be used make sure to gather user authorization for at least location data and optionally altitude and
 /// step data.
+@Observable
 @MainActor
-public class WorkoutRecorder: ObservableObject {
+public class WorkoutRecorder {
     
     public typealias Status = WorkoutRecorderStatus
     
     private let logger = Logger(category: "WorkoutRecorder")
-    private var cancellables = Set<AnyCancellable>()
+    @ObservationIgnored private var cancellables = Set<AnyCancellable>()
     // user profile (weight, sex, etc.)
     // user preferences
     private let state: WorkoutRecorderState
@@ -22,10 +23,11 @@ public class WorkoutRecorder: ObservableObject {
     private let altitudeService: AltitudeService?
     private let stepService: StepService?
     
-    @Published public private(set) var status: Status = .initializing
-    @Published public private(set) var workoutType: WorkoutType
-    @Published public private(set) var distance: WorkoutMetric.ValueRepresentation
-    @Published public private(set) var duration: WorkoutMetric.ValueRepresentation
+    // TODO: Update based on state
+    public private(set) var status: Status = .initializing
+    public private(set) var workoutType: WorkoutType
+    public private(set) var distance: WorkoutMetric.ValueRepresentation
+    public private(set) var duration: WorkoutMetric.ValueRepresentation
     
     init(database: Database, locationService: LocationService, altitudeService: AltitudeService?, stepService: StepService?) async {
         
