@@ -7,7 +7,7 @@ public class WorkoutHeartRateDataSample: WorkoutHeartRateDataSampleProtocol {
     public var heartRate: UInt8
     public var timestamp: Date
     
-    @Relationship(deleteRule: .nullify) public var workout: Workout
+    @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public init(heartRate: UInt8, timestamp: Date, workout: Workout) {
         self.heartRate = heartRate

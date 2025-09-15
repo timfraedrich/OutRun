@@ -8,7 +8,7 @@ public class WorkoutPause: WorkoutPauseProtocol {
     public var endDate: Date
     public var userInitiated: Bool
     
-    @Relationship(deleteRule: .nullify) public var workout: Workout
+    @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public var duration: TimeInterval {
         startDate.distance(to: endDate)

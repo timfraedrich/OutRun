@@ -13,7 +13,7 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
     public var verticalAccuracy: Float
     public var speed: Float
     
-    @Relationship(deleteRule: .nullify) public var workout: Workout
+    @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public init(
         timestamp: Date,

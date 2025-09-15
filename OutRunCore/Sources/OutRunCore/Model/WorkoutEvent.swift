@@ -7,7 +7,7 @@ public class WorkoutEvent: WorkoutEventProtocol {
     public var type: WorkoutEventType
     public var timestamp: Date
     
-    @Relationship(deleteRule: .nullify) public var workout: Workout
+    @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public init(type: WorkoutEventType, timestamp: Date, workout: Workout) {
         self.type = type

@@ -10,7 +10,7 @@ public class WorkoutServiceMapping: WorkoutServiceMappingProtocol {
     public var lastSyncDate: Date?
     public var syncStatus: WorkoutSyncStatus
     
-    @Relationship(deleteRule: .nullify) public var workout: Workout
+    @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     init(
         service: WorkoutService,
