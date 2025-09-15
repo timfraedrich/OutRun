@@ -8,16 +8,13 @@
 "database_error_workout_not_finished" = "Das Workout konnte nicht fortgeführt werden, da es noch nicht beendet wurde.";
 "date_today" = "Heute";
 "date_yesterday" = "Gestern";
+"location_service_error_authorization_denied" = "Standortdaten können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
+"location_service_error_authorization_restricted" = "Es stehen nur ungefähre Standortdaten zur verfügung. Um ein Workout aufzunehmen müssen genaue Standortdaten geteilt werden.";
 "step_service_error_steps_not_available" = "Schrittdaten sind auf diesem Gerät nicht verfügbar.";
 "step_service_error_authorization_denied" = "Schrittdaten können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
 "step_service_error_authorization_missing" = "Schrittdaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";
 "step_service_error_authorization_restricted" = "Schrittdaten können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
 "step_service_error_unknown_authorization_status" = "Schrittdaten können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
-"motion_activity_service_error_activity_not_available" = "Daten zur Bewegungsaktivität sind auf diesem Gerät nicht verfügbar.";
-"motion_activity_service_error_authorization_denied" = "Daten zur Bewegungsaktivität können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
-"motion_activity_service_error_authorization_missing" = "Daten zur Bewegungsaktivität können aufgrund fehlender Berechtigung nicht abgerufen werden.";
-"motion_activity_service_error_authorization_restricted" = "Daten zur Bewegungsaktivität können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
-"motion_activity_service_error_unknown_authorization_status" = "Daten zur Bewegungsaktivität können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
 "workout_metric_active_duration" = "Dauer";
 "workout_metric_ascent" = "Anstieg";
 "workout_metric_average_speed" = "Durchschn. Geschw.";
@@ -43,6 +40,8 @@
 "workout_recorder_error_not_initialized" = "Die App war noch nicht bereit für die Aufzeichnung, bitte erneut versuchen.";
 "workout_recorder_error_not_paused" = "Das Workout ist nicht pausiert.";
 "workout_recorder_error_not_recording" = "Es wird gerade kein Workout aufgezeichnet.";
+"workout_recorder_permission_location" = "Standort";
+"workout_recorder_permission_motion_and_fitness" = "Bewegung & Fitness";
 "workout_recorder_status_failed" = "Fehler";
 "workout_recorder_status_idle" = "Bereit";
 "workout_recorder_status_initializing" = "Lädt";

@@ -8,23 +8,25 @@ import OSLog
 @Observable
 @RecordingActor
 class StepService {
+    
+    static nonisolated var stepsAvailable: Bool {
+        CMPedometer.isStepCountingAvailable()
+    }
         
     private let logger = Logger(category: "StepService")
     private let pedometer = CMPedometer()
-    let stepsAvailable: Bool
     
     var status: Status = .initializing
     var stepCount: Int? = nil
     
     init() {
-        stepsAvailable = CMPedometer.isStepCountingAvailable()
-        guard stepsAvailable else {
+        guard Self.stepsAvailable else {
             status = .failed(StepServiceError.stepsNotAvailable)
             logger.error("Steps not available.")
             return
         }
         updateStatus()
-        logger.info("Initialized with steps available: \(self.stepsAvailable)")
+        logger.info("Initialized with steps available: \(Self.stepsAvailable)")
     }
     
     /// Requests authorization to access motion and fitness data if authorization has not been granted or denied already.
@@ -135,6 +137,14 @@ class StepService {
         case updatingSince(Date)
         /// Failed with the specified error.
         case failed(Error)
+        
+        /// Indicates whether sufficient permission to record step data was granted by the user.
+        var authorizationSufficient: Bool {
+            switch self {
+            case .missingAuthorization, .restrictedAuthorization, .deniedAuthorization: false
+            default: true
+            }
+        }
         
         var isCollectingData: Bool {
             if case .updatingSince = self { true } else { false }

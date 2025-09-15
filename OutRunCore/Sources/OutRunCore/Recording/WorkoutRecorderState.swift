@@ -50,7 +50,7 @@ class WorkoutRecorderState {
     
     init() {}
     
-    func signalSuccessfullInitialization() throws(WorkoutRecorderError) {
+    func signalSuccessfulInitialization() throws(WorkoutRecorderError) {
         if case .failed = status {
             throw .inFailedState
         }

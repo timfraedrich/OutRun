@@ -8,16 +8,13 @@
 "database_error_workout_already_finished" = "The recorded change could not be saved, as the workout has already been finished.";
 "date_today" = "Today";
 "date_yesterday" = "Yesterday";
+"location_service_error_authorization_denied" = "Location data cannot be received due to denied authorization.";
+"location_service_error_authorization_restricted" = "Only approximate location data is available. To record a workout precise location authorization needs to be granted.";
 "step_service_error_steps_not_available" = "Step data is not available on this device.";
 "step_service_error_authorization_denied" = "Step data cannot be received due to denied authorization.";
 "step_service_error_authorization_missing" = "Step data cannot be received due to missing authorization.";
 "step_service_error_authorization_restricted" = "Step data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "step_service_error_unknown_authorization_status" = "Step data cannot be received due to an unknown authorization status.";
-"motion_activity_service_error_activity_not_available" = "Motion activity data is not available on this device.";
-"motion_activity_service_error_authorization_denied" = "Motion activity data cannot be received due to denied authorization.";
-"motion_activity_service_error_authorization_missing" = "Motion activity data cannot be received due to missing authorization.";
-"motion_activity_service_error_authorization_restricted" = "Motion activity data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
-"motion_activity_service_error_unknown_authorization_status" = "Motion activity data cannot be received due to an unknown authorization status.";
 "workout_metric_active_duration" = "Duration";
 "workout_metric_ascent" = "Acend";
 "workout_metric_average_speed" = "Avg. speed";
@@ -43,6 +40,8 @@
 "workout_recorder_error_not_initialized" = "The app was not ready for recording yet, please try again.";
 "workout_recorder_error_not_paused" = "The workout is not paused.";
 "workout_recorder_error_not_recording" = "No workout is being recorded.";
+"workout_recorder_permission_location" = "Location";
+"workout_recorder_permission_motion_and_fitness" = "Motion & Fitness";
 "workout_recorder_status_failed" = "Error";
 "workout_recorder_status_idle" = "Ready";
 "workout_recorder_status_initializing" = "Loading";

@@ -22,12 +22,19 @@ public class WorkoutRecorder {
     private let locationService: LocationService
     private let altitudeService: AltitudeService?
     private let stepService: StepService?
+    /// The permission requirements based on the configuration provided to the OutRunCore on initialization.
+    public let neededPermissions: Set<WorkoutRecorderPermission>
     
-    // TODO: Update based on state
-    public private(set) var status: Status = .initializing
+    public private(set) var status: Status
     public private(set) var workoutType: WorkoutType
     public private(set) var distance: WorkoutMetric.ValueRepresentation
     public private(set) var duration: WorkoutMetric.ValueRepresentation
+    /// The permissions missing for an ideal recording experience. Check each elements ``WorkoutRecorderPermissionRequirement/isRequired``
+    /// to determine which permissions must be aquired before a recording can be started.
+    public private(set) var missingPermissions: Set<WorkoutRecorderPermission>
+    /// Indicates the data types that are currently not recorded due to an internal failure. This information should be communicated to the
+    /// user together with the recommendation to restart the app.
+    public private(set) var failedDataTypeCollection: [RecordableDataTypes:Error]
     
     init(database: Database, locationService: LocationService, altitudeService: AltitudeService?, stepService: StepService?) async {
         
@@ -36,14 +43,28 @@ public class WorkoutRecorder {
         self.locationService = locationService
         self.altitudeService = altitudeService
         self.stepService = stepService
+        self.neededPermissions = Set([.location, altitudeService != nil || stepService != nil ? .motionAndFitness : nil].compactMap { $0 })
         
+        self.status = await state.status
         self.workoutType = await state.workoutType
         self.distance = await state.distanceMetric
         self.duration = await state.activeDuration
-        await startStreamingUpdates()
+        let locationAuthorizationSufficient = locationService.status.authorizationSufficient
+        let altitudeAuthorizationSufficient = await altitudeService?.status.authorizationSufficient ?? true
+        let stepAuthorizationSufficient = await stepService?.status.authorizationSufficient ?? true
+        let motionAndFitnessAuthorizationSufficient = altitudeAuthorizationSufficient && stepAuthorizationSufficient
+        self.missingPermissions = Set(neededPermissions.compactMap { requirement in
+            switch requirement {
+            case .location: locationAuthorizationSufficient ? nil : requirement
+            case .motionAndFitness: motionAndFitnessAuthorizationSufficient ? nil : requirement
+            }
+        }.compactMap { $0 })
+        self.failedDataTypeCollection = [:]
+        await startStreamingRecordingActorUpdates()
+        startStreamingMainActorUpdates()
         
         do {
-            try await state.signalSuccessfullInitialization()
+            try await state.signalSuccessfulInitialization()
         } catch {
             logger.critical("Failed to transition state to idle status: \((error as CustomDebugStringConvertible).debugDescription).")
         }
@@ -59,23 +80,29 @@ public class WorkoutRecorder {
     }
     
     @RecordingActor
-    private func startStreamingUpdates() async {
+    private func startStreamingRecordingActorUpdates() async {
         var cancellables = Set<AnyCancellable>()
-        startLocationUpdates().eraseToAnyCancellable().store(in: &cancellables)
-        startStatusUpdates().eraseToAnyCancellable().store(in: &cancellables)
+        startFitnessServicesStatusUpdates()?.eraseToAnyCancellable().store(in: &cancellables)
+        startStateStatusUpdates().eraseToAnyCancellable().store(in: &cancellables)
+        startStateWorkoutTypeUpdates().eraseToAnyCancellable().store(in: &cancellables)
+        startStateDistanceUpdates().eraseToAnyCancellable().store(in: &cancellables)
+        startStateDurationUpdates().eraseToAnyCancellable().store(in: &cancellables)
         await MainActor.run { self.cancellables = cancellables }
-        logger.info("Started streaming updates.")
     }
     
-    @RecordingActor
+    private func startStreamingMainActorUpdates() {
+        startLocationUpdates().eraseToAnyCancellable().store(in: &cancellables)
+        startLocationServiceStatusUpdates().eraseToAnyCancellable().store(in: &cancellables)
+    }
+    
     private func startLocationUpdates() -> Task<Void, Never> {
         let locationStream = Perceptions { [locationService] in locationService.location }
-        return Task { [weak self, locationStream] in
+        return Task { [weak self] in
             for await location in locationStream where !Task.isCancelled {
                 guard let self else { return }
                 do {
                     let (sample, pause) = try await state.processLocation(location, with: altitudeService?.altitude)
-                    guard let identifier = state.workoutIdentifier else { return }
+                    guard let identifier = await state.workoutIdentifier else { continue }
                     if let sample {
                         try await database.addRouteSample(
                             sample,
@@ -92,26 +119,102 @@ public class WorkoutRecorder {
                     logger.error("Failed to process location: \((error as CustomDebugStringConvertible).debugDescription).")
                 }
             }
+            self?.logger.fault("LOCATION TASK TERMINATED!")
         }
     }
     
-    @RecordingActor
-    private func startStatusUpdates() -> Task<Void, Never> {
-        let statusStream = Perceptions { [state] in state.status }
-        return Task { [weak self, statusStream] in
+    private func startLocationServiceStatusUpdates() -> Task<Void, Never> {
+        let statusStream = Perceptions { [locationService] in locationService.status }
+        return Task { [weak self] in
             for await status in statusStream where !Task.isCancelled {
                 guard let self else { return }
-                locationService.changeMode(to: status.isCollectingData ? .recording : .idle)
-                altitudeService?.changeShouldRecord(status.isCollectingData)
-                stepService?.changeShouldRecord(status.isCollectingData, lastStartDate: state.lastStartDate)
-                await MainActor.run { self.status = status }
+                if status.authorizationSufficient {
+                    await MainActor.run { _ = missingPermissions.remove(.location) }
+                } else {
+                    await MainActor.run { _ = missingPermissions.insert(.location) }
+                }
+                if case .failed(let error) = status {
+                    await MainActor.run { failedDataTypeCollection[.location] = error }
+                }
             }
         }
     }
     
     @RecordingActor
-    private func checkStartingConditions() throws(WorkoutRecorderError) {
-        guard locationService.status.locationAuthorizationSufficient else { throw WorkoutRecorderError.locationAuthorizationInsufficient }
+    private func startFitnessServicesStatusUpdates() -> Task<Void, Never>? {
+        guard altitudeService != nil || stepService != nil else { return nil }
+        let statusStream = Perceptions { [altitudeService, stepService] in (altitudeService?.status, stepService?.status) }
+        return Task { [weak self] in
+            for await (altitudeServiceStatus, stepServiceStatus) in statusStream where !Task.isCancelled {
+                guard let self else { return }
+                if altitudeServiceStatus?.authorizationSufficient ?? true && stepServiceStatus?.authorizationSufficient ?? true {
+                    await MainActor.run { _ = missingPermissions.remove(.motionAndFitness) }
+                } else {
+                    await MainActor.run { _ = missingPermissions.insert(.motionAndFitness) }
+                }
+                if let altitudeServiceStatus, case .failed(let error) = altitudeServiceStatus {
+                    await MainActor.run { failedDataTypeCollection[.preciseAltitude] = error }
+                }
+                if let stepServiceStatus, case .failed(let error) = stepServiceStatus {
+                    await MainActor.run { failedDataTypeCollection[.steps] = error }
+                }
+            }
+        }
+    }
+    
+    @RecordingActor
+    private func startStateStatusUpdates() -> Task<Void, Never> {
+        let statusStream = Perceptions { [state] in state.status }
+        return Task { [weak self] in
+            for await status in statusStream where !Task.isCancelled {
+                guard let self else { return }
+                altitudeService?.changeShouldRecord(status.isCollectingData)
+                stepService?.changeShouldRecord(status.isCollectingData, lastStartDate: state.lastStartDate)
+                await MainActor.run {
+                    locationService.changeMode(to: status.isCollectingData ? .recording : .idle)
+                    self.status = status
+                }
+            }
+        }
+    }
+    
+    @RecordingActor
+    private func startStateWorkoutTypeUpdates() -> Task<Void, Never> {
+        let workoutTypeStream = Perceptions { [state] in state.workoutType }
+        return Task { [weak self] in
+            for await workoutType in workoutTypeStream where !Task.isCancelled {
+                guard let self else { return }
+                await MainActor.run { self.workoutType = workoutType }
+            }
+        }
+    }
+    
+    @RecordingActor
+    private func startStateDistanceUpdates() -> Task<Void, Never> {
+        let distanceStream = Perceptions { [state] in state.distanceMetric }
+        return Task { [weak self] in
+            for await distance in distanceStream where !Task.isCancelled {
+                guard let self else { return }
+                await MainActor.run { self.distance = distance }
+            }
+        }
+    }
+    
+    @RecordingActor
+    private func startStateDurationUpdates() -> Task<Void, Never> {
+        let durationStream = Perceptions { [state] in state.activeDuration }
+        return Task { [weak self] in
+            for await duration in durationStream where !Task.isCancelled {
+                guard let self else { return }
+                await MainActor.run { self.duration = duration }
+            }
+        }
+    }
+    
+    @RecordingActor
+    private func checkStartingConditions() async throws(WorkoutRecorderError) {
+        let locationAuthorizationSufficient = await MainActor.run { locationService.status.authorizationSufficient }
+        guard locationAuthorizationSufficient else { throw WorkoutRecorderError.locationAuthorizationInsufficient }
         guard state.status == .idle else { throw WorkoutRecorderError.alreadyRecording }
     }
     
@@ -122,7 +225,7 @@ public class WorkoutRecorder {
     @RecordingActor
     public func startRecording() async throws {
         do {
-            try checkStartingConditions()
+            try await checkStartingConditions()
             let date: Date = .now
             let workout = try await database.initializeWorkout(with: state.workoutType, startDate: date)
             try await state.startOrContinue(workout, on: date)
@@ -137,7 +240,7 @@ public class WorkoutRecorder {
     @RecordingActor
     public func continueRecording(with identifier: UUID) async throws {
         do {
-            try checkStartingConditions()
+            try await checkStartingConditions()
             let date: Date = .now
             let workout = try await database.continueWorkout(with: identifier, continueDate: date)
             try await state.startOrContinue(workout, on: date)
@@ -201,6 +304,21 @@ public class WorkoutRecorder {
         } catch {
             logger.error("Failed to end workout recording: \((error as CustomDebugStringConvertible).debugDescription).")
             throw error
+        }
+    }
+    
+    /// Requests the specified permission if not already sufficiently granted.
+    /// - throws: Throws if the permission cannot be requested. The error thrown should be displayed to the user together with the option to
+    /// open the iOS app settings at ``UIApplication.openSettingsURLString`` by using ``UIApplication/open()``.
+    @RecordingActor
+    public func requestAuthorization(for permission: WorkoutRecorderPermission) async throws {
+        guard neededPermissions.contains(permission) else { return }
+        switch permission {
+        case .location:
+            try await MainActor.run { try locationService.requestAuthorization() }
+        case .motionAndFitness:
+            try await altitudeService?.requestAuthorization()
+            try await stepService?.requestAuthorization()
         }
     }
 }

@@ -6,22 +6,20 @@ import OSLog
 /// A class managing authorization to and the gathering of location updates.
 /// - note: Location data is always available with correct authorization.
 @Observable
-@RecordingActor
-class LocationService: NSObject {
+@MainActor
+class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
     
     private let logger = Logger(category: "LocationService")
-    private let locationManager = CLLocationManager()
-    private var cancellables: Set<AnyCancellable> = []
-    private let (locationStream, locationContinuation) = AsyncStream<CLLocation?>.makeStream(bufferingPolicy: .bufferingNewest(1))
-    private let (authStream, authContinuation) = AsyncStream<CLAuthorizationStatus>.makeStream(bufferingPolicy: .bufferingNewest(1))
-    private let (errorStream, errorContinuation) = AsyncStream<Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
+    private let locationManager: CLLocationManager
+    @ObservationIgnored private var cancellables: Set<AnyCancellable> = []
     
     var status: Status = .initializing
     var mode: Mode
     var location: CLLocation?
     
-    init(mode: Mode = .idle) {
+    init(mode: Mode = .idle) async {
         self.mode = mode
+        locationManager = .init()
         super.init()
         locationManager.delegate = self
         locationManager.activityType = .fitness
@@ -36,33 +34,24 @@ class LocationService: NSObject {
             locationManager.startUpdatingLocation()
             logger.info("Location updates were requested after initialization.")
         }
-        startStreamingUpdates()
     }
     
-    deinit {
-        locationContinuation.finish()
-        authContinuation.finish()
-        errorContinuation.finish()
+    func changeMode(to newMode: Mode) {
+        guard self.mode != newMode else { return }
+        logger.info("Changing mode to \(newMode.debugDescription).")
+        mode = newMode
+        locationManager.allowsBackgroundLocationUpdates = mode.allowsBackgroundLocationUpdates
+        changeStatus(to: mode.correspondingStatus)
     }
     
-    private func startStreamingUpdates() {
-        Task { [weak self, locationStream] in
-            for await location in locationStream {
-                self?.location = location
-            }
-        }.eraseToAnyCancellable().store(in: &cancellables)
-        
-        Task { [weak self, authStream] in
-            for await authStatus in authStream {
-                self?.updateStatus(basedOn: authStatus)
-            }
-        }.eraseToAnyCancellable().store(in: &cancellables)
-        
-        Task { [weak self, errorStream] in
-            for await error in errorStream {
-                self?.status = .failed(error)
-            }
-        }.eraseToAnyCancellable().store(in: &cancellables)
+    func requestAuthorization() throws(LocationServiceError) {
+        switch status {
+        case .deniedAuthorization: throw .authorizationDenied
+        case .restrictedAuthorization: throw .authorizationRestricted
+        default: break
+        }
+        locationManager.requestWhenInUseAuthorization()
+        logger.info("Location authorization was requested.")
     }
     
     private func updateStatus(basedOn authStatus: CLAuthorizationStatus) {
@@ -98,17 +87,26 @@ class LocationService: NSObject {
         }
     }
     
-    func changeMode(to newMode: Mode) {
-        guard self.mode != mode else { return }
-        logger.info("Changing mode to \(newMode.debugDescription).")
-        mode = newMode
-        locationManager.allowsBackgroundLocationUpdates = mode.allowsBackgroundLocationUpdates
-        changeStatus(to: mode.correspondingStatus)
+    // MARK: CLLocationManagerDelegate
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        for location in locations {
+            self.location = location
+        }
+    }
+        
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        switch (error as? CLError)?.code {
+        case .locationUnknown, .network, .denied:
+            logger.error("A temporary error was encountered: \(error.localizedDescription).")
+        default:
+            changeStatus(to: .failed(error))
+        }
     }
     
-    func requestAuthorization() {
-        locationManager.requestWhenInUseAuthorization()
-        logger.info("Location authorization was requested.")
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        logger.info("Location authorization status updated to \(status.debugDescription)")
+        updateStatus(basedOn: status)
     }
     
     // MARK: - Mode
@@ -184,7 +182,7 @@ class LocationService: NSObject {
         }
         
         /// Indicates whether sufficient permission to record location data was granted by the user.
-        var locationAuthorizationSufficient: Bool {
+        var authorizationSufficient: Bool {
             switch self {
             case .missingAuthorization, .restrictedAuthorization, .deniedAuthorization: false
             default: true
@@ -218,29 +216,24 @@ class LocationService: NSObject {
             }
         }
     }
-}
-
-// MARK: - CLLocationManagerDelegate
-
-extension LocationService: CLLocationManagerDelegate {
     
-    nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        for location in locations {
-            locationContinuation.yield(location)
-        }
-    }
+    enum LocationServiceError: LocalizedError, CustomDebugStringConvertible {
         
-    nonisolated func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        switch (error as? CLError)?.code {
-        case .locationUnknown, .network, .denied:
-            logger.error("A temporary error was encountered: \(error.localizedDescription).")
-        default:
-            errorContinuation.yield(error)
+        case authorizationDenied
+        case authorizationRestricted
+        
+        var debugDescription: String {
+            switch self {
+            case .authorizationDenied: "LocationServiceError.authorizationDenied"
+            case .authorizationRestricted: "LocationServiceError.authorizationRestricted"
+            }
         }
-    }
-    
-    nonisolated func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        logger.info("Location authorization status updated to \(status.debugDescription)")
-        authContinuation.yield(status)
+        
+        var errorDescription: String? {
+            switch self {
+            case .authorizationDenied: R.string.localizable.location_service_error_authorization_denied()
+            case .authorizationRestricted: R.string.localizable.location_service_error_authorization_restricted()
+            }
+        }
     }
 }

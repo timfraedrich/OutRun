@@ -12,7 +12,7 @@ import OSLog
 @RecordingActor
 class AltitudeService {
     
-    static var mode: Mode {
+    static nonisolated var mode: Mode {
         if CMAltimeter.isAbsoluteAltitudeAvailable() {
             .absoluteAltitudeAvailable
         } else if CMAltimeter.isRelativeAltitudeAvailable() {
@@ -183,9 +183,9 @@ class AltitudeService {
         
         var debugDescription: String {
             switch self {
-            case .noAlitudeAvailable: ".noAlitudeAvailable"
-            case .relativeAltitudeAvailable: ".relativeAltitudeAvailable"
-            case .absoluteAltitudeAvailable: ".absoluteAltitudeAvailable"
+            case .noAlitudeAvailable: "AltitudeService.Mode.noAlitudeAvailable"
+            case .relativeAltitudeAvailable: "AltitudeService.Mode.relativeAltitudeAvailable"
+            case .absoluteAltitudeAvailable: "AltitudeService.Mode.absoluteAltitudeAvailable"
             }
         }
     }
@@ -212,19 +212,27 @@ class AltitudeService {
         /// Failed with the specified error.
         case failed(Error)
         
+        /// Indicates whether sufficient permission to record altitude data was granted by the user.
+        var authorizationSufficient: Bool {
+            switch self {
+            case .missingAuthorization, .restrictedAuthorization, .deniedAuthorization: false
+            default: true
+            }
+        }
+        
         var isCollectingData: Bool {
             if case .updatingSince = self { true } else { false }
         }
         
         var debugDescription: String {
             switch self {
-            case .initializing: ".initializing"
-            case .missingAuthorization: ".missingAuthorization"
-            case .restrictedAuthorization: ".restrictedAuthorization"
-            case .deniedAuthorization: ".deniedAuthorization"
-            case .idle: ".idle"
-            case .updatingSince(let date): ".updatingSince(\(date.formatted(.iso8601)))"
-            case .failed(let error): ".failed(\((error as CustomDebugStringConvertible).debugDescription)"
+            case .initializing: "AltitudeService.Status.initializing"
+            case .missingAuthorization: "AltitudeService.Status.missingAuthorization"
+            case .restrictedAuthorization: "AltitudeService.Status.restrictedAuthorization"
+            case .deniedAuthorization: "AltitudeService.Status.deniedAuthorization"
+            case .idle: "AltitudeService.Status.idle"
+            case .updatingSince(let date): "AltitudeService.Status.updatingSince(\(date.formatted(.iso8601)))"
+            case .failed(let error): "AltitudeService.Status.failed(\((error as CustomDebugStringConvertible).debugDescription)"
             }
         }
         
@@ -254,11 +262,11 @@ class AltitudeService {
         
         var debugDescription: String {
             switch self {
-            case .altitudeNotAvailable: ".altitudeNotAvailable"
-            case .authorizationMissing: ".authorizationMissing"
-            case .authorizationDenied: ".authorizationDenied"
-            case .authorizationRestricted: ".authorizationRestricted"
-            case .unknownAuthorizationStatus: ".unknownAuthorizationStatus"
+            case .altitudeNotAvailable: "AltitudeServiceError.altitudeNotAvailable"
+            case .authorizationMissing: "AltitudeServiceError.authorizationMissing"
+            case .authorizationDenied: "AltitudeServiceError.authorizationDenied"
+            case .authorizationRestricted: "AltitudeServiceError.authorizationRestricted"
+            case .unknownAuthorizationStatus: "AltitudeServiceError.unknownAuthorizationStatus"
             }
         }
         
