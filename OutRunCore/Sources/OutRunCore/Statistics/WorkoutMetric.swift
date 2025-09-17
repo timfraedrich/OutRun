@@ -1,6 +1,6 @@
 import Foundation
 
-public enum WorkoutMetric: CustomStringConvertible, Sendable {
+public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
     
     case type
     case distance
