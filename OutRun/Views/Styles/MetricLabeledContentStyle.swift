@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct MetricLabeledContentStyle: LabeledContentStyle {
+struct MetricLabeledContentStyle: LabeledContentStyle {
     
     private let size: Size
     
@@ -8,7 +8,7 @@ public struct MetricLabeledContentStyle: LabeledContentStyle {
         self.size = size
     }
     
-    public func makeBody(configuration: Configuration) -> some View {
+    func makeBody(configuration: Configuration) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             configuration.label
                 .textCase(.uppercase)
@@ -21,7 +21,7 @@ public struct MetricLabeledContentStyle: LabeledContentStyle {
         .lineLimit(1)
     }
     
-    public enum Size {
+    enum Size {
         case `default`
         case small
         
@@ -41,7 +41,7 @@ public struct MetricLabeledContentStyle: LabeledContentStyle {
     }
 }
 
-public extension LabeledContentStyle where Self == MetricLabeledContentStyle {
+extension LabeledContentStyle where Self == MetricLabeledContentStyle {
     
     static var metric: Self { .init(size: .default) }
     

@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct HFlowLayout: Layout {
+struct HFlowLayout: Layout {
     
     /// Horizontal spacing between items in the same row
     private let horizontalSpacing: CGFloat
@@ -19,7 +19,7 @@ public struct HFlowLayout: Layout {
         self.alignment = alignment
     }
     
-    public func sizeThatFits(
+    func sizeThatFits(
         proposal: ProposedViewSize,
         subviews: Subviews,
         cache: inout Cache
@@ -37,7 +37,7 @@ public struct HFlowLayout: Layout {
         )
     }
     
-    public func placeSubviews(
+    func placeSubviews(
         in bounds: CGRect,
         proposal: ProposedViewSize,
         subviews: Subviews,
@@ -72,7 +72,7 @@ public struct HFlowLayout: Layout {
         }
     }
     
-    public func makeCache(subviews: Subviews) -> Cache {
+    func makeCache(subviews: Subviews) -> Cache {
         Cache()
     }
     
@@ -122,7 +122,7 @@ public struct HFlowLayout: Layout {
         return rows
     }
     
-    public struct Cache {
+    struct Cache {
         private var rows: [Row] = []
     }
     
