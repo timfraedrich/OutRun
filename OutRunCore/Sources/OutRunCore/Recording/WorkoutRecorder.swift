@@ -119,7 +119,6 @@ public class WorkoutRecorder {
                     logger.error("Failed to process location: \((error as CustomDebugStringConvertible).debugDescription).")
                 }
             }
-            self?.logger.fault("LOCATION TASK TERMINATED!")
         }
     }
     
