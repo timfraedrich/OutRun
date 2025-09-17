@@ -30,7 +30,7 @@ enum Calculation {
         var lastConsideredRoundedAltitude: Float?
         for i in altitudes.indices {
             var sum: Float = 0, count: Float = 0
-            for j in (i - 5)...(i + 5) where i >= 0 && i < altitudes.count {
+            for j in (i - 5)...(i + 5) where j >= 0 && j < altitudes.count {
                 sum += altitudes[j]
                 count += 1
             }
