@@ -22,7 +22,7 @@ struct LegacyMigrationView: View {
     var body: some View {
         if isMigrationAppropriate {
             ZStack {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: .regular) {
                     Text(R.string.localizable.legacy_migration_view_title)
                         .font(.title.bold())
                     Text(R.string.localizable.legacy_migration_view_message)
