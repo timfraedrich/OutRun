@@ -9,7 +9,7 @@ struct MapOverlayBackground: View {
                 .ignoresSafeArea()
         } else {
             Rectangle()
-                .fill(.regularMaterial)
+                .fill(.background)
                 .clipShape(.rect(cornerRadii: .init(topLeading: 24, topTrailing: 24)))
                 .ignoresSafeArea()
         }
