@@ -39,7 +39,7 @@ struct LegacyMigrationView: View {
                         .controlSize(.large)
                         .animation(.default, value: progress)
                 }
-                .padding(48)
+                .padding(.extraLarge)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.ultraThinMaterial)
