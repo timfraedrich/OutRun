@@ -10,6 +10,8 @@
 "date_yesterday" = "Yesterday";
 "location_service_error_authorization_denied" = "Location data cannot be received due to denied authorization.";
 "location_service_error_authorization_restricted" = "Only approximate location data is available. To record a workout precise location authorization needs to be granted.";
+"static_workout_map_service_error_noCoordinates" = "No image available due to the provided route.";
+"static_workout_map_service_error_renderingFailed" = "The creation of the image failed.";
 "step_service_error_steps_not_available" = "Step data is not available on this device.";
 "step_service_error_authorization_denied" = "Step data cannot be received due to denied authorization.";
 "step_service_error_authorization_missing" = "Step data cannot be received due to missing authorization.";
