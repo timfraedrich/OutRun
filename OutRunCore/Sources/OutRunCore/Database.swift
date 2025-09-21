@@ -136,6 +136,11 @@ actor Database: ModelActor {
         }
     }
     
+    func queryWorkoutRoute(for identifier: UUID) async throws -> [RawWorkoutRouteDataSample] {
+        let workout = try fetchWorkout(with: identifier)
+        return workout.route.sorted(by: { $0.timestamp > $1.timestamp }).map(RawWorkoutRouteDataSample.init)
+    }
+    
     // MARK: Internal
     
     private func fetchWorkout(with identifier: UUID) throws -> Workout {

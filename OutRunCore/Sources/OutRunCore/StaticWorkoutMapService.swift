@@ -23,6 +23,34 @@ public enum StaticWorkoutMapService {
         transformer: TransformerFactory.forImage()
     )
     
+    public static func getCachedImage(
+        for workout: any WorkoutProtocol,
+        size: CGSize,
+        colorScheme: ColorScheme,
+        accentColor: Color
+    ) -> UIImage? {
+        getCachedImage(for: workout.id, size: size, colorScheme: colorScheme, accentColor: accentColor)
+    }
+    
+    public static func getCachedImage(
+        for identifier: UUID,
+        size: CGSize,
+        colorScheme: ColorScheme,
+        accentColor: Color
+    ) -> UIImage? {
+        let userInterfaceStyle = UIUserInterfaceStyle(colorScheme)
+        let tintColor = UIColor(accentColor).withAlphaComponent(1)
+        let cacheKey = cacheKey(identifier: identifier, size: size, userInterfaceStyle: userInterfaceStyle, tintColor: tintColor)
+        do {
+            if let imageCache, try imageCache.existsObject(forKey: cacheKey) {
+                return try imageCache.object(forKey: cacheKey)
+            }
+        } catch {
+            logger.warning("Cache read error: \((error as NSError).debugDescription).")
+        }
+        return nil
+    }
+    
     /// - throws: Throws if the workout has no route data or rendering the image fails.
     public static func generateImage(
         for workout: any WorkoutProtocol,
@@ -48,16 +76,12 @@ public enum StaticWorkoutMapService {
         accentColor: Color
     ) async throws -> UIImage? {
         guard coordinates.count > 1 else { throw StaticWorkoutMapServiceError.noCoordinates }
+        if let cachedImage = getCachedImage(for: identifier, size: size, colorScheme: colorScheme, accentColor: accentColor) {
+            return cachedImage
+        }
         let userInterfaceStyle = UIUserInterfaceStyle(colorScheme)
         let tintColor = UIColor(accentColor).withAlphaComponent(1)
         let cacheKey = cacheKey(identifier: identifier, size: size, userInterfaceStyle: userInterfaceStyle, tintColor: tintColor)
-        do {
-            if let imageCache, try imageCache.existsObject(forKey: cacheKey) {
-                return try imageCache.object(forKey: cacheKey)
-            }
-        } catch {
-            logger.warning("Cache read error: \((error as NSError).debugDescription).")
-        }
         let renderedImage = try await Task(priority: .background) {
             try await generateMapImage(for: coordinates, size: size, userInterfaceStyle: userInterfaceStyle, tintColor: tintColor)
         }.value

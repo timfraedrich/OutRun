@@ -9,7 +9,7 @@ public class OutRunCore {
     
     public typealias Status = OutRunCoreStatus
     
-    @ObservationIgnored private var database: Database?
+    @ObservationIgnored var database: Database?
     @ObservationIgnored public var recorder: WorkoutRecorder?
     private let logger = Logger(category: "OutRunCore")
     let modelContainer: ModelContainer

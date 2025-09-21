@@ -3,8 +3,10 @@ import SwiftUI
 
 public struct StaticWorkoutMap: View {
     
+    @Environment(OutRunCore.self) private var core
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.scenePhase) private var scenePhase
+    @State private var insertedOrCachedCoordinates: [CLLocationCoordinate2D]?
     @State private var image: UIImage?
     @State private var size: CGSize = .zero
     @State private var task: Task<Void, Never>?
@@ -12,15 +14,13 @@ public struct StaticWorkoutMap: View {
     @State private var animate: Bool = false
     @State private var showError: Bool = false
     private let identifier: UUID
-    private let coordinates: [CLLocationCoordinate2D]
     private let accentColor: Color
     
     public var body: some View {
         ZStack {
             Rectangle().fill(.tint.tertiary)
             if let image {
-                Image(uiImage: image)
-                    .resizable()
+                Image(uiImage: image).resizable()
             } else if let error {
                 Button {
                     showError = true
@@ -52,21 +52,21 @@ public struct StaticWorkoutMap: View {
                 return Color.clear
             }
         }
-        .tint(accentColor)
     }
     
     /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route and general tint color for other components
     /// must be provided through the ``accentColor`` parameter. The environment's tint color is not respected by this view.
-    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D], accentColor: Color = .accentColor) {
+    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D]? = nil, accentColor: Color = .accentColor) {
         self.identifier = identifier
-        self.coordinates = coordinates
+        self.insertedOrCachedCoordinates = coordinates
         self.accentColor = accentColor
     }
     
     /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route on map must be explicitly provided. The
     /// environment's tint color is not respected by this view.
     public init(workout: any WorkoutProtocol, accentColor: Color = .accentColor) {
-        self.init(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: accentColor)
+        let coordinates: [CLLocationCoordinate2D]? = if workout is Workout { nil } else { workout.route.map(\.coordinate) }
+        self.init(identifier: workout.id, coordinates: coordinates, accentColor: accentColor)
     }
     
     private func sceneChangeAction() {
@@ -80,19 +80,38 @@ public struct StaticWorkoutMap: View {
     private func loadImage() {
         guard size.width != .zero, size.height != .zero else { return }
         task?.cancel()
+        if let cachedImage = StaticWorkoutMapService.getCachedImage(for: identifier, size: size, colorScheme: colorScheme, accentColor: accentColor) {
+            image = cachedImage
+            return
+        }
         debugPrint(identifier, size)
-        task = Task {
+        let database = core.database
+        task = Task { @BackgroundActor [insertedOrCachedCoordinates, database] in
             do {
-                image = try await StaticWorkoutMapService.generateImage(
+                let coordinates: [CLLocationCoordinate2D]
+                if let insertedOrCachedCoordinates {
+                    coordinates = insertedOrCachedCoordinates
+                } else {
+                    guard let database else { throw OutRunCoreError.notInitialized }
+                    let route = try await database.queryWorkoutRoute(for: identifier)
+                    debugPrint(identifier, "got route from db")
+                    coordinates = route.map(\.coordinate)
+                    await MainActor.run { self.insertedOrCachedCoordinates = coordinates }
+                }
+                guard !Task.isCancelled else { return }
+                debugPrint(identifier, "staring to render image")
+                let image = try await StaticWorkoutMapService.generateImage(
                     for: identifier,
                     coordinates: coordinates,
                     size: size,
                     colorScheme: colorScheme,
                     accentColor: accentColor
                 )
-                error = nil
+                debugPrint(identifier, "finished rendering image")
+                guard !Task.isCancelled else { return }
+                await MainActor.run { self.image = image }
             } catch {
-                self.error = error
+                await MainActor.run { self.error = error }
             }
         }
     }
