@@ -79,7 +79,7 @@ public class WorkoutRecorder {
         }
     }
     
-    @RecordingActor
+    @BackgroundActor
     private func startStreamingRecordingActorUpdates() async {
         var cancellables = Set<AnyCancellable>()
         startFitnessServicesStatusUpdates()?.eraseToAnyCancellable().store(in: &cancellables)
@@ -139,7 +139,7 @@ public class WorkoutRecorder {
         }
     }
     
-    @RecordingActor
+    @BackgroundActor
     private func startFitnessServicesStatusUpdates() -> Task<Void, Never>? {
         guard altitudeService != nil || stepService != nil else { return nil }
         let statusStream = Perceptions { [altitudeService, stepService] in (altitudeService?.status, stepService?.status) }
@@ -161,7 +161,7 @@ public class WorkoutRecorder {
         }
     }
     
-    @RecordingActor
+    @BackgroundActor
     private func startStateStatusUpdates() -> Task<Void, Never> {
         let statusStream = Perceptions { [state] in state.status }
         return Task { [weak self] in
@@ -177,7 +177,7 @@ public class WorkoutRecorder {
         }
     }
     
-    @RecordingActor
+    @BackgroundActor
     private func startStateWorkoutTypeUpdates() -> Task<Void, Never> {
         let workoutTypeStream = Perceptions { [state] in state.workoutType }
         return Task { [weak self] in
@@ -188,7 +188,7 @@ public class WorkoutRecorder {
         }
     }
     
-    @RecordingActor
+    @BackgroundActor
     private func startStateDistanceUpdates() -> Task<Void, Never> {
         let distanceStream = Perceptions { [state] in state.distanceMetric }
         return Task { [weak self] in
@@ -199,7 +199,7 @@ public class WorkoutRecorder {
         }
     }
     
-    @RecordingActor
+    @BackgroundActor
     private func startStateDurationUpdates() -> Task<Void, Never> {
         let durationStream = Perceptions { [state] in state.activeDuration }
         return Task { [weak self] in
@@ -210,7 +210,7 @@ public class WorkoutRecorder {
         }
     }
     
-    @RecordingActor
+    @BackgroundActor
     private func checkStartingConditions() async throws(WorkoutRecorderError) {
         let locationAuthorizationSufficient = await MainActor.run { locationService.status.authorizationSufficient }
         guard locationAuthorizationSufficient else { throw WorkoutRecorderError.locationAuthorizationInsufficient }
@@ -221,7 +221,7 @@ public class WorkoutRecorder {
     
     /// Starts the recording process for a workout.
     /// - throws: This method fails if this class has not been initialized or is currently in a failed or recording state.
-    @RecordingActor
+    @BackgroundActor
     public func startRecording() async throws {
         do {
             try await checkStartingConditions()
@@ -236,7 +236,7 @@ public class WorkoutRecorder {
     }
     
     /// Continues the recording process for a workout that has previously been ended.
-    @RecordingActor
+    @BackgroundActor
     public func continueRecording(with identifier: UUID) async throws {
         do {
             try await checkStartingConditions()
@@ -253,7 +253,7 @@ public class WorkoutRecorder {
     /// Pauses the recording process to be resumed in the near future.
     /// - throws: If the transition to a
     /// - note: Data will be collected even while paused, but ignored in the statistic calculation.
-    @RecordingActor
+    @BackgroundActor
     public func pauseRecording() async throws {
         do {
             guard let identifier = state.workoutIdentifier else { throw WorkoutRecorderError.notRecording }
@@ -268,7 +268,7 @@ public class WorkoutRecorder {
     }
     
     /// Resumes the recording process after being paused through ``pauseRecording()``.
-    @RecordingActor
+    @BackgroundActor
     public func resumeRecording() async throws {
         do {
             guard let identifier = state.workoutIdentifier else { throw WorkoutRecorderError.notRecording }
@@ -285,7 +285,7 @@ public class WorkoutRecorder {
     /// Ends the recording process and resets the workout recorder for the next recording.
     /// - returns: The finalized recorded workout if data was collected, `nil` otherwise.
     /// - throws: If this class is currently not recording a workout.
-    @RecordingActor
+    @BackgroundActor
     public func endRecording() async throws -> RawWorkout? {
         do {
             guard let identifier = state.workoutIdentifier else { throw WorkoutRecorderError.notRecording }
@@ -309,7 +309,7 @@ public class WorkoutRecorder {
     /// Requests the specified permission if not already sufficiently granted.
     /// - throws: Throws if the permission cannot be requested. The error thrown should be displayed to the user together with the option to
     /// open the iOS app settings at ``UIApplication.openSettingsURLString`` by using ``UIApplication/open()``.
-    @RecordingActor
+    @BackgroundActor
     public func requestAuthorization(for permission: WorkoutRecorderPermission) async throws {
         guard neededPermissions.contains(permission) else { return }
         switch permission {

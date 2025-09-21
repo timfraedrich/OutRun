@@ -5,7 +5,7 @@ import OSLog
 import Perception
 
 @Observable
-@RecordingActor
+@BackgroundActor
 class WorkoutRecorderState {
     
     typealias Status = WorkoutRecorderStatus

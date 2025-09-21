@@ -9,7 +9,7 @@ import OSLog
 /// - warning: To use this service you must include the `NSMotionUsageDescription` key in your app’s Info.plist file and provide a usage
 /// description string for this key.
 @Observable
-@RecordingActor
+@BackgroundActor
 class AltitudeService {
     
     static nonisolated var mode: Mode {
