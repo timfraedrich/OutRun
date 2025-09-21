@@ -14,12 +14,12 @@ public struct WorkoutCard: View {
     }
 }
 
+@MainActor
 public protocol WorkoutCardStyle: Sendable {
     
     associatedtype Body: View
     typealias Configuration = WorkoutCardStyleConfiguration
     
-    @MainActor
     func makeBody(configuration: Configuration) -> Body
 }
 
