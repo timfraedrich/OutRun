@@ -1,3 +1,4 @@
+import CoreLocation
 import OutRunCore
 import SwiftUI
 
@@ -63,7 +64,11 @@ struct ListWorkoutCardStyle: WorkoutCardStyle {
     private func optionalMap(for workout: any WorkoutProtocol) -> some View {
         if !workout.route.isEmpty {
             Color.clear.overlay(alignment: .center) {
-                StaticWorkoutMap(workout: workout, accentColor: .accent)
+                if workout is Workout {
+                    AsyncStaticWorkoutMap(workout: workout, accentColor: .accent)
+                } else {
+                    StaticWorkoutMap(workout: workout, accentColor: .accent)
+                }
             }
             .frame(width: mapWidth)
             .clipShape(.containerRelative)
@@ -86,37 +91,8 @@ extension WorkoutCardStyle where Self == ListWorkoutCardStyle {
 
 #Preview {
     VStack {
-        WorkoutCard(workout: RawWorkout(
-            id: .init(),
-            type: .cycling,
-            distance: 7892,
-            startDate: .now,
-            endDate: .now.addingTimeInterval(1201),
-            energy: 2300 * 1000,
-            repetitions: nil,
-            isRace: true,
-            name: nil,
-            comment: nil,
-            creationDate: .now,
-            lastEditDate: .now,
-            sourceService: .native
-        ))
-        WorkoutCard(workout: RawWorkout(
-            id: .init(),
-            type: .running,
-            distance: 1300,
-            startDate: .now.addingTimeInterval(-900000),
-            endDate: .now.addingTimeInterval(-900000 + 901),
-            energy: 900 * 1000,
-            repetitions: nil,
-            isRace: false,
-            name: "Morning Run",
-            comment: nil,
-            creationDate: .now,
-            lastEditDate: .now,
-            sourceService: .native,
-            route: PreviewConstants.route
-        ))
+        WorkoutCard(workout: PreviewConstants.cyclingWorkout)
+        WorkoutCard(workout: PreviewConstants.runningWorkout)
     }
     .workoutCardStyle(.list)
     .padding()
