@@ -48,4 +48,39 @@ public enum PreviewConstants {
             )
         }
     }
+    
+    /// An example running workout to use for previews. Has optional fields energy, name and route.
+    public static let runningWorkout = RawWorkout(
+        id: .init(),
+        type: .running,
+        distance: 1300,
+        startDate: .now.addingTimeInterval(-900000),
+        endDate: .now.addingTimeInterval(-900000 + 901),
+        energy: 900 * 1000,
+        repetitions: nil,
+        isRace: false,
+        name: "Morning Run",
+        comment: nil,
+        creationDate: .now,
+        lastEditDate: .now,
+        sourceService: .native,
+        route: PreviewConstants.route
+    )
+    
+    /// An example cycling workout to use for previews. Has optional fields energy and repetitions. Is marked as a race.
+    public static let cyclingWorkout = RawWorkout(
+        id: .init(),
+        type: .cycling,
+        distance: 7892,
+        startDate: .now,
+        endDate: .now.addingTimeInterval(1201),
+        energy: 2300 * 1000,
+        repetitions: 2403,
+        isRace: true,
+        name: nil,
+        comment: nil,
+        creationDate: .now,
+        lastEditDate: .now,
+        sourceService: .native
+    )
 }
