@@ -3,7 +3,6 @@ import SwiftUI
 
 public struct StaticWorkoutMap: View {
     
-    @Environment(OutRunCore.self) private var core
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.scenePhase) private var scenePhase
     @State private var insertedOrCachedCoordinates: [CLLocationCoordinate2D]?
@@ -13,6 +12,7 @@ public struct StaticWorkoutMap: View {
     @State private var error: Error?
     @State private var animate: Bool = false
     @State private var showError: Bool = false
+    private let database: Database?
     private let identifier: UUID
     private let accentColor: Color
     
@@ -52,21 +52,26 @@ public struct StaticWorkoutMap: View {
                 return Color.clear
             }
         }
+        .tint(accentColor)
     }
     
     /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route and general tint color for other components
     /// must be provided through the ``accentColor`` parameter. The environment's tint color is not respected by this view.
-    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D]? = nil, accentColor: Color = .accentColor) {
-        self.identifier = identifier
-        self.insertedOrCachedCoordinates = coordinates
-        self.accentColor = accentColor
+    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D], accentColor: Color = .accentColor) {
+        self.init(identifier: identifier, coordinates: coordinates, accentColor: accentColor, database: nil)
     }
     
     /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route on map must be explicitly provided. The
     /// environment's tint color is not respected by this view.
     public init(workout: any WorkoutProtocol, accentColor: Color = .accentColor) {
-        let coordinates: [CLLocationCoordinate2D]? = if workout is Workout { nil } else { workout.route.map(\.coordinate) }
-        self.init(identifier: workout.id, coordinates: coordinates, accentColor: accentColor)
+        self.init(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: accentColor, database: nil)
+    }
+    
+    init(identifier: UUID, coordinates: [CLLocationCoordinate2D]? = nil, accentColor: Color = .accentColor, database: Database?) {
+        self.identifier = identifier
+        self.insertedOrCachedCoordinates = coordinates
+        self.accentColor = accentColor
+        self.database = database
     }
     
     private func sceneChangeAction() {
@@ -84,8 +89,6 @@ public struct StaticWorkoutMap: View {
             image = cachedImage
             return
         }
-        debugPrint(identifier, size)
-        let database = core.database
         task = Task { @BackgroundActor [insertedOrCachedCoordinates, database] in
             do {
                 let coordinates: [CLLocationCoordinate2D]
@@ -94,12 +97,10 @@ public struct StaticWorkoutMap: View {
                 } else {
                     guard let database else { throw OutRunCoreError.notInitialized }
                     let route = try await database.queryWorkoutRoute(for: identifier)
-                    debugPrint(identifier, "got route from db")
                     coordinates = route.map(\.coordinate)
                     await MainActor.run { self.insertedOrCachedCoordinates = coordinates }
                 }
                 guard !Task.isCancelled else { return }
-                debugPrint(identifier, "staring to render image")
                 let image = try await StaticWorkoutMapService.generateImage(
                     for: identifier,
                     coordinates: coordinates,
@@ -107,7 +108,6 @@ public struct StaticWorkoutMap: View {
                     colorScheme: colorScheme,
                     accentColor: accentColor
                 )
-                debugPrint(identifier, "finished rendering image")
                 guard !Task.isCancelled else { return }
                 await MainActor.run { self.image = image }
             } catch {
@@ -123,12 +123,8 @@ public struct StaticWorkoutMap: View {
 }
 
 #Preview {
-    StaticWorkoutMap(
-        identifier: .init(),
-        coordinates: PreviewConstants.coordinates,
-        accentColor: .orange
-    )
-    .frame(height: 300)
-    .clipShape(.rect(cornerRadius: 32))
-    .padding()
+    StaticWorkoutMap(workout: PreviewConstants.runningWorkout)
+        .frame(height: 300)
+        .clipShape(.rect(cornerRadius: 32))
+        .padding()
 }
