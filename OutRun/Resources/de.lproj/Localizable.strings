@@ -1,2 +1,7 @@
 "legacy_migration_view_title" = "Bitte warten...";
 "legacy_migration_view_message" = "Die App führt derzeit eine Datenmigration durch. Bitte schließen Sie diese App nicht, während die Migration läuft.";
+"greeting_morning" = "Guten Morgen";
+"greeting_day" = "Guten Tag";
+"greeting_afternoon" = "Guten Tag";
+"greeting_evening" = "Guten Abend";
+"greeting_night" = "Gute Nacht";

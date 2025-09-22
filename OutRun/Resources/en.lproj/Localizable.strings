@@ -1,2 +1,7 @@
 "legacy_migration_view_title" = "Please wait...";
 "legacy_migration_view_message" = "The app is currently performing a legacy migration. Please do not close this app while the migration is in progress.";
+"greeting_morning" = "Good morning";
+"greeting_day" = "Good morning";
+"greeting_afternoon" = "Good afternoon";
+"greeting_evening" = "Good evening";
+"greeting_night" = "Good night";
