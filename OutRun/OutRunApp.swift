@@ -13,19 +13,23 @@ struct OutRunApp: App {
     
     var body: some Scene {
         OutRunCoreScene(config: config) { status in
-            switch status {
-            case .initializing:
-                ProgressView().progressViewStyle(.circular)
-            case .initialized:
-                ZStack {
-                    Text("App")
-                    LegacyMigrationView()
+            Group {
+                switch status {
+                case .initializing:
+                    ProgressView().progressViewStyle(.circular)
+                case .initialized:
+                    ZStack {
+                        Text("App")
+                        LegacyMigrationView()
+                    }
+                case .failed(let error):
+                    Text(error.localizedDescription)
+                        .font(.subheadline)
+                        .foregroundStyle(.red)
                 }
-            case .failed(let error):
-                Text(error.localizedDescription)
-                    .font(.subheadline)
-                    .foregroundStyle(.red)
             }
+            .backgroundStyle(.primaryBackground)
+            .foregroundStyle(.primaryLabel, .secondaryLabel, .tertiaryLabel)
         }
     }
 }
