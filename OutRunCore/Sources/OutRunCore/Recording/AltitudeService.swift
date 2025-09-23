@@ -1,5 +1,5 @@
 import Combine
-import CoreMotion
+@preconcurrency import CoreMotion
 import Foundation
 import RswiftResources
 import OSLog
@@ -23,16 +23,13 @@ class AltitudeService {
     }
     
     private let logger = Logger(category: "AltitudeService")
-    private let operationQueue = OperationQueue()
-    private let altimeter = CMAltimeter()
+    @MainActor private let altimeter = CMAltimeter()
+    @ObservationIgnored private var task: Task<Void, Never>?
     
     var status: Status = .initializing
     var altitude: AltitudeSample?
     
     init() {
-        operationQueue.maxConcurrentOperationCount = 1
-        operationQueue.qualityOfService = .userInitiated
-        
         guard Self.mode != .noAlitudeAvailable else {
             status = .failed(AltitudeServiceError.altitudeNotAvailable)
             logger.error("Altitude not available.")
@@ -90,32 +87,48 @@ class AltitudeService {
             return
         }
         status = .updatingSince(.now)
-        switch Self.mode {
-        case .absoluteAltitudeAvailable:
-            altimeter.startAbsoluteAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
-                guard let self else { return }
-                if let altitudeData {
-                    altitude = .init(isAbsolute: true, timestamp: .now, altitude: altitudeData.altitude)
-                } else if let error {
-                    reset()
-                    status = .failed(error)
+        task?.cancel()
+        task = Task { @BackgroundActor in
+            let (streamingTask, stream) = startStreamingUpdates()
+            do {
+                for try await sample in stream where !Task.isCancelled {
+                    altitude = sample
                 }
+            } catch {
+                reset()
+                status = .failed(error)
             }
-            logger.info("Started absolute altitude updates.")
-        case .relativeAltitudeAvailable:
-            altimeter.startRelativeAltitudeUpdates(to: operationQueue) { [weak self] altitudeData, error in
-                guard let self else { return }
-                if let altitudeData {
-                    altitude = .init(isAbsolute: false, timestamp: .now, altitude: altitudeData.relativeAltitude.doubleValue)
-                } else if let error {
-                    reset()
-                    status = .failed(error)
-                }
-            }
-            logger.info("Started relative altitude updates.")
-        case .noAlitudeAvailable:
-            logger.info("Altitude updates are not supported on this device.")
+            streamingTask.cancel()
         }
+    }
+    
+    private func startStreamingUpdates() -> (Task<Void, Never>, AsyncThrowingStream<AltitudeSample, Error>) {
+        let (stream, continuation) = AsyncThrowingStream<AltitudeSample, Error>.makeStream()
+        let streamingTask = Task { @MainActor in
+            switch Self.mode {
+            case .absoluteAltitudeAvailable:
+                altimeter.startAbsoluteAltitudeUpdates(to: .main) { altitudeData, error in
+                    if let altitudeData {
+                        continuation.yield(.init(isAbsolute: true, timestamp: .now, altitude: altitudeData.altitude))
+                    } else if let error {
+                        continuation.finish(throwing: error)
+                    }
+                }
+                logger.info("Started absolute altitude updates.")
+            case .relativeAltitudeAvailable:
+                altimeter.startRelativeAltitudeUpdates(to: .main) { altitudeData, error in
+                    if let altitudeData {
+                        continuation.yield(.init(isAbsolute: false, timestamp: .now, altitude: altitudeData.relativeAltitude.doubleValue))
+                    } else if let error {
+                        continuation.finish(throwing: error)
+                    }
+                }
+                logger.info("Started relative altitude updates.")
+            case .noAlitudeAvailable:
+                logger.info("Altitude updates are not supported on this device.")
+            }
+        }
+        return (streamingTask, stream)
     }
     
     /// Stops altitude updates and resets this class.
@@ -123,17 +136,20 @@ class AltitudeService {
         updateStatus()
         if case .updatingSince = status {
             switch Self.mode {
-            case .absoluteAltitudeAvailable: altimeter.stopAbsoluteAltitudeUpdates()
-            case .relativeAltitudeAvailable: altimeter.stopRelativeAltitudeUpdates()
+            case .absoluteAltitudeAvailable: Task { @MainActor in altimeter.stopAbsoluteAltitudeUpdates() }
+            case .relativeAltitudeAvailable: Task { @MainActor in altimeter.stopRelativeAltitudeUpdates() }
             case .noAlitudeAvailable: break
             }
             status = .idle
         }
         altitude = nil
+        task?.cancel()
+        task = nil
         logger.info("Reset altitude service and stopped altitude updates.")
     }
     
     private func updateStatus() {
+        if case .failed = status { return }
         let newStatus: Status = switch CMAltimeter.authorizationStatus() {
         case .authorized:
             if case .updatingSince(let date) = status {
