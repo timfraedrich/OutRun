@@ -1,6 +1,9 @@
-import CoreMotion
+@preconcurrency import CoreMotion
 import Foundation
 import OSLog
+
+// Due to a Swift 6 or iOS bug receiving a CMPedometer update results in an assertion failure. For the time being step data
+// collection will not be supported. For further details see: https://forums.swift.org/t/cmpedometer-breaks-with-swift-6/82091
 
 /// A class gathering step data.
 /// - warning: To use this service you must include the `NSMotionUsageDescription` key in your app’s Info.plist file and provide a usage
@@ -14,7 +17,8 @@ class StepService {
     }
         
     private let logger = Logger(category: "StepService")
-    private let pedometer = CMPedometer()
+    @MainActor private let pedometer = CMPedometer()
+    @ObservationIgnored private var task: Task<Void, Never>?
     
     var status: Status = .initializing
     var stepCount: Int? = nil
@@ -77,29 +81,51 @@ class StepService {
             return
         }
         status = .updatingSince(.now)
-        pedometer.startUpdates(from: date) { [weak self] data, error in
-            guard let self else { return }
-            if let data {
-                stepCount = data.numberOfSteps.intValue
-            } else if let error {
+        task?.cancel()
+        task = Task { @BackgroundActor in
+            let (streamingTask, stream) = startStreamingUpdates(from: date)
+            logger.info("Started step updates.")
+            do {
+                for try await stepCount in stream where !Task.isCancelled {
+                    self.stepCount = stepCount
+                }
+            } catch {
                 reset()
                 status = .failed(error)
             }
+            streamingTask.cancel()
         }
+    }
+    
+    private func startStreamingUpdates(from date: Date) -> (Task<Void, Never>, AsyncThrowingStream<Int, Error>) {
+        let (stream, continuation) = AsyncThrowingStream<Int, Error>.makeStream()
+        let streamingTask = Task { @MainActor in
+            pedometer.startUpdates(from: date) { data, error in
+                if let data {
+                    continuation.yield(data.numberOfSteps.intValue)
+                } else if let error {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
+        return (streamingTask, stream)
     }
     
     /// Stops step data collection and resets this class.
     private func reset() {
         updateStatus()
         if case .updatingSince = status {
-            pedometer.stopUpdates()
+            Task { @MainActor in pedometer.stopUpdates() }
             status = .idle
         }
         stepCount = nil
+        task?.cancel()
+        task = nil
         logger.info("Reset step service and stopped step data collection.")
     }
     
     private func updateStatus() {
+        if case .failed = status { return }
         let newStatus: Status = switch CMPedometer.authorizationStatus() {
         case .authorized:
             if case .updatingSince(let date) = status {
@@ -152,13 +178,13 @@ class StepService {
         
         var debugDescription: String {
             switch self {
-            case .initializing: ".initializing"
-            case .missingAuthorization: ".missingAuthorization"
-            case .restrictedAuthorization: ".restrictedAuthorization"
-            case .deniedAuthorization: ".deniedAuthorization"
-            case .idle: ".idle"
-            case .updatingSince(let date): ".updatingSince(\(date.formatted(.iso8601)))"
-            case .failed(let error): ".failed(\((error as CustomDebugStringConvertible).debugDescription)"
+            case .initializing: "StepService.Status.initializing"
+            case .missingAuthorization: "StepService.Status.missingAuthorization"
+            case .restrictedAuthorization: "StepService.Status.restrictedAuthorization"
+            case .deniedAuthorization: "StepService.Status.deniedAuthorization"
+            case .idle: "StepService.Status.idle"
+            case .updatingSince(let date): "StepService.Status.updatingSince(\(date.formatted(.iso8601)))"
+            case .failed(let error): "StepService.Status.failed(\((error as CustomDebugStringConvertible).debugDescription)"
             }
         }
         
@@ -190,11 +216,11 @@ class StepService {
         
         var debugDescription: String {
             switch self {
-            case .stepsNotAvailable: ".stepsNotAvailable"
-            case .authorizationMissing: ".authorizationMissing"
-            case .authorizationDenied: ".authorizationDenied"
-            case .authorizationRestricted: ".authorizationRestricted"
-            case .unknownAuthorizationStatus: ".unknownAuthorizationStatus"
+            case .stepsNotAvailable: "StepServiceError.stepsNotAvailable"
+            case .authorizationMissing: "StepServiceError.authorizationMissing"
+            case .authorizationDenied: "StepServiceError.authorizationDenied"
+            case .authorizationRestricted: "StepServiceError.authorizationRestricted"
+            case .unknownAuthorizationStatus: "StepServiceError.unknownAuthorizationStatus"
             }
         }
         

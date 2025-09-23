@@ -21,6 +21,11 @@ public class OutRunCore {
         guard config.recordableDataTypes.contains(.location) else {
             fatalError("Invalid OutRunCore configuration. Must include .location as a recordable data type.")
         }
+        // Due to a Swift 6 or iOS bug receiving a CMPedometer update results in an assertion failure. For the time being step data
+        // collection will not be supported. For further details see: https://forums.swift.org/t/cmpedometer-breaks-with-swift-6/82091
+        guard !config.recordableDataTypes.contains(.steps) else {
+            fatalError("Invalid OutRunCore configuration. Currently, the ability to record steps is not supported.")
+        }
         do {
             let groupContainer: ModelConfiguration.GroupContainer = if let appGroupIdentifier = config.appGroupIdentifier {
                 .identifier(appGroupIdentifier)
