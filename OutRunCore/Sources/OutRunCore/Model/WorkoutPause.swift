@@ -21,7 +21,7 @@ public class WorkoutPause: WorkoutPauseProtocol {
         self.workout = workout
     }
     
-    convenience init(from rawPause: RawWorkoutPause, attachTo workout: Workout) {
+    public convenience init(from rawPause: RawWorkoutPause, attachTo workout: Workout) {
         self.init(startDate: rawPause.startDate, endDate: rawPause.endDate, userInitiated: rawPause.userInitiated, workout: workout)
     }
 }

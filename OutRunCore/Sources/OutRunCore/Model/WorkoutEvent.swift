@@ -15,7 +15,7 @@ public class WorkoutEvent: WorkoutEventProtocol {
         self.workout = workout
     }
     
-    convenience init(from rawEvent: RawWorkoutEvent, attachTo workout: Workout) {
+    public convenience init(from rawEvent: RawWorkoutEvent, attachTo workout: Workout) {
         self.init(type: rawEvent.type, timestamp: rawEvent.timestamp, workout: workout)
     }
 }

@@ -35,7 +35,7 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
         self.workout = workout
     }
     
-    convenience init(from rawRouteSample: RawWorkoutRouteDataSample, attachTo workout: Workout) {
+    public convenience init(from rawRouteSample: RawWorkoutRouteDataSample, attachTo workout: Workout) {
         self.init(
             timestamp: rawRouteSample.timestamp,
             latitude: rawRouteSample.latitude,
@@ -48,7 +48,7 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
         )
     }
     
-    convenience init(from location: CLLocation, attachTo workout: Workout) {
+    public convenience init(from location: CLLocation, attachTo workout: Workout) {
         self.init(
             timestamp: location.timestamp,
             latitude: location.coordinate.latitude,

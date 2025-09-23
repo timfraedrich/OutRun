@@ -12,7 +12,7 @@ public class WorkoutServiceMapping: WorkoutServiceMappingProtocol {
     
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
-    init(
+    public init(
         service: WorkoutService,
         externalId: String,
         externalUrl: String?,
@@ -28,7 +28,7 @@ public class WorkoutServiceMapping: WorkoutServiceMappingProtocol {
         self.workout = workout
     }
     
-    convenience init(from rawServiceMapping: RawWorkoutServiceMapping, attachTo workout: Workout) {
+    public convenience init(from rawServiceMapping: RawWorkoutServiceMapping, attachTo workout: Workout) {
         self.init(
             service: rawServiceMapping.service,
             externalId: rawServiceMapping.externalId,
