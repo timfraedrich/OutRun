@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Perception
 import SwiftData
 
 actor Database: ModelActor {
@@ -105,6 +106,7 @@ actor Database: ModelActor {
     /// to the `recoveryDate` provided.
     /// - throws: Throws if the fetching process or saving the workout after inserting the pause fails. The method will **not** throw if
     /// there is no workout to recover.
+    @discardableResult
     func recoverUnfinishedWorkout(recoveryDate: Date) throws -> RawWorkout? {
         let descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.endDate == nil })
         guard let workout = try modelContext.fetch(descriptor).first else { return nil }
@@ -112,6 +114,26 @@ actor Database: ModelActor {
         try modelContext.save()
         return RawWorkout(workout: workout)
     }
+    
+    /// Changes the workout type and updates the energy value of a workout currently being recorded.
+    /// - returns: The workout whose type was changed.
+    /// - throws: Throws if the workout cannot be found, is already finished or saving it fails.
+    @discardableResult
+    func changeWorkoutType(
+        ofWorkoutWith identifier: UUID,
+        to type: WorkoutType,
+        updatedEnergy: Double?
+    ) throws -> RawWorkout {
+        let workout = try fetchWorkout(with: identifier)
+        guard workout.endDate == nil else { throw DatabaseError.workoutAlreadyFinished }
+        workout.type = type
+        workout.energy = updatedEnergy
+        workout.lastEditDate = .now
+        try modelContext.save()
+        return RawWorkout(workout: workout)
+    }
+    
+    // MARK: Workouts
     
     func insert(_ rawWorkouts: [RawWorkout]) throws {
         for rawWorkout in rawWorkouts {
@@ -139,6 +161,44 @@ actor Database: ModelActor {
     func queryWorkoutRoute(for identifier: UUID) async throws -> [RawWorkoutRouteDataSample] {
         let workout = try fetchWorkout(with: identifier)
         return workout.route.sorted(by: { $0.timestamp > $1.timestamp }).map(RawWorkoutRouteDataSample.init)
+    }
+    
+    // MARK: User
+    
+    func insert(_ rawUser: RawUser) throws {
+        let user = User(from: rawUser)
+        modelContext.insert(user)
+        try modelContext.save()
+    }
+    
+    func userStream() throws -> (stream: AsyncThrowingStream<RawUser?, Error>, task: Task<Void, Never>) {
+        let (stream, continuation) = AsyncThrowingStream<RawUser?, Error>.makeStream(bufferingPolicy: .unbounded)
+        let task = Task {
+            var descriptor = FetchDescriptor<User>()
+            descriptor.fetchLimit = 1
+            do {
+                let user = try modelContext.fetch(descriptor).first.map(RawUser.init)
+                continuation.yield(user)
+                var lastUser: RawUser? = user
+                for await _ in NotificationCenter.default.notifications(named: ModelContext.didSave) where !Task.isCancelled {
+                    let user = try modelContext.fetch(descriptor).first.map(RawUser.init)
+                    guard user != lastUser else { continue }
+                    continuation.yield(user)
+                    lastUser = user
+                }
+                continuation.finish()
+            } catch {
+                continuation.finish(throwing: error)
+            }
+        }
+        return (stream, task)
+    }
+
+    func fetchUser() throws -> RawUser? {
+        var descriptor = FetchDescriptor<User>()
+        descriptor.fetchLimit = 1
+        guard let user = try modelContext.fetch(descriptor).first else { return nil }
+        return RawUser(from: user)
     }
     
     // MARK: Internal

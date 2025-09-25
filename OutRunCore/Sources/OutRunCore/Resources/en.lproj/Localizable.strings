@@ -3,6 +3,8 @@
 "altitude_service_error_authorization_missing" = "Altitude data cannot be received due to missing authorization.";
 "altitude_service_error_authorization_restricted" = "Altitude data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "altitude_service_error_unknown_authorization_status" = "Altitude data cannot be received due to an unknown authorization status.";
+"core_error_not_initialized" = "This action cannot be preformed before the core has been initialized.";
+"core_error_user_not_missing" = "This action cannot be performed as the core has already been set up with a user profile.";
 "database_error_object_not_found" = "The object could not be found in the database.";
 "database_error_workout_not_finished" = "The workout could not be continued, as it has not been finished.";
 "database_error_workout_already_finished" = "The recorded change could not be saved, as the workout has already been finished.";

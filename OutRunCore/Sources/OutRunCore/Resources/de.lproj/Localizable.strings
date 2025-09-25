@@ -3,6 +3,8 @@
 "altitude_service_error_authorization_missing" = "Höhendaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";
 "altitude_service_error_authorization_restricted" = "Höhendaten können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
 "altitude_service_error_unknown_authorization_status" = "Höhendaten können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
+"core_error_not_initialized" = "Diese Aktion kann nicht durchgeführt werden, bevor der Kern fertig initialisiert wurde.";
+"core_error_user_not_missing" = "Diese Aktion kann nicht durchgeführt werden, da der Kern schon mit einem Nutzerprofil eingerichtet wurde.";
 "database_error_object_not_found" = "Das Objekt konnte in der Datenbank nicht gefunden werden.";
 "database_error_workout_already_finished" = "Die Änderung während des Aufzeichnens konnte nicht gespeichert werden, da das Workout bereits abgeschlossen wurde.";
 "database_error_workout_not_finished" = "Das Workout konnte nicht fortgeführt werden, da es noch nicht beendet wurde.";

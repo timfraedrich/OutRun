@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RawUser: UserProtocol {
+public struct RawUser: UserProtocol, Sendable {
     
     public var id: UUID?
     public var name: String
@@ -17,7 +17,7 @@ public struct RawUser: UserProtocol {
         name: String,
         weight: Double? = nil,
         sex: Sex? = nil,
-        preferences: [String : Data],
+        preferences: [String : Data] = [:],
         creationDate: Date,
         lastEditDate: Date? = nil
     ) {
@@ -28,5 +28,17 @@ public struct RawUser: UserProtocol {
         self.preferences = preferences
         self.creationDate = creationDate
         self.lastEditDate = lastEditDate ?? creationDate
+    }
+    
+    public init(from user: User) {
+        self.init(
+            id: user.id,
+            name: user.name,
+            weight: user.weight,
+            sex: user.sex,
+            preferences: user.preferences,
+            creationDate: user.creationDate,
+            lastEditDate: user.lastEditDate
+        )
     }
 }

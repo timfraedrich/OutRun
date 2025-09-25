@@ -1,5 +1,6 @@
 import SwiftData
 import OSLog
+import Perception
 
 @Observable
 @MainActor
@@ -13,8 +14,10 @@ public class OutRunCore {
     @ObservationIgnored public var recorder: WorkoutRecorder?
     private let logger = Logger(category: "OutRunCore")
     let modelContainer: ModelContainer
+    let config: OutRunCoreConfiguration
     
-    public var status: Status = .initializing
+    public private(set) var user: RawUser?
+    public private(set) var status: Status = .initializing
     
     // TODO: check if workout source is apple health and reimport
     public init(config: OutRunCoreConfiguration) {
@@ -26,12 +29,9 @@ public class OutRunCore {
         guard !config.recordableDataTypes.contains(.steps) else {
             fatalError("Invalid OutRunCore configuration. Currently, the ability to record steps is not supported.")
         }
+        self.config = config
+        let groupContainer: ModelConfiguration.GroupContainer = if let id = config.appGroupIdentifier { .identifier(id) } else { .none }
         do {
-            let groupContainer: ModelConfiguration.GroupContainer = if let appGroupIdentifier = config.appGroupIdentifier {
-                .identifier(appGroupIdentifier)
-            } else {
-                .none
-            }
             modelContainer = try Database.modelContainer(
                 name: config.containerName,
                 isStoredInMemoryOnly: config.isStoredInMemoryOnly,
@@ -47,15 +47,16 @@ public class OutRunCore {
         Task {
             do {
                 let database = try await Database(modelContainer: modelContainer)
-                self.recorder = await WorkoutRecorder(
-                    database: database,
-                    locationService: .init(),
-                    altitudeService: config.recordableDataTypes.contains(.preciseAltitude) ? .init() : nil,
-                    stepService: config.recordableDataTypes.contains(.steps) ? .init() : nil
-                )
                 self.database = database
-                self.status = .initialized
-                logger.info("Finished initialization.")
+                try self.startStreamingUserUpdates()
+                if let user = try await database.fetchUser() {
+                    self.user = user
+                    try await self.prepareRecorder(database: database)
+                    logger.info("Finished initialization.")
+                } else {
+                    self.status = .userMissing
+                    logger.info("Finished initialization, no user found.")
+                }
             } catch {
                 self.status = .failed(error)
                 logger.critical("Failed initialization: \((error as CustomDebugStringConvertible).debugDescription).")
@@ -63,8 +64,45 @@ public class OutRunCore {
         }
     }
     
+    private func prepareRecorder(database: Database) async throws {
+        guard let user else { throw OutRunCoreError.notInitialized }
+        self.recorder = await WorkoutRecorder(
+            user: user,
+            database: database,
+            locationService: .init(),
+            altitudeService: config.recordableDataTypes.contains(.preciseAltitude) ? .init() : nil,
+            stepService: config.recordableDataTypes.contains(.steps) ? .init() : nil
+        )
+        self.status = .initialized
+    }
+    
+    // TODO: rename migrate and add user with migration
     public func insert(_ workouts: [RawWorkout]) async throws {
         guard status == .initialized, let database else { throw OutRunCoreError.notInitialized }
         try await database.insert(workouts)
+    }
+    
+    public func createUser(identifier: UUID?, name: String, weight: Double?, sex: Sex?) async throws {
+        guard case .userMissing = status, let database else { throw OutRunCoreError.userNotMissing }
+        let user = RawUser(id: identifier, name: name, weight: weight, sex: sex, creationDate: .now)
+        try await database.insert(user)
+        try await prepareRecorder(database: database)
+    }
+    
+    private func startStreamingUserUpdates() throws {
+        guard let database else { throw OutRunCoreError.notInitialized }
+        Task {
+            let (userStream, task) = try await database.userStream()
+            do {
+                for try await user in userStream where !Task.isCancelled {
+                    if case .failed = status { break }
+                    
+                    status = user == nil ? .userMissing : .initialized
+                }
+            } catch {
+                status = .failed(error)
+            }
+            task.cancel()
+        }
     }
 }

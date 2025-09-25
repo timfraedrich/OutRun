@@ -4,6 +4,7 @@ import Foundation
 enum ModelSchema: VersionedSchema {
     
     static let models: [any PersistentModel.Type] = [
+        User.self,
         Workout.self,
         WorkoutRouteDataSample.self,
         WorkoutHeartRateDataSample.self,
