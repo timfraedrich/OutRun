@@ -1,7 +1,14 @@
-public enum Sex: Codable, CustomDebugStringConvertible, Equatable, Sendable {
+public enum Sex: CaseIterable, Codable, CustomDebugStringConvertible, CustomStringConvertible, Hashable, Sendable {
     
     case male
     case female
+    
+    public var description: String {
+        switch self {
+        case .male: R.string.localizable.sex_male()
+        case .female: R.string.localizable.sex_female()
+        }
+    }
     
     public var debugDescription: String {
         switch self {

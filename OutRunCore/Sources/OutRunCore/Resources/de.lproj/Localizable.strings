@@ -12,6 +12,8 @@
 "date_yesterday" = "Gestern";
 "location_service_error_authorization_denied" = "Standortdaten können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
 "location_service_error_authorization_restricted" = "Es stehen nur ungefähre Standortdaten zur verfügung. Um ein Workout aufzunehmen müssen genaue Standortdaten geteilt werden.";
+"sex_male" = "männlich";
+"sex_female" = "weiblich";
 "static_workout_map_service_error_no_coordinates" = "Für die gegebene Route kann kein Bild erstellt werden.";
 "static_workout_map_service_error_rendering_failed" = "Das Erstellen des Bildes ist fehlgeschlagen.";
 "step_service_error_steps_not_available" = "Schrittdaten sind auf diesem Gerät nicht verfügbar.";
