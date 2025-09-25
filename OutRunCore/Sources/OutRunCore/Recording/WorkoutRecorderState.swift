@@ -72,6 +72,10 @@ class WorkoutRecorderState {
         user = updatedUser
     }
     
+    func changeWorkoutType(to type: WorkoutType) {
+        workoutType = type
+    }
+    
     func startOrContinue(_ workout: RawWorkout, on date: Date) throws(WorkoutRecorderError) {
         try checkStatus()
         guard case .idle = status else { throw .alreadyRecording }

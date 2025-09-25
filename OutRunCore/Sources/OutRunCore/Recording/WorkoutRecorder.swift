@@ -336,5 +336,21 @@ public class WorkoutRecorder {
         }
         logger.info("Requested authorization for \(permission.debugDescription).")
     }
+    
+    /// Changes the workout type recorded by this class.
+    /// - throws: Throws if a workout is currently running and modifying it in the database fails.
+    @BackgroundActor
+    public func changeWorkoutType(to type: WorkoutType) async throws {
+        let oldType = state.workoutType
+        state.changeWorkoutType(to: type)
+        guard let identifier = state.workoutIdentifier else { return }
+        do {
+            try await database.changeWorkoutType(ofWorkoutWith: identifier, to: type, updatedEnergy: state.energy)
+            logger.info("Changed type of workout with identifier \(identifier) to \(type.debugDescription).")
+        } catch {
+            state.changeWorkoutType(to: oldType)
+            let description = (error as CustomDebugStringConvertible).debugDescription
+            logger.error("Failed to update type of workout with identifier \(identifier) to \(type.debugDescription): \(description).")
+        }
     }
 }
