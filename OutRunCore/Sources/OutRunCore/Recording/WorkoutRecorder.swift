@@ -15,8 +15,6 @@ public class WorkoutRecorder {
     
     private let logger = Logger(category: "WorkoutRecorder")
     @ObservationIgnored private var cancellables = Set<AnyCancellable>()
-    // user profile (weight, sex, etc.)
-    // user preferences
     private let state: WorkoutRecorderState
     private let database: Database
     private let locationService: LocationService
@@ -27,8 +25,10 @@ public class WorkoutRecorder {
     
     public private(set) var status: Status
     public private(set) var workoutType: WorkoutType
-    public private(set) var distance: WorkoutMetric.ValueRepresentation
-    public private(set) var duration: WorkoutMetric.ValueRepresentation
+    public private(set) var distance: Measurement<UnitLength>
+    public private(set) var duration: DynamicTimeInterval
+    public private(set) var energy: Measurement<UnitEnergy>
+    public private(set) var speed: Measurement<UnitSpeed>
     /// The permissions missing for an ideal recording experience. Check each elements ``WorkoutRecorderPermissionRequirement/isRequired``
     /// to determine which permissions must be aquired before a recording can be started.
     public private(set) var missingPermissions: Set<WorkoutRecorderPermission>
@@ -36,9 +36,15 @@ public class WorkoutRecorder {
     /// user together with the recommendation to restart the app.
     public private(set) var failedDataTypeCollection: [RecordableDataTypes:Error]
     
-    init(database: Database, locationService: LocationService, altitudeService: AltitudeService?, stepService: StepService?) async {
+    init(
+        user: RawUser,
+        database: Database,
+        locationService: LocationService,
+        altitudeService: AltitudeService?,
+        stepService: StepService?
+    ) async {
         
-        self.state = await .init()
+        self.state = await .init(user: user)
         self.database = database
         self.locationService = locationService
         self.altitudeService = altitudeService
@@ -47,8 +53,10 @@ public class WorkoutRecorder {
         
         self.status = await state.status
         self.workoutType = await state.workoutType
-        self.distance = await state.distanceMetric
+        self.distance = await state.distanceMeasurement
         self.duration = await state.activeDuration
+        self.energy = await state.energyMeasurement
+        self.speed = await state.speedMeasurement
         let locationAuthorizationSufficient = locationService.status.authorizationSufficient
         let altitudeAuthorizationSufficient = await altitudeService?.status.authorizationSufficient ?? true
         let stepAuthorizationSufficient = await stepService?.status.authorizationSufficient ?? true
@@ -82,17 +90,43 @@ public class WorkoutRecorder {
     @BackgroundActor
     private func startStreamingRecordingActorUpdates() async {
         var cancellables = Set<AnyCancellable>()
+        startUserUpdates().eraseToAnyCancellable().store(in: &cancellables)
         startFitnessServicesStatusUpdates()?.eraseToAnyCancellable().store(in: &cancellables)
         startStateStatusUpdates().eraseToAnyCancellable().store(in: &cancellables)
-        startStateWorkoutTypeUpdates().eraseToAnyCancellable().store(in: &cancellables)
-        startStateDistanceUpdates().eraseToAnyCancellable().store(in: &cancellables)
-        startStateDurationUpdates().eraseToAnyCancellable().store(in: &cancellables)
+        startStatePropertyUpdates(of: \.workoutType) { $0.workoutType = $1 }.eraseToAnyCancellable().store(in: &cancellables)
+        startStatePropertyUpdates(of: \.distanceMeasurement) { $0.distance = $1 }.eraseToAnyCancellable().store(in: &cancellables)
+        startStatePropertyUpdates(of: \.activeDuration) { $0.duration = $1 }.eraseToAnyCancellable().store(in: &cancellables)
+        startStatePropertyUpdates(of: \.energyMeasurement) { $0.energy = $1 }.eraseToAnyCancellable().store(in: &cancellables)
+        startStatePropertyUpdates(of: \.speedMeasurement) { $0.speed = $1 }.eraseToAnyCancellable().store(in: &cancellables)
         await MainActor.run { self.cancellables = cancellables }
     }
     
     private func startStreamingMainActorUpdates() {
         startLocationUpdates().eraseToAnyCancellable().store(in: &cancellables)
         startLocationServiceStatusUpdates().eraseToAnyCancellable().store(in: &cancellables)
+    }
+    
+    @BackgroundActor
+    private func startUserUpdates() -> Task<Void, Never> {
+        Task { [logger, weak self] in
+            let (userStream, task): (AsyncThrowingStream<RawUser?, Error>, Task<Void, Never>)
+            do {
+                guard let database = self?.database else { throw WorkoutRecorderError.notInitialized }
+                (userStream, task) = try await database.userStream()
+            } catch {
+                logger.fault("Could not start streaming user updates: \((error as CustomDebugStringConvertible).debugDescription)")
+                return
+            }
+            do {
+                for try await user in userStream where !Task.isCancelled {
+                    guard let self, let user else { return }
+                    state.update(basedOn: user)
+                }
+            } catch {
+                logger.fault("User update streaming failed: \((error as CustomDebugStringConvertible).debugDescription)")
+            }
+            task.cancel()
+        }
     }
     
     private func startLocationUpdates() -> Task<Void, Never> {
@@ -178,34 +212,15 @@ public class WorkoutRecorder {
     }
     
     @BackgroundActor
-    private func startStateWorkoutTypeUpdates() -> Task<Void, Never> {
-        let workoutTypeStream = Perceptions { [state] in state.workoutType }
+    private func startStatePropertyUpdates<T: Sendable>(
+        of propertyKeyPath: KeyPath<WorkoutRecorderState, T>,
+        updateClosure: @MainActor @escaping (WorkoutRecorder, T) -> Void
+    ) -> Task<Void, Never> {
+        let propertyStream = Perceptions { [state] in state[keyPath: propertyKeyPath] }
         return Task { [weak self] in
-            for await workoutType in workoutTypeStream where !Task.isCancelled {
-                guard let self else { return }
-                await MainActor.run { self.workoutType = workoutType }
-            }
-        }
-    }
-    
-    @BackgroundActor
-    private func startStateDistanceUpdates() -> Task<Void, Never> {
-        let distanceStream = Perceptions { [state] in state.distanceMetric }
-        return Task { [weak self] in
-            for await distance in distanceStream where !Task.isCancelled {
-                guard let self else { return }
-                await MainActor.run { self.distance = distance }
-            }
-        }
-    }
-    
-    @BackgroundActor
-    private func startStateDurationUpdates() -> Task<Void, Never> {
-        let durationStream = Perceptions { [state] in state.activeDuration }
-        return Task { [weak self] in
-            for await duration in durationStream where !Task.isCancelled {
-                guard let self else { return }
-                await MainActor.run { self.duration = duration }
+            for await property in propertyStream where !Task.isCancelled {
+                guard var self else { return }
+                await updateClosure(self, property)
             }
         }
     }
@@ -227,7 +242,7 @@ public class WorkoutRecorder {
             try await checkStartingConditions()
             let date: Date = .now
             let workout = try await database.initializeWorkout(with: state.workoutType, startDate: date)
-            try await state.startOrContinue(workout, on: date)
+            try state.startOrContinue(workout, on: date)
             logger.info("Started recording of a new workout.")
         } catch {
             logger.error("Failed to start recording of a new workout: \((error as CustomDebugStringConvertible).debugDescription).")
@@ -242,7 +257,7 @@ public class WorkoutRecorder {
             try await checkStartingConditions()
             let date: Date = .now
             let workout = try await database.continueWorkout(with: identifier, continueDate: date)
-            try await state.startOrContinue(workout, on: date)
+            try state.startOrContinue(workout, on: date)
             logger.info("Continued recording of workout with identifier \(identifier).")
         } catch {
             logger.error("Failed to contnue recording: \((error as CustomDebugStringConvertible).debugDescription).")
@@ -319,5 +334,7 @@ public class WorkoutRecorder {
             try await altitudeService?.requestAuthorization()
             try await stepService?.requestAuthorization()
         }
+        logger.info("Requested authorization for \(permission.debugDescription).")
+    }
     }
 }

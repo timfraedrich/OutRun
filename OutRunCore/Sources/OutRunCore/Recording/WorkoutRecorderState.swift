@@ -13,6 +13,7 @@ class WorkoutRecorderState {
     private let logger = Logger(category: "WorkoutRecorderState")
     
     private(set) var status: WorkoutRecorderStatus = .initializing
+    private(set) var user: RawUser
     // TODO: Use user preferred value.
     private(set) var workoutType: WorkoutType = .running
     private(set) var distance: Double = .zero
@@ -30,25 +31,35 @@ class WorkoutRecorderState {
     private(set) var manuallyPausedSince: Date?
     private(set) var automaticallyPausedSince: Date?
     
-    var activeDuration: WorkoutMetric.ValueRepresentation {
-        guard status.isCollectingData, let lastResumeDate else { return .duration(0) }
+    var activeDuration: DynamicTimeInterval {
+        guard status.isCollectingData, let lastResumeDate else { return .constant(0) }
         return if case .paused = status {
-            .duration(activeDurationBeforeLastPause)
+            .constant(activeDurationBeforeLastPause)
         } else {
-            .increasingDuration(lastResumeDate, -activeDurationBeforeLastPause)
+            .increasing(since: lastResumeDate, offset: -activeDurationBeforeLastPause)
         }
     }
     
-    var distanceMetric: WorkoutMetric.ValueRepresentation {
-        guard status.isCollectingData else { return .longDistanceMeasurement(.init(value: 0, unit: .meters)) }
-        return .longDistanceMeasurement(.init(value: distance, unit: .meters))
+    var distanceMeasurement: Measurement<UnitLength> {
+        guard status.isCollectingData else { return .init(value: 0, unit: .meters) }
+        return .init(value: distance, unit: .meters)
     }
     
-    var energy: Double {
-        Calculation.calculateBurnedEnergy(distance: distance, workoutType: workoutType)
+    var energy: Double? { Calculation.calculateBurnedEnergy(weight: user.weight, distance: distance, workoutType: workoutType) }
+    var energyMeasurement: Measurement<UnitEnergy> {
+        guard let energy else { return .init(value: 0, unit: .joules) }
+        return .init(value: energy, unit: .joules)
     }
     
-    init() {}
+    // TODO: calculate rolling speed if user prefers that
+    var speedMeasurement: Measurement<UnitSpeed> {
+        guard let lastLocation, lastLocation.speed >= 0 else { return .init(value: 0, unit: .metersPerSecond) }
+        return .init(value: lastLocation.speed, unit: .metersPerSecond)
+    }
+    
+    init(user: RawUser) {
+        self.user = user
+    }
     
     func signalSuccessfulInitialization() throws(WorkoutRecorderError) {
         if case .failed = status {
@@ -57,7 +68,11 @@ class WorkoutRecorderState {
         status = .idle
     }
     
-    func startOrContinue(_ workout: RawWorkout, on date: Date) async throws(WorkoutRecorderError) {
+    func update(basedOn updatedUser: RawUser) {
+        user = updatedUser
+    }
+    
+    func startOrContinue(_ workout: RawWorkout, on date: Date) throws(WorkoutRecorderError) {
         try checkStatus()
         guard case .idle = status else { throw .alreadyRecording }
         workoutIdentifier = workout.id
@@ -115,7 +130,7 @@ class WorkoutRecorderState {
     func processLocation(
         _ location: CLLocation?,
         with altitude: AltitudeService.AltitudeSample?
-    ) async throws -> (sample: RawWorkoutRouteDataSample?, pause: RawWorkoutPause?) {
+    ) throws -> (sample: RawWorkoutRouteDataSample?, pause: RawWorkoutPause?) {
         lastLocation = location
         guard status.isCollectingData,
               let workoutIdentifier,
@@ -140,7 +155,6 @@ class WorkoutRecorderState {
         }
         let newDistance = distance + addedDistance
         distance = newDistance
-        let currentEnergy = Calculation.calculateBurnedEnergy(distance: newDistance, workoutType: workoutType)
         var sample = RawWorkoutRouteDataSample(from: location)
         refineSample(&sample, with: altitude)
         lastRecordedLocation = location

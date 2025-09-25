@@ -3,9 +3,9 @@ import Foundation
 enum Calculation {
     
     // TODO: Use more advanced energy calculation.
-    static func calculateBurnedEnergy(distance: Double, workoutType: WorkoutType) -> Double {
-        // TODO: Use actual user weight.
-        let weight: Double = 70
+    /// - returns: The calculated energy in joules.
+    static func calculateBurnedEnergy(weight: Double?, distance: Double, workoutType: WorkoutType) -> Double? {
+        guard let weight else { return nil }
         // calories == MET ( speed ( kilometers / hours ) * METSpeedMultiplier ) * weight * hours
         //          == kilometers / hours * METSpeedMultiplier * weight * hours
         //          == kilometers * METSpeedMultiplier * weight
@@ -62,6 +62,10 @@ enum Calculation {
     
     static func calculateAverageSpeed(distance: Double, startDate: Date, endDate: Date?, pauses: [any WorkoutPauseProtocol]) -> Measurement<UnitSpeed> {
         let activeDuration = calculateActiveDuration(startDate: startDate, endDate: endDate, pauses: pauses)
+        return calculateAverageSpeed(distance: distance, activeDuration: activeDuration)
+    }
+    
+    static func calculateAverageSpeed(distance: Double, activeDuration: TimeInterval?) -> Measurement<UnitSpeed> {
         guard let activeDuration, activeDuration > 0, distance > 0
         else { return .init(value: 0, unit: .metersPerSecond) }
         return .init(value: distance / activeDuration, unit: .metersPerSecond)
