@@ -86,7 +86,7 @@ public class UserPreferences {
     
     /// Provides a safe value to use for distance related measurements based on the user preference or provided locale as a fallback.
     public func safeDistanceUnit(for locale: Locale = .current) -> UnitLength {
-        distanceUnit ?? .init(forLocale: locale, usage: .road)
+        distanceUnit ?? Self.fallbackDistanceUnit(for: locale)
     }
     
     /// The user preferred unit for altitudes. A `nil` value indicates the user has not provided a preference. In such a case a system
@@ -100,7 +100,7 @@ public class UserPreferences {
     
     /// Provides a safe value to use for altitude related measurements based on the user preference or provided locale as a fallback.
     public func safeAltitudeUnit(for locale: Locale = .current) -> UnitLength {
-        altitudeUnit ?? .init(forLocale: locale, usage: .general)
+        altitudeUnit ?? Self.fallbackAltitudeUnit(for: locale)
     }
     
     /// The user preferred unit for speeds. A `nil` value indicates the user has not provided a preference. In such a case a system
@@ -114,7 +114,7 @@ public class UserPreferences {
     
     /// Provides a safe value to use for speed related measurements based on the user preference or provided locale as a fallback.
     public func safeSpeedUnit(for locale: Locale = .current) -> UnitSpeed {
-        speedUnit ?? .init(forLocale: locale, usage: .general)
+        speedUnit ?? Self.fallbackSpeedUnit(for: locale)
     }
     
     /// The user preferred unit for energy. A `nil` value indicates the user has not provided a preference. In such a case a system
@@ -128,7 +128,7 @@ public class UserPreferences {
     
     /// Provides a safe value to use for energy related measurements based on the user preference or provided locale as a fallback.
     public func safeEnergyUnit(for locale: Locale = .current) -> UnitEnergy {
-        energyUnit ?? .init(forLocale: locale, usage: .workout)
+        energyUnit ?? Self.fallbackEnergyUnit(for: locale)
     }
     
     /// The user preferred unit for body weight. A `nil` value indicates the user has not provided a preference. In such a case a system
@@ -142,7 +142,7 @@ public class UserPreferences {
     
     /// Provides a safe value to use for weight related measurements based on the user preference or provided locale as a fallback.
     public func safeWeightUnit(for locale: Locale = .current) -> UnitMass {
-        weightUnit ?? .init(forLocale: locale, usage: .personWeight)
+        weightUnit ?? Self.fallbackWeightUnit(for: locale)
     }
     
     /// The supported values for ``UserPreferences/distanceUnit``.
@@ -155,6 +155,31 @@ public class UserPreferences {
     public static let supportedEnergyUnits: [UnitEnergy] = [.kilocalories, .kilojoules]
     /// The supported values for ``UserPreferences/weightUnit``.
     public static let supportedWeightUnits: [UnitMass] = [.kilograms, .pounds, .stones]
+    
+    /// The locale based fallback value for ``UserPreferences/distanceUnit``.
+    public static func fallbackDistanceUnit(for locale: Locale = .current) -> UnitLength {
+        .init(forLocale: locale, usage: .road)
+    }
+    
+    /// The locale based fallback value for ``UserPreferences/altitudeUnit``.
+    public static func fallbackAltitudeUnit(for locale: Locale = .current) -> UnitLength {
+        .init(forLocale: locale, usage: .general)
+    }
+    
+    /// The locale based fallback value for ``UserPreferences/speedUnit``.
+    public static func fallbackSpeedUnit(for locale: Locale = .current) -> UnitSpeed {
+        .init(forLocale: locale, usage: .general)
+    }
+    
+    /// The locale based fallback value for ``UserPreferences/energyUnit``.
+    public static func fallbackEnergyUnit(for locale: Locale = .current) -> UnitEnergy {
+        .init(forLocale: locale, usage: .workout)
+    }
+    
+    /// The locale based fallback value for ``UserPreferences/weightUnit``.
+    public static func fallbackWeightUnit(for locale: Locale = .current) -> UnitMass {
+        .init(forLocale: locale, usage: .personWeight)
+    }
     
     // MARK: - Recording Preferences
     

@@ -4,24 +4,13 @@ import SwiftUI
 public struct WorkoutMetricText: View {
     
     @Environment(\.locale) private var locale
+    @Environment(UserPreferences.self) private var userPreferences: UserPreferences?
     private let metricValue: WorkoutMetric.ValueRepresentation?
     
-    private var longDistanceUnit: UnitLength { .init(forLocale: locale, usage: .road) }
-    private var generalDistanceUnit: UnitLength { .init(forLocale: locale, usage: .general) }
-    private var energyUnit: UnitEnergy { .init(forLocale: locale, usage: .workout) }
-    private var speedUnit: UnitSpeed { .init(forLocale: locale, usage: .general) }
-    
-    private func standardMeasurementFormat<U: Dimension, R: RangeExpression<Int>>(
-        _ unit: U.Type = U.self,
-        fractionLength: R = 0...2
-    ) -> Measurement<U>.FormatStyle {
-        .measurement(
-            width: .abbreviated,
-            usage: .asProvided,
-            numberFormatStyle: .number.precision(.fractionLength(fractionLength))
-        )
-        .locale(locale)
-    }
+    private var longDistanceUnit: UnitLength { userPreferences?.distanceUnit ?? UserPreferences.fallbackDistanceUnit(for: locale) }
+    private var generalDistanceUnit: UnitLength { userPreferences?.altitudeUnit ?? UserPreferences.fallbackAltitudeUnit(for: locale) }
+    private var energyUnit: UnitEnergy { userPreferences?.energyUnit ?? UserPreferences.fallbackEnergyUnit(for: locale) }
+    private var speedUnit: UnitSpeed { userPreferences?.speedUnit ?? UserPreferences.fallbackSpeedUnit(for: locale) }
     
     func format(_ duration: TimeInterval, using allowedUnits: NSCalendar.Unit) -> String? {
         let formatter = DateComponentsFormatter()
@@ -42,9 +31,9 @@ public struct WorkoutMetricText: View {
         case .type(let type):
             Text(type.description)
         case .longDistanceMeasurement(let measurement):
-            Text(measurement.converted(to: longDistanceUnit), format: standardMeasurementFormat(UnitLength.self))
+            MeasurementText(measurement, unit: longDistanceUnit)
         case .shortDistanceMeasurement(let measurement):
-            Text(measurement.converted(to: generalDistanceUnit), format: standardMeasurementFormat(UnitLength.self))
+            MeasurementText(measurement, unit: generalDistanceUnit)
         case .integerValue(let value):
             Text(value, format: .number)
         case .day(let date):
@@ -62,14 +51,14 @@ public struct WorkoutMetricText: View {
                 }
             }
         case .speedMeasurement(let measurement):
-            Text(measurement.converted(to: speedUnit), format: standardMeasurementFormat(UnitSpeed.self))
+            MeasurementText(measurement, unit: speedUnit)
         case .paceMeasurement(let measurement):
             let duration = longDistanceUnit.converter.baseUnitValue(fromValue: 1) / measurement.converted(to: .metersPerSecond).value
             if let formattedPace = format(duration, using: [.minute, .second]) {
                 Text(formattedPace)
             }
         case .energyMeasurement(let measurement):
-            Text(measurement.converted(to: energyUnit), format: standardMeasurementFormat(UnitEnergy.self, fractionLength: 0...0))
+            MeasurementText(measurement, unit: energyUnit, fractionLength: 0...0)
         case .none:
             EmptyView()
         }
