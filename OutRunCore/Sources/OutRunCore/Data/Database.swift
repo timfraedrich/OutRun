@@ -163,10 +163,17 @@ actor Database: ModelActor {
         return workout.route.sorted(by: { $0.timestamp > $1.timestamp }).map(RawWorkoutRouteDataSample.init)
     }
     
+    func deleteAllWorkouts() throws {
+        try modelContext.delete(model: Workout.self)
+        try modelContext.save()
+    }
+    
     // MARK: User
     
     func insert(_ rawUser: RawUser) throws {
+        guard try modelContext.fetchCount(FetchDescriptor<User>()) == .zero else { throw DatabaseError.userAlreadyPresent }
         let user = User(from: rawUser)
+        user.lastEditDate = .now
         modelContext.insert(user)
         try modelContext.save()
     }
@@ -193,12 +200,44 @@ actor Database: ModelActor {
         }
         return (stream, task)
     }
-
-    func fetchUser() throws -> RawUser? {
+    
+    private func fetchUser() throws -> User {
         var descriptor = FetchDescriptor<User>()
         descriptor.fetchLimit = 1
-        guard let user = try modelContext.fetch(descriptor).first else { return nil }
+        guard let user = try modelContext.fetch(descriptor).first else { throw DatabaseError.objectNotFound }
+        return user
+    }
+
+    func fetchOptionalUser() throws -> RawUser? {
+        do {
+            return try fetchUser()
+        } catch DatabaseError.objectNotFound {
+            return nil
+        } catch {
+            throw error
+        }
+    }
+    
+    func fetchUser() throws -> RawUser {
+        let user: User = try fetchUser()
         return RawUser(from: user)
+    }
+    
+    @discardableResult
+    func updateUserPreferences(_ preferences: UserProtocol.RawPreferences) throws -> RawUser {
+        let user: User = try fetchUser()
+        if user.preferences != preferences {
+            user.preferences = preferences
+            user.lastEditDate = .now
+            try modelContext.save()
+        }
+        return RawUser(from: user)
+    }
+    
+    func deleteUser() throws {
+        let user: User = try fetchUser()
+        modelContext.delete(user)
+        try modelContext.save()
     }
     
     // MARK: Internal
@@ -228,34 +267,6 @@ actor Database: ModelActor {
     
     func fetchWorkouts() throws -> [RawWorkout] {
         try modelContext.fetch(FetchDescriptor<Workout>()).map(RawWorkout.init)
-    }
-    
-    // MARK: DatabaseError
-    
-    enum DatabaseError: LocalizedError, CustomDebugStringConvertible {
-        
-        /// The object was not found in the database.
-        case objectNotFound
-        /// The function ``Database/continueWorkout(with:continueDate:)`` was called on a workout that has not been finished.
-        case workoutNotFinished
-        /// Functions meant for manipulation during recording were called after a workout had already been finished.
-        case workoutAlreadyFinished
-        
-        var debugDescription: String {
-            switch self {
-            case .objectNotFound: ".objectNotFound"
-            case .workoutNotFinished: ".workoutNotFinished"
-            case .workoutAlreadyFinished: ".workoutAlreadyFinished"
-            }
-        }
-        
-        var errorDescription: String? {
-            switch self {
-            case .objectNotFound: R.string.localizable.database_error_object_not_found()
-            case .workoutNotFinished: R.string.localizable.database_error_workout_not_finished()
-            case .workoutAlreadyFinished: R.string.localizable.database_error_workout_already_finished()
-            }
-        }
     }
     
     // MARK: Static

@@ -9,7 +9,10 @@ public struct OutRunCoreScene<Content: View>: Scene {
     
     public var body: some Scene {
         WindowGroup {
-            makeContent(core.status).environment(core)
+            makeContent(core.status)
+                .environment(core)
+                .environment(core.recorder)
+                .environment(core.userPreferences)
         }
         .modelContainer(core.modelContainer)
     }

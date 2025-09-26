@@ -3,19 +3,19 @@ import Foundation
 public enum OutRunCoreError: CustomDebugStringConvertible, LocalizedError {
     
     case notInitialized
-    case userNotMissing
+    case setupNotRequired
     
     public var debugDescription: String {
         switch self {
         case .notInitialized: "OutRunCoreError.notInitialized"
-        case .userNotMissing: "OutRunCoreError.userNotMissing"
+        case .setupNotRequired: "OutRunCoreError.setupNotRequired"
         }
     }
     
     public var errorDescription: String? {
         switch self {
         case .notInitialized: R.string.localizable.core_error_not_initialized()
-        case .userNotMissing: R.string.localizable.core_error_user_not_missing()
+        case .setupNotRequired: R.string.localizable.core_error_setup_not_required()
         }
     }
 }

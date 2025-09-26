@@ -6,20 +6,20 @@ import Perception
 @MainActor
 public class OutRunCore {
     
-    static nonisolated let moduleIdentifier = "software.tfr.running-core"
+    public static nonisolated let moduleIdentifier = "software.tfr.outruncore"
     
     public typealias Status = OutRunCoreStatus
     
-    @ObservationIgnored var database: Database?
-    @ObservationIgnored public var recorder: WorkoutRecorder?
     private let logger = Logger(category: "OutRunCore")
-    let modelContainer: ModelContainer
-    let config: OutRunCoreConfiguration
+    private let config: OutRunCoreConfiguration
+    @ObservationIgnored var database: Database?
     
-    public private(set) var user: RawUser?
+    public let modelContainer: ModelContainer
+    @ObservationIgnored public private(set) var recorder: WorkoutRecorder?
+    @ObservationIgnored public private(set) var userPreferences: UserPreferences?
     public private(set) var status: Status = .initializing
+    public private(set) var user: RawUser?
     
-    // TODO: check if workout source is apple health and reimport
     public init(config: OutRunCoreConfiguration) {
         guard config.recordableDataTypes.contains(.location) else {
             fatalError("Invalid OutRunCore configuration. Must include .location as a recordable data type.")
@@ -41,33 +41,91 @@ public class OutRunCore {
             // the reason we allow the app to crash in this instance is that creating the ModelContainer instance should only fail under
             // extreme circumstances (e.g. way too little disk space or concurrent migrations). For now there are no migrations and such
             // little disk space to cause an issue will lead to much graver problems than an apps database not initializing correctly.
-            logger.critical("Failed to initialize ModelContainer: \(error)")
-            fatalError("Failed to initialize ModelContainer")
+            fatalError("Failed to initialize ModelContainer: \(error).")
         }
-        Task {
-            do {
-                let database = try await Database(modelContainer: modelContainer)
-                self.database = database
-                try self.startStreamingUserUpdates()
-                if let user = try await database.fetchUser() {
-                    self.user = user
-                    try await self.prepareRecorder(database: database)
-                    logger.info("Finished initialization.")
-                } else {
-                    self.status = .userMissing
-                    logger.info("Finished initialization, no user found.")
-                }
-            } catch {
-                self.status = .failed(error)
-                logger.critical("Failed initialization: \((error as CustomDebugStringConvertible).debugDescription).")
+        Task(operation: asyncInit)
+    }
+    
+    // MARK: Public API
+    
+    /// This method can be used to set up the core with a user.
+    ///
+    /// To create a ``RawUser`` for this setup method just initialize it with the needed properties using the available initializer. To
+    /// populate the ``RawUser/preferences`` field it is recommended to use the ``UserPreferences`` class. The whole process may look as
+    /// follows:
+    ///
+    /// ```swift
+    /// let userPreferences = UserPreferences(preferences: [:])
+    ///
+    /// userPreferences.distanceUnit = .kilometers
+    /// userPreferences.myCustomPreferences = "Hello World!"
+    ///
+    /// let user = RawUser(
+    ///     id: nil,
+    ///     name: "John",
+    ///     weight: 76.8,
+    ///     sex: .male,
+    ///     preferences: userPreferences.preferences,
+    ///     creationDate: .now
+    /// )
+    ///
+    /// try await core.setup(for: user)
+    /// ```
+    ///
+    /// - throws: Throws if the core does not have status `.needsSetup` or inserting the user into the database fails.
+    /// - note: This method waits for the core to transition into the `.initialized` state before returning.
+    public func setup(for user: RawUser) async throws {
+        guard case .needsSetup = status, let database else { throw OutRunCoreError.setupNotRequired }
+        try await database.insert(user)
+        if case .initialized = status { return }
+        await wait(for: .initialized)
+    }
+    
+    /// Inserts the provided workouts into the database. This function may for example be used for a migration of an existing database.
+    /// - throws: Throws if the core is not yet initialized or inserting the workouts fails.
+    /// - warning: Inserting a large amount of workouts at the same time might result in a log wait time or a crash, it is advised to insert
+    /// in batches of appropriate size.
+    public func insert(_ workouts: [RawWorkout]) async throws {
+        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        try await database.insert(workouts)
+    }
+    
+    /// Resets the core by deleting the user and all workouts from the database.
+    /// - throws: Throws if the core is not yet initialized or deleting the data from the database fails.
+    /// - note: This method waits for the core to transition into the `.needsSetup` state before returning.
+    public func reset() async throws {
+        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        try await database.deleteAllWorkouts()
+        try await database.deleteUser()
+        if case .needsSetup = status { return }
+        await wait(for: .needsSetup)
+    }
+    
+    // MARK: Internal Workings
+    
+    private func asyncInit() async {
+        do {
+            let database = try await Database(modelContainer: modelContainer)
+            self.database = database
+            try self.startStreamingUserUpdates()
+            try self.startStreamingUserPreferenceUpdates()
+            if let user = try await database.fetchOptionalUser() {
+                try await self.initialize(with: user)
+                logger.info("Finished initialization.")
+            } else {
+                self.status = .needsSetup
+                logger.info("Finished initialization, no user found.")
             }
+        } catch {
+            self.status = .failed(error)
+            logger.critical("Failed initialization: \((error as CustomDebugStringConvertible).debugDescription).")
         }
     }
     
-    private func prepareRecorder(database: Database) async throws {
-        guard let user else { throw OutRunCoreError.notInitialized }
-        self.recorder = await WorkoutRecorder(
-            user: user,
+    private func initialize(with user: RawUser) async throws {
+        guard let database else { throw OutRunCoreError.notInitialized }
+        self.userPreferences = UserPreferences(preferences: user.preferences)
+        self.recorder = try await WorkoutRecorder(
             database: database,
             locationService: .init(),
             altitudeService: config.recordableDataTypes.contains(.preciseAltitude) ? .init() : nil,
@@ -76,17 +134,17 @@ public class OutRunCore {
         self.status = .initialized
     }
     
-    // TODO: rename migrate and add user with migration
-    public func insert(_ workouts: [RawWorkout]) async throws {
-        guard status == .initialized, let database else { throw OutRunCoreError.notInitialized }
-        try await database.insert(workouts)
+    private func deinitialize() {
+        self.status = .needsSetup
+        self.userPreferences = nil
+        self.recorder = nil
     }
     
-    public func createUser(identifier: UUID?, name: String, weight: Double?, sex: Sex?) async throws {
-        guard case .userMissing = status, let database else { throw OutRunCoreError.userNotMissing }
-        let user = RawUser(id: identifier, name: name, weight: weight, sex: sex, creationDate: .now)
-        try await database.insert(user)
-        try await prepareRecorder(database: database)
+    private func wait(for status: OutRunCoreStatus) async {
+        let statusSequence = Perceptions { [weak self] in self?.status }
+        for await status in statusSequence where status == .needsSetup {
+            return
+        }
     }
     
     private func startStreamingUserUpdates() throws {
@@ -96,13 +154,36 @@ public class OutRunCore {
             do {
                 for try await user in userStream where !Task.isCancelled {
                     if case .failed = status { break }
-                    
-                    status = user == nil ? .userMissing : .initialized
+                    if let user {
+                        self.user = user
+                        userPreferences?.update(basedOn: user.preferences)
+                        guard case .needsSetup = status else { continue }
+                        try await initialize(with: user)
+                    } else {
+                        guard case .initialized = status else { continue }
+                        deinitialize()
+                    }
                 }
             } catch {
                 status = .failed(error)
+                logger.critical("Failed streaming user updates: \((error as CustomDebugStringConvertible).debugDescription).")
             }
             task.cancel()
+        }
+    }
+    
+    private func startStreamingUserPreferenceUpdates() throws {
+        guard let database else { throw OutRunCoreError.notInitialized }
+        let preferencesSequence = Perceptions { [weak self] in self?.userPreferences?.preferences }
+        Task {
+            for await preferences in preferencesSequence where !Task.isCancelled {
+                guard let preferences else { continue }
+                do {
+                    try await database.updateUserPreferences(preferences)
+                } catch {
+                    logger.critical("Failed to update user preferences: \((error as CustomDebugStringConvertible).debugDescription).")
+                }
+            }
         }
     }
 }

@@ -37,14 +37,13 @@ public class WorkoutRecorder {
     public private(set) var failedDataTypeCollection: [RecordableDataTypes:Error]
     
     init(
-        user: RawUser,
         database: Database,
         locationService: LocationService,
         altitudeService: AltitudeService?,
         stepService: StepService?
-    ) async {
+    ) async throws {
         
-        self.state = await .init(user: user)
+        self.state = await .init(user: try await database.fetchUser())
         self.database = database
         self.locationService = locationService
         self.altitudeService = altitudeService

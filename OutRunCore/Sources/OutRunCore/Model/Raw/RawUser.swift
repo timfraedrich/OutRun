@@ -7,7 +7,7 @@ public struct RawUser: UserProtocol, Sendable {
     public var weight: Double?
     public var sex: Sex?
     
-    public var preferences: [String : Data]
+    public var preferences: RawPreferences
     
     public let creationDate: Date
     public var lastEditDate: Date
@@ -17,7 +17,7 @@ public struct RawUser: UserProtocol, Sendable {
         name: String,
         weight: Double? = nil,
         sex: Sex? = nil,
-        preferences: [String : Data] = [:],
+        preferences: RawPreferences = [:],
         creationDate: Date,
         lastEditDate: Date? = nil
     ) {

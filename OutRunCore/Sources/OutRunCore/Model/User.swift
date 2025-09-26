@@ -10,7 +10,7 @@ public class User: UserProtocol {
     public var weight: Double?
     public var sex: Sex?
     
-    public var preferences: [String : Data]
+    public var preferences: RawPreferences
     
     public private(set) var creationDate: Date
     public var lastEditDate: Date
@@ -20,7 +20,7 @@ public class User: UserProtocol {
         name: String,
         weight: Double? = nil,
         sex: Sex? = nil,
-        preferences: [String : Data] = [:],
+        preferences: RawPreferences = [:],
         creationDate: Date,
         lastEditDate: Date? = nil
     ) {
