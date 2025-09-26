@@ -1,6 +1,5 @@
 import SwiftUI
 
-// TODO: Use preferred units based on user settings in core.
 public struct WorkoutMetricText: View {
     
     @Environment(\.locale) private var locale

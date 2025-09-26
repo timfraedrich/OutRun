@@ -190,11 +190,14 @@ public class UserPreferences {
         set { setValue(newValue, for: UserPreferenceKeys.defaultWorkoutType) }
     }
     
-    /// The user required horizontal GPS accuracy in meters
-    public var requiredGPSAccuracy: CLLocationAccuracy? {
-        get { value(for: UserPreferenceKeys.requiredGPSAccuracy) }
-        set { setValue(newValue, for: UserPreferenceKeys.requiredGPSAccuracy) }
+    /// The user required horizontal GPS accuracy in meters. The default valus is given by ``UserPreferences/defaultGPSAccuracy``.
+    public var requiredGPSAccuracy: CLLocationAccuracy {
+        get { value(for: UserPreferenceKeys.requiredGPSAccuracy) ?? Self.defaultGPSAccuracy }
+        set { setValue(newValue == Self.defaultGPSAccuracy ? nil : newValue, for: UserPreferenceKeys.requiredGPSAccuracy) }
     }
+    
+    /// The default value for the ``UserPreferences/requiredGPSAccuracy`` property.
+    public static let defaultGPSAccuracy: CLLocationAccuracy = 20
     
     /// Indicates whether the ``WorkoutRecorder`` should calculate it's ``WorkoutRecorder/speed`` measurement based on the last kilometer of
     /// route data or just on the last available location. The former of which will provide a more stable value while the latter will be

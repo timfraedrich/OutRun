@@ -29,6 +29,7 @@ public class WorkoutRecorder {
     public private(set) var duration: DynamicTimeInterval
     public private(set) var energy: Measurement<UnitEnergy>
     public private(set) var speed: Measurement<UnitSpeed>
+    public private(set) var route: [CLLocationCoordinate2D]
     /// The permissions missing for an ideal recording experience. Check each elements ``WorkoutRecorderPermissionRequirement/isRequired``
     /// to determine which permissions must be aquired before a recording can be started.
     public private(set) var missingPermissions: Set<WorkoutRecorderPermission>
@@ -43,8 +44,10 @@ public class WorkoutRecorder {
         stepService: StepService?
     ) async throws {
         
-        // TODO: Get last used workout type from database
-        self.state = await .init(user: try await database.fetchUser())
+        self.state = await .init(
+            user: try await database.fetchUser(),
+            latestWorkoutType: await database.fetchLatestWorkoutType()
+        )
         self.database = database
         self.locationService = locationService
         self.altitudeService = altitudeService
@@ -57,6 +60,7 @@ public class WorkoutRecorder {
         self.duration = await state.activeDuration
         self.energy = await state.energyMeasurement
         self.speed = await state.speedMeasurement
+        self.route = await state.route
         let locationAuthorizationSufficient = locationService.status.authorizationSufficient
         let altitudeAuthorizationSufficient = await altitudeService?.status.authorizationSufficient ?? true
         let stepAuthorizationSufficient = await stepService?.status.authorizationSufficient ?? true
@@ -98,6 +102,7 @@ public class WorkoutRecorder {
         startStatePropertyUpdates(of: \.activeDuration) { $0.duration = $1 }.eraseToAnyCancellable().store(in: &cancellables)
         startStatePropertyUpdates(of: \.energyMeasurement) { $0.energy = $1 }.eraseToAnyCancellable().store(in: &cancellables)
         startStatePropertyUpdates(of: \.speedMeasurement) { $0.speed = $1 }.eraseToAnyCancellable().store(in: &cancellables)
+        startStatePropertyUpdates(of: \.route) { $0.route = $1 }.eraseToAnyCancellable().store(in: &cancellables)
         await MainActor.run { self.cancellables = cancellables }
     }
     

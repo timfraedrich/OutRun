@@ -133,6 +133,15 @@ actor Database: ModelActor {
         return RawWorkout(workout: workout)
     }
     
+    /// Fetches the workout type of the last started workout in the database, `nil` if fetching fails or no workout exists in the database.
+    func fetchLatestWorkoutType() -> WorkoutType? {
+        let sortDescriptor = SortDescriptor<Workout>(\.startDate, order: .reverse)
+        var fetchDescriptor = FetchDescriptor<Workout>(sortBy: [sortDescriptor])
+        fetchDescriptor.fetchLimit = 1
+        fetchDescriptor.propertiesToFetch = [\.type]
+        return try? modelContext.fetch(fetchDescriptor).first?.type
+    }
+    
     // MARK: Workouts
     
     func insert(_ rawWorkouts: [RawWorkout]) throws {

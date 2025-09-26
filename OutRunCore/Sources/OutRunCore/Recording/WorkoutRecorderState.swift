@@ -11,25 +11,31 @@ class WorkoutRecorderState {
     typealias Status = WorkoutRecorderStatus
     
     private let logger = Logger(category: "WorkoutRecorderState")
+    @ObservationIgnored private let userPreferences: UserPreferences
     
     private(set) var status: WorkoutRecorderStatus = .initializing
     private(set) var user: RawUser
-    // TODO: Use user preferred value.
-    private(set) var workoutType: WorkoutType = .running
+    private(set) var workoutType: WorkoutType
     private(set) var distance: Double = .zero
-    private(set) var lastResumeDate: Date? = nil
-    private(set) var activeDurationBeforeLastPause: TimeInterval = .zero
+    private var lastResumeDate: Date? = nil
+    private var activeDurationBeforeLastPause: TimeInterval = .zero
     private(set) var workoutIdentifier: UUID?
     /// The date at which the current recording process was started (workout first started or continued).
     private(set) var lastStartDate: Date?
-    private(set) var lastLocation: CLLocation?
+    private var lastLocation: CLLocation?
     /// The last location added to the workout route.
     /// - note: This value gets reset to `nil` if the workout gets paused to not falsify the distance.
-    private(set) var lastRecordedLocation: CLLocation?
+    private var lastRecordedLocation: CLLocation?
     /// The absolute altitude of the first location for which relative altitude changes were used to refine the altitude measurement.
-    private(set) var baseAltitude: Double?
-    private(set) var manuallyPausedSince: Date?
-    private(set) var automaticallyPausedSince: Date?
+    private var baseAltitude: Double?
+    private var manuallyPausedSince: Date?
+    private var automaticallyPausedSince: Date?
+    
+    private(set) var route: [CLLocationCoordinate2D] = []
+    
+    private var rollingDistance: Double = .zero
+    private var rollingDuration: TimeInterval = .zero
+    private var rollingSpeedSamples: [(addedDistance: Double, addedDuration: TimeInterval)] = []
     
     var activeDuration: DynamicTimeInterval {
         guard status.isCollectingData, let lastResumeDate else { return .constant(0) }
@@ -51,14 +57,21 @@ class WorkoutRecorderState {
         return .init(value: energy, unit: .joules)
     }
     
-    // TODO: calculate rolling speed if user prefers that
     var speedMeasurement: Measurement<UnitSpeed> {
-        guard let lastLocation, lastLocation.speed >= 0 else { return .init(value: 0, unit: .metersPerSecond) }
-        return .init(value: lastLocation.speed, unit: .metersPerSecond)
+        let speed = if status.isCollectingData, userPreferences.calculateRollingSpeed, rollingDistance > .zero, rollingDuration > .zero {
+            rollingDistance / rollingDuration
+        } else if status.isCollectingData, let lastLocation, lastLocation.speed >= .zero {
+            lastLocation.speed
+        } else {
+            CLLocationSpeed.zero
+        }
+        return .init(value: speed, unit: .metersPerSecond)
     }
     
-    init(user: RawUser) {
+    init(user: RawUser, latestWorkoutType: WorkoutType?) {
         self.user = user
+        self.userPreferences = .init(preferences: user.preferences)
+        self.workoutType = userPreferences.defaultWorkoutType ?? latestWorkoutType ?? .running
     }
     
     func signalSuccessfulInitialization() throws(WorkoutRecorderError) {
@@ -70,6 +83,7 @@ class WorkoutRecorderState {
     
     func update(basedOn updatedUser: RawUser) {
         user = updatedUser
+        userPreferences.update(basedOn: updatedUser.preferences)
     }
     
     func changeWorkoutType(to type: WorkoutType) {
@@ -84,6 +98,8 @@ class WorkoutRecorderState {
         distance = workout.distance
         lastStartDate = date
         lastResumeDate = date
+        route = workout.route.map(\.coordinate)
+        // TODO: add restore of rollingDistance, rollingDuration and rollingSpeedSamples
         if let lastPause = workout.pauses.max(by: { $0.endDate < $1.endDate }) {
             let lastActiveDuration = Calculation.calculateActiveDuration(
                 startDate: workout.startDate,
@@ -124,6 +140,10 @@ class WorkoutRecorderState {
         baseAltitude = nil
         manuallyPausedSince = nil
         automaticallyPausedSince = nil
+        route.removeAll()
+        rollingDistance = .zero
+        rollingDuration = .zero
+        rollingSpeedSamples.removeAll()
         try transition(to: .idle)
         if case .paused(let manual) = status, let pausedSince = manual ? manuallyPausedSince : automaticallyPausedSince {
             return .init(startDate: pausedSince, endDate: date, userInitiated: manual)
@@ -137,11 +157,9 @@ class WorkoutRecorderState {
     ) throws -> (sample: RawWorkoutRouteDataSample?, pause: RawWorkoutPause?) {
         lastLocation = location
         guard status.isCollectingData,
-              let workoutIdentifier,
               let location,
               location.timestamp > lastRecordedLocation?.timestamp ?? .distantPast,
-              // TODO: Respect user selected location accuracy
-              location.horizontalAccuracy < 20
+              location.horizontalAccuracy < userPreferences.requiredGPSAccuracy
         else { return (nil, nil) }
         var pause: RawWorkoutPause? = nil
         // TODO: Improve auto pause functionality.
@@ -157,6 +175,25 @@ class WorkoutRecorderState {
         } else {
             .zero
         }
+        let addedDuration: TimeInterval = if case .recording = status, let lastRecordedLocation {
+            lastRecordedLocation.timestamp.distance(to: location.timestamp)
+        } else {
+            .zero
+        }
+        route.append(location.coordinate)
+        rollingSpeedSamples.append((addedDistance, addedDuration))
+        var newRollingDistance = rollingDistance + addedDistance
+        var newRollingDuration = rollingDuration + addedDuration
+        var index = Int.zero
+        while newRollingDistance > 1000, index < rollingSpeedSamples.count {
+            guard let sample = rollingSpeedSamples[safeIndex: index] else { break }
+            newRollingDistance -= sample.addedDistance
+            newRollingDuration -= sample.addedDuration
+            index += 1
+        }
+        if index > .zero { rollingSpeedSamples.removeFirst(index) }
+        rollingDistance = newRollingDistance
+        rollingDuration = newRollingDuration
         let newDistance = distance + addedDistance
         distance = newDistance
         var sample = RawWorkoutRouteDataSample(from: location)
