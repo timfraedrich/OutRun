@@ -43,6 +43,7 @@ public class WorkoutRecorder {
         stepService: StepService?
     ) async throws {
         
+        // TODO: Get last used workout type from database
         self.state = await .init(user: try await database.fetchUser())
         self.database = database
         self.locationService = locationService
