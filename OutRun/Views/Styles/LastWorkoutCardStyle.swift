@@ -27,25 +27,7 @@ struct LastWorkoutCardStyle: WorkoutCardStyle {
     
     @ViewBuilder
     private func header(for workout: any WorkoutProtocol) -> some View {
-        Group {
-            if let name = workout.name {
-                LabeledContent {
-                    Text(name)
-                } label: {
-                    HStack(spacing: .small) {
-                        WorkoutMetricText(metricValue: .type(workout.type))
-                        RelativeDayDateText(workout.startDate)
-                    }
-                }
-            } else {
-                LabeledContent {
-                    WorkoutMetricText(metricValue: .type(workout.type))
-                } label: {
-                    RelativeDayDateText(workout.startDate)
-                }
-            }
-        }
-        .labeledContentStyle(.metric)
+        WorkoutHeaderLabeledContent(workout: workout).labeledContentStyle(.metric)
     }
     
     @ViewBuilder
