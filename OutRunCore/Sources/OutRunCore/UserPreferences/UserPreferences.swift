@@ -95,7 +95,7 @@ public class UserPreferences {
     /// the static ``supportedAltitudeUnits`` property.
     public var altitudeUnit: UnitLength? {
         get { value(for: UserPreferenceKeys.altitudeUnit, supportedUnits: Self.supportedAltitudeUnits) }
-        set { setValue(newValue, for: UserPreferenceKeys.distanceUnit, supportedUnits: Self.supportedAltitudeUnits) }
+        set { setValue(newValue, for: UserPreferenceKeys.altitudeUnit, supportedUnits: Self.supportedAltitudeUnits) }
     }
     
     /// Provides a safe value to use for altitude related measurements based on the user preference or provided locale as a fallback.
