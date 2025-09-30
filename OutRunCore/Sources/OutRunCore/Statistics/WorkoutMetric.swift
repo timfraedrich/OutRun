@@ -72,7 +72,11 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
                 nil
             }
         case .pauseDuration:
-            .duration(pauseDuration(for: workout))
+            if let pauseDuration = pauseDuration(for: workout) as Optional, pauseDuration > .zero {
+                .duration(pauseDuration)
+            } else {
+                nil
+            }
         case .pace:
             .paceMeasurement(averageSpeed(for: workout))
         case .startTime:
