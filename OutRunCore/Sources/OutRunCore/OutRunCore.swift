@@ -142,7 +142,7 @@ public class OutRunCore {
     
     private func wait(for status: OutRunCoreStatus) async {
         let statusSequence = Perceptions { [weak self] in self?.status }
-        for await status in statusSequence where status == .needsSetup {
+        for await newStatus in statusSequence where newStatus == status {
             return
         }
     }
