@@ -15,7 +15,7 @@
 "location_service_error_authorization_restricted" = "Only approximate location data is available. To record a workout precise location authorization needs to be granted.";
 "sex_male" = "male";
 "sex_female" = "female";
-"static_workout_map_service_error_noCoordinates" = "No image available due to the provided route.";
+"static_workout_map_service_error_no_coordinates" = "No image available due to the provided route.";
 "static_workout_map_service_error_renderingFailed" = "The creation of the image failed.";
 "step_service_error_steps_not_available" = "Step data is not available on this device.";
 "step_service_error_authorization_denied" = "Step data cannot be received due to denied authorization.";
@@ -23,7 +23,7 @@
 "step_service_error_authorization_restricted" = "Step data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "step_service_error_unknown_authorization_status" = "Step data cannot be received due to an unknown authorization status.";
 "workout_metric_active_duration" = "Duration";
-"workout_metric_ascent" = "Acend";
+"workout_metric_ascent" = "Ascend";
 "workout_metric_average_speed" = "Avg. speed";
 "workout_metric_date" = "Date";
 "workout_metric_descent" = "Descend";
