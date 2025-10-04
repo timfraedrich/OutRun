@@ -9,13 +9,13 @@ public class WorkoutEvent: WorkoutEventProtocol {
     
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
-    public init(type: WorkoutEventType, timestamp: Date, workout: Workout) {
+    public init(type: WorkoutEventType, timestamp: Date, workout: Workout? = nil) {
         self.type = type
         self.timestamp = timestamp
         self.workout = workout
     }
     
-    public convenience init(from rawEvent: RawWorkoutEvent, attachTo workout: Workout) {
+    public convenience init(from rawEvent: RawWorkoutEvent, attachTo workout: Workout? = nil) {
         self.init(type: rawEvent.type, timestamp: rawEvent.timestamp, workout: workout)
     }
 }

@@ -9,13 +9,13 @@ public class WorkoutHeartRateDataSample: WorkoutHeartRateDataSampleProtocol {
     
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
-    public init(heartRate: UInt8, timestamp: Date, workout: Workout) {
+    public init(heartRate: UInt8, timestamp: Date, workout: Workout? = nil) {
         self.heartRate = heartRate
         self.timestamp = timestamp
         self.workout = workout
     }
     
-    public convenience init(from rawHeartRateSample: RawWorkoutHeartRateDataSample, attachTo workout: Workout) {
+    public convenience init(from rawHeartRateSample: RawWorkoutHeartRateDataSample, attachTo workout: Workout? = nil) {
         self.init(heartRate: rawHeartRateSample.heartRate, timestamp: rawHeartRateSample.timestamp, workout: workout)
     }
 }

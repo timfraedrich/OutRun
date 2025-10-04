@@ -18,7 +18,7 @@ public class WorkoutServiceMapping: WorkoutServiceMappingProtocol {
         externalUrl: String?,
         lastSyncDate: Date?,
         syncStatus: WorkoutSyncStatus,
-        workout: Workout
+        workout: Workout? = nil
     ) {
         self.service = service
         self.externalId = externalId
@@ -28,7 +28,7 @@ public class WorkoutServiceMapping: WorkoutServiceMappingProtocol {
         self.workout = workout
     }
     
-    public convenience init(from rawServiceMapping: RawWorkoutServiceMapping, attachTo workout: Workout) {
+    public convenience init(from rawServiceMapping: RawWorkoutServiceMapping, attachTo workout: Workout? = nil) {
         self.init(
             service: rawServiceMapping.service,
             externalId: rawServiceMapping.externalId,

@@ -1,7 +1,14 @@
-"legacy_migration_view_title" = "Please wait...";
-"legacy_migration_view_message" = "The app is currently performing a legacy migration. Please do not close this app while the migration is in progress.";
 "greeting_morning" = "Good morning";
 "greeting_day" = "Good morning";
 "greeting_afternoon" = "Good afternoon";
 "greeting_evening" = "Good evening";
 "greeting_night" = "Good night";
+"info" = "Info";
+"legacy_migration_user" = "User";
+"legacy_migration_view_failed_action" = "Contact Support";
+"legacy_migration_view_failed_title" = "Data Migration Failed";
+"legacy_migration_view_migration_estimated_time" = "Estimated time remaining: %@";
+"legacy_migration_view_migration_estimating_time" = "Estimating time remaining...";
+"legacy_migration_view_migration_message" = "The app is currently performing a data migration to enable new functionality. The app should remain open while the migrtion is in progress.";
+"legacy_migration_view_migration_title" = "Data Migration in Progress";
+"legacy_migration_view_success_action" = "Get Started";

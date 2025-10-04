@@ -85,8 +85,8 @@ public class OutRunCore {
     /// - throws: Throws if the core is not yet initialized or inserting the workouts fails.
     /// - warning: Inserting a large amount of workouts at the same time might result in a log wait time or a crash, it is advised to insert
     /// in batches of appropriate size.
-    public func insert(_ workouts: [RawWorkout]) async throws {
-        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+    public nonisolated func insert(_ workouts: [RawWorkout]) async throws {
+        guard case .initialized = await status, let database = await database else { throw OutRunCoreError.notInitialized }
         try await database.insert(workouts)
     }
     

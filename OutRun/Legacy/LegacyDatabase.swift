@@ -201,10 +201,24 @@ extension LegacyDatabase where DataModel == LegacyDataModelV3 {
         }
     }
     
-    func extractAllWorkouts() async throws -> [LegacyRawDataModelV3.Workout] {
-        return try await MainActor.run {
-            let csWorkouts = try dataStack.fetchAll(From<LegacyDataModelV3.Workout>())
-            return csWorkouts.map(LegacyRawDataModelV3.Workout.init)
+    @MainActor
+    func fetchWorkoutCount() throws -> Int {
+        try dataStack.fetchCount(From<LegacyDataModelV3.Workout>())
+    }
+    
+    @MainActor
+    func extractWorkoutBatch() throws -> [LegacyRawDataModelV3.Workout] {
+        try dataStack.fetchAll(workoutBatch()).map(LegacyRawDataModelV3.Workout.init)
+    }
+    
+    @MainActor
+    func deleteWorkoutBatch() throws {
+        _ = try dataStack.perform { transaction in
+            try transaction.deleteAll(workoutBatch())
         }
+    }
+    
+    private func workoutBatch() -> FetchChainBuilder<DataModel.Workout> {
+        From<DataModel.Workout>().tweak { $0.fetchLimit = 10 }
     }
 }

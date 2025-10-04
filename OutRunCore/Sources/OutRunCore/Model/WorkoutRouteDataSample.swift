@@ -23,7 +23,7 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
         horizontalAccuracy: Float,
         verticalAccuracy: Float,
         speed: Float,
-        workout: Workout
+        workout: Workout? = nil
     ) {
         self.timestamp = timestamp
         self.latitude = latitude
@@ -35,7 +35,7 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
         self.workout = workout
     }
     
-    public convenience init(from rawRouteSample: RawWorkoutRouteDataSample, attachTo workout: Workout) {
+    public convenience init(from rawRouteSample: RawWorkoutRouteDataSample, attachTo workout: Workout? = nil) {
         self.init(
             timestamp: rawRouteSample.timestamp,
             latitude: rawRouteSample.latitude,
@@ -48,7 +48,7 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
         )
     }
     
-    public convenience init(from location: CLLocation, attachTo workout: Workout) {
+    public convenience init(from location: CLLocation, attachTo workout: Workout? = nil) {
         self.init(
             timestamp: location.timestamp,
             latitude: location.coordinate.latitude,

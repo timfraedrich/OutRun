@@ -147,24 +147,14 @@ actor Database: ModelActor {
     func insert(_ rawWorkouts: [RawWorkout]) throws {
         for rawWorkout in rawWorkouts {
             let workout = Workout(from: rawWorkout)
+            workout.route = rawWorkout.route.map { WorkoutRouteDataSample.init(from: $0) }
+            workout.heartRates = rawWorkout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
+            workout.pauses = rawWorkout.pauses.map { WorkoutPause(from: $0) }
+            workout.events = rawWorkout.events.map { WorkoutEvent(from: $0) }
+            workout.serviceMappings = rawWorkout.serviceMappings.map { WorkoutServiceMapping(from: $0) }
             modelContext.insert(workout)
-            for rawRouteSample in rawWorkout.route {
-                modelContext.insert(WorkoutRouteDataSample(from: rawRouteSample, attachTo: workout))
-            }
-            for rawHeartRateSample in rawWorkout.heartRates {
-                modelContext.insert(WorkoutHeartRateDataSample(from: rawHeartRateSample, attachTo: workout))
-            }
-            for rawPause in rawWorkout.pauses {
-                modelContext.insert(WorkoutPause(from: rawPause, attachTo: workout))
-            }
-            for rawEvent in rawWorkout.events {
-                modelContext.insert(WorkoutEvent(from: rawEvent, attachTo: workout))
-            }
-            for rawServiceMapping in rawWorkout.serviceMappings {
-                modelContext.insert(WorkoutServiceMapping(from: rawServiceMapping, attachTo: workout))
-            }
-            try modelContext.save()
         }
+        try modelContext.save()
     }
     
     func queryWorkoutRoute(for identifier: UUID) async throws -> [RawWorkoutRouteDataSample] {

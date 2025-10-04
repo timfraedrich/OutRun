@@ -14,14 +14,14 @@ public class WorkoutPause: WorkoutPauseProtocol {
         startDate.distance(to: endDate)
     }
     
-    public init(startDate: Date, endDate: Date, userInitiated: Bool, workout: Workout) {
+    public init(startDate: Date, endDate: Date, userInitiated: Bool, workout: Workout?) {
         self.startDate = startDate
         self.endDate = endDate
         self.userInitiated = userInitiated
         self.workout = workout
     }
     
-    public convenience init(from rawPause: RawWorkoutPause, attachTo workout: Workout) {
+    public convenience init(from rawPause: RawWorkoutPause, attachTo workout: Workout? = nil) {
         self.init(startDate: rawPause.startDate, endDate: rawPause.endDate, userInitiated: rawPause.userInitiated, workout: workout)
     }
 }

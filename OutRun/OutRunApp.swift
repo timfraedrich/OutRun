@@ -4,32 +4,52 @@ import SwiftUI
 @main
 struct OutRunApp: App {
     
-    private let config: OutRunCoreConfiguration = .init(
-        containerName: "OutRun",
-        isStoredInMemoryOnly: false,
-        appGroupIdentifier: nil,
-        recordableDataTypes: .all
-    )
+    @State private var core: OutRunCore
+    @State private var showLegacyMigrationView: Bool
     
     var body: some Scene {
-        OutRunCoreScene(config: config) { status in
+        WindowGroup {
             Group {
-                switch status {
-                case .initializing:
-                    ProgressView().progressViewStyle(.circular)
-                case .initialized:
-                    ZStack {
-                        Text("App")
-                        LegacyMigrationView()
+                if showLegacyMigrationView {
+                    LegacyMigrationView {
+                        showLegacyMigrationView = false
                     }
-                case .failed(let error):
-                    Text(error.localizedDescription)
-                        .font(.subheadline)
-                        .foregroundStyle(.red)
+                } else {
+                    ZStack {
+                        Rectangle().fill(.background).ignoresSafeArea()
+                        switch core.status {
+                        case .initializing:
+                            ProgressView().progressViewStyle(.circular)
+                        case .needsSetup:
+                            SetupScene()
+                        case .initialized:
+                            MainView()
+                        case .failed(let error):
+                            Text(error.localizedDescription)
+                                .font(.subheadline)
+                                .foregroundStyle(.red)
+                        }
+                    }
                 }
             }
-            .backgroundStyle(.primaryBackground)
+            .environment(core)
+            .environment(core.recorder)
+            .environment(core.userPreferences)
             .foregroundStyle(.primaryLabel, .secondaryLabel, .tertiaryLabel)
+            .backgroundStyle(.primaryBackground)
+            .workoutCardStyle(.list)
         }
+        .modelContainer(core.modelContainer)
+    }
+    
+    init() {
+        let config: OutRunCoreConfiguration = .init(
+            containerName: "OutRun",
+            isStoredInMemoryOnly: false,
+            appGroupIdentifier: nil,
+            recordableDataTypes: [.location, .preciseAltitude]
+        )
+        self.core = .init(config: config)
+        self.showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
     }
 }
