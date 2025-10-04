@@ -2,7 +2,8 @@ import Foundation
 @testable import OutRun
 @testable import OutRunCore
 import Testing
-internal import Combine
+import Combine
+import Perception
 
 @Suite("Legacy Database Migration Tests")
 class LegacyMigrationTests {
@@ -117,13 +118,15 @@ class LegacyMigrationTests {
     }
     
     private func migrateAndCheckResults(for legacyStorageFileName: String, and expectedResults: [RawWorkout]) async throws {
-        let core = await OutRunCore(isStoredInMemoryOnly: true)
-        var iterator = await core.$status.values.makeAsyncIterator()
-        while await iterator.next() == .initializing {}
-        let status = await core.status
-        #expect(status == .initialized)
+        let core = await OutRunCore(config: .init(isStoredInMemoryOnly: true, recordableDataTypes: [.location]))
+        let statusSequence = await MainActor.run { Perceptions { core.status } }
+        for await status in statusSequence where status != .initializing { break }
+        #expect(await core.status == .needsSetup)
         guard let database = await core.database else { throw "Database was not initialized." }
-        try await LegacyMigrationHelper.performLegacyMigration(for: legacyStorageFileName, core: core)
+        let (task, progressStream) = LegacyMigrationHelper.performLegacyMigration(for: legacyStorageFileName, core: core)
+        guard let task else { throw "Migration task was not returned." }
+        for try await _ in progressStream { }
+        await task.value
         try checkMigratedData(actual: try await database.fetchWorkouts(), expected: expectedResults)
     }
     
