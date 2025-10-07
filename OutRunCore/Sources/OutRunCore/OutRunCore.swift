@@ -90,6 +90,18 @@ public class OutRunCore {
         try await database.insert(workouts)
     }
     
+    /// Updates properties of the currently set up user.
+    /// - throws: Throws if the core is not yet initialized or updating the user fails.
+    public nonisolated func updateUserProperties(
+        id: UUID?? = .none,
+        name: String? = .none,
+        weight: Double?? = .none,
+        sex: Sex?? = .none
+    ) async throws {
+        guard case .initialized = await status, let database = await database else { throw OutRunCoreError.notInitialized }
+        try await database.updateUserProperties(id: id, name: name, weight: weight, sex: sex)
+    }
+    
     /// Resets the core by deleting the user and all workouts from the database.
     /// - throws: Throws if the core is not yet initialized or deleting the data from the database fails.
     /// - note: This method waits for the core to transition into the `.needsSetup` state before returning.
