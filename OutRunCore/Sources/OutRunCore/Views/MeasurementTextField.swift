@@ -1,8 +1,9 @@
 import SwiftUI
 
-public struct MeasurementTextField<U: Dimension, R: RangeExpression<Int>>: View {
+public struct MeasurementTextField<Label: View, U: Dimension, R: RangeExpression<Int>>: View {
     
     @Environment(\.locale) private var locale
+    private let label: () -> Label
     @Binding private var measurement: Measurement<U>?
     private let unit: U
     private let fractionLength: R
@@ -24,20 +25,53 @@ public struct MeasurementTextField<U: Dimension, R: RangeExpression<Int>>: View 
     
     public var body: some View {
         HStack(spacing: 8) {
-            TextField("Your weight", value: valueBinding, format: .number)
+            TextField(value: valueBinding, format: .number, label: label)
             Text(formattedUnit)
         }
     }
     
-    public init(_ measurement: Binding<Measurement<U>?>, unit: U, fractionLength: R) {
+    public init(_ measurement: Binding<Measurement<U>?>, unit: U, fractionLength: R, @ViewBuilder label: @escaping () -> Label) {
+        self.label = label
         self._measurement = measurement
         self.unit = unit
         self.fractionLength = fractionLength
     }
     
-    public init(_ measurement: Binding<Measurement<U>?>, unit: U, fractionLength: R = 0...2) where R == ClosedRange<Int> {
+    public init(
+        _ measurement: Binding<Measurement<U>?>,
+        unit: U,
+        fractionLength: ClosedRange<Int> = 0...2,
+        @ViewBuilder label: @escaping () -> Label
+    ) where R == ClosedRange<Int> {
+        self.label = label
         self._measurement = measurement
         self.unit = unit
         self.fractionLength = fractionLength
+    }
+    
+    public init(_ title: String, _ measurement: Binding<Measurement<U>?>, unit: U, fractionLength: R) where Label == Text {
+        self.init(measurement, unit: unit, fractionLength: fractionLength) { Text(verbatim: title) }
+    }
+    
+    public init(
+        _ title: String,
+        measurement: Binding<Measurement<U>?>,
+        unit: U,
+        fractionLength: ClosedRange<Int> = 0...2
+    ) where Label == Text, R == ClosedRange<Int> {
+        self.init(measurement, unit: unit, fractionLength: fractionLength) { Text(verbatim: title) }
+    }
+    
+    public init(_ key: LocalizedStringKey, measurement: Binding<Measurement<U>?>, unit: U, fractionLength: R) where Label == Text {
+        self.init(measurement, unit: unit, fractionLength: fractionLength) { Text(key) }
+    }
+    
+    public init(
+        _ key: LocalizedStringKey,
+        measurement: Binding<Measurement<U>?>,
+        unit: U,
+        fractionLength: ClosedRange<Int> = 0...2
+    ) where Label == Text, R == ClosedRange<Int> {
+        self.init(measurement, unit: unit, fractionLength: fractionLength) { Text(key) }
     }
 }
