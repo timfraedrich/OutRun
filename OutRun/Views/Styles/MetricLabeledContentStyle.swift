@@ -22,19 +22,22 @@ struct MetricLabeledContentStyle: LabeledContentStyle {
     }
     
     enum Size {
-        case `default`
+        case large
+        case regular
         case small
         
         fileprivate var labelFont: Font {
             switch self {
-            case .default: .subheadline.weight(.bold)
+            case .large: .subheadline.weight(.bold)
+            case .regular: .subheadline.weight(.bold)
             case .small: .caption.weight(.bold)
             }
         }
         
         fileprivate var contentFont: Font {
             switch self {
-            case .default: .title2.weight(.bold)
+            case .large: .title.weight(.bold)
+            case .regular: .title2.weight(.bold)
             case .small: .headline.weight(.bold)
             }
         }
@@ -43,7 +46,7 @@ struct MetricLabeledContentStyle: LabeledContentStyle {
 
 extension LabeledContentStyle where Self == MetricLabeledContentStyle {
     
-    static var metric: Self { .init(size: .default) }
+    static var metric: Self { .init(size: .regular) }
     
     static func metric(size: Self.Size) -> Self {
         .init(size: size)
@@ -52,5 +55,9 @@ extension LabeledContentStyle where Self == MetricLabeledContentStyle {
 
 #Preview {
     LabeledContent("Distance", value: "7,12 km")
-        .labeledContentStyle(.metric(size: .default))
+        .labeledContentStyle(.metric(size: .small))
+    LabeledContent("Distance", value: "7,12 km")
+        .labeledContentStyle(.metric(size: .regular))
+    LabeledContent("Distance", value: "7,12 km")
+        .labeledContentStyle(.metric(size: .large))
 }
