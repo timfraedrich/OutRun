@@ -3,6 +3,7 @@
 "altitude_service_error_authorization_missing" = "Altitude data cannot be received due to missing authorization.";
 "altitude_service_error_authorization_restricted" = "Altitude data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "altitude_service_error_unknown_authorization_status" = "Altitude data cannot be received due to an unknown authorization status.";
+"core_error_invalid_name_provided" = "The provided name cannot be empty.";
 "core_error_not_initialized" = "This action cannot be preformed before the core has been initialized.";
 "core_error_setup_not_required" = "This action cannot be performed as the core is not required to be set up at the moment.";
 "database_error_object_not_found" = "The object could not be found in the database.";

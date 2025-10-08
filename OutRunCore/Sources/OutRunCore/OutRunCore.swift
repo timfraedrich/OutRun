@@ -76,6 +76,7 @@ public class OutRunCore {
     /// - note: This method waits for the core to transition into the `.initialized` state before returning.
     public func setup(for user: RawUser) async throws {
         guard case .needsSetup = status, let database else { throw OutRunCoreError.setupNotRequired }
+        try validateUserProperties(name: user.name)
         try await database.insert(user)
         if case .initialized = status { return }
         await wait(for: .initialized)
@@ -101,6 +102,7 @@ public class OutRunCore {
         sex: Sex?? = .none
     ) async throws {
         guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        try validateUserProperties(name: name)
         try await database.updateUserProperties(id: id, name: name, birthday: birthday, weight: weight, sex: sex)
     }
     
@@ -133,6 +135,12 @@ public class OutRunCore {
         } catch {
             self.status = .failed(error)
             logger.critical("Failed initialization: \((error as CustomDebugStringConvertible).debugDescription).")
+        }
+    }
+    
+    private nonisolated func validateUserProperties(name: String?) throws {
+        if let name, name.isEmpty {
+            throw OutRunCoreError.invalidNameProvided
         }
     }
     
