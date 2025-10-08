@@ -12,3 +12,6 @@
 "legacy_migration_view_migration_message" = "Die App führt derzeit eine Datenmigration durch, um neue Funktionalität zu ermöglichen. Die App stollte während der Migration geöffnet bleiben";
 "legacy_migration_view_migration_title" = "Laufende Datenmigration";
 "legacy_migration_view_success_action" = "Los geht's!";
+"optional_date_picker_instruction" = "Bitte wähle ein Datum aus.";
+"remove" = "Entfernen";
+"select" = "Auswählen";
