@@ -83,23 +83,25 @@ public class OutRunCore {
     
     /// Inserts the provided workouts into the database. This function may for example be used for a migration of an existing database.
     /// - throws: Throws if the core is not yet initialized or inserting the workouts fails.
-    /// - warning: Inserting a large amount of workouts at the same time might result in a log wait time or a crash, it is advised to insert
-    /// in batches of appropriate size.
+    /// - warning: Inserting a large amount of workouts at the same time might result in a long wait time or a crash, it is advised to
+    /// insert in batches of appropriate size.
     public nonisolated func insert(_ workouts: [RawWorkout]) async throws {
         guard case .initialized = await status, let database = await database else { throw OutRunCoreError.notInitialized }
         try await database.insert(workouts)
     }
     
     /// Updates properties of the currently set up user.
-    /// - throws: Throws if the core is not yet initialized or updating the user fails.
-    public nonisolated func updateUserProperties(
+    /// - throws: Throws if the core is not yet initialized, the provided properties are invalid or updating the user fails.
+    /// - note: For restrictions on properties see ``UserProtocol``.
+    public func updateUserProperties(
         id: UUID?? = .none,
         name: String? = .none,
+        birthday: Day?? = .none,
         weight: Double?? = .none,
         sex: Sex?? = .none
     ) async throws {
-        guard case .initialized = await status, let database = await database else { throw OutRunCoreError.notInitialized }
-        try await database.updateUserProperties(id: id, name: name, weight: weight, sex: sex)
+        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        try await database.updateUserProperties(id: id, name: name, birthday: birthday, weight: weight, sex: sex)
     }
     
     /// Resets the core by deleting the user and all workouts from the database.

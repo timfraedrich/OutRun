@@ -4,9 +4,9 @@ import SwiftData
 @Model
 public class User: UserProtocol {
     
-    /// Optional identifier to identify a user with an external service.
     public var id: UUID?
     public var name: String
+    public var birthday: Day?
     public var weight: Double?
     public var sex: Sex?
     
@@ -18,6 +18,7 @@ public class User: UserProtocol {
     public init(
         id: UUID? = nil,
         name: String,
+        birthday: Day? = nil,
         weight: Double? = nil,
         sex: Sex? = nil,
         preferences: RawPreferences = [:],
@@ -26,6 +27,7 @@ public class User: UserProtocol {
     ) {
         self.id = id
         self.name = name
+        self.birthday = birthday
         self.weight = weight
         self.sex = sex
         self.preferences = preferences
@@ -33,12 +35,11 @@ public class User: UserProtocol {
         self.lastEditDate = lastEditDate ?? creationDate
     }
     
-    /// - note: this initializer leaves out any kind of samples. Samples must be inserted into the context and linked
-    /// manually.
     public convenience init(from rawUser: RawUser) {
         self.init(
             id: rawUser.id,
             name: rawUser.name,
+            birthday: rawUser.birthday,
             weight: rawUser.weight,
             sex: rawUser.sex,
             preferences: rawUser.preferences,

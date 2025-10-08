@@ -234,10 +234,17 @@ actor Database: ModelActor {
     }
     
     @discardableResult
-    func updateUserProperties(id: UUID?? = .none, name: String? = .none, weight: Double?? = .none, sex: Sex?? = .none) throws -> RawUser {
+    func updateUserProperties(
+        id: UUID?? = .none,
+        name: String? = .none,
+        birthday: Day?? = .none,
+        weight: Double?? = .none,
+        sex: Sex?? = .none
+    ) throws -> RawUser {
         let user: User = try fetchUser()
         if let id { user.id = id }
         if let name { user.name = name }
+        if let birthday { user.birthday = birthday }
         if let weight { user.weight = weight }
         if let sex { user.sex = sex }
         user.lastEditDate = .now

@@ -67,7 +67,7 @@ enum LegacyMigrationHelper {
         userPreferences.weightUnit = legacyUserPreference(for: "weightMeasurementType", possibleValues: [.kilograms, .pounds])
         let userName = legacyUserPreference(for: "name") ?? R.string.localizable.legacy_migration_user()
         let userWeight: Double? = legacyUserPreference(for: "weight")
-        return RawUser(name: userName, weight: userWeight, sex: nil, preferences: userPreferences.preferences, creationDate: .now)
+        return RawUser(name: userName, birthday: nil, weight: userWeight, sex: nil, preferences: userPreferences.preferences, creationDate: .now)
     }
     
     private static func legacyUserPreference<T>(for key: String) -> T? {

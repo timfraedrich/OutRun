@@ -11,6 +11,7 @@
 "database_error_workout_already_finished" = "The recorded change could not be saved, as the workout has already been finished.";
 "date_today" = "Today";
 "date_yesterday" = "Yesterday";
+"day_conversion_error_description" = "There was an error while converting to or from a Day object.";
 "location_service_error_authorization_denied" = "Location data cannot be received due to denied authorization.";
 "location_service_error_authorization_restricted" = "Only approximate location data is available. To record a workout precise location authorization needs to be granted.";
 "sex_male" = "male";

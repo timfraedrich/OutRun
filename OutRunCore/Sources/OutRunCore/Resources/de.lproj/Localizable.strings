@@ -11,6 +11,7 @@
 "database_error_workout_not_finished" = "Das Workout konnte nicht fortgeführt werden, da es noch nicht beendet wurde.";
 "date_today" = "Heute";
 "date_yesterday" = "Gestern";
+"day_conversion_error_description" = "Es gab einen Fehler bei der Konvertierung zu oder von einem Day-Objekt.";
 "location_service_error_authorization_denied" = "Standortdaten können aufgrund abgelehnter Berechtigung nicht abgerufen werden.";
 "location_service_error_authorization_restricted" = "Es stehen nur ungefähre Standortdaten zur verfügung. Um ein Workout aufzunehmen müssen genaue Standortdaten geteilt werden.";
 "sex_male" = "männlich";

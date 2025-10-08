@@ -4,6 +4,7 @@ public struct RawUser: UserProtocol, Sendable {
     
     public var id: UUID?
     public var name: String
+    public var birthday: Day?
     public var weight: Double?
     public var sex: Sex?
     
@@ -15,6 +16,7 @@ public struct RawUser: UserProtocol, Sendable {
     public init(
         id: UUID? = nil,
         name: String,
+        birthday: Day? = nil,
         weight: Double? = nil,
         sex: Sex? = nil,
         preferences: RawPreferences = [:],
@@ -23,6 +25,7 @@ public struct RawUser: UserProtocol, Sendable {
     ) {
         self.id = id
         self.name = name
+        self.birthday = birthday
         self.weight = weight
         self.sex = sex
         self.preferences = preferences
@@ -34,6 +37,7 @@ public struct RawUser: UserProtocol, Sendable {
         self.init(
             id: user.id,
             name: user.name,
+            birthday: user.birthday,
             weight: user.weight,
             sex: user.sex,
             preferences: user.preferences,
