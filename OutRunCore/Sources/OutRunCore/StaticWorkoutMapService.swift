@@ -132,13 +132,7 @@ public enum StaticWorkoutMapService {
         options.size = size
         let traitCollection = UITraitCollection(userInterfaceStyle: userInterfaceStyle)
         options.traitCollection = traitCollection
-        if #available(iOS 17.0, *) {
-            let config = MKStandardMapConfiguration()
-            config.pointOfInterestFilter = .excludingAll
-            options.preferredConfiguration = config
-        } else {
-            options.pointOfInterestFilter = .excludingAll
-        }
+        options.pointOfInterestFilter = .excludingAll
         do {
             let snapshotter = MKMapSnapshotter(options: options)
             let snapshot = try await snapshotter.start()
