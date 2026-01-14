@@ -95,7 +95,7 @@
 "EditWorkoutController.Info" = "Informacja";
 "MapView.MapType.Hybrid" = "Hybryda";
 "WorkoutShareAlert.OutRunBackup" = "OutRun Kopia";
-"Changelog" = "Czangielog";
+"Changelog" = "Lista Zmian";
 "Workout.StartDate" = "Data Rozpoczęcia";
 "Workout.CurrentSpeed" = "Aktualna Prędkość";
 "Workout.BurnedCalories" = "Spalone Kalorie";
@@ -157,7 +157,7 @@
 "Settings.Weight" = "Waga";
 "Settings.UserSettings.Description" = "Ta aplikacja potrzebuje twojej wagi, aby obliczyć szacunkową wartość spalonej energii podczas treningu. Podanie imienia i nazwiska jest w pełni opcjonalne.";
 "Settings.AppleHealthPreferences" = "Apple Health Preferencje";
-"Settings.AppleHealthPreferences.Message" = "Jeśli Opcje synchronizacji są włączone, aplikacja próbuje zsynchronizować się z Apple Health, Więc nowe dane tej aplikacji są automatycznie zapisywane w aplikacji Health, a jeśli waga w Apple health się zmieni, automatycznie zostanie dostosowana tutaj.\n\nJeśli opcja \"Auto Import treningów\" jest włączona, aplikacja próbuje automatycznie importować nowe treningi dodane przez inne aplikacje do lokalnej bazy danych.\n\n\"Synchronizuj wszystkie niezsynchronizowane treningi\" synchronizuje wszystkie treningi w tej aplikacji, jeszcze nie zsynchronizowane, z Apple Health.";
+"Settings.AppleHealthPreferences.Message" = "Jeśli opcje synchronizacji są włączone, aplikacja będzie próbowała synchronizować się z Apple Health. Nowe dane będą automatycznie zapisywane w aplikacji Zdrowie, a jeśli waga w aplikacji Zdrowie się zmieni, to automatycznie zostanie dostosowana tutaj.\n\nJeśli opcja \"Auto Import treningów\" jest włączona, aplikacja będzie próbowała automatycznie importować nowe treningi dodane przez inne aplikacje do lokalnej bazy danych.\n\n\"Synchronizuj wszystkie niezsynchronizowane treningi\" synchronizuje wszystkie jeszcze nie zsynchronizowane treningi z Apple Health.";
 "Settings.AutoImportHealthWorkouts" = "Auto Import Treningi";
 "Settings.ImportFromAppleHealth" = "Import z Apple Health";
 "Settings.SyncAll" = "Synchronizuj Wszystkie Niezsynchronizowane Treningi";
@@ -268,3 +268,5 @@
 "Turn Off" = "Wyłącz";
 "Try Again" = "Spróbuj Ponownie";
 "Keep" = "Zachowaj";
+"ExportManager.BackupError" = "Aplikacji nie udało się utworzyć kopii zapasowej, proszę skontaktować się z pomocą techniczną.";
+"ExportManager.GPXError" = "Aplikacji nie udało się utworzyć pliku GPX, proszę skontaktować się z pomocą techniczna.";
