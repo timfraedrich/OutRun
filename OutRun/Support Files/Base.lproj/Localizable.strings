@@ -145,7 +145,7 @@
 "Settings.Weight" = "Weight";
 "Settings.UserSettings.Description" = "This App needs your weight to calculate an estimated value of burned energy during a workout. Providing your name is fully optional.";
 "Settings.AppleHealthPreferences" = "Apple Health Preferences";
-"Settings.AppleHealthPreferences.Message" = "If the Sync options are enabled the app tries to synchronise with Apple Health, so new data by this app is automatically saved to the Health App and if the weight in apple health changes it automatically gets adjusted here too.\n\nShould the 'Auto Import Workouts' option be enabled, the app tries to automatically import new workouts added by other apps into the local database.\n\n'Sync All Unsynced Workouts' synchronises all Workouts in this app, not already in synced, to Apple Health.";
+"Settings.AppleHealthPreferences.Message" = "If the Sync options are enabled the app tries to synchronise with Apple Health, so new data by this app is automatically saved to the Health App and if the weight in Apple Health changes it automatically gets adjusted here too.\n\nShould the 'Auto Import Workouts' option be enabled, the app tries to automatically import new workouts added by other apps into the local database.\n\n'Sync All Unsynced Workouts' synchronises all Workouts in this app, not already in synced to Apple Health.";
 "Settings.SynchronizeWorkoutsWithAppleHealth" = "Sync Workouts";
 "Settings.SynchronizeWeightWithAppleHealth" = "Sync Weight";
 "Settings.AutoImportHealthWorkouts" = "Auto Import Workouts";
