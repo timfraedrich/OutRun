@@ -146,7 +146,7 @@
 "Settings.Weight" = "Gewicht";
 "Settings.UserSettings.Description" = "Diese App braucht dein Gewicht, um einen Schätzwert für verbrannte Energie während eines Workouts zu berechnen. Die Angabe deines Namens ist optional.";
 "Settings.AppleHealthPreferences" = "Apple Health Einstellungen";
-"Settings.AppleHealthPreferences.Message" = "Wenn die Synchronisieren-Optionen aktiviert, sind versucht die App automatisch neue Daten bei Apple Health zu speichern. Des Weiteren werden Gewichtsänderungen in der Health App automatisch auch hier vorgenommen.\n\nSollte die 'Workout Auto-Import'-Option aktiviert sein, versucht die App Workouts von anderen Apps automatisch in die lokale Datenbank hinzuzufügen.\n\n'Alle Workouts Synchronisieren' synchronisiert alle noch nicht synchronisierten Workouts in dieser App mit Apple Health.";
+"Settings.AppleHealthPreferences.Message" = "Wenn die Synchronisieren-Optionen aktiviert sind, versucht die App automatisch neue Daten bei Apple Health zu speichern. Des Weiteren werden Gewichtsänderungen in der Health App automatisch auch hier vorgenommen.\n\nSollte die 'Workout Auto-Import'-Option aktiviert sein, versucht die App Workouts von anderen Apps automatisch in die lokale Datenbank hinzuzufügen.\n\n'Alle Workouts Synchronisieren' synchronisiert alle noch nicht synchronisierten Workouts in dieser App mit Apple Health.";
 "Settings.SynchronizeWorkoutsWithAppleHealth" = "Workouts Synchonisieren";
 "Settings.SynchronizeWeightWithAppleHealth" = "Gewicht Synchonisieren";
 "Settings.AutoImportHealthWorkouts" = "Workout Auto-Import";
