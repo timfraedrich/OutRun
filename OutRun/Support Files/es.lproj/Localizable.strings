@@ -18,7 +18,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-"Settings.AppleHealthPreferences.Message" = "Si las opciones de sincronización están habilitadas, la aplicación intenta sincronizarse con Salud de Apple, por lo que los datos nuevos de esta aplicación se guardan automáticamente en la aplicación Salud de Apple y si el peso en Salud de Apple cambia, también se ajusta automáticamente aquí.\n\nSi la opción 'Auto-importar entrenamientos' está habilitada, la aplicación intenta importar automáticamente nuevos entrenamientos agregados por otras aplicaciones a la base de datos local.\n\n'Sincronizar todos los entrenamientos' sincroniza todos los entrenamientos de esta aplicación, que aún no están sincronizados, con Salud de Apple.";
+"Settings.AppleHealthPreferences.Message" = "Si las opciones de sincronización están activadas, la aplicación intenta sincronizarse con Apple Health, de modo que los nuevos datos de esta aplicación se guardan automáticamente en la aplicación Salud y, si el peso en Apple Health cambia, también se ajusta automáticamente aquí.\n\nSi la opción \"Importación automática de entrenamientos\" está activada, la aplicación intenta importar automáticamente los nuevos entrenamientos añadidos por otras aplicaciones a la base de datos local.\n\nSincronizar todos los entrenamientos no sincronizados\" sincroniza todos los entrenamientos de esta aplicación que aún no están sincronizados con Apple Health.";
 "Changelog" = "Registro de cambios";
 "ShareManager.GPXError" = "La aplicación no pudo crear un archivo GPX, por favor póngase en contacto con el soporte técnico.";
 "ShareManager.BackupError" = "La aplicación no pudo crear una copia de seguridad, por favor póngase en contacto con el soporte técnico.";
