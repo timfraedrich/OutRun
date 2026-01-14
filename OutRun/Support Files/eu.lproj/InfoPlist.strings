@@ -1,0 +1,8 @@
+
+
+"NSHealthShareUsageDescription" = "Aplikazio honek zure osasun-datuak ikusteko baimena behar du aplikazio honek sortutako entrenamenduak gordetzeko";
+"NSHealthUpdateUsageDescription" = "Aplikazio honek zure osasun-datuak ikusteko baimenta behar du, aplikazioak sortutako entrenamenduak irakurri eta zuzendu ahal izateko";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Aplikazio honek zure kokapena behar du entrenamenduen jarraipena egiteko";
+"NSLocationAlwaysUsageDescription" = "Aplikazio honek zure kokapena behar du entrenamenduen jarraipena egiteko";
+"NSLocationWhenInUseUsageDescription" = "Aplikazio honek zure kokapena behar du entrenamenduen jarraipena egiteko";
+"NSMotionUsageDescription" = "Aplikazio honek mugimenduarekin lotutako jarraipen baimenak behar ditu, entrenamenduetako erregistratzeko, pausoak adibiedez";
