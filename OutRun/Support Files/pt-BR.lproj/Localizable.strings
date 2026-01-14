@@ -2,7 +2,7 @@
 
 "WorkoutStats.Time" = "Duração";
 "Standard" = "Padrão";
-"HKImport.ImportAll.Alert.Message" = "Deseja importar todos os exercícios do Saúde para o OutRun? Isso pode demorar um pouco.";
+"HKImport.ImportAll.Alert.Message" = "Isso pode demorar um pouco, deseja importar todos os exercícios do Saúde para o OutRun?";
 "Okay" = "Ok";
 "Keep" = "Manter";
 "Changelog" = "Lista de mudanças";
@@ -66,7 +66,7 @@
 "Setup.Feature.Chart.Title" = "Estatística detalhada";
 "Setup.Feature.Route.Message" = "Registre sua corrida, caminhada ou pedalada com a precisão mais alta possível no seu telefone.";
 "Setup.Feature.Route.Title" = "Monitoração precisa";
-"Setup.StartButton" = "Começar";
+"Setup.StartButton" = "Vamos lá";
 "Setup.Introduction" = "o aplicativo de exercício que se importa com sua privacidade, onde você não precisa criar uma conta de usuário, ou fornecer dados sensíveis que ficam num servidor no meio do nada.\nMais sobre isso daqui a pouco, vamos começar.";
 "Setup.Headline" = "bem vindo ao";
 "HKImport.ImportAll.Error" = "Alguns dos exercícios do Saúde não puderam ser adicionados. Eles ainda aparecerão na lista. Por favor tente novamente mais tarde.";
@@ -156,7 +156,7 @@
 "WorkoutDeletion.Error.Message" = "Houve um erro ao tentar apagar o exercício do aplicativo.";
 "WorkoutDeletion.AppleHealth.Message" = "Quer apagar também o exercício salvo no Saúde?";
 "WorkoutDeletion.AppleHealth.Title" = "Apagar no Saúde?";
-"WorkoutDeletion.Message" = "Tem certeza que deseja apagar o exercício? Você não pode restaurá-lo.";
+"WorkoutDeletion.Message" = "Uma vez apagado você não poderá restaura-lo, tem certeza que deseja apagar o exercício?";
 "WorkoutDeletion.Title" = "Apagar exercício?";
 "WorkoutStats.Route" = "Rota";
 "WorkoutStats.TotalEnergy" = "Energia total";
@@ -268,3 +268,5 @@
 "OutRun" = "OutRun";
 "TabBar.Settings" = "Configurações";
 "TabBar.Timeline" = "Linha do tempo";
+"ExportManager.BackupError" = "O aplicativo falhou ao criar um backup, entre em contato com o suporte.";
+"ExportManager.GPXError" = "O aplicativo falhou ao criar um arquivo GPX, pro favor entre em contato com o suporte.";
