@@ -258,7 +258,7 @@
 "WorkoutDeletion.Error.AppleHealth.Message" = "Došlo je do greške prilikom pokušaja brisanja treninga iz Appleovog programa „Zdravlje”. Svejedno ga možeš izbrisati u Appleovom programu „Zdravlje”.";
 "Settings.Contribution" = "Doprinos";
 "Settings.UnitPick.Headline" = "Odberi jedinicu";
-"Workout.BurnedCalories" = "Potrošena energija";
+"Workout.BurnedCalories" = "Potrošene kalorije";
 "Setup.Formalities.Title" = "Krenimo onda s formalnostima";
 "Settings.Contribution.CodeContributors" = "Doprinositelji kodu";
 "Settings.UserSettings.Description" = "Ovaj program treba tvoju težinu kako bi izračunala procijenjenu vrijednost potrošene energije tijekom treninga. Upiši tvoje ime samo ako želiš.";
