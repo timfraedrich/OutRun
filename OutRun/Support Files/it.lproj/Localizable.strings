@@ -8,7 +8,7 @@
 "NewWorkoutViewController.Recenter" = "Ricentra";
 "Settings.Support" = "Supporto";
 "Workout.TotalPace" = "Ritmo Totale";
-"Workout.RollingPace" = "Ritmo Di Rotazione";
+"Workout.RollingPace" = "Ritmo";
 "Workout.AverageSpeed" = "Velocità Media";
 "Stop" = "Ferma";
 "No" = "No";
@@ -140,7 +140,7 @@
 "Settings.AutoImportHealthWorkouts" = "Importazione Automatica degli Allenamenti";
 "Settings.SynchronizeWeightWithAppleHealth" = "Sincronizza Peso";
 "Settings.SynchronizeWorkoutsWithAppleHealth" = "Sincronizza Allenamenti";
-"Settings.AppleHealthPreferences.Message" = "Se le opzioni di sincronizzazione sono abilitate l'app cerca di sincronizzarsi con Apple Health, quindi i nuovi dati di questa app vengono automaticamente salvati nell'app Health e se il peso nella salute della mela cambia viene automaticamente regolato anche qui.\n\nSe l'opzione 'Auto Import Workout' è abilitata, la app cerca di importare automaticamente i nuovi allenamenti aggiunti da altre app nel database locale.\n\nSync All Unsynced Workouts' sincronizza tutti gli allenamenti di questa app, non già sincronizzati, con Apple Health.";
+"Settings.AppleHealthPreferences.Message" = "Se le opzioni di sincronizzazione sono abilitate l'app cerca di sincronizzarsi con Apple Health, quindi i nuovi dati di questa app vengono automaticamente salvati nell'app Salute e se il peso nell'app Apple Salute cambia viene automaticamente regolato anche qui.\n\nSe l'opzione 'Auto Import Workout' è abilitata, la app cerca di importare automaticamente i nuovi allenamenti aggiunti da altre app nel database locale.\n\n'Sync All Unsynced Workouts' sincronizza tutti gli allenamenti di questa app, non già sincronizzati, con Apple Health.";
 "Settings.UserSettings.Description" = "Questa applicazione ha bisogno del tuo peso per calcolare un valore stimato dell'energia bruciata durante l'allenamento. Fornire il tuo nome è puramente facoltativo.";
 "Settings.Weight" = "Peso";
 "Settings.Name" = "Nome";
@@ -212,7 +212,7 @@
 "Workout.PauseDuration" = "Durata pausa";
 "Workout.ActiveDuration" = "Durata attiva";
 "Workout.Duration" = "Durata";
-"Workout.Strokes" = "Colpi Di Pedale";
+"Workout.Strokes" = "Pedalate";
 "Workout.Steps" = "Passi";
 "Workout.Distance" = "Distanza";
 "Workout" = "Allenamento";
@@ -227,7 +227,7 @@
 "NewWorkoutAlert.Title" = "Allenamento";
 "WorkoutListViewController.Headline" = "I Tuoi Allenamenti";
 "NewWorkoutViewController.WorkoutBuilder.Error" = "C'è stato un errore nella logica che doveva costruire l'allenamento.";
-"NewWorkoutViewController.WaitingAlert.Message" = "Il segnale GPS non è abbastanza preciso per una qualità di percorso sufficiente, trovare un segnale preciso può richiedere da un paio di secondi a un minuto. Se si tratta di un fenomeno comune in cui si vive, provare a regolare la precisione necessaria nelle impostazioni.";
+"NewWorkoutViewController.WaitingAlert.Message" = "Il segnale GPS non è abbastanza preciso per una qualità sufficiente del percorso, trovare un segnale preciso può richiedere da un paio di secondi a un minuto. Se si tratta di un fenomeno comune in cui si vive, provare a regolare la precisione necessaria nelle impostazioni.";
 "NewWorkoutViewController.WaitingAlert.Title" = "In attesa del segnale GPS";
 "NewWorkoutViewController.Discard.SaveInstead" = "Salva invece";
 "NewWorkoutViewController.Discard.Message" = "Sei sicuro di voler scartare l'allenamento? I dati non possono essere recuperati.";
@@ -244,9 +244,9 @@
 "Discard" = "Scarta";
 "Edit" = "Modifica";
 "Turn Off" = "Spegni";
-"Try Again" = "Prova Ancora";
+"Try Again" = "Riprova";
 "Open" = "Apri";
-"Grant" = "Sovvenzione";
+"Grant" = "Dai l'autorizzazione";
 "Skip" = "Salta";
 "Finish" = "Fine";
 "Next" = "Avanti";
@@ -255,7 +255,7 @@
 "NoDataAvailable" = "Nessun Dato Disponibile";
 "Standard" = "Normale";
 "Done" = "Fatto";
-"Loading-DoNotClose" = "Caricamento... Non Chiudere";
+"Loading-DoNotClose" = "Caricamento... Per favore non chiudere";
 "Loading" = "Caricamento...";
 "Delete" = "Elimina";
 "Continue" = "Continua";
@@ -268,3 +268,6 @@
 "Settings.Contribution.CodeContributors" = "Collaboratori del codice";
 "Settings.Contribution.Maintainers" = "Manutentrici";
 "Settings.Contribution" = "Contributo";
+"ExportManager.BackupError" = "Errore durante la creazione del backup, si prega di contattare il supporto.";
+"ExportManager.GPXError" = "L'applicazione non è riuscita a creare un file GPX, per favore contattate il supporto.";
+"Keep" = "Mantieni";
