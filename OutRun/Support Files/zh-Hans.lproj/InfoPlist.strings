@@ -1,0 +1,8 @@
+
+
+"NSHealthUpdateUsageDescription" = "该应用程序需要访问您的健康数据，用来读取该应用程序产生的数据";
+"NSMotionUsageDescription" = "该应用需要运动相关的跟踪功能来记录锻炼过程中的步数等数据";
+"NSLocationWhenInUseUsageDescription" = "该应用程序需要您的位置来跟踪锻炼";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "该应用程序需要您的位置来跟踪锻炼";
+"NSLocationAlwaysUsageDescription" = "该应用程序需要您的位置来跟踪锻炼";
+"NSHealthShareUsageDescription" = "该应用程序需要访问您的健康数据，用来保存运动过程产生的数据";
