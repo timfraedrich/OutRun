@@ -1,0 +1,8 @@
+
+
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "このアプリはワークアウトをトラッキングするために位置情報が必要です";
+"NSMotionUsageDescription" = "このアプリはワークアウト中の歩数などのデータを記録するためにモーション関連のトラッキング機能が必要です";
+"NSHealthShareUsageDescription" = "このアプリはアプリ内で作成されたワークアウトを保存するためにヘルスデータへのアクセスが必要です";
+"NSHealthUpdateUsageDescription" = "このアプリはアプリ内で作成されたワークアウトを読み取り・修正するためにヘルスデータへのアクセスが必要です";
+"NSLocationAlwaysUsageDescription" = "このアプリはワークアウトをトラッキングするために位置情報が必要です";
+"NSLocationWhenInUseUsageDescription" = "このアプリはワークアウトをトラッキングするために位置情報が必要です";
