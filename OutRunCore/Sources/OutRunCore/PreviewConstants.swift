@@ -63,7 +63,7 @@ public enum PreviewConstants {
         comment: nil,
         creationDate: .now,
         lastEditDate: .now,
-        sourceService: .native,
+        source: .native,
         route: PreviewConstants.route
     )
     
@@ -81,6 +81,6 @@ public enum PreviewConstants {
         comment: nil,
         creationDate: .now,
         lastEditDate: .now,
-        sourceService: .native
+        source: .native
     )
 }

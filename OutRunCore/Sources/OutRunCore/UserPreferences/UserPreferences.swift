@@ -23,15 +23,15 @@ public class UserPreferences {
     
     /// The bare preference dictionary as saved in a ``UserProtocol`` object under ``UserProtocol/preferences``. This dictionary is
     /// typically not interacted with directly. To get or set custom preference values use the available `value` and `setValue` methods.
-    public var preferences: UserProtocol.RawPreferences
+    public var preferences: RawPreferences
     
     /// Initializes with the bare preference dictionary of a ``UserProtocol`` object.
-    public init(preferences: UserProtocol.RawPreferences) {
+    public init(preferences: RawPreferences) {
         self.preferences = preferences
     }
     
     /// Sets the provided preferences if they differ from the existing values.
-    public func update(basedOn newPreferences: UserProtocol.RawPreferences) {
+    public func update(basedOn newPreferences: RawPreferences) {
         guard preferences != newPreferences else { return }
         preferences = newPreferences
     }

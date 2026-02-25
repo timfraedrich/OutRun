@@ -10,7 +10,8 @@ enum ModelSchema: VersionedSchema {
         WorkoutHeartRateDataSample.self,
         WorkoutPause.self,
         WorkoutEvent.self,
-        WorkoutServiceMapping.self,
+        SyncServiceMapping.self,
+        SyncServiceState.self,
     ]
     static let versionIdentifier = Schema.Version(2, 0, 0)
 }

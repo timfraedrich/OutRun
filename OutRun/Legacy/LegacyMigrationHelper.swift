@@ -159,15 +159,16 @@ enum LegacyMigrationHelper {
         UnitEnergy.kilocalories.converter.baseUnitValue(fromValue: kcal)
     }
     
-    /// Returns a RawWorkoutServiceMapping for the WorkoutService .appleHealth if a healthKitUUID was provided or an empty array otherwise.
-    static func serviceMappingsFromHealthKitUUID(_ healthKitUUID: UUID?) -> [RawWorkoutServiceMapping] {
+    /// Returns a RawSyncServiceMapping for the WorkoutService .appleHealth if a healthKitUUID was provided or an empty array otherwise.
+    static func serviceMappingsFromHealthKitUUID(_ healthKitUUID: UUID?) -> [RawSyncServiceMapping] {
         guard let healthKitUUID else { return [] }
         return [
             .init(
-                service: .appleHealth,
+                // TODO: use constant instead of literal
+                serviceIdentifier: "AppleHealth",
                 externalId: healthKitUUID.uuidString,
                 externalUrl: nil,
-                lastSyncDate: nil,
+                lastEditDateSynced: nil,
                 syncStatus: .pending
             )
         ]

@@ -1,9 +1,10 @@
 import Foundation
 
-public protocol WorkoutServiceMappingProtocol: Equatable {
-    var service: WorkoutService { get }
-    var externalId: String { get }
+public protocol SyncServiceMappingProtocol: Equatable {
+    
+    var serviceIdentifier: String { get }
+    var externalId: String? { get }
     var externalUrl: String? { get }
-    var lastSyncDate: Date? { get }
+    var lastEditDateSynced: Date? { get }
     var syncStatus: WorkoutSyncStatus { get }
 }

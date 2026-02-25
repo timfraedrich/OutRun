@@ -1,16 +1,9 @@
 import Foundation
 
-public enum WorkoutService: Codable, Equatable, Hashable, Sendable {
+public enum WorkoutSource: Codable, Equatable, Hashable, Sendable {
     
-    case appleHealth
+    case native
     case imported
     case manuallyEntered
-    case native
-    
-    var sourceEditingAllowed: Bool {
-        switch self {
-        case .appleHealth: return false
-        case .imported, .manuallyEntered, .native: return false
-        }
-    }
+    case syncService(identifier: String)
 }

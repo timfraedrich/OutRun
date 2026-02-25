@@ -21,13 +21,13 @@ public class Workout: WorkoutProtocol {
     public var comment: String?
     public var creationDate: Date
     public var lastEditDate: Date
-    public var sourceService: WorkoutService
+    public var source: WorkoutSource
     
     @Relationship(deleteRule: .cascade, inverse: \WorkoutRouteDataSample.workout) public var route: [WorkoutRouteDataSample] = []
     @Relationship(deleteRule: .cascade, inverse: \WorkoutHeartRateDataSample.workout) public var heartRates: [WorkoutHeartRateDataSample] = []
     @Relationship(deleteRule: .cascade, inverse: \WorkoutPause.workout) public var pauses: [WorkoutPause] = []
     @Relationship(deleteRule: .cascade, inverse: \WorkoutEvent.workout) public var events: [WorkoutEvent] = []
-    @Relationship(deleteRule: .cascade, inverse: \WorkoutServiceMapping.workout) public var serviceMappings: [WorkoutServiceMapping] = []
+    @Relationship(deleteRule: .cascade, inverse: \SyncServiceMapping.workout) public var serviceMappings: [SyncServiceMapping] = []
     
     public init(
         id: UUID = .init(),
@@ -42,7 +42,7 @@ public class Workout: WorkoutProtocol {
         comment: String? = nil,
         creationDate: Date,
         lastEditDate: Date? = nil,
-        sourceService: WorkoutService
+        source: WorkoutSource
     ) {
         self.id = id
         self.type = type
@@ -56,7 +56,7 @@ public class Workout: WorkoutProtocol {
         self.comment = comment
         self.creationDate = creationDate
         self.lastEditDate = lastEditDate ?? creationDate
-        self.sourceService = sourceService
+        self.source = source
     }
     
     /// - note: this initializer leaves out any kind of samples. Samples must be inserted into the context and linked
@@ -75,7 +75,7 @@ public class Workout: WorkoutProtocol {
             comment: rawWorkout.comment,
             creationDate: rawWorkout.creationDate,
             lastEditDate: rawWorkout.lastEditDate,
-            sourceService: rawWorkout.sourceService
+            source: rawWorkout.source
         )
     }
 }

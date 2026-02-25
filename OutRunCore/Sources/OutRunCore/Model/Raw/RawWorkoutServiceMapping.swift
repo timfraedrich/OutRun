@@ -1,33 +1,33 @@
 import Foundation
 
-public struct RawWorkoutServiceMapping: Codable, Sendable, WorkoutServiceMappingProtocol {
+public struct RawSyncServiceMapping: Codable, Sendable, SyncServiceMappingProtocol {
     
-    public var service: WorkoutService
-    public var externalId: String
+    public var serviceIdentifier: String
+    public var externalId: String?
     public var externalUrl: String?
-    public var lastSyncDate: Date?
+    public var lastEditDateSynced: Date?
     public var syncStatus: WorkoutSyncStatus
     
     public init(
-        service: WorkoutService,
-        externalId: String,
-        externalUrl: String?,
-        lastSyncDate: Date?,
-        syncStatus: WorkoutSyncStatus
+        serviceIdentifier: String,
+        externalId: String? = nil,
+        externalUrl: String? = nil,
+        lastEditDateSynced: Date? = nil,
+        syncStatus: WorkoutSyncStatus = .pending
     ) {
-        self.service = service
+        self.serviceIdentifier = serviceIdentifier
         self.externalId = externalId
         self.externalUrl = externalUrl
-        self.lastSyncDate = lastSyncDate
+        self.lastEditDateSynced = lastEditDateSynced
         self.syncStatus = syncStatus
     }
     
-    public init(from serviceMapping: WorkoutServiceMapping) {
+    public init(from serviceMapping: SyncServiceMapping) {
         self.init(
-            service: serviceMapping.service,
+            serviceIdentifier: serviceMapping.serviceIdentifier,
             externalId: serviceMapping.externalId,
             externalUrl: serviceMapping.externalUrl,
-            lastSyncDate: serviceMapping.lastSyncDate,
+            lastEditDateSynced: serviceMapping.lastEditDateSynced,
             syncStatus: serviceMapping.syncStatus
         )
     }

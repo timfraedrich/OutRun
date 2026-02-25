@@ -2,38 +2,38 @@ import Foundation
 import SwiftData
 
 @Model
-public class WorkoutServiceMapping: WorkoutServiceMappingProtocol {
+public class SyncServiceMapping: SyncServiceMappingProtocol {
     
-    public var service: WorkoutService
-    public var externalId: String
+    public var serviceIdentifier: String
+    public var externalId: String?
     public var externalUrl: String?
-    public var lastSyncDate: Date?
+    public var lastEditDateSynced: Date?
     public var syncStatus: WorkoutSyncStatus
     
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public init(
-        service: WorkoutService,
-        externalId: String,
+        serviceIdentifier: String,
+        externalId: String?,
         externalUrl: String?,
-        lastSyncDate: Date?,
+        lastEditDateSynced: Date?,
         syncStatus: WorkoutSyncStatus,
         workout: Workout? = nil
     ) {
-        self.service = service
+        self.serviceIdentifier = serviceIdentifier
         self.externalId = externalId
         self.externalUrl = externalUrl
-        self.lastSyncDate = lastSyncDate
+        self.lastEditDateSynced = lastEditDateSynced
         self.syncStatus = syncStatus
         self.workout = workout
     }
     
-    public convenience init(from rawServiceMapping: RawWorkoutServiceMapping, attachTo workout: Workout? = nil) {
+    public convenience init(from rawServiceMapping: RawSyncServiceMapping, attachTo workout: Workout? = nil) {
         self.init(
-            service: rawServiceMapping.service,
+            serviceIdentifier: rawServiceMapping.serviceIdentifier,
             externalId: rawServiceMapping.externalId,
             externalUrl: rawServiceMapping.externalUrl,
-            lastSyncDate: rawServiceMapping.lastSyncDate,
+            lastEditDateSynced: rawServiceMapping.lastEditDateSynced,
             syncStatus: rawServiceMapping.syncStatus,
             workout: workout
         )

@@ -10,18 +10,16 @@ struct DatabaseTests {
         let exampleWorkout = try readExampleWorkout()
         guard let endDate = exampleWorkout.endDate else { throw "Example workout has no end date." }
         let database = try await Database(isStoredInMemoryOnly: true)
-        let identifier = try await database.initializeWorkout(with: exampleWorkout.type, startDate: exampleWorkout.startDate)
+        let identifier = try await database.initializeWorkout(with: exampleWorkout.type, startDate: exampleWorkout.startDate).id
         let samples: [(Date, Any)] = exampleWorkout.route.map { ($0.timestamp, $0) } + exampleWorkout.pauses.map { ($0.endDate, $0) }
         let sortedSamples = samples.sorted(by: { $0.0 < $1.0 }).map({ $0.1 })
-        var routeSampleWasAdded = false
         for sample in sortedSamples {
             if let sample = sample as? RawWorkoutRouteDataSample {
-                let addedDistance: Double = routeSampleWasAdded ? 0 : exampleWorkout.distance
-                if !routeSampleWasAdded { routeSampleWasAdded = true }
+                let updatedDistance: Double = exampleWorkout.distance
                 try await database.addRouteSample(
                     sample,
                     toWorkoutWith: identifier,
-                    addedDistance: addedDistance,
+                    updatedDistance: updatedDistance,
                     updatedEnergy: exampleWorkout.energy,
                     updatedRepetitions: exampleWorkout.repetitions
                 )

@@ -2,8 +2,6 @@ import Foundation
 
 public protocol UserProtocol: Equatable {
     
-    typealias RawPreferences = [String : Data]
-    
     /// Optional identifier to identify a user with an external service.
     var id: UUID? { get set }
     /// The users name.

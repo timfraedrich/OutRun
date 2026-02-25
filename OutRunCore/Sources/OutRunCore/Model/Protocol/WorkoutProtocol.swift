@@ -6,7 +6,7 @@ public protocol WorkoutProtocol: Identifiable, Equatable {
     associatedtype WorkoutRouteDataSampleType: WorkoutRouteDataSampleProtocol
     associatedtype WorkoutPauseType: WorkoutPauseProtocol
     associatedtype WorkoutEventType: WorkoutEventProtocol
-    associatedtype WorkoutServiceMappingType: WorkoutServiceMappingProtocol
+    associatedtype SyncServiceMappingType: SyncServiceMappingProtocol
     
     var id: UUID { get }
     var type: WorkoutType { get }
@@ -20,10 +20,10 @@ public protocol WorkoutProtocol: Identifiable, Equatable {
     var comment: String? { get }
     var creationDate: Date { get }
     var lastEditDate: Date { get }
-    var sourceService: WorkoutService { get }
+    var source: WorkoutSource { get }
     var heartRates: [WorkoutHeartRateDataSampleType] { get }
     var route: [WorkoutRouteDataSampleType] { get }
     var pauses: [WorkoutPauseType] { get }
     var events: [WorkoutEventType] { get }
-    var serviceMappings: [WorkoutServiceMappingType] { get }
+    var serviceMappings: [SyncServiceMappingType] { get }
 }

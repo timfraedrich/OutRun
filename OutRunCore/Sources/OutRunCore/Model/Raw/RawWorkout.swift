@@ -14,13 +14,13 @@ public struct RawWorkout: Codable, Sendable, WorkoutProtocol {
     public var comment: String?
     public var creationDate: Date
     public var lastEditDate: Date
-    public var sourceService: WorkoutService
+    public var source: WorkoutSource
     
     public var heartRates: [RawWorkoutHeartRateDataSample]
     public var route: [RawWorkoutRouteDataSample]
     public var pauses: [RawWorkoutPause]
     public var events: [RawWorkoutEvent]
-    public var serviceMappings: [RawWorkoutServiceMapping]
+    public var serviceMappings: [RawSyncServiceMapping]
     
     public init(
         id: UUID,
@@ -35,12 +35,12 @@ public struct RawWorkout: Codable, Sendable, WorkoutProtocol {
         comment: String?,
         creationDate: Date,
         lastEditDate: Date,
-        sourceService: WorkoutService,
+        source: WorkoutSource,
         heartRates: [RawWorkoutHeartRateDataSample] = [],
         route: [RawWorkoutRouteDataSample] = [],
         pauses: [RawWorkoutPause] = [],
         events: [RawWorkoutEvent] = [],
-        serviceMappings: [RawWorkoutServiceMapping] = []
+        serviceMappings: [RawSyncServiceMapping] = []
     ) {
         self.id = id
         self.type = type
@@ -54,7 +54,7 @@ public struct RawWorkout: Codable, Sendable, WorkoutProtocol {
         self.comment = comment
         self.creationDate = creationDate
         self.lastEditDate = lastEditDate
-        self.sourceService = sourceService
+        self.source = source
         self.heartRates = heartRates
         self.route = route
         self.pauses = pauses
@@ -76,12 +76,12 @@ public struct RawWorkout: Codable, Sendable, WorkoutProtocol {
             comment: workout.comment,
             creationDate: workout.creationDate,
             lastEditDate: workout.lastEditDate,
-            sourceService: workout.sourceService,
+            source: workout.source,
             heartRates: workout.heartRates.map(RawWorkoutHeartRateDataSample.init).sorted(using: SortDescriptor(\.timestamp)),
             route: workout.route.map(RawWorkoutRouteDataSample.init).sorted(using: SortDescriptor(\.timestamp)),
             pauses: workout.pauses.map(RawWorkoutPause.init).sorted(using: SortDescriptor(\.startDate)),
             events: workout.events.map(RawWorkoutEvent.init).sorted(using: SortDescriptor(\.timestamp)),
-            serviceMappings: workout.serviceMappings.map(RawWorkoutServiceMapping.init).sorted(using: SortDescriptor(\.externalId))
+            serviceMappings: workout.serviceMappings.map(RawSyncServiceMapping.init).sorted(using: SortDescriptor(\.externalId))
         )
     }
 }

@@ -3,7 +3,7 @@ import Foundation
 import Perception
 import SwiftData
 
-actor Database: ModelActor {
+actor Database: ModelActor, SyncDelegate {
     
     public nonisolated let modelContainer: ModelContainer
     public nonisolated let modelExecutor: any ModelExecutor
@@ -14,7 +14,7 @@ actor Database: ModelActor {
         modelExecutor = DefaultSerialModelExecutor(modelContext: modelContext)
     }
     
-    // MARK: Recording
+    // MARK: - Recording
     
     /// Initializes a workout for live recording.
     /// - returns: The identifier of the initialized workout.
@@ -31,7 +31,7 @@ actor Database: ModelActor {
             name: nil,
             comment: nil,
             creationDate: .now,
-            sourceService: .native
+            source: .native
         )
         modelContext.insert(workout)
         try modelContext.save()
@@ -151,7 +151,7 @@ actor Database: ModelActor {
             workout.heartRates = rawWorkout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
             workout.pauses = rawWorkout.pauses.map { WorkoutPause(from: $0) }
             workout.events = rawWorkout.events.map { WorkoutEvent(from: $0) }
-            workout.serviceMappings = rawWorkout.serviceMappings.map { WorkoutServiceMapping(from: $0) }
+            workout.serviceMappings = rawWorkout.serviceMappings.map { SyncServiceMapping(from: $0) }
             modelContext.insert(workout)
         }
         try modelContext.save()
@@ -167,7 +167,7 @@ actor Database: ModelActor {
         try modelContext.save()
     }
     
-    // MARK: User
+    // MARK: - User
     
     func insert(_ rawUser: RawUser) throws {
         guard try modelContext.fetchCount(FetchDescriptor<User>()) == .zero else { throw DatabaseError.userAlreadyPresent }
@@ -223,7 +223,7 @@ actor Database: ModelActor {
     }
     
     @discardableResult
-    func updateUserPreferences(_ preferences: UserProtocol.RawPreferences) throws -> RawUser {
+    func updateUserPreferences(_ preferences: RawPreferences) throws -> RawUser {
         let user: User = try fetchUser()
         if user.preferences != preferences {
             user.preferences = preferences
@@ -258,17 +258,119 @@ actor Database: ModelActor {
         try modelContext.save()
     }
     
-    // MARK: Internal
+    // MARK: - Syncing
+    
+    func fetchHistory(in dateRange: Range<Date>) throws -> [some HistoryTransaction] {
+        let predicate = #Predicate<DefaultHistoryTransaction> { $0.timestamp >= dateRange.lowerBound && $0.timestamp < dateRange.upperBound }
+        var descriptor = HistoryDescriptor<DefaultHistoryTransaction>(predicate: predicate)
+        if #available(iOS 26, *) {
+            descriptor.sortBy = [.init(\.timestamp, order: .forward)]
+        }
+        return try modelContext.fetchHistory(descriptor)
+    }
+    
+    func fetchWorkout(for identifier: PersistentIdentifier) throws -> RawWorkout {
+        guard let workout: Workout = modelContext.registeredModel(for: identifier) else { throw DatabaseError.objectNotFound }
+        return RawWorkout(workout: workout)
+    }
+    
+    func fetchSyncServiceState(for identifier: String) throws -> RawSyncServiceState {
+        let state = try fetchSyncServiceState(with: identifier)
+        return RawSyncServiceState(from: state)
+    }
+    
+    func upsertSyncServiceState(_ rawState: RawSyncServiceState) throws {
+        do {
+            let state = try fetchSyncServiceState(with: rawState.id)
+            state.lastSyncDate = rawState.lastSyncDate
+            state.lastSyncMode = rawState.lastSyncMode
+            state.preferences = rawState.preferences
+        } catch DatabaseError.objectNotFound {
+            modelContext.insert(SyncServiceState(from: rawState))
+        }
+        try modelContext.save()
+    }
+
+    func upsertSyncServiceMapping(_ mapping: RawSyncServiceMapping, forWorkoutWith workoutId: UUID) throws {
+        let workout = try fetchWorkout(with: workoutId)
+        if let existing = workout.serviceMappings.first(where: { $0.serviceIdentifier == mapping.serviceIdentifier }) {
+            existing.externalId = mapping.externalId
+            existing.externalUrl = mapping.externalUrl
+            existing.lastEditDateSynced = mapping.lastEditDateSynced
+            existing.syncStatus = mapping.syncStatus
+        } else {
+            workout.serviceMappings.append(SyncServiceMapping(from: mapping))
+        }
+        try modelContext.save()
+    }
+
+    func fetchFinishedWorkouts(startingFrom date: Date) throws -> [RawWorkout] {
+        let descriptor = FetchDescriptor<Workout>(predicate: #Predicate {
+            $0.endDate != nil && $0.startDate >= date
+        })
+        return try modelContext.fetch(descriptor).map(RawWorkout.init)
+    }
+    
+    func deleteSyncServiceState(for identifier: String) throws {
+        let state = try fetchSyncServiceState(with: identifier)
+        modelContext.delete(state)
+        try modelContext.save()
+    }
+    
+    // MARK: SyncDelegate
+    
+    @discardableResult
+    func insert(_ workout: RawWorkout) throws -> UUID {
+        try insert([workout])
+        return workout.id
+    }
+    
+    func update(_ workout: RawWorkout) async throws -> UUID {
+        let databaseWorkout = try fetchWorkout(with: workout.id)
+        databaseWorkout.type = workout.type
+        databaseWorkout.distance = workout.distance
+        databaseWorkout.startDate = workout.startDate
+        databaseWorkout.endDate = workout.endDate
+        databaseWorkout.energy = workout.energy
+        databaseWorkout.repetitions = workout.repetitions
+        databaseWorkout.isRace = workout.isRace
+        databaseWorkout.name = workout.name
+        databaseWorkout.comment = workout.comment
+        databaseWorkout.creationDate = workout.creationDate
+        databaseWorkout.lastEditDate = workout.lastEditDate
+        databaseWorkout.source = workout.source
+        databaseWorkout.route = workout.route.map { WorkoutRouteDataSample.init(from: $0) }
+        databaseWorkout.heartRates = workout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
+        databaseWorkout.pauses = workout.pauses.map { WorkoutPause(from: $0) }
+        databaseWorkout.events = workout.events.map { WorkoutEvent(from: $0) }
+        databaseWorkout.serviceMappings = workout.serviceMappings.map { SyncServiceMapping(from: $0) }
+        try modelContext.save()
+        return workout.id
+    }
+    
+    func delete(_ workout: RawWorkout) async throws {
+        let databaseWorkout = try fetchWorkout(with: workout.id)
+        modelContext.delete(databaseWorkout)
+        try modelContext.save()
+    }
+    
+    // MARK: - Internal
+    
+    private func fetchSyncServiceState(with identifier: String) throws -> SyncServiceState {
+        var descriptor = FetchDescriptor<SyncServiceState>(predicate: #Predicate { $0.id == identifier })
+        descriptor.fetchLimit = 1
+        guard let state = try modelContext.fetch(descriptor).first else { throw DatabaseError.objectNotFound }
+        return state
+    }
     
     private func fetchWorkout(with identifier: UUID) throws -> Workout {
-        let descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
-        guard let workout = try modelContext.fetch(descriptor).first else {
-            throw DatabaseError.objectNotFound
-        }
+        var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
+        descriptor.fetchLimit = 1
+        guard let workout = try modelContext.fetch(descriptor).first else { throw DatabaseError.objectNotFound }
         return workout
     }
     
-    // MARK: Testing
+    // MARK: - Testing
     
     init(
         isStoredInMemoryOnly: Bool = false,
@@ -279,15 +381,11 @@ actor Database: ModelActor {
         )
     }
     
-    func insert(_ rawWorkout: RawWorkout) throws {
-        try insert([rawWorkout])
-    }
-    
     func fetchWorkouts() throws -> [RawWorkout] {
         try modelContext.fetch(FetchDescriptor<Workout>()).map(RawWorkout.init)
     }
     
-    // MARK: Static
+    // MARK: - Static
     
     static func modelContainer(
         name: String?,
