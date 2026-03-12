@@ -1,23 +1,25 @@
 import Foundation
 import HealthKit
 
-public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, CustomStringConvertible, Equatable, RawRepresentable, Sendable {
+public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, CustomStringConvertible, Hashable, RawRepresentable, Sendable {
     
     case running
     case walking
     case cycling
     case skating
     case hiking
-    case unknown
+    case unknown(rawValue: Int)
+    
+    public static var allCases: [WorkoutType] { [.running, .walking, .cycling, .skating, .hiking] }
     
     public init(rawValue: Int) {
-        switch rawValue {
-        case 0: self = .running
-        case 1: self = .walking
-        case 2: self = .cycling
-        case 3: self = .skating
-        case 4: self = .hiking
-        default: self = .unknown
+        self = switch rawValue {
+        case 0: .running
+        case 1: .walking
+        case 2: .cycling
+        case 3: .skating
+        case 4: .hiking
+        default: .unknown(rawValue: rawValue)
         }
     }
     
@@ -43,7 +45,7 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Cu
         case .cycling: 2
         case .skating: 3
         case .hiking: 4
-        case .unknown: -1
+        case .unknown(let rawValue): rawValue
         }
     }
     
@@ -65,7 +67,7 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Cu
         case .cycling: "WorkoutType.cycling"
         case .skating: "WorkoutType.skating"
         case .hiking: "WorkoutType.hiking"
-        case .unknown: "WorkoutType.unknown"
+        case .unknown(let rawValue): "WorkoutType.unknown(\(rawValue))"
         }
     }
     

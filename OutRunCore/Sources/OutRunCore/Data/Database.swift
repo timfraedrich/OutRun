@@ -138,7 +138,7 @@ actor Database: ModelActor, SyncDelegate {
         let sortDescriptor = SortDescriptor<Workout>(\.startDate, order: .reverse)
         var fetchDescriptor = FetchDescriptor<Workout>(sortBy: [sortDescriptor])
         fetchDescriptor.fetchLimit = 1
-        fetchDescriptor.propertiesToFetch = [\.type]
+        fetchDescriptor.propertiesToFetch = [\.rawType]
         return try? modelContext.fetch(fetchDescriptor).first?.type
     }
     
@@ -270,7 +270,9 @@ actor Database: ModelActor, SyncDelegate {
     }
     
     func fetchWorkout(for identifier: PersistentIdentifier) throws -> RawWorkout {
-        guard let workout: Workout = modelContext.registeredModel(for: identifier) else { throw DatabaseError.objectNotFound }
+        var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.persistentModelID == identifier })
+        descriptor.fetchLimit = 1
+        guard let workout = try modelContext.fetch(descriptor).first else { throw DatabaseError.objectNotFound }
         return RawWorkout(workout: workout)
     }
     
@@ -308,6 +310,28 @@ actor Database: ModelActor, SyncDelegate {
         let descriptor = FetchDescriptor<Workout>(predicate: #Predicate {
             $0.endDate != nil && $0.startDate >= date
         })
+        return try modelContext.fetch(descriptor).map(RawWorkout.init)
+    }
+    
+    /// Fetches workouts that need retry for a specific sync service (failed or pending status)
+    /// This is memory-efficient as it only loads the necessary properties before mapping
+    func fetchRetriableWorkouts(for serviceIdentifier: String) throws -> [RawWorkout] {
+        // Fetch all workouts with mappings for this service
+        // We need to filter in-memory since we need to check enum associated values and mapping status
+        let service = WorkoutSource.syncService(identifier: serviceIdentifier).rawValue
+        let syncCases = WorkoutSyncStatus.casesWhereSyncShouldBeAttempted.map(\.rawValue)
+        let descriptor = FetchDescriptor<Workout>(
+            predicate: #Predicate<Workout> { workout in
+                // Must have at least one mapping for this service
+                if workout.rawSource == service {
+                    workout.serviceMappings.contains { mapping in
+                        syncCases.contains(mapping.rawSyncStatus)
+                    }
+                } else {
+                    false
+                }
+            }
+        )
         return try modelContext.fetch(descriptor).map(RawWorkout.init)
     }
     

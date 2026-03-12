@@ -8,9 +8,14 @@ public class SyncServiceMapping: SyncServiceMappingProtocol {
     public var externalId: String?
     public var externalUrl: String?
     public var lastEditDateSynced: Date?
-    public var syncStatus: WorkoutSyncStatus
+    public private(set) var rawSyncStatus: WorkoutSyncStatus.RawValue
     
     @Relationship(deleteRule: .nullify) public var workout: Workout?
+    
+    public var syncStatus: WorkoutSyncStatus {
+        get { .init(rawValue: rawSyncStatus) }
+        set { rawSyncStatus = newValue.rawValue }
+    }
     
     public init(
         serviceIdentifier: String,
@@ -24,7 +29,7 @@ public class SyncServiceMapping: SyncServiceMappingProtocol {
         self.externalId = externalId
         self.externalUrl = externalUrl
         self.lastEditDateSynced = lastEditDateSynced
-        self.syncStatus = syncStatus
+        self.rawSyncStatus = syncStatus.rawValue
         self.workout = workout
     }
     

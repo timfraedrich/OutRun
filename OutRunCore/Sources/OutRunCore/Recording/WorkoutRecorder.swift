@@ -224,7 +224,7 @@ public class WorkoutRecorder {
         let propertyStream = Perceptions { [state] in state[keyPath: propertyKeyPath] }
         return Task { [weak self] in
             for await property in propertyStream where !Task.isCancelled {
-                guard var self else { return }
+                guard let self else { return }
                 await updateClosure(self, property)
             }
         }

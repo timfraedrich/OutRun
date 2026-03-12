@@ -4,7 +4,7 @@ import SwiftData
 @Model
 public class User: UserProtocol {
     
-    public var id: UUID?
+    @Attribute(.unique, .preserveValueOnDeletion) public var id: UUID?
     public var name: String
     public var birthday: Day?
     public var weight: Double?

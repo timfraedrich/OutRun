@@ -7,15 +7,16 @@ actor MockSyncService: SyncService {
     var mode: SyncMode
     let relevantAttributes: Set<PartialKeyPath<Workout> & Sendable>
 
-    private let insertResult: (id: String?, url: String?)
-    private let updateResult: (id: String?, url: String?)
-    private let insertError: Error?
-    private let updateError: Error?
-    private let deleteError: Error?
+    private var insertResult: (id: String?, url: String?)
+    private var updateResult: (id: String?, url: String?)
+    private var insertError: Error?
+    private var updateError: Error?
+    private var deleteError: Error?
 
-    private(set) var insertedWorkouts: [RawWorkout] = []
-    private(set) var updatedWorkouts: [RawWorkout] = []
-    private(set) var deletedWorkoutIds: [UUID] = []
+    private(set) var insertedWorkouts: [UUID:RawWorkout] = [:]
+    private(set) var updatedWorkouts: [UUID:RawWorkout] = [:]
+    private(set) var deletedWorkoutIds: Set<UUID> = []
+    private(set) var initializeCalled = false
 
     init(
         identifier: String = "mock",
@@ -37,22 +38,37 @@ actor MockSyncService: SyncService {
         self.deleteError = deleteError
     }
 
-    func initialize(with delegate: any SyncDelegate) async throws {}
+    func initialize(with delegate: any SyncDelegate) async throws {
+        initializeCalled = true
+    }
 
     func insert(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {
         if let error = insertError { throw error }
-        insertedWorkouts.append(workout)
+        insertedWorkouts[workout.id] = workout
         return insertResult
     }
 
     func update(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {
         if let error = updateError { throw error }
-        updatedWorkouts.append(workout)
+        updatedWorkouts[workout.id] = workout
         return updateResult
     }
 
     func delete(workoutWith identifier: UUID) async throws {
         if let error = deleteError { throw error }
-        deletedWorkoutIds.append(identifier)
+        deletedWorkoutIds.insert(identifier)
+    }
+
+    // Helper methods for testing
+    func reset() {
+        insertedWorkouts = [:]
+        updatedWorkouts = [:]
+        deletedWorkoutIds = []
+    }
+
+    func clearError() {
+        insertError = nil
+        updateError = nil
+        deleteError = nil
     }
 }

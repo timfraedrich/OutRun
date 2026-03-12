@@ -1,19 +1,19 @@
 import Foundation
 import HealthKit
 
-public enum WorkoutEventType: Codable, CustomDebugStringConvertible, Equatable, RawRepresentable, Sendable {
+public enum WorkoutEventType: Codable, CustomDebugStringConvertible, Hashable, RawRepresentable, Sendable {
     
     case lap
     case marker
     case segment
-    case unknown
+    case unknown(rawValue: Int)
     
     public init(rawValue: Int) {
-        switch rawValue {
-        case 0: self = .lap
-        case 1: self = .marker
-        case 2: self = .segment
-        default: self = .unknown
+        self = switch rawValue {
+        case 0: .lap
+        case 1: .marker
+        case 2: .segment
+        default: .unknown(rawValue: rawValue)
         }
     }
     
@@ -35,7 +35,7 @@ public enum WorkoutEventType: Codable, CustomDebugStringConvertible, Equatable, 
         case .lap: 0
         case .marker: 1
         case .segment: 2
-        case .unknown: -1
+        case .unknown(let rawValue): rawValue
         }
     }
     
@@ -44,7 +44,7 @@ public enum WorkoutEventType: Codable, CustomDebugStringConvertible, Equatable, 
         case .lap: "WorkoutEventType.lap"
         case .marker: "WorkoutEventType.marker"
         case .segment: "WorkoutEventType.segment"
-        case .unknown: "WorkoutEventType.unknown"
+        case .unknown(let rawValue): "WorkoutEventType.unknown(\(rawValue))"
         }
     }
     

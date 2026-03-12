@@ -1,4 +1,4 @@
-public enum Sex: CaseIterable, Codable, CustomDebugStringConvertible, CustomStringConvertible, Hashable, Sendable {
+public enum Sex: String, CaseIterable, Codable, CustomDebugStringConvertible, CustomStringConvertible, Hashable, Sendable {
     
     case male
     case female

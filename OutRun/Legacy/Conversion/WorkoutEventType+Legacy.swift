@@ -13,7 +13,7 @@ extension WorkoutEventType {
         case .segment:
             self = .segment
         case .unknown:
-            self = .unknown
+            self = .unknown(rawValue: -1)
         }
     }
 }
