@@ -16,7 +16,7 @@ actor MockSyncService: SyncService {
     private(set) var insertedWorkouts: [UUID:RawWorkout] = [:]
     private(set) var updatedWorkouts: [UUID:RawWorkout] = [:]
     private(set) var deletedWorkoutIds: Set<UUID> = []
-    private(set) var initializeCalled = false
+    private(set) var initialized = false
 
     init(
         identifier: String = "mock",
@@ -39,7 +39,11 @@ actor MockSyncService: SyncService {
     }
 
     func initialize(with delegate: any SyncDelegate) async throws {
-        initializeCalled = true
+        initialized = true
+    }
+    
+    func deinitialize() async {
+        initialized = false
     }
 
     func insert(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {
