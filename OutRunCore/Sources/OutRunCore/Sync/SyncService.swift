@@ -5,11 +5,13 @@ public protocol SyncService: AnyObject, Sendable {
     
     var identifier: String { get }
     
-    var mode: SyncMode { get async }
-    
     var relevantAttributes: Set<PartialKeyPath<Workout> & Sendable> { get }
     
+    var mode: SyncMode { get async }
+    
     func initialize(with delegate: any SyncDelegate) async throws
+    
+    func deinitialize() async
     
     /// Called when a workout was created and should be synced to the service.
     /// - returns: An identifier or URL to the workout for the external service.

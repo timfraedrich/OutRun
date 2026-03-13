@@ -22,47 +22,50 @@ class SyncManager {
     init(database: Database, syncServices: [any SyncService]) {
         self.database = database
         self.syncServices = syncServices
-        initialize()
     }
 
-    private func initialize() {
-        Task { [weak self, logger] in
-            guard let self else { return }
-            for service in syncServices {
+    func initialize() async {
+        for service in syncServices {
+            do {
+                let syncMode = await service.mode
+                let syncDate = Date.now
+                try await service.initialize(with: database)
+                let existingState: RawSyncServiceState?
                 do {
-                    let syncMode = await service.mode
-                    let syncDate = Date.now
-                    try await service.initialize(with: database)
-                    let existingState: RawSyncServiceState?
-                    do {
-                        existingState = try await database.fetchSyncServiceState(for: service.identifier)
-                    } catch DatabaseError.objectNotFound {
-                        existingState = nil
-                    }
-                    var state = existingState ?? .init(id: service.identifier)
-                    // Only call initiallySync when an existing disabled service is being re-enabled.
-                    // For brand-new services (no prior state), processChanges handles the initial sync
-                    // via history from .distantPast, avoiding a race with concurrent performSync() calls.
-                    if existingState != nil, state.lastSyncMode == .disabled {
-                        let syncStartDate: Date? = if case .enabledFrom(let date) = syncMode {
-                            date
-                        } else if syncMode == .enabled {
-                            .distantPast
-                        } else { nil }
-                        if let syncStartDate {
-                            try await initiallySync(service, from: syncStartDate, upTo: syncDate)
-                            state.lastSyncDate = syncDate
-                            state.lastSyncMode = syncMode
-                        }
-                    }
-                    try await database.upsertSyncServiceState(state)
-                    logger.info("Initialized sync service with identifier \"\(service.identifier)\"")
-                } catch {
-                    logger.error("Failed to initialize sync service with identifier \"\(service.identifier)\": \(error)")
+                    existingState = try await database.fetchSyncServiceState(for: service.identifier)
+                } catch DatabaseError.objectNotFound {
+                    existingState = nil
                 }
+                var state = existingState ?? .init(id: service.identifier)
+                // Only call initiallySync when an existing disabled service is being re-enabled.
+                // For brand-new services (no prior state), processChanges handles the initial sync
+                // via history from .distantPast, avoiding a race with concurrent performSync() calls.
+                if existingState != nil, state.lastSyncMode == .disabled {
+                    let syncStartDate: Date? = if case .enabledFrom(let date) = syncMode {
+                        date
+                    } else if syncMode == .enabled {
+                        .distantPast
+                    } else { nil }
+                    if let syncStartDate {
+                        try await initiallySync(service, from: syncStartDate, upTo: syncDate)
+                        state.lastSyncDate = syncDate
+                        state.lastSyncMode = syncMode
+                    }
+                }
+                try await database.upsertSyncServiceState(state)
+                logger.info("Initialized sync service with identifier \"\(service.identifier)\"")
+            } catch {
+                logger.fault("Failed to initialize sync service with identifier \"\(service.identifier)\": \(error)")
             }
-            startStreamingChanges()
-        }.store(in: &cancellables)
+        }
+        startStreamingChanges()
+    }
+    
+    func deinitialize() async {
+        for service in syncServices {
+            await service.deinitialize()
+            logger.info("Deinitialized sync service with identifier \"\(service.identifier)\"")
+        }
     }
 
     func initiallySync(_ service: any SyncService, from startDate: Date, upTo syncDate: Date) async throws {

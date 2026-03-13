@@ -49,7 +49,7 @@ struct OutRunApp: App {
             appGroupIdentifier: nil,
             recordableDataTypes: [.location, .preciseAltitude]
         )
-        self.core = .init(config: config)
+        self.core = .init(config: config, syncServices: [LoggingSyncService()])
         self.showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
     }
 }

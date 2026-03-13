@@ -12,7 +12,9 @@ public class OutRunCore {
     
     private let logger = Logger(category: "OutRunCore")
     private let config: OutRunCoreConfiguration
+    private let syncServices: [any SyncService]
     @ObservationIgnored var database: Database?
+    @ObservationIgnored var syncManager: SyncManager?
     
     public let modelContainer: ModelContainer
     @ObservationIgnored public private(set) var recorder: WorkoutRecorder?
@@ -20,7 +22,7 @@ public class OutRunCore {
     public private(set) var status: Status = .initializing
     public private(set) var user: RawUser?
     
-    public init(config: OutRunCoreConfiguration) {
+    public init(config: OutRunCoreConfiguration, syncServices: [any SyncService] = []) {
         guard config.recordableDataTypes.contains(.location) else {
             fatalError("Invalid OutRunCore configuration. Must include .location as a recordable data type.")
         }
@@ -30,6 +32,7 @@ public class OutRunCore {
             fatalError("Invalid OutRunCore configuration. Currently, the ability to record steps is not supported.")
         }
         self.config = config
+        self.syncServices = syncServices
         let groupContainer: ModelConfiguration.GroupContainer = if let id = config.appGroupIdentifier { .identifier(id) } else { .none }
         do {
             modelContainer = try Database.modelContainer(
@@ -123,17 +126,18 @@ public class OutRunCore {
         do {
             let database = try await Database(modelContainer: modelContainer)
             self.database = database
-            try self.startStreamingUserUpdates()
-            try self.startStreamingUserPreferenceUpdates()
+            try startStreamingUserUpdates()
+            try startStreamingUserPreferenceUpdates()
+            syncManager = await .init(database: database, syncServices: syncServices)
             if let user = try await database.fetchOptionalUser() {
-                try await self.initialize(with: user)
+                try await initialize(with: user)
                 logger.info("Finished initialization.")
             } else {
-                self.status = .needsSetup
+                status = .needsSetup
                 logger.info("Finished initialization, no user found.")
             }
         } catch {
-            self.status = .failed(error)
+            status = .failed(error)
             logger.critical("Failed initialization: \((error as CustomDebugStringConvertible).debugDescription).")
         }
     }
@@ -146,20 +150,22 @@ public class OutRunCore {
     
     private func initialize(with user: RawUser) async throws {
         guard let database else { throw OutRunCoreError.notInitialized }
-        self.userPreferences = UserPreferences(preferences: user.preferences)
-        self.recorder = try await WorkoutRecorder(
+        userPreferences = UserPreferences(preferences: user.preferences)
+        recorder = try await WorkoutRecorder(
             database: database,
             locationService: .init(),
             altitudeService: config.recordableDataTypes.contains(.preciseAltitude) ? .init() : nil,
             stepService: config.recordableDataTypes.contains(.steps) ? .init() : nil
         )
-        self.status = .initialized
+        await syncManager?.initialize()
+        status = .initialized
     }
     
-    private func deinitialize() {
-        self.status = .needsSetup
-        self.userPreferences = nil
-        self.recorder = nil
+    private func deinitialize() async {
+        status = .needsSetup
+        userPreferences = nil
+        recorder = nil
+        await syncManager?.deinitialize()
     }
     
     private func wait(for status: OutRunCoreStatus) async {
@@ -183,7 +189,7 @@ public class OutRunCore {
                         try await initialize(with: user)
                     } else {
                         guard case .initialized = status else { continue }
-                        deinitialize()
+                        await deinitialize()
                     }
                 }
             } catch {
