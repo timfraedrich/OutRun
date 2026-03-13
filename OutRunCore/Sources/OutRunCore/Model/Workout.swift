@@ -21,7 +21,7 @@ public class Workout: WorkoutProtocol {
     public var comment: String?
     public var creationDate: Date
     public var lastEditDate: Date
-    public private(set) var rawSource: WorkoutSource.RawValue
+    @Attribute(.preserveValueOnDeletion) public private(set) var rawSource: WorkoutSource.RawValue
     
     @Relationship(deleteRule: .cascade, inverse: \WorkoutRouteDataSample.workout) public var route: [WorkoutRouteDataSample] = []
     @Relationship(deleteRule: .cascade, inverse: \WorkoutHeartRateDataSample.workout) public var heartRates: [WorkoutHeartRateDataSample] = []

@@ -316,19 +316,14 @@ actor Database: ModelActor, SyncDelegate {
     /// Fetches workouts that need retry for a specific sync service (failed or pending status)
     /// This is memory-efficient as it only loads the necessary properties before mapping
     func fetchRetriableWorkouts(for serviceIdentifier: String) throws -> [RawWorkout] {
-        // Fetch all workouts with mappings for this service
-        // We need to filter in-memory since we need to check enum associated values and mapping status
-        let service = WorkoutSource.syncService(identifier: serviceIdentifier).rawValue
         let syncCases = WorkoutSyncStatus.casesWhereSyncShouldBeAttempted.map(\.rawValue)
         let descriptor = FetchDescriptor<Workout>(
             predicate: #Predicate<Workout> { workout in
-                // Must have at least one mapping for this service
-                if workout.rawSource == service {
-                    workout.serviceMappings.contains { mapping in
-                        syncCases.contains(mapping.rawSyncStatus)
-                    }
-                } else {
-                    false
+                // Must be finished and have a failed/pending mapping for this service
+                workout.endDate != nil &&
+                workout.serviceMappings.contains { mapping in
+                    mapping.serviceIdentifier == serviceIdentifier &&
+                    syncCases.contains(mapping.rawSyncStatus)
                 }
             }
         )

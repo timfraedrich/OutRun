@@ -269,6 +269,9 @@ class SyncManager {
                         continue
                     }
                     
+                    // Only sync finished workouts
+                    guard workout.endDate != nil else { continue }
+                    
                     guard workout.source != .syncService(identifier: service.identifier) else { continue }
                     var mapping = Self.serviceMapping(of: workout, for: service)
                     
@@ -310,7 +313,8 @@ class SyncManager {
                     guard mapping.syncStatus != .conflict else { continue }
                     
                     if workout.endDate == nil {
-                        // Workout is now in progress, delete from service
+                        // Workout is now in progress (continued); only delete from service if it was previously synced
+                        guard mapping.syncStatus == .synced else { continue }
                         do {
                             try await service.delete(workoutWith: workout.id)
                             mapping.externalId = nil
@@ -328,8 +332,25 @@ class SyncManager {
                             logger.error("Delete sync (from update) failed for workout \(workout.id): \(error)")
                         }
                         try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+                    } else if mapping.syncStatus != .synced {
+                        // Workout is now finished but was never inserted (e.g. created while in-progress)
+                        do {
+                            (mapping.externalId, mapping.externalUrl) = try await service.insert(workout)
+                            mapping.syncStatus = .synced
+                            mapping.lastEditDateSynced = workout.lastEditDate
+                            inserted += 1
+                        } catch SyncError.serviceUnavailable {
+                            serviceUnavailable = true
+                            throw SyncError.serviceUnavailable
+                        } catch SyncError.conflict {
+                            mapping.syncStatus = .conflict
+                        } catch {
+                            mapping.syncStatus = .failed
+                            logger.error("Insert sync (from update) failed for workout \(workout.id): \(error)")
+                        }
+                        try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
                     } else if !Set(update.updatedAttributes).intersection(relevantAttributes).isEmpty {
-                        // Only sync if relevant attributes changed
+                        // Workout is already synced; only update if relevant attributes changed
                         do {
                             (mapping.externalId, mapping.externalUrl) = try await service.update(workout)
                             mapping.syncStatus = .synced
@@ -349,20 +370,25 @@ class SyncManager {
 
                 case let .delete(delete):
                     guard let delete = delete as? any HistoryDelete<Workout> else { continue }
-                    if let id = delete.tombstone[\.id] as? UUID {
-                        do {
-                            try await service.delete(workoutWith: id)
-                            deleted += 1
-                        } catch SyncError.serviceUnavailable {
-                            serviceUnavailable = true
-                            throw SyncError.serviceUnavailable
-                        } catch SyncError.conflict {
-                            logger.error("Delete conflict for workout \(id) on service \"\(service.identifier)\"")
-                        } catch {
-                            logger.error("Delete sync failed for workout \(id): \(error)")
-                        }
-                    } else {
+                    guard let id = delete.tombstone[\.id] as? UUID else {
                         logger.fault("Deleted workout has no id: \(String(describing: delete.changedPersistentIdentifier))")
+                        continue
+                    }
+                    // Skip workouts that originated from this service to avoid sync loops
+                    if let rawSource = delete.tombstone[\.rawSource] as? String,
+                       WorkoutSource(rawValue: rawSource) == .syncService(identifier: service.identifier) {
+                        continue
+                    }
+                    do {
+                        try await service.delete(workoutWith: id)
+                        deleted += 1
+                    } catch SyncError.serviceUnavailable {
+                        serviceUnavailable = true
+                        throw SyncError.serviceUnavailable
+                    } catch SyncError.conflict {
+                        logger.error("Delete conflict for workout \(id) on service \"\(service.identifier)\"")
+                    } catch {
+                        logger.error("Delete sync failed for workout \(id): \(error)")
                     }
 
                 @unknown default:
