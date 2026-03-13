@@ -98,17 +98,23 @@ class SyncManager {
         Task { [weak self, logger] in
             do {
                 logger.info("Started streaming workout changes")
+                try await self?.syncAllServices()
                 let didSaveSequence = NotificationCenter.default.notifications(named: ModelContext.didSave)
-                for await _ in didSaveSequence.buffer(policy: .bufferingLatest(1)) where !Task.isCancelled {
+                    .buffer(policy: .bufferingLatest(1))
+                for await _ in didSaveSequence where !Task.isCancelled {
                     guard let self else { return }
-                    let syncDate = Date.now
-                    for service in syncServices {
-                        try await sync(service, upTo: syncDate)
-                    }
+                    try await syncAllServices()
                 }
             } catch {
                 logger.fault("Failed streaming history with error: \(error)")
             }
+        }
+    }
+    
+    private func syncAllServices(upTo syncDate: Date = .now) async throws {
+        let syncDate = Date.now
+        for service in syncServices {
+            try await sync(service, upTo: syncDate)
         }
     }
 
@@ -194,6 +200,8 @@ class SyncManager {
         }
     }
 
+    // MARK: - Change Processing
+
     private func processChanges(
         for service: any SyncService,
         with syncState: RawSyncServiceState,
@@ -201,215 +209,236 @@ class SyncManager {
         upTo syncDate: Date
     ) async throws {
         let lastSyncDate = syncState.lastSyncDate ?? .distantPast
-        let relevantAttributes = service.relevantAttributes
-        let history = try await database.fetchHistory(in: lastSyncDate..<syncDate)
-        
-        // Also retry any previously failed or pending syncs
-        let retriableWorkouts = try await fetchRetriableWorkouts(for: service)
-        
-        var inserted: Int = 0, updated: Int = 0, deleted: Int = 0
-        var serviceUnavailable = false
-        
-        // First, retry previously failed/pending workouts
-        for workout in retriableWorkouts {
-            if serviceUnavailable { break }
-            
-            var mapping = Self.serviceMapping(of: workout, for: service)
-            
-            // Skip workouts in conflict state - they require manual intervention
-            guard mapping.syncStatus != .conflict else { continue }
-            
-            do {
-                (mapping.externalId, mapping.externalUrl) = try await service.insert(workout)
-                mapping.syncStatus = .synced
-                mapping.lastEditDateSynced = workout.lastEditDate
-                inserted += 1
-                try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
-            } catch SyncError.serviceUnavailable {
-                serviceUnavailable = true
-                throw SyncError.serviceUnavailable
-            } catch SyncError.conflict {
-                mapping.syncStatus = .conflict
-                try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
-            } catch {
-                mapping.syncStatus = .failed
-                logger.error("Retry sync failed for workout \(workout.id): \(error)")
-                try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
-            }
+
+        let summaries = try await aggregateHistory(
+            in: lastSyncDate..<syncDate,
+            relevantAttributes: service.relevantAttributes
+        )
+
+        var counts = SyncCounts()
+        var processedWorkoutIds = Set<UUID>()
+
+        for (persistentId, summary) in summaries {
+            try await processSummary(
+                summary,
+                persistentId: persistentId,
+                service: service,
+                counts: &counts,
+                processedWorkoutIds: &processedWorkoutIds
+            )
         }
-        
-        guard !history.isEmpty else {
-            // Update state even if no history, to track that we checked for retries
-            if inserted > 0 {
-                var updatedState = syncState
-                updatedState.lastSyncDate = syncDate
-                updatedState.lastSyncMode = syncMode
-                try await database.upsertSyncServiceState(updatedState)
-                logger.info("Processed retries for sync service \"\(service.identifier)\" (\(inserted) inserted).")
-            }
-            return
-        }
-        
+
+        try await retryPendingWorkouts(
+            for: service,
+            excluding: processedWorkoutIds,
+            counts: &counts
+        )
+
+        guard counts.hasChanges else { return }
+        var updatedState = syncState
+        updatedState.lastSyncDate = syncDate
+        updatedState.lastSyncMode = syncMode
+        try await database.upsertSyncServiceState(updatedState)
+        logger.info("Processed changes for sync service \"\(service.identifier)\" (\(counts.inserted) inserted, \(counts.updated) updated, \(counts.deleted) deleted).")
+    }
+
+    /// Scans history transactions and reduces them to one `WorkoutChangeSummary` per workout.
+    private func aggregateHistory(
+        in dateRange: Range<Date>,
+        relevantAttributes: Set<PartialKeyPath<Workout> & Sendable>
+    ) async throws -> [PersistentIdentifier: WorkoutChangeSummary] {
+        var summaries: [PersistentIdentifier: WorkoutChangeSummary] = [:]
+        let history = try await database.fetchHistory(in: dateRange)
+
         for transaction in history {
-            if serviceUnavailable { break }
-            
             for change in transaction.changes {
-                if serviceUnavailable { break }
-                
                 switch change {
                 case let .insert(insert):
-                    guard let insert = insert as? any HistoryInsert<Workout> else { continue }
-                    
-                    // Try to fetch the workout - if it was deleted, skip this history entry
-                    let workout: RawWorkout
-                    do {
-                        workout = try await database.fetchWorkout(for: insert.changedPersistentIdentifier)
-                    } catch DatabaseError.objectNotFound {
-                        // Workout was deleted before sync completed - skip it
-                        continue
-                    }
-                    
-                    // Only sync finished workouts
-                    guard workout.endDate != nil else { continue }
-                    
-                    guard workout.source != .syncService(identifier: service.identifier) else { continue }
-                    var mapping = Self.serviceMapping(of: workout, for: service)
-                    
-                    // Skip if already synced or in conflict
-                    guard mapping.syncStatus != .synced && mapping.syncStatus != .conflict else { continue }
-                    
-                    do {
-                        (mapping.externalId, mapping.externalUrl) = try await service.insert(workout)
-                        mapping.syncStatus = .synced
-                        mapping.lastEditDateSynced = workout.lastEditDate
-                        inserted += 1
-                    } catch SyncError.serviceUnavailable {
-                        serviceUnavailable = true
-                        throw SyncError.serviceUnavailable
-                    } catch SyncError.conflict {
-                        mapping.syncStatus = .conflict
-                    } catch {
-                        mapping.syncStatus = .failed
-                        logger.error("Insert sync failed for workout \(workout.id): \(error)")
-                    }
-                    try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+                    guard insert is any HistoryInsert<Workout> else { continue }
+                    summaries[insert.changedPersistentIdentifier, default: .init()].wasInserted = true
 
                 case let .update(update):
                     guard let update = update as? any HistoryUpdate<Workout> else { continue }
-                    
-                    // Try to fetch the workout - if it was deleted, skip this history entry
-                    let workout: RawWorkout
-                    do {
-                        workout = try await database.fetchWorkout(for: update.changedPersistentIdentifier)
-                    } catch DatabaseError.objectNotFound {
-                        // Workout was deleted before sync completed - skip it
-                        continue
-                    }
-                    
-                    guard workout.source != .syncService(identifier: service.identifier) else { continue }
-                    var mapping = Self.serviceMapping(of: workout, for: service)
-                    
-                    // Skip workouts in conflict state
-                    guard mapping.syncStatus != .conflict else { continue }
-                    
-                    if workout.endDate == nil {
-                        // Workout is now in progress (continued); only delete from service if it was previously synced
-                        guard mapping.syncStatus == .synced else { continue }
-                        do {
-                            try await service.delete(workoutWith: workout.id)
-                            mapping.externalId = nil
-                            mapping.externalUrl = nil
-                            mapping.lastEditDateSynced = nil
-                            mapping.syncStatus = .pending
-                            deleted += 1
-                        } catch SyncError.serviceUnavailable {
-                            serviceUnavailable = true
-                            throw SyncError.serviceUnavailable
-                        } catch SyncError.conflict {
-                            mapping.syncStatus = .conflict
-                        } catch {
-                            mapping.syncStatus = .failed
-                            logger.error("Delete sync (from update) failed for workout \(workout.id): \(error)")
-                        }
-                        try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
-                    } else if mapping.syncStatus != .synced {
-                        // Workout is now finished but was never inserted (e.g. created while in-progress)
-                        do {
-                            (mapping.externalId, mapping.externalUrl) = try await service.insert(workout)
-                            mapping.syncStatus = .synced
-                            mapping.lastEditDateSynced = workout.lastEditDate
-                            inserted += 1
-                        } catch SyncError.serviceUnavailable {
-                            serviceUnavailable = true
-                            throw SyncError.serviceUnavailable
-                        } catch SyncError.conflict {
-                            mapping.syncStatus = .conflict
-                        } catch {
-                            mapping.syncStatus = .failed
-                            logger.error("Insert sync (from update) failed for workout \(workout.id): \(error)")
-                        }
-                        try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
-                    } else if !Set(update.updatedAttributes).intersection(relevantAttributes).isEmpty {
-                        // Workout is already synced; only update if relevant attributes changed
-                        do {
-                            (mapping.externalId, mapping.externalUrl) = try await service.update(workout)
-                            mapping.syncStatus = .synced
-                            mapping.lastEditDateSynced = workout.lastEditDate
-                            updated += 1
-                        } catch SyncError.serviceUnavailable {
-                            serviceUnavailable = true
-                            throw SyncError.serviceUnavailable
-                        } catch SyncError.conflict {
-                            mapping.syncStatus = .conflict
-                        } catch {
-                            mapping.syncStatus = .failed
-                            logger.error("Update sync failed for workout \(workout.id): \(error)")
-                        }
-                        try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+                    let pid = update.changedPersistentIdentifier
+                    let attrs = Set(update.updatedAttributes)
+                    summaries[pid, default: .init()].endDateChangeCount += attrs.contains(\.endDate) ? 1 : 0
+                    // Exclude endDate — endDate changes drive the continue/finish logic, not the update path.
+                    if !attrs.subtracting([\.endDate]).intersection(relevantAttributes).isEmpty {
+                        summaries[pid, default: .init()].hadRelevantAttrUpdate = true
                     }
 
                 case let .delete(delete):
                     guard let delete = delete as? any HistoryDelete<Workout> else { continue }
-                    guard let id = delete.tombstone[\.id] as? UUID else {
-                        logger.fault("Deleted workout has no id: \(String(describing: delete.changedPersistentIdentifier))")
-                        continue
-                    }
-                    // Skip workouts that originated from this service to avoid sync loops
-                    if let rawSource = delete.tombstone[\.rawSource] as? String,
-                       WorkoutSource(rawValue: rawSource) == .syncService(identifier: service.identifier) {
-                        continue
-                    }
-                    do {
-                        try await service.delete(workoutWith: id)
-                        deleted += 1
-                    } catch SyncError.serviceUnavailable {
-                        serviceUnavailable = true
-                        throw SyncError.serviceUnavailable
-                    } catch SyncError.conflict {
-                        logger.error("Delete conflict for workout \(id) on service \"\(service.identifier)\"")
-                    } catch {
-                        logger.error("Delete sync failed for workout \(id): \(error)")
-                    }
+                    let pid = delete.changedPersistentIdentifier
+                    summaries[pid, default: .init()].wasDeleted = true
+                    summaries[pid]!.tombstoneId = delete.tombstone[\.id] as? UUID
+                    summaries[pid]!.tombstoneSource = delete.tombstone[\.rawSource] as? String
 
                 @unknown default:
                     logger.fault("Unknown transaction change.")
                 }
             }
         }
-        // Only persist state update when actual workout changes were synced.
-        // This prevents cascading saves triggered by mapping/state persistence.
-        guard inserted > 0 || updated > 0 || deleted > 0 else { return }
-        var updatedState = syncState
-        updatedState.lastSyncDate = syncDate
-        updatedState.lastSyncMode = syncMode
-        try await database.upsertSyncServiceState(updatedState)
-        logger.info("Processed changes for sync service \"\(service.identifier)\" (\(inserted) inserted, \(updated) updated, \(deleted) deleted).")
+
+        return summaries
     }
-    
-    /// Fetches workouts that have failed or pending sync status for retry
-    private func fetchRetriableWorkouts(for service: any SyncService) async throws -> [RawWorkout] {
-        try await database.fetchRetriableWorkouts(for: service.identifier)
+
+    /// Executes the appropriate service call for a single workout's aggregated change summary.
+    private func processSummary(
+        _ summary: WorkoutChangeSummary,
+        persistentId: PersistentIdentifier,
+        service: any SyncService,
+        counts: inout SyncCounts,
+        processedWorkoutIds: inout Set<UUID>
+    ) async throws {
+        if summary.wasDeleted {
+            guard let id = summary.tombstoneId else {
+                logger.fault("Deleted workout has no id tombstone for persistent identifier \(String(describing: persistentId))")
+                return
+            }
+            processedWorkoutIds.insert(id)
+            try await processDeletedWorkout(id: id, summary: summary, service: service, counts: &counts)
+            return
+        }
+
+        let workout: RawWorkout
+        do {
+            workout = try await database.fetchWorkout(for: persistentId)
+        } catch DatabaseError.objectNotFound {
+            return
+        }
+
+        processedWorkoutIds.insert(workout.id)
+        try await processExistingWorkout(workout, summary: summary, service: service, counts: &counts)
     }
+
+    /// Handles the service call for a workout that was deleted from the DB in this window.
+    private func processDeletedWorkout(
+        id: UUID,
+        summary: WorkoutChangeSummary,
+        service: any SyncService,
+        counts: inout SyncCounts
+    ) async throws {
+        // Skip workouts that originated from this service to avoid sync loops.
+        if let rawSource = summary.tombstoneSource,
+           WorkoutSource(rawValue: rawSource) == .syncService(identifier: service.identifier) {
+            return
+        }
+        // A workout created and deleted in the same window was never on the service.
+        guard !summary.wasInserted else { return }
+
+        // Otherwise attempt the delete. The service must treat "not found" as a no-op.
+        do {
+            try await service.delete(workoutWith: id)
+            counts.deleted += 1
+        } catch SyncError.serviceUnavailable {
+            throw SyncError.serviceUnavailable
+        } catch SyncError.conflict {
+            logger.error("Delete conflict for workout \(id) on service \"\(service.identifier)\"")
+        } catch {
+            logger.error("Delete sync failed for workout \(id): \(error)")
+        }
+    }
+
+    /// Determines and executes the appropriate service call for a workout that still exists.
+    private func processExistingWorkout(
+        _ workout: RawWorkout,
+        summary: WorkoutChangeSummary,
+        service: any SyncService,
+        counts: inout SyncCounts
+    ) async throws {
+        guard workout.source != .syncService(identifier: service.identifier) else { return }
+
+        var mapping = Self.serviceMapping(of: workout, for: service)
+        guard mapping.syncStatus != .conflict else { return }
+
+        let action = summary.syncAction(for: mapping.syncStatus, isFinished: workout.endDate != nil)
+        guard action != .none else { return }
+
+        do {
+            try await execute(action, for: workout, mapping: &mapping, service: service, counts: &counts)
+        } catch SyncError.serviceUnavailable {
+            throw SyncError.serviceUnavailable
+        } catch SyncError.conflict {
+            mapping.syncStatus = .conflict
+        } catch {
+            mapping.syncStatus = .failed
+            logger.error("\(action) sync failed for workout \(workout.id): \(error)")
+        }
+        try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+    }
+
+    /// Retries finished workouts with pending/failed mappings that had no history events in this window.
+    private func retryPendingWorkouts(
+        for service: any SyncService,
+        excluding processedIds: Set<UUID>,
+        counts: inout SyncCounts
+    ) async throws {
+        let retriableWorkouts = try await database.fetchRetriableWorkouts(for: service.identifier)
+        for workout in retriableWorkouts {
+            guard !processedIds.contains(workout.id) else { continue }
+
+            var mapping = Self.serviceMapping(of: workout, for: service)
+            guard mapping.syncStatus == .pending || mapping.syncStatus == .failed else { continue }
+
+            do {
+                try await execute(.insert, for: workout, mapping: &mapping, service: service, counts: &counts)
+            } catch SyncError.serviceUnavailable {
+                throw SyncError.serviceUnavailable
+            } catch SyncError.conflict {
+                mapping.syncStatus = .conflict
+            } catch {
+                mapping.syncStatus = .failed
+                logger.error("Retry insert failed for workout \(workout.id): \(error)")
+            }
+            try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+        }
+    }
+
+    /// Executes a sync action against the service and updates the mapping accordingly.
+    private func execute(
+        _ action: SyncAction,
+        for workout: RawWorkout,
+        mapping: inout RawSyncServiceMapping,
+        service: any SyncService,
+        counts: inout SyncCounts
+    ) async throws {
+        switch action {
+        case .none:
+            break
+        case .insert:
+            (mapping.externalId, mapping.externalUrl) = try await service.insert(workout)
+            mapping.syncStatus = .synced
+            mapping.lastEditDateSynced = workout.lastEditDate
+            counts.inserted += 1
+        case .update:
+            (mapping.externalId, mapping.externalUrl) = try await service.update(workout)
+            mapping.syncStatus = .synced
+            mapping.lastEditDateSynced = workout.lastEditDate
+            counts.updated += 1
+        case .delete:
+            try await service.delete(workoutWith: workout.id)
+            mapping.externalId = nil
+            mapping.externalUrl = nil
+            mapping.lastEditDateSynced = nil
+            mapping.syncStatus = .pending
+            counts.deleted += 1
+        case .deleteAndInsert:
+            try await service.delete(workoutWith: workout.id)
+            mapping.externalId = nil
+            mapping.externalUrl = nil
+            mapping.lastEditDateSynced = nil
+            mapping.syncStatus = .pending
+            counts.deleted += 1
+            // Insert may throw independently; allow its error to propagate.
+            (mapping.externalId, mapping.externalUrl) = try await service.insert(workout)
+            mapping.syncStatus = .synced
+            mapping.lastEditDateSynced = workout.lastEditDate
+            counts.inserted += 1
+        }
+    }
+
+    // MARK: - Helpers
 
     private static func serviceMapping(of workout: RawWorkout, for service: any SyncService) -> RawSyncServiceMapping {
         if let mapping = workout.serviceMappings.first(where: { $0.serviceIdentifier == service.identifier }) {
@@ -418,4 +447,73 @@ class SyncManager {
             .init(serviceIdentifier: service.identifier)
         }
     }
+}
+
+// MARK: - Supporting types
+
+/// Aggregated description of what happened to a single workout across all history events in a sync window.
+///
+/// Rather than evaluating each history event individually against live DB state (which is incorrect
+/// since the live state reflects the final state, not the state at each event's time), all events
+/// are reduced to this summary. The correct service action is then derived from the pre-window
+/// mapping status combined with the current DB state.
+private struct WorkoutChangeSummary {
+    /// True if the workout was inserted in this window (i.e. it is new to the DB).
+    var wasInserted: Bool = false
+    /// Number of times `endDate` appeared in any update's `updatedAttributes`.
+    /// Each occurrence signals a finish (nil→non-nil) or a continue (non-nil→nil) transition.
+    /// For a pre-window-synced workout, any non-zero count means at least one continue happened.
+    var endDateChangeCount: Int = 0
+    /// True if any non-`endDate` attribute that the service cares about was changed.
+    var hadRelevantAttrUpdate: Bool = false
+    /// True if the workout was deleted from the DB during this window.
+    var wasDeleted: Bool = false
+    /// UUID from the delete tombstone (only valid when `wasDeleted == true`).
+    var tombstoneId: UUID? = nil
+    /// Source raw value from the delete tombstone (only valid when `wasDeleted == true`).
+    var tombstoneSource: String? = nil
+
+    /// Determines the single service action to perform based on this summary,
+    /// the pre-window mapping status, and the workout's current finished state.
+    func syncAction(for preWindowStatus: WorkoutSyncStatus, isFinished: Bool) -> SyncAction {
+        if preWindowStatus == .synced {
+            if !isFinished {
+                // Workout was continued and not yet re-finished.
+                return .delete
+            } else if endDateChangeCount > 0 {
+                // endDate changed while already synced → a continue occurred, then re-finished.
+                // The service record is stale and must be replaced.
+                return .deleteAndInsert
+            } else if hadRelevantAttrUpdate {
+                return .update
+            } else {
+                return .none
+            }
+        } else {
+            // pending, failed, or no prior mapping — insert once the workout is finished
+            return isFinished ? .insert : .none
+        }
+    }
+}
+
+private enum SyncAction: CustomStringConvertible {
+    case none, insert, update, delete, deleteAndInsert
+
+    var description: String {
+        switch self {
+        case .none: "None"
+        case .insert: "Insert"
+        case .update: "Update"
+        case .delete: "Delete"
+        case .deleteAndInsert: "DeleteAndInsert"
+        }
+    }
+}
+
+private struct SyncCounts {
+    var inserted: Int = 0
+    var updated: Int = 0
+    var deleted: Int = 0
+
+    var hasChanges: Bool { inserted > 0 || updated > 0 || deleted > 0 }
 }
