@@ -27,7 +27,7 @@ enum LegacyMigrationHelper {
         }
         let task = Task(priority: .high) {
             do {
-                let coreStatusSequence = await MainActor.run { Perceptions { core.status } }
+                let coreStatusSequence = await MainActor.run { Perceptions { core.status }.buffer(policy: .unbounded) }
                 for await status in coreStatusSequence where status == .needsSetup || status == .initialized {
                     break
                 }

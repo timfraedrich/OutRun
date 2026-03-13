@@ -4,6 +4,7 @@ import Foundation
 import Testing
 import Combine
 import Perception
+import AsyncAlgorithms
 
 @Suite("Legacy Database Migration Tests")
 class LegacyMigrationTests {
@@ -119,7 +120,7 @@ class LegacyMigrationTests {
     
     private func migrateAndCheckResults(for legacyStorageFileName: String, and expectedResults: [RawWorkout]) async throws {
         let core = await OutRunCore(config: .init(isStoredInMemoryOnly: true, recordableDataTypes: [.location]))
-        let statusSequence = await MainActor.run { Perceptions { core.status } }
+        let statusSequence = await MainActor.run { Perceptions { core.status } }.buffer(policy: .unbounded)
         for await status in statusSequence where status != .initializing { break }
         #expect(await core.status == .needsSetup)
         guard let database = await core.database else { throw "Database was not initialized." }

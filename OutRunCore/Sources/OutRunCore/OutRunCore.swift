@@ -163,7 +163,7 @@ public class OutRunCore {
     }
     
     private func wait(for status: OutRunCoreStatus) async {
-        let statusSequence = Perceptions { [weak self] in self?.status }
+        let statusSequence = Perceptions { [weak self] in self?.status }.buffer(policy: .unbounded)
         for await newStatus in statusSequence where newStatus == status {
             return
         }
@@ -196,7 +196,7 @@ public class OutRunCore {
     
     private func startStreamingUserPreferenceUpdates() throws {
         guard let database else { throw OutRunCoreError.notInitialized }
-        let preferencesSequence = Perceptions { [weak self] in self?.userPreferences?.preferences }
+        let preferencesSequence = Perceptions { [weak self] in self?.userPreferences?.preferences }.buffer(policy: .bufferingLatest(1))
         Task {
             for await preferences in preferencesSequence where !Task.isCancelled {
                 guard let preferences else { continue }

@@ -135,7 +135,7 @@ public class WorkoutRecorder {
     }
     
     private func startLocationUpdates() -> Task<Void, Never> {
-        let locationStream = Perceptions { [locationService] in locationService.location }
+        let locationStream = Perceptions { [locationService] in locationService.location }.buffer(policy: .unbounded)
         return Task { [weak self] in
             for await location in locationStream where !Task.isCancelled {
                 guard let self else { return }
@@ -162,7 +162,7 @@ public class WorkoutRecorder {
     }
     
     private func startLocationServiceStatusUpdates() -> Task<Void, Never> {
-        let statusStream = Perceptions { [locationService] in locationService.status }
+        let statusStream = Perceptions { [locationService] in locationService.status }.buffer(policy: .unbounded)
         return Task { [weak self] in
             for await status in statusStream where !Task.isCancelled {
                 guard let self else { return }
@@ -181,7 +181,9 @@ public class WorkoutRecorder {
     @BackgroundActor
     private func startFitnessServicesStatusUpdates() -> Task<Void, Never>? {
         guard altitudeService != nil || stepService != nil else { return nil }
-        let statusStream = Perceptions { [altitudeService, stepService] in (altitudeService?.status, stepService?.status) }
+        let statusStream = Perceptions { [altitudeService, stepService] in
+            (altitudeService?.status, stepService?.status)
+        }.buffer(policy: .unbounded)
         return Task { [weak self] in
             for await (altitudeServiceStatus, stepServiceStatus) in statusStream where !Task.isCancelled {
                 guard let self else { return }
@@ -202,7 +204,7 @@ public class WorkoutRecorder {
     
     @BackgroundActor
     private func startStateStatusUpdates() -> Task<Void, Never> {
-        let statusStream = Perceptions { [state] in state.status }
+        let statusStream = Perceptions { [state] in state.status }.buffer(policy: .unbounded)
         return Task { [weak self] in
             for await status in statusStream where !Task.isCancelled {
                 guard let self else { return }
@@ -221,7 +223,7 @@ public class WorkoutRecorder {
         of propertyKeyPath: KeyPath<WorkoutRecorderState, T>,
         updateClosure: @MainActor @escaping (WorkoutRecorder, T) -> Void
     ) -> Task<Void, Never> {
-        let propertyStream = Perceptions { [state] in state[keyPath: propertyKeyPath] }
+        let propertyStream = Perceptions { [state] in state[keyPath: propertyKeyPath] }.buffer(policy: .unbounded)
         return Task { [weak self] in
             for await property in propertyStream where !Task.isCancelled {
                 guard let self else { return }
