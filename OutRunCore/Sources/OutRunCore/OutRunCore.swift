@@ -11,11 +11,12 @@ public class OutRunCore {
     public typealias Status = OutRunCoreStatus
     
     private let logger = Logger(category: "OutRunCore")
-    private let config: OutRunCoreConfiguration
-    private let syncServices: [any SyncService]
-    @ObservationIgnored var database: Database?
-    @ObservationIgnored var syncManager: SyncManager?
+    @ObservationIgnored private(set) var database: Database?
+    @ObservationIgnored private(set) var syncManager: SyncManager?
     
+    public let config: OutRunCoreConfiguration
+    public let syncServices: [any SyncService]
+    public let userDefaults: UserDefaults
     public let modelContainer: ModelContainer
     @ObservationIgnored public private(set) var recorder: WorkoutRecorder?
     @ObservationIgnored public private(set) var userPreferences: UserPreferences?
@@ -33,6 +34,11 @@ public class OutRunCore {
         }
         self.config = config
         self.syncServices = syncServices
+        self.userDefaults = if let name = config.appGroupIdentifier, let defaults = UserDefaults(suiteName: name) {
+            defaults
+        } else {
+            .standard
+        }
         let groupContainer: ModelConfiguration.GroupContainer = if let id = config.appGroupIdentifier { .identifier(id) } else { .none }
         do {
             modelContainer = try Database.modelContainer(
@@ -128,7 +134,11 @@ public class OutRunCore {
             self.database = database
             try startStreamingUserUpdates()
             try startStreamingUserPreferenceUpdates()
-            syncManager = await .init(database: database, syncServices: syncServices)
+            syncManager = await .init(
+                database: database,
+                syncDelegate: DefaultSyncDelegate(database: database, userDefaults: userDefaults),
+                syncServices: syncServices
+            )
             if let user = try await database.fetchOptionalUser() {
                 try await initialize(with: user)
                 logger.info("Finished initialization.")

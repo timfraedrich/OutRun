@@ -13,4 +13,10 @@ public protocol SyncDelegate: AnyObject, Sendable {
     
     /// Called when a workout was deleted and should be synced to the core.
     func delete(_ workout: RawWorkout) async throws
+    
+    /// Sets a value to the appropriate UserDefaults.
+    func setDevicePreference(_ value: Any, for key: String)
+    
+    /// Retrives a value from the appropriate UserDefaults.
+    func devicePreference(for key: String) -> Any?
 }

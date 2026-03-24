@@ -3,7 +3,7 @@ import Foundation
 import Perception
 import SwiftData
 
-actor Database: ModelActor, SyncDelegate {
+actor Database: ModelActor {
     
     public nonisolated let modelContainer: ModelContainer
     public nonisolated let modelExecutor: any ModelExecutor
@@ -260,13 +260,19 @@ actor Database: ModelActor, SyncDelegate {
     
     // MARK: - Syncing
     
+    /// Fetches the change history in the date range in ascending order.
     func fetchHistory(in dateRange: Range<Date>) throws -> [some HistoryTransaction] {
         let predicate = #Predicate<DefaultHistoryTransaction> { $0.timestamp >= dateRange.lowerBound && $0.timestamp < dateRange.upperBound }
         var descriptor = HistoryDescriptor<DefaultHistoryTransaction>(predicate: predicate)
+        let sortDescriptor: SortDescriptor<DefaultHistoryTransaction> = .init(\.timestamp, order: .forward)
         if #available(iOS 26, *) {
-            descriptor.sortBy = [.init(\.timestamp, order: .forward)]
+            descriptor.sortBy = [sortDescriptor]
         }
-        return try modelContext.fetchHistory(descriptor)
+        var history = try modelContext.fetchHistory(descriptor)
+        if #unavailable(iOS 26) {
+            history.sort(using: sortDescriptor)
+        }
+        return history
     }
     
     func fetchWorkout(for identifier: PersistentIdentifier) throws -> RawWorkout {
@@ -316,6 +322,7 @@ actor Database: ModelActor, SyncDelegate {
     /// Fetches workouts that need retry for a specific sync service (failed or pending status)
     /// This is memory-efficient as it only loads the necessary properties before mapping
     func fetchRetriableWorkouts(for serviceIdentifier: String) throws -> [RawWorkout] {
+        // let sourceCasesToSync
         let syncCases = WorkoutSyncStatus.casesWhereSyncShouldBeAttempted.map(\.rawValue)
         let descriptor = FetchDescriptor<Workout>(
             predicate: #Predicate<Workout> { workout in
