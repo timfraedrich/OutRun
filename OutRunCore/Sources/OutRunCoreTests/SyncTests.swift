@@ -32,29 +32,32 @@ struct SyncTests {
 
     // MARK: - Outbound Sync (Core → Service)
 
-    @Test("Insert triggers service insert")
+    @Test("Insert triggers service upsert")
     func insertTriggersSyncServiceInsert() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService()
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
-        let inserted = await mockService.insertedWorkouts
-        #expect(inserted.count == 1)
-        #expect(inserted.first?.value.id == workout.id)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.count == 1)
+        #expect(upserted.first?.value.id == workout.id)
     }
 
-    @Test("Update of relevant attribute triggers service update")
+    @Test("Update of relevant attribute triggers service upsert")
     func updateOfRelevantAttributeTriggersSyncServiceUpdate() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout(name: "original")
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService(relevantAttributes: [\.name])
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
         let workouts = try await database.fetchWorkouts()
@@ -64,22 +67,25 @@ struct SyncTests {
 
         try await syncManager.performSync()
 
-        let updated = await mockService.updatedWorkouts
-        #expect(updated.count == 1)
-        #expect(updated.first?.value.name == "updated")
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.count == 1)
+        #expect(upserted.first?.value.name == "updated")
     }
 
-    @Test("Update of irrelevant attribute does not trigger service update")
+    @Test("Update of irrelevant attribute does not trigger service upsert")
     func updateOfIrrelevantAttributeDoesNotTriggerSyncServiceUpdate() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout(name: "original")
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         // relevantAttributes watches only \.name, but we change comment
         let mockService = MockSyncService(relevantAttributes: [\.name])
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
-
+        // Clear ids after insert
+        await mockService.reset()
+        
         let workouts = try await database.fetchWorkouts()
         guard var modifiedWorkout = workouts.first else { throw "No workout found after insert." }
         modifiedWorkout.comment = "new comment"
@@ -87,8 +93,8 @@ struct SyncTests {
 
         try await syncManager.performSync()
 
-        let updated = await mockService.updatedWorkouts
-        #expect(updated.isEmpty)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.isEmpty)
     }
 
     @Test("Delete triggers service delete")
@@ -97,8 +103,9 @@ struct SyncTests {
         let workout = makeWorkout()
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService()
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
         try await database.delete(workout)
@@ -114,12 +121,13 @@ struct SyncTests {
         let workout = makeWorkout(source: .syncService(identifier: "mock"))
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService(identifier: "mock")
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
-        let inserted = await mockService.insertedWorkouts
-        #expect(inserted.isEmpty)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.isEmpty)
     }
 
     @Test("Workout from different sync service is synced outbound")
@@ -128,23 +136,25 @@ struct SyncTests {
         let workout = makeWorkout(source: .syncService(identifier: "other-service"))
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService(identifier: "mock")
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
-        let inserted = await mockService.insertedWorkouts
-        #expect(inserted.count == 1)
-        #expect(inserted.first?.key == workout.id)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.count == 1)
+        #expect(upserted.first?.key == workout.id)
     }
 
-    @Test("Successful insert persists synced mapping with external ID")
+    @Test("Successful upsert persists synced mapping with external ID")
     func successfulInsertPersistsSyncedMappingWithExternalId() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService()
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
         let workouts = try await database.fetchWorkouts()
@@ -153,14 +163,15 @@ struct SyncTests {
         #expect(mapping?.externalId == "mock-external-id")
     }
 
-    @Test("Failed insert persists failed mapping")
+    @Test("Failed upsert persists failed mapping")
     func failedInsertPersistsFailedMapping() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
         try await database.insert(workout)
 
-        let mockService = MockSyncService(insertError: NSError(domain: "test", code: 1))
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService(upsertError: NSError(domain: "test", code: 1))
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
         let workouts = try await database.fetchWorkouts()
@@ -176,13 +187,14 @@ struct SyncTests {
         try await database.insert(workout1)
         try await database.insert(workout2)
 
-        let mockService = MockSyncService(insertError: SyncError.serviceUnavailable)
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService(upsertError: SyncError.serviceUnavailable)
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
-        let inserted = await mockService.insertedWorkouts
+        let upserted = await mockService.upsertedWorkouts
         // First workout should trigger the error, second should not be attempted
-        #expect(inserted.count <= 1)
+        #expect(upserted.count == 0)
     }
 
     @Test("Conflict status prevents future automatic syncs")
@@ -191,13 +203,14 @@ struct SyncTests {
         let workout = makeWorkout(name: "original")
         try await database.insert(workout)
 
-        let mockService = MockSyncService(insertError: SyncError.conflict)
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService(upsertError: SyncError.conflict)
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
         // Verify conflict status is set
-        var workouts = try await database.fetchWorkouts()
-        var mapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" })
+        let workouts = try await database.fetchWorkouts()
+        let mapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" })
         #expect(mapping?.syncStatus == .conflict)
 
         // Now update the workout
@@ -211,8 +224,8 @@ struct SyncTests {
         // Perform another sync - the workout should NOT be synced because it has conflict status
         try await syncManager.performSync()
 
-        let updated = await mockService.updatedWorkouts
-        #expect(updated.isEmpty, "Workout with conflict status should not be automatically synced")
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.isEmpty, "Workout with conflict status should not be automatically synced")
     }
 
     @Test("Failed status allows retry on next sync")
@@ -221,8 +234,9 @@ struct SyncTests {
         let workout = makeWorkout()
         try await database.insert(workout)
 
-        let mockService = MockSyncService(insertError: NSError(domain: "test", code: 1))
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService(upsertError: NSError(domain: "test", code: 1))
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
         // Verify failed status
@@ -246,7 +260,7 @@ struct SyncTests {
     func syncDelegateInsertPersistsWorkoutAndReturnsItsId() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
-        let delegate: any SyncDelegate = database
+        let delegate = await MockSyncDelegate(database: database)
 
         let returnedId = try await delegate.insert(workout)
 
@@ -259,7 +273,7 @@ struct SyncTests {
     func syncDelegateUpdateModifiesExistingWorkout() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout(name: "original")
-        let delegate: any SyncDelegate = database
+        let delegate = await MockSyncDelegate(database: database)
         _ = try await delegate.insert(workout)
 
         var modified = workout
@@ -274,7 +288,7 @@ struct SyncTests {
     func syncDelegateDeleteRemovesWorkoutFromDatabase() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
-        let delegate: any SyncDelegate = database
+        let delegate = await MockSyncDelegate(database: database)
         _ = try await delegate.insert(workout)
 
         try await delegate.delete(workout)
@@ -291,13 +305,14 @@ struct SyncTests {
         let workout = makeWorkout(source: .native)
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService()
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.initiallySync(mockService, from: .distantPast, upTo: .now)
 
-        let inserted = await mockService.insertedWorkouts
-        #expect(inserted.count == 1)
-        #expect(inserted.first?.key == workout.id)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.count == 1)
+        #expect(upserted.first?.key == workout.id)
     }
 
     @Test("initiallySync skips workouts from same sync service")
@@ -306,12 +321,13 @@ struct SyncTests {
         let workout = makeWorkout(source: .syncService(identifier: "mock"))
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService(identifier: "mock")
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.initiallySync(mockService, from: .distantPast, upTo: .now)
 
-        let inserted = await mockService.insertedWorkouts
-        #expect(inserted.isEmpty)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.isEmpty)
     }
 
     @Test("initiallySync respects startDate filter")
@@ -336,13 +352,14 @@ struct SyncTests {
         )
         try await database.insert(oldWorkout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService()
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         // Only sync workouts starting from 24h ago
         try await syncManager.initiallySync(mockService, from: now.addingTimeInterval(-24 * 3600), upTo: now)
 
-        let inserted = await mockService.insertedWorkouts
-        #expect(inserted.isEmpty)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.isEmpty)
     }
 
     // MARK: - User-Initiated Sync
@@ -353,8 +370,9 @@ struct SyncTests {
         let workout = makeWorkout()
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let mockService = MockSyncService()
-        let syncManager = await SyncManager(database: database, syncServices: [mockService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         
         // Start a sync but don't await it
         let firstSyncTask = Task {
@@ -371,8 +389,8 @@ struct SyncTests {
         _ = try await userSyncTask.value
         
         // The workout should be synced
-        let inserted = await mockService.insertedWorkouts
-        #expect(inserted.count == 1)
+        let upserted = await mockService.upsertedWorkouts
+        #expect(upserted.count == 1)
     }
 
     // MARK: - Multiple Services
@@ -383,19 +401,20 @@ struct SyncTests {
         let workout = makeWorkout()
         try await database.insert(workout)
 
-        let failingService = MockSyncService(identifier: "failing", insertError: SyncError.serviceUnavailable)
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let failingService = MockSyncService(identifier: "failing", upsertError: SyncError.serviceUnavailable)
         let workingService = MockSyncService(identifier: "working")
-        let syncManager = await SyncManager(database: database, syncServices: [failingService, workingService])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [failingService, workingService])
         
         try await syncManager.performSync()
 
         // Working service should have synced successfully
-        let workingInserted = await workingService.insertedWorkouts
-        #expect(workingInserted.count == 1)
+        let workingUpserted = await workingService.upsertedWorkouts
+        #expect(workingUpserted.count == 1)
         
         // Failing service should have failed
-        let failingInserted = await failingService.insertedWorkouts
-        #expect(failingInserted.count <= 1)
+        let failingUpserted = await failingService.upsertedWorkouts
+        #expect(failingUpserted.count == 0)
         
         // Check mappings
         let workouts = try await database.fetchWorkouts()
@@ -409,22 +428,23 @@ struct SyncTests {
         let workout = makeWorkout(source: .syncService(identifier: "service-a"))
         try await database.insert(workout)
 
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
         let serviceA = MockSyncService(identifier: "service-a")
         let serviceB = MockSyncService(identifier: "service-b")
         let serviceC = MockSyncService(identifier: "service-c")
-        let syncManager = await SyncManager(database: database, syncServices: [serviceA, serviceB, serviceC])
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [serviceA, serviceB, serviceC])
         
         try await syncManager.performSync()
 
         // Service A (source) should not receive the workout
-        let serviceAInserted = await serviceA.insertedWorkouts
-        #expect(serviceAInserted.isEmpty)
+        let serviceAUpserted = await serviceA.upsertedWorkouts
+        #expect(serviceAUpserted.isEmpty)
         
         // Services B and C should receive it
-        let serviceBInserted = await serviceB.insertedWorkouts
-        #expect(serviceBInserted.count == 1)
+        let serviceBUpserted = await serviceB.upsertedWorkouts
+        #expect(serviceBUpserted.count == 1)
         
-        let serviceCInserted = await serviceC.insertedWorkouts
-        #expect(serviceCInserted.count == 1)
+        let serviceCUpserted = await serviceC.upsertedWorkouts
+        #expect(serviceCUpserted.count == 1)
     }
 }
