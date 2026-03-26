@@ -7,13 +7,10 @@ public class Workout: WorkoutProtocol {
     @Attribute(.unique, .preserveValueOnDeletion) public private(set) var id: UUID
     
     public private(set) var rawType: WorkoutType.RawValue
-    /// - note: Distance is provided in metres.
     public var distance: Double
     public var startDate: Date
     public var endDate: Date?
-    /// - note: Energy is provided in joules, if nil no energy was recorded.
     public var energy: Double?
-    /// - note: Repetitions can be steps or cycle strokes depending on the workout type.
     public var repetitions: Int?
     public var isRace: Bool
     

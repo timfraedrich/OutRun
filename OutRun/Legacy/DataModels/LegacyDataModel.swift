@@ -1,7 +1,7 @@
 @preconcurrency import CoreStore
 
 /// A protocol used to define data models for the data base this application saves workouts in.
-protocol LegacyDataModel {
+protocol LegacyDataModel: Sendable {
     
     /// A `String` to identify the data model in a CoreData/CoreStore context
     static var identifier: String { get }

@@ -126,6 +126,10 @@ public class OutRunCore {
         await wait(for: .needsSetup)
     }
     
+    public func syncService<Service: SyncService>(_ type: Service.Type) -> Service? {
+        syncServices.first(where: { $0 is Service }) as? Service
+    }
+    
     // MARK: Internal Workings
     
     private func asyncInit() async {

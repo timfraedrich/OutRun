@@ -10,10 +10,13 @@ public protocol WorkoutProtocol: Identifiable, Equatable {
     
     var id: UUID { get }
     var type: WorkoutType { get }
+    /// - note: Distance is provided in metres.
     var distance: Double { get }
     var startDate: Date { get }
     var endDate: Date? { get }
+    /// - note: Energy is provided in joules, if nil no energy was recorded.
     var energy: Double? { get }
+    /// - note: Repetitions can be steps or cycle strokes depending on the workout type.
     var repetitions: Int? { get }
     var isRace: Bool { get }
     var name: String? { get }

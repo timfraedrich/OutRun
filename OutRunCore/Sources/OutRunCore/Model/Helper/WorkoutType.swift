@@ -97,8 +97,24 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Cu
         switch self {
         case .running, .walking, .hiking: .init(.distanceWalkingRunning)
         case .cycling: .init(.distanceCycling)
+        case .skating: .init(.distanceSkatingSports)
         default: nil
         }
+    }
+    
+    public static var healthKitDistanceTypes: Set<HKQuantityType> {
+        Set(allCases.compactMap { $0.healthKitDistanceType })
+    }
+    
+    public var healthKitRepetitionsType: HKQuantityType? {
+        switch self {
+        case .running, .walking, .hiking: .init(.stepCount)
+        default: nil
+        }
+    }
+    
+    public static var healthKitRepetitionTypes: Set<HKQuantityType> {
+        Set(allCases.compactMap { $0.healthKitRepetitionsType })
     }
     
     public var supportsAutomaticPause: Bool {
