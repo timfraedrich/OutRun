@@ -164,8 +164,7 @@ enum LegacyMigrationHelper {
         guard let healthKitUUID else { return [] }
         return [
             .init(
-                // TODO: use constant instead of literal
-                serviceIdentifier: "AppleHealth",
+                serviceIdentifier: HealthSyncService.identifier,
                 externalId: healthKitUUID.uuidString,
                 externalUrl: nil,
                 lastEditDateSynced: nil,

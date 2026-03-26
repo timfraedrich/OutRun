@@ -8,7 +8,7 @@ import SwiftUI
 @Observable
 public class HealthSyncService: SyncService {
     
-    private static nonisolated let identifier = "HealthSyncService"
+    public static nonisolated let identifier = "HealthSyncService"
     
     private let logger = Logger(category: identifier)
     private let healthStore = HKHealthStore()
@@ -69,25 +69,101 @@ public class HealthSyncService: SyncService {
     
     // MARK: Authorization
     
-    private static let supportedHealthKitTypes: Set<HKSampleType> = {
-        var types: Set<HKSampleType> = [
-            .workoutType(),
-            HKQuantityType(.activeEnergyBurned),
-            HKQuantityType(.heartRate),
-            HKSeriesType.workoutRoute()
-        ]
-        types.formUnion(WorkoutType.healthKitDistanceTypes)
-        types.formUnion(WorkoutType.healthKitRepetitionTypes)
-        return types
-    }()
+    enum SupportedHealthKitType: CaseIterable {
+        case workout
+        case workoutRoute
+        case sampleActiveEnergyBurned
+        case sampleHeartRate
+        case sampleDistanceWalkingRunning
+        case sampleDistanceCycling
+        case sampleDistanceSkatingSports
+        case sampleStepCount
+        
+        fileprivate var sampleType: HKSampleType {
+            switch self {
+            case .workout:
+                HKSampleType.workoutType()
+            case .workoutRoute:
+                HKSeriesType.workoutRoute()
+            case .sampleActiveEnergyBurned:
+                HKQuantityType(.activeEnergyBurned)
+            case .sampleHeartRate:
+                HKQuantityType(.heartRate)
+            case .sampleDistanceWalkingRunning:
+                HKQuantityType(.distanceWalkingRunning)
+            case .sampleDistanceCycling:
+                HKQuantityType(.distanceCycling)
+            case .sampleDistanceSkatingSports:
+                HKQuantityType(.distanceSkatingSports)
+            case .sampleStepCount:
+                HKQuantityType(.stepCount)
+            }
+        }
+        
+        fileprivate var quanityType: HKQuantityType? {
+            sampleType as? HKQuantityType
+        }
+    }
     
+    /// Requests read and write authorization for the types supported by this sync service.
     public func requestAuthorization() async throws {
-        try await healthStore.requestAuthorization(toShare: Self.supportedHealthKitTypes, read: Self.supportedHealthKitTypes)
+        let types = Set(SupportedHealthKitType.allCases.map(\.sampleType))
+        let status = try await healthStore.statusForAuthorizationRequest(toShare: types, read: types)
+        switch status {
+        case .shouldRequest:
+            try await healthStore.requestAuthorization(toShare: types, read: types)
+        case .unnecessary:
+            throw HealthSyncServiceError.permissionPromptUnavailable
+        case .unknown:
+            fallthrough
+        @unknown default:
+            throw HealthSyncServiceError.unknown
+        }
+    }
+    
+    private func checkMissingAuthorization() async throws {
+        let types = Set(SupportedHealthKitType.allCases.map(\.sampleType))
+        let status = try await healthStore.statusForAuthorizationRequest(toShare: types, read: types)
+        switch status {
+        case .shouldRequest:
+            // The user should be prompted to provide authorization for types that are not determined.
+            throw HealthSyncServiceError.authorizationMissing
+        case .unnecessary:
+            // As long as there is authorization to write the workout object, the permissions given by the user should be respected.
+            guard await isAuthorizedToWrite(.workout) else { throw HealthSyncServiceError.authorizationDenied }
+        case .unknown:
+            fallthrough
+        @unknown default:
+            throw HealthSyncServiceError.unknown
+        }
+    }
+    
+    private func checkWriteAuthorization(for type: SupportedHealthKitType) async throws(HealthSyncServiceError) {
+        switch healthStore.authorizationStatus(for: type.sampleType) {
+        case .sharingAuthorized:
+            return
+        case .notDetermined:
+            throw .authorizationMissing
+        case .sharingDenied:
+            throw .authorizationDenied
+        @unknown default:
+            throw .unknown
+        }
+    }
+    
+    private func isAuthorizedToWrite(_ type: SupportedHealthKitType) async -> Bool {
+        do {
+            try await checkWriteAuthorization(for: type)
+        } catch {
+            return false
+        }
+        return true
     }
     
     // MARK: Query
     
     /// Queries the workout with the given id assigned as `HKMetadataKeyExternalUUID` metadata.
+    /// - warning: This function will only work for workouts that were exported by your app and have the metadata key set.
     private func queryHKWorkout(with id: UUID) async throws -> HKWorkout? {
         let sourcePredicate = HKQuery.predicateForObjects(from: .default())
         let uuidPredicate = HKQuery.predicateForObjects(withMetadataKey: HKMetadataKeyExternalUUID, allowedValues: [id.uuidString])
@@ -109,8 +185,8 @@ public class HealthSyncService: SyncService {
         .init(healthStore: healthStore, configuration: config, device: .none)
     }
     
-    private func initializeRouteBuilder(for workout: RawWorkout, from workoutBuilder: HKWorkoutBuilder) -> HKWorkoutRouteBuilder? {
-        guard !workout.route.isEmpty else { return nil }
+    private func initializeRouteBuilder(for workout: RawWorkout, from workoutBuilder: HKWorkoutBuilder) async -> HKWorkoutRouteBuilder? {
+        guard !workout.route.isEmpty, await isAuthorizedToWrite(.workoutRoute) else { return nil }
         return workoutBuilder.seriesBuilder(for: .workoutRoute()) as? HKWorkoutRouteBuilder
     }
     
@@ -126,35 +202,36 @@ public class HealthSyncService: SyncService {
     }
     
     private func createQuantitySample(
-        ofType type: HKQuantityType?,
+        ofType type: SupportedHealthKitType?,
         value: Double?,
         unit: HKUnit,
         for workout: RawWorkout,
         addTo collection: inout [HKQuantitySample]
-    ) {
-        guard let endDate = workout.endDate, let type, let value else { return }
+    ) async {
+        guard let endDate = workout.endDate, let type, let quanityType = type.quanityType, let value, await isAuthorizedToWrite(type)
+        else { return }
         let quantity = HKQuantity(unit: unit, doubleValue: value)
-        let sample = HKQuantitySample(type: type, quantity: quantity, start: workout.startDate, end: endDate, metadata: .none)
+        let sample = HKQuantitySample(type: quanityType, quantity: quantity, start: workout.startDate, end: endDate, metadata: .none)
         collection.append(sample)
     }
     
     private func addQuanitySamples(for workout: RawWorkout, to workoutBuilder: HKWorkoutBuilder) async throws {
         var quantitySamples: [HKQuantitySample] = []
-        createQuantitySample(
+        await createQuantitySample(
             ofType: workout.type.healthKitDistanceType,
             value: workout.distance,
             unit: .meter(),
             for: workout,
             addTo: &quantitySamples
         )
-        createQuantitySample(
-            ofType: .init(.activeEnergyBurned),
+        await createQuantitySample(
+            ofType: .sampleActiveEnergyBurned,
             value: workout.energy,
             unit: .joule(),
             for: workout,
             addTo: &quantitySamples
         )
-        createQuantitySample(
+        await createQuantitySample(
             ofType: workout.type.healthKitRepetitionsType,
             value: workout.repetitions.map(Double.init),
             unit: .count(),
@@ -177,7 +254,7 @@ public class HealthSyncService: SyncService {
     }
     
     private func addHeartRates(for workout: RawWorkout, to workoutBuilder: HKWorkoutBuilder) async throws {
-        guard !workout.heartRates.isEmpty else { return }
+        guard !workout.heartRates.isEmpty, await isAuthorizedToWrite(.sampleHeartRate) else { return }
         let heartRateSampleBuilder = HKQuantitySeriesSampleBuilder(
             healthStore: healthStore,
             quantityType: .init(.heartRate),
@@ -200,11 +277,10 @@ public class HealthSyncService: SyncService {
     
     /// Inserts the workout and associated objects into HealthKit.
     private func insertHKWorkout(from workout: RawWorkout) async throws -> HKWorkout {
-        // TODO: Throw sensible error on missing endDate
         guard let endDate = workout.endDate else { throw SyncError.unknown }
         let config = config(for: workout.type.healthKitType)
         let workoutBuilder = initializeWorkoutBuilder(for: config)
-        let routeBuilder = initializeRouteBuilder(for: workout, from: workoutBuilder)
+        let routeBuilder = await initializeRouteBuilder(for: workout, from: workoutBuilder)
         try await workoutBuilder.beginCollection(at: workout.startDate)
         try await addMetadata(for: workout, to: workoutBuilder)
         try await addWorkoutEvents(for: workout, to: workoutBuilder)
@@ -212,9 +288,8 @@ public class HealthSyncService: SyncService {
         try await addHeartRates(for: workout, to: workoutBuilder)
         try await addRouteData(for: workout, to: routeBuilder)
         try await workoutBuilder.endCollection(at: endDate)
-        // TODO: Throw sensible error on nil
         guard let hkWorkout = try await workoutBuilder.finishWorkout() else { throw SyncError.unknown }
-        // Against what the documentation says, the routeBuilder should not explicitly be finished through .finishRoute(with:,metadata:) as
+        // Against what the documentation says, the routeBuilder should not explicitly be finished through .finishRoute(with:metadata:) as
         // this raises the error: com.apple.healthkit Code=3 "This route builder is attached to a workout builder and will be finished with
         // the workout builder"
         return hkWorkout
@@ -225,8 +300,8 @@ public class HealthSyncService: SyncService {
     /// Deletes the given HealthKit workout and the associated objects.
     private func deleteHKWorkout(_ hkWorkout: HKWorkout) async throws {
         let associatedObjectPredicate = HKQuery.predicateForObjects(from: hkWorkout)
-        for type in Self.supportedHealthKitTypes where type != .workoutType() {
-            try await healthStore.deleteObjects(of: type, predicate: associatedObjectPredicate)
+        for type in SupportedHealthKitType.allCases where type != .workout {
+            try await healthStore.deleteObjects(of: type.sampleType, predicate: associatedObjectPredicate)
         }
         try await healthStore.delete(hkWorkout)
     }
@@ -250,6 +325,7 @@ public class HealthSyncService: SyncService {
     
     public func upsert(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {
         do {
+            try await checkMissingAuthorization()
             if let hkWorkout = try await queryHKWorkout(with: workout.id) {
                 if let version = (hkWorkout.metadata?[HKMetadataKeySyncVersion] as? NSNumber)?.intValue {
                     let upsertVersion = workout.lastEditDate.unixTimestamp
@@ -267,6 +343,9 @@ public class HealthSyncService: SyncService {
             let hkWorkout = try await insertHKWorkout(from: workout)
             logger.debug("Successfully inserted workout \(workout.id).")
             return (hkWorkout.uuid.uuidString, nil)
+        } catch HealthSyncServiceError.authorizationMissing {
+            logger.error("The user has not granted access to HealthKit.")
+            throw SyncError.authenticationRequired
         } catch {
             logger.error("Failed to insert workout \(workout.id): \(error)")
             throw error
@@ -284,9 +363,4 @@ public class HealthSyncService: SyncService {
             throw error
         }
     }
-}
-
-// TODO: Localize
-enum HealthSyncServiceError: Error {
-    case objectNotFound
 }
