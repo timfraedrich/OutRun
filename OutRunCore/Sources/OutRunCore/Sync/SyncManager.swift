@@ -73,7 +73,7 @@ class SyncManager {
     func initiallySync(_ service: any SyncService, from startDate: Date, upTo syncDate: Date) async throws {
         let workouts = try await database.fetchFinishedWorkouts(startingFrom: startDate)
         for workout in workouts {
-            guard workout.source != .syncService(identifier: service.identifier) else { continue }
+            guard workout.source.shouldSyncOutward else { continue }
             var mapping = Self.serviceMapping(of: workout, for: service)
             
             // Skip if already synced or in conflict
@@ -183,8 +183,11 @@ class SyncManager {
                     // Don't throw - just log and continue to next service
                 }
             case .disabled:
-                // TODO: delete state
-                break
+                do {
+                    try await database.deleteSyncServiceState(for: service.identifier)
+                } catch {
+                    logger.warning("Service \"\(service.identifier)\" is disabled, but deleting the sync state failed: \(error)")
+                }
             }
         } catch DatabaseError.objectNotFound {
             switch syncMode {
@@ -308,8 +311,8 @@ class SyncManager {
         service: any SyncService,
         counts: inout SyncCounts
     ) async throws {
-        // Skip workouts that originated from this service to avoid sync loops.
-        if let rawSource = summary.tombstoneSource, WorkoutSource(rawValue: rawSource) == .syncService(identifier: service.identifier) {
+        // Skip workouts that should not be synced outward.
+        if let rawSource = summary.tombstoneSource, !WorkoutSource(rawValue: rawSource).shouldSyncOutward {
             return
         }
         // A workout created and deleted in the same window was never on the service.
@@ -332,7 +335,7 @@ class SyncManager {
         service: any SyncService,
         counts: inout SyncCounts
     ) async throws {
-        guard workout.source != .syncService(identifier: service.identifier) else { return }
+        guard workout.source.shouldSyncOutward else { return }
         var mapping = Self.serviceMapping(of: workout, for: service)
         let syncStatus = mapping.syncStatus
         // guard syncStatus != .conflict else { return }

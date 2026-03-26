@@ -8,6 +8,15 @@ public enum WorkoutSource: Codable, Hashable, RawRepresentable, Sendable {
     case syncService(identifier: String)
     case unknown(rawValue: String)
     
+    /// Indicates whether a workout with this souce should be synced to sync services.
+    /// - note: For now the only workouts that are synced outward are the ones recorded, imported or entered with this library.
+    var shouldSyncOutward: Bool {
+        switch self {
+        case .native, .imported, .manuallyEntered: true
+        case .syncService, .unknown: false
+        }
+    }
+    
     // MARK: RawRepresentable
     
     public init(rawValue: String) {
