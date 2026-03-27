@@ -2,7 +2,7 @@ import CoreLocation
 import Foundation
 import HealthKit
 import OSLog
-import SwiftUI
+import Perception
 
 @MainActor
 @Observable
@@ -34,7 +34,21 @@ public class HealthSyncService: SyncService {
          \.events,
     ]
     
-    public init() {}
+    public init() {
+        Task { [weak self] in
+            let shouldObserveSequence = Perceptions { self?.delegate != nil && self?.mode.isEnabled == true }
+                .buffer(policy: .unbounded)
+                .removeDuplicates()
+            for await shouldObserve in shouldObserveSequence {
+                guard let self else { return }
+                if shouldObserve {
+                    startObservation()
+                } else {
+                    endObservation()
+                }
+            }
+        }
+    }
     
     // MARK: DEBUG
     
@@ -208,9 +222,14 @@ public class HealthSyncService: SyncService {
     }
     
     private func startObservation() {
+        guard mode.isEnabled else {
+            logger.error("Tried to start observation in disabled mode.")
+            return
+        }
         let observationAnchor = self.observationAnchor
         let sourcePredicate = HKQuery.predicateForObjects(from: .default())
         let notSourcePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: sourcePredicate)
+        let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: mode.startDate, end: .none)
         let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
         let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
         let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notSourcePredicate, activityTypesPredicate])
@@ -226,6 +245,7 @@ public class HealthSyncService: SyncService {
                         do {
                             let workout = try await fetchFullWorkout(from: hkWorkout)
                             try await delegate.upsert(workout)
+                            logger.info("Successfully upserted workout \(hkWorkout.uuid.uuidString) inward.")
                         } catch {
                             logger.error("Failed to upsert workout \(hkWorkout.uuid.uuidString) inward: \(error.localizedDescription)")
                         }
@@ -236,6 +256,7 @@ public class HealthSyncService: SyncService {
                         let healthIdentifier = deletedHKWorkout.uuid.uuidString
                         do {
                             try await delegate.delete(workoutWithExternalIdentifier: healthIdentifier, forServiceWith: identifier)
+                            logger.info("Successfully propagated workout delete for \(healthIdentifier) inward.")
                         } catch {
                             logger.error("Failed to propagate workout delete for \(healthIdentifier) inward: \(error.localizedDescription)")
                         }
@@ -248,11 +269,17 @@ public class HealthSyncService: SyncService {
                 logger.error("Observation Task failed: \(error.localizedDescription)")
             }
         }
+        logger.info("Started observation.")
     }
     
     private func endObservation() {
-        observationTask?.cancel()
-        observationTask = nil
+        guard let observationTask else {
+            logger.warning("Tried to cancel observation prior to starting one.")
+            return
+        }
+        observationTask.cancel()
+        self.observationTask = nil
+        logger.info("Ended observation.")
     }
     
     // MARK: Query
