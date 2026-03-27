@@ -144,6 +144,10 @@ actor Database: ModelActor {
     
     // MARK: Workouts
     
+    func insert(_ rawWorkout: RawWorkout) throws {
+        try insert([rawWorkout])
+    }
+    
     func insert(_ rawWorkouts: [RawWorkout]) throws {
         for rawWorkout in rawWorkouts {
             let workout = Workout(from: rawWorkout)

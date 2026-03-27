@@ -63,7 +63,7 @@ struct SyncTests {
         let workouts = try await database.fetchWorkouts()
         guard var modifiedWorkout = workouts.first else { throw "No workout found after insert." }
         modifiedWorkout.name = "updated"
-        _ = try await database.update(modifiedWorkout)
+        _ = try await database.upsert(modifiedWorkout)
 
         try await syncManager.performSync()
 
@@ -89,7 +89,7 @@ struct SyncTests {
         let workouts = try await database.fetchWorkouts()
         guard var modifiedWorkout = workouts.first else { throw "No workout found after insert." }
         modifiedWorkout.comment = "new comment"
-        _ = try await database.update(modifiedWorkout)
+        _ = try await database.upsert(modifiedWorkout)
 
         try await syncManager.performSync()
 
@@ -108,7 +108,7 @@ struct SyncTests {
         let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         try await syncManager.performSync()
 
-        try await database.delete(workout)
+        try await database.delete(workoutWithIdentifier: workout.id)
         try await syncManager.performSync()
 
         let deletedIds = await mockService.deletedWorkoutIds
@@ -130,7 +130,7 @@ struct SyncTests {
         #expect(upserted.isEmpty)
     }
 
-    @Test("Workout from different sync service is synced outbound")
+    @Test("Workout from different sync service is not synced outbound")
     func workoutFromDifferentSyncServiceIsSyncedOutbound() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout(source: .syncService(identifier: "other-service"))
@@ -142,8 +142,7 @@ struct SyncTests {
         try await syncManager.performSync()
 
         let upserted = await mockService.upsertedWorkouts
-        #expect(upserted.count == 1)
-        #expect(upserted.first?.key == workout.id)
+        #expect(upserted.isEmpty)
     }
 
     @Test("Successful upsert persists synced mapping with external ID")
@@ -216,7 +215,7 @@ struct SyncTests {
         // Now update the workout
         guard var modifiedWorkout = workouts.first else { throw "No workout found" }
         modifiedWorkout.name = "updated"
-        _ = try await database.update(modifiedWorkout)
+        _ = try await database.upsert(modifiedWorkout)
 
         // Clear the mock's state
         await mockService.reset()
@@ -262,7 +261,7 @@ struct SyncTests {
         let workout = makeWorkout()
         let delegate = await MockSyncDelegate(database: database)
 
-        let returnedId = try await delegate.insert(workout)
+        let returnedId = try await delegate.upsert(workout)
 
         #expect(returnedId == workout.id)
         let workouts = try await database.fetchWorkouts()
@@ -274,11 +273,11 @@ struct SyncTests {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout(name: "original")
         let delegate = await MockSyncDelegate(database: database)
-        _ = try await delegate.insert(workout)
+        _ = try await delegate.upsert(workout)
 
         var modified = workout
         modified.name = "updated"
-        _ = try await delegate.update(modified)
+        _ = try await delegate.upsert(modified)
 
         let workouts = try await database.fetchWorkouts()
         #expect(workouts.first?.name == "updated")
@@ -289,9 +288,9 @@ struct SyncTests {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
         let delegate = await MockSyncDelegate(database: database)
-        _ = try await delegate.insert(workout)
+        _ = try await delegate.upsert(workout)
 
-        try await delegate.delete(workout)
+        try await delegate.delete(workoutWithIdentifier: workout.id)
 
         let workouts = try await database.fetchWorkouts()
         #expect(workouts.isEmpty)

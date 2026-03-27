@@ -13,16 +13,20 @@ class MockSyncDelegate: SyncDelegate {
         self.defaultSyncDelegate = .init(database: database, userDefaults: .standard)
     }
     
-    func insert(_ workout: RawWorkout) async throws -> UUID {
-        try await defaultSyncDelegate.insert(workout)
+    func upsert(_ workout: RawWorkout) async throws -> UUID {
+        try await defaultSyncDelegate.upsert(workout)
     }
     
-    func update(_ workout: RawWorkout) async throws -> UUID {
-        try await defaultSyncDelegate.update(workout)
+    func delete(workoutWithIdentifier identifier: UUID) async throws {
+        try await defaultSyncDelegate.delete(workoutWithIdentifier: identifier)
     }
     
-    func delete(_ workout: RawWorkout) async throws {
-        try await defaultSyncDelegate.delete(workout)
+    func delete(workoutWithExternalIdentifier externalIdentifier: String, forServiceWith serviceIdentifier: String) async throws {
+        try await defaultSyncDelegate.delete(workoutWithExternalIdentifier: externalIdentifier, forServiceWith: serviceIdentifier)
+    }
+    
+    func delete(workoutWithExternalURL externalURL: String, forServiceWith serviceIdentifier: String) async throws {
+        try await defaultSyncDelegate.delete(workoutWithExternalURL: externalURL, forServiceWith: serviceIdentifier)
     }
     
     nonisolated func setDevicePreference(_ value: Any, for key: String) {
