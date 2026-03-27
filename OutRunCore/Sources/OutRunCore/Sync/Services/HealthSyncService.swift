@@ -17,7 +17,7 @@ public class HealthSyncService: SyncService {
     public let identifier: String = identifier
     public private(set) var mode: SyncMode = .disabled {
         didSet {
-            setPreference(mode, for: "syncMode")
+            setPreference(mode, for: Self.syncModePreferenceKey)
         }
     }
     public let relevantAttributes: Set<any PartialKeyPath<Workout> & Sendable> = [
@@ -44,6 +44,9 @@ public class HealthSyncService: SyncService {
     
     // MARK: - Preferences
     
+    private static let syncModePreferenceKey = "syncMode"
+    private static let observationAnchorDataPreferenceKey = "observationAnchorData"
+    
     private func preferenceKey(for key: String) -> String {
         identifier + "." + key
     }
@@ -62,7 +65,6 @@ public class HealthSyncService: SyncService {
         } catch {
             logger.error("Failed to save \"\(key)\" preference value: \(error)")
         }
-        
     }
     
     // MARK: - Health Kit
@@ -102,6 +104,34 @@ public class HealthSyncService: SyncService {
         
         fileprivate var quanityType: HKQuantityType? {
             sampleType as? HKQuantityType
+        }
+        
+        fileprivate var quantityUnit: HKUnit? {
+            switch self {
+            case .sampleActiveEnergyBurned:
+                .joule()
+            case .sampleHeartRate:
+                .count().unitDivided(by: .minute())
+            case .sampleDistanceWalkingRunning, .sampleDistanceCycling, .sampleDistanceSkatingSports:
+                .meter()
+            case .sampleStepCount:
+                .count()
+            default:
+                .none
+            }
+        }
+        
+        fileprivate var supportsCumulativeAggregation: Bool {
+            switch self {
+            case .sampleActiveEnergyBurned,
+                 .sampleDistanceWalkingRunning,
+                 .sampleDistanceCycling,
+                 .sampleDistanceSkatingSports,
+                 .sampleStepCount:
+                true
+            case .workout, .workoutRoute, .sampleHeartRate:
+                false
+            }
         }
     }
     
@@ -160,6 +190,71 @@ public class HealthSyncService: SyncService {
         return true
     }
     
+    // MARK: - Observation
+    
+    private var observationTask: Task<Void, Never>?
+    private var observationAnchor: HKQueryAnchor? {
+        get {
+            guard let delegate,
+                  let data = delegate.devicePreference(for: Self.observationAnchorDataPreferenceKey) as? Data,
+                  let anchor = try? NSKeyedUnarchiver.unarchivedObject(ofClass: HKQueryAnchor.self, from: data)
+            else { return nil }
+            return anchor
+        } set {
+            guard let delegate, let newValue, let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: true)
+            else { return }
+            delegate.setDevicePreference(data, for: Self.observationAnchorDataPreferenceKey)
+        }
+    }
+    
+    private func startObservation() {
+        let observationAnchor = self.observationAnchor
+        let sourcePredicate = HKQuery.predicateForObjects(from: .default())
+        let notSourcePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: sourcePredicate)
+        let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
+        let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
+        let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notSourcePredicate, activityTypesPredicate])
+        let workoutPredicate = HKSamplePredicate.workout(filterPredicate)
+        let descriptor = HKAnchoredObjectQueryDescriptor(predicates: [workoutPredicate], anchor: observationAnchor)
+        observationTask = Task { [weak delegate] in
+            do {
+                for try await result in descriptor.results(for: healthStore) {
+                    try Task.checkCancellation()
+                    for hkWorkout in result.addedSamples {
+                        try Task.checkCancellation()
+                        guard let delegate else { throw CancellationError() }
+                        do {
+                            let workout = try await fetchFullWorkout(from: hkWorkout)
+                            try await delegate.upsert(workout)
+                        } catch {
+                            logger.error("Failed to upsert workout \(hkWorkout.uuid.uuidString) inward: \(error.localizedDescription)")
+                        }
+                    }
+                    for deletedHKWorkout in result.deletedObjects {
+                        try Task.checkCancellation()
+                        guard let delegate else { throw CancellationError() }
+                        let healthIdentifier = deletedHKWorkout.uuid.uuidString
+                        do {
+                            try await delegate.delete(workoutWithExternalIdentifier: healthIdentifier, forServiceWith: identifier)
+                        } catch {
+                            logger.error("Failed to propagate workout delete for \(healthIdentifier) inward: \(error.localizedDescription)")
+                        }
+                    }
+                    self.observationAnchor = result.newAnchor
+                }
+            } catch is CancellationError {
+                logger.error("Cancelled observation task.")
+            } catch {
+                logger.error("Observation Task failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func endObservation() {
+        observationTask?.cancel()
+        observationTask = nil
+    }
+    
     // MARK: Query
     
     /// Queries the workout with the given id assigned as `HKMetadataKeyExternalUUID` metadata.
@@ -171,6 +266,103 @@ public class HealthSyncService: SyncService {
         let workoutSamplePredicate = HKSamplePredicate.workout(workoutPredicate)
         let workoutSampleQueryDescriptor = HKSampleQueryDescriptor(predicates: [workoutSamplePredicate], sortDescriptors: [], limit: 1)
         return try await workoutSampleQueryDescriptor.result(for: healthStore).first
+    }
+    
+    private func fetchCumulativeMetric(for hkWorkout: HKWorkout, with type: SupportedHealthKitType?) async throws -> Double? {
+        guard let type,
+              type.supportsCumulativeAggregation,
+              let quantityType = type.quanityType,
+              let quantityUnit = type.quantityUnit
+        else { throw HealthSyncServiceError.invalidHealthKitType }
+        let workoutAssociatedPredicate = HKQuery.predicateForObjects(from: hkWorkout)
+        let typePredicate = HKSamplePredicate.quantitySample(type: quantityType, predicate: workoutAssociatedPredicate)
+        let descriptor = HKStatisticsQueryDescriptor(predicate: typePredicate, options: .cumulativeSum)
+        let result = try await descriptor.result(for: healthStore)
+        return result?.sumQuantity()?.doubleValue(for: quantityUnit)
+    }
+    
+    private func fetchHeartRates(for hkWorkout: HKWorkout) async throws -> [RawWorkoutHeartRateDataSample] {
+        let type = SupportedHealthKitType.sampleHeartRate
+        guard let quantityType = type.quanityType, let quantityUnit = type.quantityUnit else { throw HealthSyncServiceError.unknown }
+        let workoutAssociatedPredicate = HKQuery.predicateForObjects(from: hkWorkout)
+        let heartRatePredicate = HKSamplePredicate.quantitySample(type: quantityType, predicate: workoutAssociatedPredicate)
+        let descriptor = HKQuantitySeriesSampleQueryDescriptor(predicate: heartRatePredicate, options: .orderByQuantitySampleStartDate)
+        let heartRateSampleSequence = descriptor.results(for: healthStore)
+        var heartRates: [RawWorkoutHeartRateDataSample] = []
+        for try await heartRateSample in heartRateSampleSequence {
+            let heartRate = UInt8(heartRateSample.quantity.doubleValue(for: quantityUnit))
+            let startDate = heartRateSample.dateInterval.start
+            heartRates.append(.init(heartRate: heartRate, timestamp: startDate))
+            let endDate = heartRateSample.dateInterval.end
+            guard startDate != endDate else { continue }
+            heartRates.append(.init(heartRate: heartRate, timestamp: endDate))
+        }
+        return heartRates
+    }
+    
+    private func fetchRoute(for hkWorkout: HKWorkout) async throws -> [RawWorkoutRouteDataSample] {
+        let workoutAssociatedPredicate = HKQuery.predicateForObjects(from: hkWorkout)
+        let routePredicate = HKSamplePredicate.workoutRoute(workoutAssociatedPredicate)
+        let routesDescriptor = HKSampleQueryDescriptor(predicates: [routePredicate], sortDescriptors: [])
+        let routes = try await routesDescriptor.result(for: healthStore)
+        var routeSamples: [RawWorkoutRouteDataSample] = []
+        for route in routes {
+            let locationsDescriptor = HKWorkoutRouteQueryDescriptor(route)
+            let locationSequence = locationsDescriptor.results(for: healthStore)
+            for try await location in locationSequence {
+                routeSamples.append(.init(from: location))
+            }
+        }
+        return routeSamples
+    }
+    
+    private func fetchFullWorkout(from hkWorkout: HKWorkout) async throws -> RawWorkout {
+        guard let workoutType = WorkoutType(hkType: hkWorkout.workoutActivityType)
+        else { throw HealthSyncServiceError.unsupportedActivityType }
+        let now = Date.now
+        let startDate = hkWorkout.startDate
+        let endDate = hkWorkout.endDate
+        let pauseEvents = hkWorkout.workoutEvents?.compactMap { event -> Calculation.PauseEvent? in
+            let timestamp = event.dateInterval.start
+            return switch event.type {
+            case .pause: .init(date: timestamp, type: .pause)
+            case .resume: .init(date: timestamp, type: .resume)
+            default: nil
+            }
+        }
+        let pauses = pauseEvents.map { Calculation.calculatePauses(from: $0, workoutStart: startDate, workoutEnd: endDate) }
+        let events = hkWorkout.workoutEvents?.compactMap { event -> RawWorkoutEvent? in
+            guard let type = WorkoutEventType(healthType: event.type) else { return nil }
+            return .init(type: type, timestamp: event.dateInterval.start)
+        }
+        return .init(
+            id: .init(),
+            type: workoutType,
+            distance: try await fetchCumulativeMetric(for: hkWorkout, with: workoutType.healthKitDistanceType) ?? .zero,
+            startDate: startDate,
+            endDate: endDate,
+            energy: try await fetchCumulativeMetric(for: hkWorkout, with: .sampleActiveEnergyBurned),
+            repetitions: try await fetchCumulativeMetric(for: hkWorkout, with: workoutType.healthKitRepetitionsType).map(Int.init),
+            isRace: false,
+            name: hkWorkout.metadata?[HKMetadataKeyWorkoutBrandName] as? String,
+            comment: .none,
+            creationDate: now,
+            lastEditDate: now,
+            source: .syncService(identifier: identifier),
+            heartRates: try await fetchHeartRates(for: hkWorkout),
+            route: try await fetchRoute(for: hkWorkout),
+            pauses: pauses ?? [],
+            events: events ?? [],
+            serviceMappings: [
+                .init(
+                    serviceIdentifier: identifier,
+                    externalId: hkWorkout.uuid.uuidString,
+                    externalUrl: .none,
+                    lastEditDateSynced: now,
+                    syncStatus: .synced
+                )
+            ]
+        )
     }
     
     // MARK: Insert
@@ -204,40 +396,29 @@ public class HealthSyncService: SyncService {
     private func createQuantitySample(
         ofType type: SupportedHealthKitType?,
         value: Double?,
-        unit: HKUnit,
         for workout: RawWorkout,
         addTo collection: inout [HKQuantitySample]
     ) async {
-        guard let endDate = workout.endDate, let type, let quanityType = type.quanityType, let value, await isAuthorizedToWrite(type)
+        guard let endDate = workout.endDate,
+              let type,
+              let quanityType = type.quanityType,
+              let quantityUnit = type.quantityUnit,
+              let value,
+              await isAuthorizedToWrite(type)
         else { return }
-        let quantity = HKQuantity(unit: unit, doubleValue: value)
+        let quantity = HKQuantity(unit: quantityUnit, doubleValue: value)
         let sample = HKQuantitySample(type: quanityType, quantity: quantity, start: workout.startDate, end: endDate, metadata: .none)
         collection.append(sample)
     }
     
     private func addQuanitySamples(for workout: RawWorkout, to workoutBuilder: HKWorkoutBuilder) async throws {
+        let distance = workout.distance
+        let energy = workout.energy
+        let repetitions = workout.repetitions.map(Double.init)
         var quantitySamples: [HKQuantitySample] = []
-        await createQuantitySample(
-            ofType: workout.type.healthKitDistanceType,
-            value: workout.distance,
-            unit: .meter(),
-            for: workout,
-            addTo: &quantitySamples
-        )
-        await createQuantitySample(
-            ofType: .sampleActiveEnergyBurned,
-            value: workout.energy,
-            unit: .joule(),
-            for: workout,
-            addTo: &quantitySamples
-        )
-        await createQuantitySample(
-            ofType: workout.type.healthKitRepetitionsType,
-            value: workout.repetitions.map(Double.init),
-            unit: .count(),
-            for: workout,
-            addTo: &quantitySamples
-        )
+        await createQuantitySample(ofType: workout.type.healthKitDistanceType, value: distance, for: workout, addTo: &quantitySamples)
+        await createQuantitySample(ofType: .sampleActiveEnergyBurned, value: energy, for: workout, addTo: &quantitySamples)
+        await createQuantitySample(ofType: workout.type.healthKitRepetitionsType, value: repetitions, for: workout, addTo: &quantitySamples)
         try await workoutBuilder.addSamples(quantitySamples)
     }
     
@@ -316,7 +497,7 @@ public class HealthSyncService: SyncService {
     
     public func initialize(with delegate: any SyncDelegate) async {
         self.delegate = delegate
-        self.mode = preference(for: "syncMode") ?? .disabled
+        self.mode = preference(for: Self.syncModePreferenceKey) ?? .disabled
     }
     
     public func deinitialize() async {

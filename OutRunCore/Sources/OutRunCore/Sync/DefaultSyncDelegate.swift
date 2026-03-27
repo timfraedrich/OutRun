@@ -11,16 +11,20 @@ class DefaultSyncDelegate: SyncDelegate {
         self.userDefaults = userDefaults
     }
     
-    func insert(_ workout: RawWorkout) async throws -> UUID {
-        try await database.insert(workout)
+    func upsert(_ workout: RawWorkout) async throws -> UUID {
+        try await database.upsert(workout)
     }
     
-    func update(_ workout: RawWorkout) async throws -> UUID {
-        try await database.update(workout)
+    func delete(workoutWithIdentifier identifier: UUID) async throws {
+        try await database.delete(workoutWithIdentifier: identifier)
     }
     
-    func delete(_ workout: RawWorkout) async throws {
-        try await database.delete(workout)
+    func delete(workoutWithExternalIdentifier externalIdentifier: String, forServiceWith serviceIdentifier: String) async throws {
+        try await database.delete(workoutWithExternalIdentifier: externalIdentifier, forServiceWith: serviceIdentifier)
+    }
+    
+    func delete(workoutWithExternalURL externalURL: String, forServiceWith serviceIdentifier: String) async throws {
+        try await database.delete(workoutWithExternalURL: externalURL, forServiceWith: serviceIdentifier)
     }
     
     nonisolated func setDevicePreference(_ value: Any, for key: String) {

@@ -50,8 +50,8 @@ extension RawWorkout {
     }
     
     init(from workout: LegacyRawDataModelV3.Workout) {
-        let pauseEvents = workout.workoutEvents.compactMap { workoutEvent -> LegacyMigrationHelper.PauseEvent? in
-            guard let pauseEventType = LegacyMigrationHelper.PauseEvent.PauseEventType(legacyEventType: .init(rawValue: workoutEvent.eventType))
+        let pauseEvents = workout.workoutEvents.compactMap { workoutEvent -> Calculation.PauseEvent? in
+            guard let pauseEventType = Calculation.PauseEventType(legacyEventType: .init(rawValue: workoutEvent.eventType))
             else { return nil }
             return .init(date: workoutEvent.startDate, type: pauseEventType)
         }
@@ -71,7 +71,7 @@ extension RawWorkout {
             source: .native,
             heartRates: workout.heartRates.map(RawWorkoutHeartRateDataSample.init),
             route: workout.locations.map(RawWorkoutRouteDataSample.init),
-            pauses: LegacyMigrationHelper.calculatePauses(from: pauseEvents, workoutStart: workout.startDate, workoutEnd: workout.endDate),
+            pauses: Calculation.calculatePauses(from: pauseEvents, workoutStart: workout.startDate, workoutEnd: workout.endDate),
             events: workout.workoutEvents.compactMap(RawWorkoutEvent.init),
             serviceMappings: LegacyMigrationHelper.serviceMappingsFromHealthKitUUID(workout.healthKitUUID)
         )

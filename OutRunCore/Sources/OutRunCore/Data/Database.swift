@@ -343,41 +343,58 @@ actor Database: ModelActor {
         try modelContext.save()
     }
     
-    // MARK: SyncDelegate
+    // MARK: Syncing
     
-    @discardableResult
-    func insert(_ workout: RawWorkout) throws -> UUID {
-        try insert([workout])
+    func upsert(_ workout: RawWorkout) async throws -> UUID {
+        do {
+            let databaseWorkout = try fetchWorkout(with: workout.id)
+            databaseWorkout.type = workout.type
+            databaseWorkout.distance = workout.distance
+            databaseWorkout.startDate = workout.startDate
+            databaseWorkout.endDate = workout.endDate
+            databaseWorkout.energy = workout.energy
+            databaseWorkout.repetitions = workout.repetitions
+            databaseWorkout.isRace = workout.isRace
+            databaseWorkout.name = workout.name
+            databaseWorkout.comment = workout.comment
+            databaseWorkout.creationDate = workout.creationDate
+            databaseWorkout.lastEditDate = workout.lastEditDate
+            databaseWorkout.source = workout.source
+            databaseWorkout.route = workout.route.map { WorkoutRouteDataSample.init(from: $0) }
+            databaseWorkout.heartRates = workout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
+            databaseWorkout.pauses = workout.pauses.map { WorkoutPause(from: $0) }
+            databaseWorkout.events = workout.events.map { WorkoutEvent(from: $0) }
+            databaseWorkout.serviceMappings = workout.serviceMappings.map { SyncServiceMapping(from: $0) }
+            try modelContext.save()
+        } catch DatabaseError.objectNotFound {
+            try insert([workout])
+        }
         return workout.id
     }
     
-    func update(_ workout: RawWorkout) async throws -> UUID {
-        let databaseWorkout = try fetchWorkout(with: workout.id)
-        databaseWorkout.type = workout.type
-        databaseWorkout.distance = workout.distance
-        databaseWorkout.startDate = workout.startDate
-        databaseWorkout.endDate = workout.endDate
-        databaseWorkout.energy = workout.energy
-        databaseWorkout.repetitions = workout.repetitions
-        databaseWorkout.isRace = workout.isRace
-        databaseWorkout.name = workout.name
-        databaseWorkout.comment = workout.comment
-        databaseWorkout.creationDate = workout.creationDate
-        databaseWorkout.lastEditDate = workout.lastEditDate
-        databaseWorkout.source = workout.source
-        databaseWorkout.route = workout.route.map { WorkoutRouteDataSample.init(from: $0) }
-        databaseWorkout.heartRates = workout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
-        databaseWorkout.pauses = workout.pauses.map { WorkoutPause(from: $0) }
-        databaseWorkout.events = workout.events.map { WorkoutEvent(from: $0) }
-        databaseWorkout.serviceMappings = workout.serviceMappings.map { SyncServiceMapping(from: $0) }
-        try modelContext.save()
-        return workout.id
-    }
-    
-    func delete(_ workout: RawWorkout) async throws {
-        let databaseWorkout = try fetchWorkout(with: workout.id)
+    func delete(workoutWithIdentifier identifier: UUID) throws {
+        let databaseWorkout = try fetchWorkout(with: identifier)
         modelContext.delete(databaseWorkout)
         try modelContext.save()
+    }
+    
+    private func delete(workoutWithSyncServiceMatching predicate: Predicate<SyncServiceMapping>, and serviceIdentifier: String) throws {
+        let fullPredicate = #Predicate<SyncServiceMapping> {
+            predicate.evaluate($0) && $0.serviceIdentifier == serviceIdentifier && $0.workout != nil
+        }
+        var descriptor = FetchDescriptor<SyncServiceMapping>(predicate: fullPredicate)
+        descriptor.fetchLimit = 1
+        guard let workout = try modelContext.fetch(descriptor).first?.workout else { throw DatabaseError.objectNotFound }
+        modelContext.delete(workout)
+        try modelContext.save()
+    }
+    
+    func delete(workoutWithExternalIdentifier externalIdentifier: String, forServiceWith serviceIdentifier: String) throws {
+        try delete(workoutWithSyncServiceMatching: #Predicate { $0.externalId == externalIdentifier }, and: serviceIdentifier)
+    }
+    
+    func delete(workoutWithExternalURL externalURL: String, forServiceWith serviceIdentifier: String) throws {
+        try delete(workoutWithSyncServiceMatching: #Predicate { $0.externalUrl == externalURL }, and: serviceIdentifier)
     }
     
     // MARK: - Internal
