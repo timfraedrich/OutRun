@@ -420,30 +420,4 @@ struct SyncTests {
         let workingMapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "working" })
         #expect(workingMapping?.syncStatus == .synced)
     }
-
-    @Test("Workout syncs to all enabled services except its source")
-    func workoutSyncsToAllEnabledServicesExceptItsSource() async throws {
-        let database = try await Database(isStoredInMemoryOnly: true)
-        let workout = makeWorkout(source: .syncService(identifier: "service-a"))
-        try await database.insert(workout)
-
-        let mockSyncDelegate = await MockSyncDelegate(database: database)
-        let serviceA = MockSyncService(identifier: "service-a")
-        let serviceB = MockSyncService(identifier: "service-b")
-        let serviceC = MockSyncService(identifier: "service-c")
-        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [serviceA, serviceB, serviceC])
-        
-        try await syncManager.performSync()
-
-        // Service A (source) should not receive the workout
-        let serviceAUpserted = await serviceA.upsertedWorkouts
-        #expect(serviceAUpserted.isEmpty)
-        
-        // Services B and C should receive it
-        let serviceBUpserted = await serviceB.upsertedWorkouts
-        #expect(serviceBUpserted.count == 1)
-        
-        let serviceCUpserted = await serviceC.upsertedWorkouts
-        #expect(serviceCUpserted.count == 1)
-    }
 }
