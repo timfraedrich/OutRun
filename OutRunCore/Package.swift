@@ -11,11 +11,12 @@ let package = Package(
         .library(name: "OutRunCore", targets: ["OutRunCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/mac-cain13/R.swift.git", from: "7.8.0"),
+        .package(url: "https://github.com/mac-cain13/R.swift", from: "7.8.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.84.0"),
         .package(url: "https://github.com/pointfreeco/swift-perception", from: "2.0.6"),
         .package(url: "https://github.com/hyperoslo/Cache", from: "7.4.0"),
-        .package(url: "https://github.com/apple/swift-async-algorithms.git", from: "1.1.1"),
+        .package(url: "https://github.com/apple/swift-async-algorithms", from: "1.1.1"),
+        .package(url: "https://github.com/groue/Semaphore", from: "0.1.0"),
     ],
     targets: [
         .target(
@@ -26,6 +27,7 @@ let package = Package(
                 .product(name: "Perception", package: "swift-perception"),
                 .product(name: "Cache", package: "Cache"),
                 .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
+                .product(name: "Semaphore", package: "Semaphore"),
             ],
             plugins: [.plugin(name: "RswiftGenerateInternalResources", package: "r.swift")]
         ),

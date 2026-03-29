@@ -1,14 +1,17 @@
-import SwiftData
+import AsyncAlgorithms
 import Combine
 import Foundation
 import OSLog
-import AsyncAlgorithms
+import Semaphore
+import SwiftData
 
+// TODO: Think about Weight Syncing
 @BackgroundActor
 class SyncManager {
 
     private let logger = Logger(category: "SyncManager")
     private let database: Database
+    private let semaphore = AsyncSemaphore(value: 1)
     private let syncDelegate: any SyncDelegate
     private let syncServices: [any SyncService]
     private var cancellables: Set<AnyCancellable> = []
@@ -115,10 +118,9 @@ class SyncManager {
 
     func performSync(upTo syncDate: Date = .now) async throws {
         // Wait for any ongoing sync to complete, then perform sync
-        try await withSyncLock {
-            for service in syncServices {
-                try await sync(service, upTo: syncDate)
-            }
+        try await semaphore.waitUnlessCancelled()
+        for service in syncServices {
+            try await sync(service, upTo: syncDate)
         }
     }
     
@@ -127,40 +129,6 @@ class SyncManager {
         // This method has the same behavior as performSync but is explicitly named
         // for user-initiated actions. The withSyncLock ensures proper serialization.
         try await performSync(upTo: syncDate)
-    }
-    
-    /// Ensures only one sync operation runs at a time
-    private func withSyncLock<T>(_ operation: () async throws -> T) async rethrows -> T {
-        // Increment pending count and wait if already syncing
-        pendingSyncCount += 1
-        defer { pendingSyncCount -= 1 }
-        
-        if isSyncing {
-            await withCheckedContinuation { continuation in
-                syncWaiters.append(continuation)
-            }
-        }
-        
-        // Mark as syncing and perform operation
-        isSyncing = true
-        defer {
-            // Only release the lock if no more pending operations
-            if pendingSyncCount <= 1 {
-                isSyncing = false
-                // Resume all waiting continuations
-                let waiters = syncWaiters
-                syncWaiters.removeAll()
-                for waiter in waiters {
-                    waiter.resume()
-                }
-            } else if let nextWaiter = syncWaiters.first {
-                // Resume only the next waiter in queue
-                syncWaiters.removeFirst()
-                nextWaiter.resume()
-            }
-        }
-        
-        return try await operation()
     }
 
     private func sync(_ service: any SyncService, upTo syncDate: Date) async throws {
