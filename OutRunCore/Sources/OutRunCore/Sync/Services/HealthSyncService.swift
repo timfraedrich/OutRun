@@ -224,7 +224,8 @@ public class HealthSyncService: SyncService {
         let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: inwardSyncMode.startDate, end: .none)
         let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
         let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
-        let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notSourcePredicate, activityTypesPredicate])
+        let filterPredicares = [notSourcePredicate, syncStartDatePredicate, activityTypesPredicate]
+        let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: filterPredicares)
         let workoutPredicate = HKSamplePredicate.workout(filterPredicate)
         let descriptor = HKAnchoredObjectQueryDescriptor(predicates: [workoutPredicate], anchor: observationAnchor)
         observationTask = Task { [weak delegate] in
