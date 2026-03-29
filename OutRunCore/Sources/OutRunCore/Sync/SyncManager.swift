@@ -29,7 +29,7 @@ class SyncManager {
     func initialize() async {
         for service in syncServices {
             do {
-                let syncMode = await service.mode
+                let syncMode = await service.outwardSyncMode
                 let syncDate = Date.now
                 try await service.initialize(with: syncDelegate)
                 let existingState: RawSyncServiceState?
@@ -42,17 +42,10 @@ class SyncManager {
                 // Only call initiallySync when an existing disabled service is being re-enabled.
                 // For brand-new services (no prior state), processChanges handles the initial sync
                 // via history from .distantPast, avoiding a race with concurrent performSync() calls.
-                if existingState != nil, state.lastSyncMode == .disabled {
-                    let syncStartDate: Date? = if case .enabledFrom(let date) = syncMode {
-                        date
-                    } else if syncMode == .enabled {
-                        .distantPast
-                    } else { nil }
-                    if let syncStartDate {
-                        try await initiallySync(service, from: syncStartDate, upTo: syncDate)
-                        state.lastSyncDate = syncDate
-                        state.lastSyncMode = syncMode
-                    }
+                if existingState != nil, state.lastSyncMode == .disabled, let syncStartDate = state.lastSyncDate {
+                    try await initiallySync(service, from: syncStartDate, upTo: syncDate)
+                    state.lastSyncDate = syncDate
+                    state.lastSyncMode = syncMode
                 }
                 try await database.upsertSyncServiceState(state)
                 logger.info("Initialized sync service with identifier \"\(service.identifier)\"")
@@ -171,7 +164,7 @@ class SyncManager {
     }
 
     private func sync(_ service: any SyncService, upTo syncDate: Date) async throws {
-        let syncMode = await service.mode
+        let syncMode = await service.outwardSyncMode
         do {
             let state = try await database.fetchSyncServiceState(for: service.identifier)
             switch syncMode {

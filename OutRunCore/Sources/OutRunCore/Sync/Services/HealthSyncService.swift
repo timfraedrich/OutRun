@@ -15,11 +15,8 @@ public class HealthSyncService: SyncService {
     private var delegate: SyncDelegate?
     
     public let identifier: String = identifier
-    public private(set) var mode: SyncMode = .disabled {
-        didSet {
-            setPreference(mode, for: Self.syncModePreferenceKey)
-        }
-    }
+    public var inwardSyncMode: SyncMode = .disabled { didSet { setPreference(inwardSyncMode, for: Self.inwardSyncModePreferenceKey) } }
+    public var outwardSyncMode: SyncMode = .disabled { didSet { setPreference(outwardSyncMode, for: Self.outwardSyncModePreferenceKey) } }
     public let relevantAttributes: Set<any PartialKeyPath<Workout> & Sendable> = [
         \.rawType,
          \.distance,
@@ -36,7 +33,7 @@ public class HealthSyncService: SyncService {
     
     public init() {
         Task { [weak self] in
-            let shouldObserveSequence = Perceptions { self?.delegate != nil && self?.mode.isEnabled == true }
+            let shouldObserveSequence = Perceptions { self?.delegate != nil && self?.inwardSyncMode.isEnabled == true }
                 .buffer(policy: .unbounded)
                 .removeDuplicates()
             for await shouldObserve in shouldObserveSequence {
@@ -50,15 +47,10 @@ public class HealthSyncService: SyncService {
         }
     }
     
-    // MARK: DEBUG
-    
-    public func setMode(_ mode: SyncMode) {
-        self.mode = mode
-    }
-    
     // MARK: - Preferences
     
-    private static let syncModePreferenceKey = "syncMode"
+    private static let inwardSyncModePreferenceKey = "inwardSyncMode"
+    private static let outwardSyncModePreferenceKey = "outwardSyncMode"
     private static let observationAnchorDataPreferenceKey = "observationAnchorData"
     
     private func preferenceKey(for key: String) -> String {
@@ -222,14 +214,14 @@ public class HealthSyncService: SyncService {
     }
     
     private func startObservation() {
-        guard mode.isEnabled else {
+        guard inwardSyncMode.isEnabled else {
             logger.error("Tried to start observation in disabled mode.")
             return
         }
         let observationAnchor = self.observationAnchor
         let sourcePredicate = HKQuery.predicateForObjects(from: .default())
         let notSourcePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: sourcePredicate)
-        let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: mode.startDate, end: .none)
+        let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: inwardSyncMode.startDate, end: .none)
         let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
         let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
         let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notSourcePredicate, activityTypesPredicate])
@@ -524,11 +516,14 @@ public class HealthSyncService: SyncService {
     
     public func initialize(with delegate: any SyncDelegate) async {
         self.delegate = delegate
-        self.mode = preference(for: Self.syncModePreferenceKey) ?? .disabled
+        self.inwardSyncMode = preference(for: Self.inwardSyncModePreferenceKey) ?? .disabled
+        self.outwardSyncMode = preference(for: Self.outwardSyncModePreferenceKey) ?? .disabled
     }
     
     public func deinitialize() async {
         delegate = nil
+        inwardSyncMode = .disabled
+        outwardSyncMode = .disabled
     }
     
     public func upsert(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {

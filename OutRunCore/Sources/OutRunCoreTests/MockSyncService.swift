@@ -4,7 +4,7 @@ import Foundation
 actor MockSyncService: SyncService {
 
     let identifier: String
-    var mode: SyncMode
+    var outwardSyncMode: SyncMode
     let relevantAttributes: Set<PartialKeyPath<Workout> & Sendable>
 
     private var upsertResult: (id: String?, url: String?)
@@ -24,7 +24,7 @@ actor MockSyncService: SyncService {
         deleteError: Error? = nil
     ) {
         self.identifier = identifier
-        self.mode = mode
+        self.outwardSyncMode = mode
         self.relevantAttributes = relevantAttributes
         self.upsertResult = upsertResult
         self.upsertError = upsertError
@@ -49,8 +49,7 @@ actor MockSyncService: SyncService {
         if let error = deleteError { throw error }
         deletedWorkoutIds.insert(identifier)
     }
-
-    // Helper methods for testing
+    
     func reset() {
         upsertedWorkouts = [:]
         deletedWorkoutIds = []
