@@ -140,10 +140,13 @@
 				22BC117E2DE61964008B0A4C /* Sources */,
 				22BC117F2DE61964008B0A4C /* Frameworks */,
 				22BC11802DE61964008B0A4C /* Resources */,
+				22BCE5592F7984D7008B0A4C /* Copy Acknowledgements */,
+				224538EE2F798C8C0050158C /* Set Version in Settings */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				224538272F797F1A0050158C /* PBXTargetDependency */,
 				223D71F02E68B1DB0088F92C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
@@ -210,6 +213,7 @@
 				223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */,
 				2265FD2F2E6F11D8004F1E09 /* XCRemoteSwiftPackageReference "CoreStore" */,
 				2275CB422E8C536F00328632 /* XCRemoteSwiftPackageReference "swift-perception" */,
+				224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 22BC11832DE61964008B0A4C /* Products */;
@@ -239,6 +243,41 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		224538EE2F798C8C0050158C /* Set Version in Settings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Set Version in Settings";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${BUILT_PRODUCTS_DIR}\"\nMARKETING_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${INFOPLIST_PATH}\" )\nBUILD_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_PATH}\" )\n/usr/libexec/PlistBuddy -c \"Set PreferenceSpecifiers:0:DefaultValue $MARKETING_VERSION ($BUILD_VERSION)\" \"${CONTENTS_FOLDER_PATH}/Settings.bundle/Root.plist\"\n";
+		};
+		22BCE5592F7984D7008B0A4C /* Copy Acknowledgements */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Acknowledgements";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Will copy acknowledgements\"\n\nACKNOWLEDGEMENTS_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/com.mono0926.LicensePlist.Output\nDESTINATION_PATH=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Settings.bundle/\n\ncp -r \"${ACKNOWLEDGEMENTS_DIR}\"/* \"${DESTINATION_PATH}\"\nrm -rf \"${ACKNOWLEDGEMENTS_DIR}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		223D71BE2E6889BF0088F92C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -265,6 +304,10 @@
 		223D71F02E68B1DB0088F92C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 223D71EF2E68B1DB0088F92C /* RswiftGenerateInternalResources */;
+		};
+		224538272F797F1A0050158C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 224538262F797F1A0050158C /* LicensePlistBuildTool */;
 		};
 /* End PBXTargetDependency section */
 
@@ -460,12 +503,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = DebugAppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = OutRun/OutRun.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "OutRun/Support Files/OutRun.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_SOURCE_FILE_NAMES = AppIcon.icon;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
@@ -505,12 +549,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = OutRun/OutRun.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "OutRun/Support Files/OutRun.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_SOURCE_FILE_NAMES = DebugAppIcon.icon;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
@@ -592,6 +637,14 @@
 				minimumVersion = 7.8.0;
 			};
 		};
+		224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mono0926/LicensePlist";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.27.2;
+			};
+		};
 		2265FD2F2E6F11D8004F1E09 /* XCRemoteSwiftPackageReference "CoreStore" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JohnEstropia/CoreStore";
@@ -620,6 +673,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */;
 			productName = "plugin:RswiftGenerateInternalResources";
+		};
+		224538262F797F1A0050158C /* LicensePlistBuildTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */;
+			productName = "plugin:LicensePlistBuildTool";
 		};
 		2265FD302E6F11D8004F1E09 /* CoreStore */ = {
 			isa = XCSwiftPackageProductDependency;
