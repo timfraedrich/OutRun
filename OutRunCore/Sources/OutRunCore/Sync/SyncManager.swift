@@ -15,13 +15,6 @@ class SyncManager {
     private let syncDelegate: any SyncDelegate
     private let syncServices: [any SyncService]
     private var cancellables: Set<AnyCancellable> = []
-    
-    /// Tracks whether a sync is currently in progress
-    private var isSyncing = false
-    /// Continuations waiting for sync to complete
-    private var syncWaiters: [CheckedContinuation<Void, Never>] = []
-    /// Queue of pending sync operations to prevent race conditions
-    private var pendingSyncCount = 0
 
     init(database: Database, syncDelegate: any SyncDelegate, syncServices: [any SyncService]) {
         self.database = database
@@ -96,23 +89,16 @@ class SyncManager {
         Task { [weak self, logger] in
             do {
                 logger.info("Started streaming workout changes")
-                try await self?.syncAllServices()
+                try await self?.performSync()
                 let didSaveSequence = NotificationCenter.default.notifications(named: ModelContext.didSave)
                     .buffer(policy: .bufferingLatest(1))
                 for await _ in didSaveSequence where !Task.isCancelled {
                     guard let self else { return }
-                    try await syncAllServices()
+                    try await performSync()
                 }
             } catch {
                 logger.fault("Failed streaming history with error: \(error)")
             }
-        }
-    }
-    
-    private func syncAllServices(upTo syncDate: Date = .now) async throws {
-        let syncDate = Date.now
-        for service in syncServices {
-            try await sync(service, upTo: syncDate)
         }
     }
 
@@ -123,13 +109,6 @@ class SyncManager {
         for service in syncServices {
             try await sync(service, upTo: syncDate)
         }
-    }
-    
-    /// Performs a user-initiated sync. Waits for any ongoing sync to complete first.
-    func performUserInitiatedSync(upTo syncDate: Date = .now) async throws {
-        // This method has the same behavior as performSync but is explicitly named
-        // for user-initiated actions. The withSyncLock ensures proper serialization.
-        try await performSync(upTo: syncDate)
     }
 
     private func sync(_ service: any SyncService, upTo syncDate: Date) async throws {
