@@ -4,7 +4,7 @@ import Foundation
 actor MockSyncService: SyncService {
 
     let identifier: String
-    var outwardSyncMode: SyncMode
+    let outwardSyncMode: SyncMode
     let relevantAttributes: Set<PartialKeyPath<Workout> & Sendable>
 
     private var upsertResult: (id: String?, url: String?)

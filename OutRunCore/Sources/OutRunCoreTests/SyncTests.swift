@@ -361,26 +361,35 @@ struct SyncTests {
         #expect(upserted.isEmpty)
     }
 
-    // MARK: - User-Initiated Sync
+    // MARK: - Simultaneous Sync
 
-    @Test("User-initiated sync waits for ongoing sync")
+    @Test("Sync waits for ongoing sync")
     func userInitiatedSyncWaitsForOngoingSync() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
         try await database.insert(workout)
 
         let mockSyncDelegate = await MockSyncDelegate(database: database)
+        // Add 250ms delay to actions to force overlap.
         let mockService = MockSyncService()
         let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
         
         // Start a sync but don't await it
-        let firstSyncTask = Task {
+        let firstStartDateStorage = AsyncStorage<Optional<Int>>(nil)
+        let firstFinishDateStorage = AsyncStorage<Optional<Int>>(nil)
+        let firstSyncTask = Task { @MainActor in
+            await firstStartDateStorage.set(Date.now.unixTimestamp)
             try await syncManager.performSync()
+            await firstFinishDateStorage.set(Date.now.unixTimestamp)
         }
         
-        // Immediately start a user-initiated sync
+        // Immediately start another sync
+        let secondStartDateStorage = AsyncStorage<Optional<Int>>(nil)
+        let secondFinishDateStorage = AsyncStorage<Optional<Int>>(nil)
         let userSyncTask = Task {
-            try await syncManager.performUserInitiatedSync()
+            await secondStartDateStorage.set(Date.now.unixTimestamp)
+            try await syncManager.performSync()
+            await secondFinishDateStorage.set(Date.now.unixTimestamp)
         }
         
         // Both should complete successfully
@@ -390,6 +399,15 @@ struct SyncTests {
         // The workout should be synced
         let upserted = await mockService.upsertedWorkouts
         #expect(upserted.count == 1)
+        
+        // The first task should have finished in the same order as it started compared to second task.
+        let firstStartDate = await firstStartDateStorage.get()
+        let firstFinishDate = await firstFinishDateStorage.get()
+        let secondStartDate = await secondStartDateStorage.get()
+        let secondFinishDate = await secondFinishDateStorage.get()
+        #expect(firstStartDate != nil && firstFinishDate != nil)
+        #expect(secondStartDate != nil && secondFinishDate != nil)
+        #expect((firstStartDate! < secondStartDate!) == (firstFinishDate! < secondFinishDate!))
     }
 
     // MARK: - Multiple Services
