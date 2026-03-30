@@ -23,6 +23,10 @@ class SyncManager {
     }
 
     func initialize() async {
+        guard !syncServices.isEmpty else {
+            logger.info("Skipping initialization as there are no services to sync to.")
+            return
+        }
         for service in syncServices {
             do {
                 let syncMode = await service.outwardSyncMode
