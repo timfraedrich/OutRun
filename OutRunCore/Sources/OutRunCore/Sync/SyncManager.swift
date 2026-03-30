@@ -119,6 +119,7 @@ class SyncManager {
     func performSync(upTo syncDate: Date = .now) async throws {
         // Wait for any ongoing sync to complete, then perform sync
         try await semaphore.waitUnlessCancelled()
+        defer { semaphore.signal() }
         for service in syncServices {
             try await sync(service, upTo: syncDate)
         }
