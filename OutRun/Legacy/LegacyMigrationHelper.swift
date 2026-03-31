@@ -1,4 +1,5 @@
 import Foundation
+import HealthKit
 import OutRunCore
 import OSLog
 import SwiftData
@@ -38,7 +39,23 @@ enum LegacyMigrationHelper {
                 let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
                 let totalCount = try await manager.fetchWorkoutCount()
                 var count = 0
-                while let rawWorkouts = try await manager.extractWorkoutBatch().map(RawWorkout.init) as Optional, rawWorkouts.count > 0 {
+                while var rawWorkouts = try await manager.extractWorkoutBatch().map(RawWorkout.init) as Optional, rawWorkouts.count > 0 {
+                    // Check if source is App or Apple Health
+                    // -> YES (or UNKNOWN): Keep source as .native
+                    // -> NO: Set source as .syncService(HealthSyncService.identifier)
+                    for index in rawWorkouts.indices {
+                        var rawWorkout = rawWorkouts[index]
+                        let serviceIdentifier = HealthSyncService.identifier
+                        let mappingIndex = rawWorkout.serviceMappings.firstIndex(where: { $0.serviceIdentifier == serviceIdentifier })
+                        guard let mappingIndex,
+                              let healthWorkoutID = rawWorkout.serviceMappings[safeIndex: mappingIndex]?.externalId,
+                              let healthWorkoutUUID = UUID(uuidString: healthWorkoutID),
+                              await !isHealthWorkoutNative(healthWorkoutUUID)
+                        else { continue }
+                        rawWorkout.source = .syncService(identifier: serviceIdentifier)
+                        rawWorkouts[index] = rawWorkout
+                    }
+                    // Insert into new database
                     try await core.insert(rawWorkouts)
                     try await manager.deleteWorkoutBatch()
                     count += 10
@@ -89,17 +106,33 @@ enum LegacyMigrationHelper {
     }
     
     /// Returns a RawSyncServiceMapping for the WorkoutService .appleHealth if a healthKitUUID was provided or an empty array otherwise.
-    static func serviceMappingsFromHealthKitUUID(_ healthKitUUID: UUID?) -> [RawSyncServiceMapping] {
+    static func serviceMappingsFromHealthKitUUID(_ healthKitUUID: UUID?, lastEditDate: Date) -> [RawSyncServiceMapping] {
         guard let healthKitUUID else { return [] }
         return [
             .init(
                 serviceIdentifier: HealthSyncService.identifier,
                 externalId: healthKitUUID.uuidString,
                 externalUrl: nil,
-                lastEditDateSynced: nil,
-                syncStatus: .pending
+                lastEditDateSynced: lastEditDate,
+                syncStatus: .synced
             )
         ]
+    }
+
+    /// Fetches the HKHealthStore for the provided HKWorkout UUID and returns whether it is native. The default return value, if the health
+    /// workout cannot be found is `true`.
+    private static func isHealthWorkoutNative(_ healthWorkoutUUID: UUID) async -> Bool {
+        do {
+            let store = HKHealthStore()
+            let uuidPredicate = HKQuery.predicateForObject(with: healthWorkoutUUID)
+            let samplePredicate = HKSamplePredicate.workout(uuidPredicate)
+            let descriptor = HKSampleQueryDescriptor(predicates: [samplePredicate], sortDescriptors: [], limit: 1)
+            guard let workout = try await descriptor.result(for: store).first else { throw HKError(.errorNoData) }
+            return workout.sourceRevision.source == .default()
+        } catch {
+            logger.error("Failed to fetch workout with health store id \(healthWorkoutUUID): \(error.localizedDescription)")
+        }
+        return true
     }
 }
 
