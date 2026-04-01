@@ -277,12 +277,18 @@ public class HealthSyncService: SyncService {
     
     // MARK: Query
     
-    /// Queries the workout with the given id assigned as `HKMetadataKeyExternalUUID` metadata.
-    /// - warning: This function will only work for workouts that were exported by your app and have the metadata key set.
-    private func queryHKWorkout(with id: UUID) async throws -> HKWorkout? {
+    /// Queries the workout with the given id assigned as `HKMetadataKeyExternalUUID` metadata or optionally the HealthKit assigned id.
+    /// - warning: This function will only work for workouts that were exported by your app and have the metadata key set or for which you
+    /// provide a HealthKit assigned id.
+    private func queryHKWorkout(with id: UUID, or healthID: String? = .none) async throws -> HKWorkout? {
         let sourcePredicate = HKQuery.predicateForObjects(from: .default())
         let uuidPredicate = HKQuery.predicateForObjects(withMetadataKey: HKMetadataKeyExternalUUID, allowedValues: [id.uuidString])
-        let workoutPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sourcePredicate, uuidPredicate])
+        let idPredicate = if let healthUUIDPredicate = healthID.map(UUID.init(uuidString:))?.map(HKQuery.predicateForObject(with:)) {
+            NSCompoundPredicate(orPredicateWithSubpredicates: [healthUUIDPredicate, uuidPredicate])
+        } else {
+            uuidPredicate
+        }
+        let workoutPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sourcePredicate, idPredicate])
         let workoutSamplePredicate = HKSamplePredicate.workout(workoutPredicate)
         let workoutSampleQueryDescriptor = HKSampleQueryDescriptor(predicates: [workoutSamplePredicate], sortDescriptors: [], limit: 1)
         return try await workoutSampleQueryDescriptor.result(for: healthStore).first
@@ -508,8 +514,8 @@ public class HealthSyncService: SyncService {
     }
     
     /// Deletes the workout with the given id assigned as `HKMetadataKeyExternalUUID` metadata and the associated objects.
-    private func deleteHKWorkout(with id: UUID) async throws {
-        guard let hkWorkout = try await queryHKWorkout(with: id) else { throw HealthSyncServiceError.objectNotFound }
+    private func deleteHKWorkout(with id: UUID, or healthID: String? = .none) async throws {
+        guard let hkWorkout = try await queryHKWorkout(with: id, or: healthID) else { throw HealthSyncServiceError.objectNotFound }
         try await deleteHKWorkout(hkWorkout)
     }
     
@@ -517,20 +523,23 @@ public class HealthSyncService: SyncService {
     
     public func initialize(with delegate: any SyncDelegate) async {
         self.delegate = delegate
-        self.inwardSyncMode = preference(for: Self.inwardSyncModePreferenceKey) ?? .disabled
-        self.outwardSyncMode = preference(for: Self.outwardSyncModePreferenceKey) ?? .disabled
+        inwardSyncMode = preference(for: Self.inwardSyncModePreferenceKey) ?? .disabled
+        outwardSyncMode = preference(for: Self.outwardSyncModePreferenceKey) ?? .disabled
+        logger.info("Initialized.")
     }
     
     public func deinitialize() async {
         delegate = nil
         inwardSyncMode = .disabled
         outwardSyncMode = .disabled
+        logger.info("Deinitialized.")
     }
     
     public func upsert(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {
         do {
             try await checkMissingAuthorization()
-            if let hkWorkout = try await queryHKWorkout(with: workout.id) {
+            let healthID = workout.serviceMappings.first(where: { $0.serviceIdentifier == identifier })?.externalId
+            if let hkWorkout = try await queryHKWorkout(with: workout.id, or: healthID) {
                 if let version = (hkWorkout.metadata?[HKMetadataKeySyncVersion] as? NSNumber)?.intValue {
                     let upsertVersion = workout.lastEditDate.unixTimestamp
                     if version == upsertVersion {
