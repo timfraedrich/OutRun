@@ -352,6 +352,9 @@ actor Database: ModelActor {
     func upsert(_ workout: RawWorkout) async throws -> UUID {
         do {
             let databaseWorkout = try fetchWorkout(with: workout.id)
+            if databaseWorkout.lastEditDate > workout.lastEditDate {
+                throw SyncError.conflict
+            }
             databaseWorkout.type = workout.type
             databaseWorkout.distance = workout.distance
             databaseWorkout.startDate = workout.startDate

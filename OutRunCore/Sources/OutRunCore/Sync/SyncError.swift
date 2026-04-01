@@ -1,6 +1,6 @@
 // TODO: Localize
 public enum SyncError: Error {
-    /// The workout has conflicting changes between local and remote. Requires manual user intervention.
+    /// The workout has conflicting changes. Requires manual user intervention.
     case conflict
     /// The sync service is temporarily unavailable. Will retry on next sync attempt.
     case serviceUnavailable
