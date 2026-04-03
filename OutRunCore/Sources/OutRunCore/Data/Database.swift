@@ -166,11 +166,6 @@ actor Database: ModelActor {
         return workout.route.sorted(by: { $0.timestamp > $1.timestamp }).map(RawWorkoutRouteDataSample.init)
     }
     
-    func deleteAllWorkouts() throws {
-        try modelContext.delete(model: Workout.self)
-        try modelContext.save()
-    }
-    
     // MARK: - User
     
     func insert(_ rawUser: RawUser) throws {
@@ -347,8 +342,9 @@ actor Database: ModelActor {
         try modelContext.save()
     }
     
-    // MARK: Syncing
+    // MARK: Sync Delegate Implementation
     
+    @discardableResult
     func upsert(_ workout: RawWorkout) async throws -> UUID {
         do {
             let databaseWorkout = try fetchWorkout(with: workout.id)
@@ -404,7 +400,7 @@ actor Database: ModelActor {
         try delete(workoutWithSyncServiceMatching: #Predicate { $0.externalUrl == externalURL }, and: serviceIdentifier)
     }
     
-    // MARK: - Internal
+    // MARK: - Private
     
     private func fetchSyncServiceState(with identifier: String) throws -> SyncServiceState {
         var descriptor = FetchDescriptor<SyncServiceState>(predicate: #Predicate { $0.id == identifier })
@@ -420,6 +416,26 @@ actor Database: ModelActor {
         return workout
     }
     
+    // MARK: - Internal
+    
+    func fetchWorkoutCount() throws -> Int {
+        try modelContext.fetchCount(FetchDescriptor<Workout>())
+    }
+    
+    func fetchWorkouts(limit: Int = .max, offset: Int = .zero) throws -> [RawWorkout] {
+        var descriptor = FetchDescriptor<Workout>()
+        descriptor.fetchLimit = limit
+        descriptor.fetchOffset = offset
+        return try modelContext.fetch(descriptor).map(RawWorkout.init)
+    }
+    
+    func deleteAllData() throws {
+        for model in ModelSchema.models {
+            try modelContext.delete(model: model)
+        }
+        try modelContext.save()
+    }
+    
     // MARK: - Testing
     
     init(
@@ -429,10 +445,6 @@ actor Database: ModelActor {
         try await self.init(
             modelContainer: try Self.modelContainer(name: nil, isStoredInMemoryOnly: isStoredInMemoryOnly, groupContainer: groupContainer)
         )
-    }
-    
-    func fetchWorkouts() throws -> [RawWorkout] {
-        try modelContext.fetch(FetchDescriptor<Workout>()).map(RawWorkout.init)
     }
     
     // MARK: - Static

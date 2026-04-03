@@ -12,6 +12,7 @@
 		2275CB462E8C537B00328632 /* Perception in Frameworks */ = {isa = PBXBuildFile; productRef = 2275CB452E8C537B00328632 /* Perception */; };
 		22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22AD54992DE6274B007297E7 /* OutRunCore */; };
 		22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22E72E252DEA0EA400CCF525 /* OutRunCore */; };
+		22FDD4F22F8012DF00707D70 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 22FDD4F12F8012DF00707D70 /* ZIPFoundation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 				223D71EE2E68B1C90088F92C /* RswiftLibrary in Frameworks */,
 				22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */,
 				2265FD312E6F11D8004F1E09 /* CoreStore in Frameworks */,
+				22FDD4F22F8012DF00707D70 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +160,7 @@
 				22E72E252DEA0EA400CCF525 /* OutRunCore */,
 				223D71ED2E68B1C90088F92C /* RswiftLibrary */,
 				2265FD302E6F11D8004F1E09 /* CoreStore */,
+				22FDD4F12F8012DF00707D70 /* ZIPFoundation */,
 			);
 			productName = OutRun;
 			productReference = 22BC11822DE61964008B0A4C /* OutRun.app */;
@@ -214,6 +217,7 @@
 				2265FD2F2E6F11D8004F1E09 /* XCRemoteSwiftPackageReference "CoreStore" */,
 				2275CB422E8C536F00328632 /* XCRemoteSwiftPackageReference "swift-perception" */,
 				224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */,
+				22FDD4F02F8012DF00707D70 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 22BC11832DE61964008B0A4C /* Products */;
@@ -661,6 +665,14 @@
 				minimumVersion = 2.0.8;
 			};
 		};
+		22FDD4F02F8012DF00707D70 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.20;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -696,6 +708,11 @@
 		22E72E252DEA0EA400CCF525 /* OutRunCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OutRunCore;
+		};
+		22FDD4F12F8012DF00707D70 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22FDD4F02F8012DF00707D70 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

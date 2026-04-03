@@ -68,12 +68,8 @@ class LegacyMigrationTests {
     // MARK: Helper Methods
     
     private func readExampleData<C: Codable>(filename: String) throws -> [C] {
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: filename, withExtension: "json") else {
-            throw "Invalid URL for example workouts json file."
-        }
-        let data = try Data(contentsOf: url)
-        return try JSONDecoder().decode(LegacyBackup<C>.self, from: data).workoutData
+        let legacyBackup: LegacyBackup<C> = try TestUtil.readJSON(filename: filename)
+        return legacyBackup.workoutData
     }
     
     private func readV1ExampleData() throws -> [LegacyRawDataModelV1.Workout] {
@@ -88,25 +84,16 @@ class LegacyMigrationTests {
         try readExampleData(filename: "OutRunV3")
     }
     
-    private func readExpectedResults(filename: String) throws -> [RawWorkout] {
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: filename, withExtension: "json") else {
-            throw "Invalid URL for expected results json file."
-        }
-        let data = try Data(contentsOf: url)
-        return try JSONDecoder().decode([RawWorkout].self, from: data)
-    }
-    
     private func readV1ExpectedResults() throws -> [RawWorkout] {
-        try readExpectedResults(filename: "ExpectationOutRunV1")
+        try TestUtil.readJSON(filename: "ExpectationOutRunV1")
     }
     
     private func readV2ExpectedResults() throws -> [RawWorkout] {
-        try readExpectedResults(filename: "ExpectationOutRunV2")
+        try TestUtil.readJSON(filename: "ExpectationOutRunV2")
     }
     
     private func readV3ExpectedResults() throws -> [RawWorkout] {
-        try readExpectedResults(filename: "ExpectationOutRunV3")
+        try TestUtil.readJSON(filename: "ExpectationOutRunV3")
     }
     
     private func prepareLegacyDataManager<DataModel: LegacyDataModel>(legacyStorageFileName: String) async throws -> LegacyDatabase<DataModel> {

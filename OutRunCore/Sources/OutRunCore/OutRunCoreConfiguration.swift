@@ -18,7 +18,7 @@ public struct OutRunCoreConfiguration {
         containerName: String? = nil,
         isStoredInMemoryOnly: Bool = false,
         appGroupIdentifier: String? = nil,
-        recordableDataTypes: RecordableDataTypes
+        recordableDataTypes: RecordableDataTypes = [.location]
     ) {
         self.containerName = containerName
         self.isStoredInMemoryOnly = isStoredInMemoryOnly

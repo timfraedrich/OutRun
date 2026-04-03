@@ -1,16 +1,19 @@
 import Foundation
 
+// TODO: Finish Localization
 public enum OutRunCoreError: CustomDebugStringConvertible, LocalizedError {
     
     case invalidNameProvided
     case notInitialized
     case setupNotRequired
+    case newerWorkoutVersionExists
     
     public var debugDescription: String {
         switch self {
         case .invalidNameProvided: "OutRunCoreError.invalidNameProvided"
         case .notInitialized: "OutRunCoreError.notInitialized"
         case .setupNotRequired: "OutRunCoreError.setupNotRequired"
+        case .newerWorkoutVersionExists: "OutRunCoreError.newerWorkoutVersionExists"
         }
     }
     
@@ -19,6 +22,7 @@ public enum OutRunCoreError: CustomDebugStringConvertible, LocalizedError {
         case .invalidNameProvided: R.string.localizable.core_error_invalid_name_provided()
         case .notInitialized: R.string.localizable.core_error_not_initialized()
         case .setupNotRequired: R.string.localizable.core_error_setup_not_required()
+        case .newerWorkoutVersionExists: ""
         }
     }
 }

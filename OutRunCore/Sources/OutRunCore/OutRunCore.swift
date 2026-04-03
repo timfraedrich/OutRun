@@ -100,6 +100,40 @@ public class OutRunCore {
         try await database.insert(workouts)
     }
     
+    /// Upserts the prodived workout into the database.
+    /// - throws: Throws if the core is not yet initialized or inserting the workout fails.
+    /// - note: If a workout with the provided workout identifier already exists it is only updated in the database if the existing
+    /// workout's lastEditDate is earlier than the provided workout's. In this case the OutRunCoreError.newerWorkoutVersionExists will be
+    /// thrown.
+    @discardableResult
+    public func upsert(_ workout: RawWorkout) async throws -> UUID {
+        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        do {
+            return try await database.upsert(workout)
+        } catch SyncError.conflict {
+            throw OutRunCoreError.newerWorkoutVersionExists
+        }
+    }
+    
+    /// Deletes the workout with the provided identifier, if present.
+    /// - throws: Throws if the core is not yet initialized or deleting the workout fails.
+    public func delete(workoutWithIdentifier identifier: UUID) async throws {
+        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        try await database.delete(workoutWithIdentifier: identifier)
+    }
+    
+    /// Fetches the number of workouts currently saved in the database.
+    public func fetchWorkoutCount() async throws -> Int {
+        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        return try await database.fetchWorkoutCount()
+    }
+    
+    /// Fetches workouts within the provided limit and and with the provided offset from the database.
+    public func fetchWorkouts(limit: Int = .max, offset: Int = .zero) async throws -> [RawWorkout] {
+        guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
+        return try await database.fetchWorkouts(limit: limit, offset: offset)
+    }
+    
     /// Updates properties of the currently set up user.
     /// - throws: Throws if the core is not yet initialized, the provided properties are invalid or updating the user fails.
     /// - note: For restrictions on properties see ``UserProtocol``.
@@ -120,8 +154,8 @@ public class OutRunCore {
     /// - note: This method waits for the core to transition into the `.needsSetup` state before returning.
     public func reset() async throws {
         guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
-        try await database.deleteAllWorkouts()
         try await database.deleteUser()
+        try await database.deleteAllData()
         if case .needsSetup = status { return }
         await wait(for: .needsSetup)
     }
@@ -182,7 +216,7 @@ public class OutRunCore {
         await syncManager?.deinitialize()
     }
     
-    private func wait(for status: OutRunCoreStatus) async {
+    func wait(for status: OutRunCoreStatus) async {
         let statusSequence = Perceptions { [weak self] in self?.status }.buffer(policy: .unbounded)
         for await newStatus in statusSequence where newStatus == status {
             return
