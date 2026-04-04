@@ -1,3 +1,4 @@
+import AsyncAlgorithms
 import Foundation
 import OutRunCore
 import ZIPFoundation
@@ -10,8 +11,35 @@ class BackupService {
         self.core = core
     }
     
+    private func encoder() -> JSONEncoder {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .custom { date, encoder in
+            var container = encoder.singleValueContainer()
+            let formatter = ISO8601DateFormatter.internetDateTimeWithFractionalSeconds()
+            let dateString = formatter.string(from: date)
+            try container.encode(dateString)
+        }
+        return encoder
+    }
+    
+    private func decoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .custom { decoder in
+            let container = try decoder.singleValueContainer()
+            let dateString = try container.decode(String.self)
+            let formatter = ISO8601DateFormatter.internetDateTimeWithFractionalSeconds()
+            guard let date = formatter.date(from: dateString) else {
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Date Format is not valid.")
+            }
+            return date
+        }
+        return decoder
+    }
+    
+    
     func backup(to url: URL) -> (task: Task<URL, Error>, progressStream: AsyncThrowingStream<Float, Error>) {
         let timestamp = Date.now
+        let encoder = encoder()
         let (stream, continuation) = AsyncThrowingStream<Float, Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         continuation.yield(0)
         let task = Task { [core] in
@@ -27,13 +55,6 @@ class BackupService {
                     try fileManager.removeItem(at: tempDirectoryURL)
                 }
                 try fileManager.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: false)
-                let encoder = JSONEncoder()
-                encoder.dateEncodingStrategy = .custom { date, encoder in
-                    var container = encoder.singleValueContainer()
-                    let formatter = ISO8601DateFormatter.internetDateTimeWithFractionalSeconds()
-                    let dateString = formatter.string(from: date)
-                    try container.encode(dateString)
-                }
                 let count = try await core.fetchWorkoutCount()
                 continuation.yield(0.05)
                 for offset in .zero...count {
@@ -43,7 +64,7 @@ class BackupService {
                     let workoutURL = tempDirectoryURL.appending(components: workoutFileName)
                     try workoutData.write(to: workoutURL)
                     try archive.addEntry(with: workoutFileName, fileURL: workoutURL, compressionMethod: .deflate)
-                    continuation.yield(0.05 + 0.95 * Float(offset + 1) / Float(count))
+                    continuation.yield(0.05 + 0.90 * Float(offset + 1) / Float(count))
                 }
                 try fileManager.removeItem(at: tempDirectoryURL)
                 continuation.yield(1)
@@ -58,29 +79,17 @@ class BackupService {
     }
     
     func restoreBackup(from url: URL) -> (task: Task<RestoreBackupResult, Error>, progressStream: AsyncThrowingStream<Float, Error>) {
+        let decoder = decoder()
         let (stream, continuation) = AsyncThrowingStream<Float, Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         continuation.yield(0)
         let task = Task { [core] in
             do {
-                let archive = try Archive(url: url, accessMode: .read)
-                var result = RestoreBackupResult()
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .custom { decoder in
-                    let container = try decoder.singleValueContainer()
-                    let dateString = try container.decode(String.self)
-                    let formatter = ISO8601DateFormatter.internetDateTimeWithFractionalSeconds()
-                    guard let date = formatter.date(from: dateString) else {
-                        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Date Format is not valid.")
-                    }
-                    return date
-                }
-                let entries = Array(archive)
-                let count = entries.count
                 continuation.yield(0.05)
-                for (offset, entry) in entries.enumerated() {
+                var result = RestoreBackupResult()
+                let count: Int
+                func restoreWorkout(_ workout: RawWorkout?, at offset: Int) async {
                     do {
-                        let workoutData = try await archive.extract(entry)
-                        let workout = try decoder.decode(RawWorkout.self, from: workoutData)
+                        let workout = try workout.unwrapOrThrow(error: ZIPWorkoutExtractionError())
                         try await core.upsert(workout)
                         result.upserted += 1
                     } catch OutRunCoreError.newerWorkoutVersionExists {
@@ -88,7 +97,22 @@ class BackupService {
                     } catch {
                         result.failed += 1
                     }
-                    continuation.yield(0.05 + 0.95 * Float(offset + 1) / Float(count))
+                    continuation.yield(0.05 + 0.90 * Float(offset + 1) / Float(count))
+                }
+                if let archive = try? Archive(url: url, accessMode: .read) as Archive {
+                    let entries = Array(archive)
+                    count = entries.count
+                    for (offset, entry) in archive.enumerated() {
+                        let workout = (try? await archive.extract(entry)).flatMap { try? decoder.decode(RawWorkout.self, from: $0) }
+                        await restoreWorkout(workout, at: offset)
+                    }
+                } else if let data = try? Data(contentsOf: url), let legacyBackupWorkouts = try? LegacyBackupHelper.restore(from: data) {
+                    count = legacyBackupWorkouts.count
+                    for (offset, workout) in legacyBackupWorkouts.enumerated() {
+                        await restoreWorkout(workout, at: offset)
+                    }
+                } else {
+                    throw BackupNotReadableError()
                 }
                 continuation.yield(1)
                 continuation.finish()
@@ -106,4 +130,8 @@ class BackupService {
         var skipped: Int = 0
         var failed: Int = 0
     }
+    
+    private struct ZIPWorkoutExtractionError: Error {}
+    
+    struct BackupNotReadableError: Error {}
 }
