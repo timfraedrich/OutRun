@@ -2,7 +2,7 @@ import CoreLocation
 import OutRunCore
 import SwiftUI
 
-struct LastWorkoutCardStyle: WorkoutCardStyle {
+struct LatestWorkoutCardStyle: WorkoutCardStyle {
     
     @State private var width: CGFloat?
     
@@ -70,8 +70,8 @@ struct LastWorkoutCardStyle: WorkoutCardStyle {
     }
 }
 
-extension WorkoutCardStyle where Self == LastWorkoutCardStyle {
-    static var last: Self { .init() }
+extension WorkoutCardStyle where Self == LatestWorkoutCardStyle {
+    static var latest: Self { .init() }
 }
 
 #Preview {
@@ -79,6 +79,6 @@ extension WorkoutCardStyle where Self == LastWorkoutCardStyle {
         WorkoutCard(workout: PreviewConstants.cyclingWorkout)
         WorkoutCard(workout: PreviewConstants.runningWorkout)
     }
-    .workoutCardStyle(.last)
+    .workoutCardStyle(.latest)
     .padding()
 }
