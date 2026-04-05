@@ -7,15 +7,14 @@ struct ActionButton<Label: View>: View {
     let label: () -> Label
     
     var body: some View {
-        let button = Button(action: action) {
-            label().bold().frame(maxWidth: maxWidth).foregroundStyle(.white)
+        Button(action: action) {
+            label()
+                .frame(maxWidth: maxWidth)
+                .foregroundStyle(.white)
+                .bold()
         }
         .controlSize(.large)
-        if #available(iOS 26, *) {
-            button.buttonStyle(.glassProminent)
-        } else {
-            button.buttonStyle(.borderedProminent).buttonBorderShape(.roundedRectangle(radius: .regular))
-        }
+        .buttonStyle(.action)
     }
     
     init(maxWidth: CGFloat? = .infinity, action: @escaping () -> Void, @ViewBuilder label: @escaping () -> Label) {
