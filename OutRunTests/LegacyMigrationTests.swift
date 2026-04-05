@@ -9,92 +9,37 @@ import AsyncAlgorithms
 @Suite("Legacy Database Migration Tests")
 class LegacyMigrationTests {
     
-    @Test("Check Example Data")
-    func checkExampleData() throws {
-        let v1ExampleData = try readV1ExampleData()
-        #expect(v1ExampleData.count == 3)
-        let v2ExampleData = try readV2ExampleData()
-        #expect(v2ExampleData.count == 3)
-        let v3ExampleData = try readV3ExampleData()
-        #expect(v3ExampleData.count == 3)
-    }
-    
-    @Test("Check Expected Data")
-    func checkExpectedData() throws {
-        let v1ExpectedResults = try readV1ExpectedResults()
-        #expect(v1ExpectedResults.count == 3)
-        let v2ExpectedResults = try readV2ExpectedResults()
-        #expect(v2ExpectedResults.count == 3)
-        let v3ExpectedResults = try readV3ExpectedResults()
-        #expect(v3ExpectedResults.count == 3)
-    }
-    
     @Test("Migrate From Legacy Database V1")
     func migrateFromLegacyV1() async throws {
-        let exampleData = try readV1ExampleData()
-        let legacyStorageFileName = "V1Migration"
-        let manager: LegacyDatabase<LegacyDataModelV1> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
-        try await manager.insert(exampleData)
-        await manager.close()
-        #expect(await manager.storageExistsOnDisk())
-        try await migrateAndCheckResults(for: legacyStorageFileName, and: try readV1ExpectedResults())
-        #expect(!(await manager.storageExistsOnDisk()))
+        try await performLegacyMigration(
+            legacyBackupName: "OutRunV1",
+            expectedWorkoutsName: "ExpectationOutRunV1"
+        ) { (database: LegacyDatabase<LegacyDataModelV1>, legacyWorkouts: [LegacyRawDataModelV1.Workout]) in
+            try await database.insert(legacyWorkouts)
+        }
     }
     
     @Test("Migrate From Legacy Database V2")
     func migrateFromLegacyV2() async throws {
-        let exampleData = try readV2ExampleData()
-        let legacyStorageFileName = "V2Migration"
-        let manager: LegacyDatabase<LegacyDataModelV2> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
-        try await manager.insert(exampleData)
-        await manager.close()
-        #expect(await manager.storageExistsOnDisk())
-        try await migrateAndCheckResults(for: legacyStorageFileName, and: try readV2ExpectedResults())
-        #expect(!(await manager.storageExistsOnDisk()))
+        try await performLegacyMigration(
+            legacyBackupName: "OutRunV2",
+            expectedWorkoutsName: "ExpectationOutRunV2"
+        ) { (database: LegacyDatabase<LegacyDataModelV2>, legacyWorkouts: [LegacyRawDataModelV2.Workout]) in
+            try await database.insert(legacyWorkouts)
+        }
     }
     
     @Test("Migrate From Legacy Database V3")
     func migrateFromLegacyV3() async throws {
-        let exampleData = try readV3ExampleData()
-        let legacyStorageFileName = "V3Migration"
-        let manager: LegacyDatabase<LegacyDataModelV3> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
-        try await manager.insert(exampleData)
-        await manager.close()
-        #expect(await manager.storageExistsOnDisk())
-        try await migrateAndCheckResults(for: legacyStorageFileName, and: try readV3ExpectedResults())
-        #expect(!(await manager.storageExistsOnDisk()))
+        try await performLegacyMigration(
+            legacyBackupName: "OutRunV3",
+            expectedWorkoutsName: "ExpectationOutRunV3"
+        ) { (database: LegacyDatabase<LegacyDataModelV3>, legacyWorkouts: [LegacyRawDataModelV3.Workout]) in
+            try await database.insert(legacyWorkouts)
+        }
     }
     
     // MARK: Helper Methods
-    
-    private func readExampleData<C: Codable>(filename: String) throws -> [C] {
-        let legacyBackup: LegacyBackup<C> = try TestUtil.readJSON(filename: filename)
-        return legacyBackup.workoutData
-    }
-    
-    private func readV1ExampleData() throws -> [LegacyRawDataModelV1.Workout] {
-        try readExampleData(filename: "OutRunV1")
-    }
-    
-    private func readV2ExampleData() throws -> [LegacyRawDataModelV2.Workout] {
-        try readExampleData(filename: "OutRunV2")
-    }
-    
-    private func readV3ExampleData() throws -> [LegacyRawDataModelV3.Workout] {
-        try readExampleData(filename: "OutRunV3")
-    }
-    
-    private func readV1ExpectedResults() throws -> [RawWorkout] {
-        try TestUtil.readJSON(filename: "ExpectationOutRunV1")
-    }
-    
-    private func readV2ExpectedResults() throws -> [RawWorkout] {
-        try TestUtil.readJSON(filename: "ExpectationOutRunV2")
-    }
-    
-    private func readV3ExpectedResults() throws -> [RawWorkout] {
-        try TestUtil.readJSON(filename: "ExpectationOutRunV3")
-    }
     
     private func prepareLegacyDataManager<DataModel: LegacyDataModel>(legacyStorageFileName: String) async throws -> LegacyDatabase<DataModel> {
         let legacyStorageURL = LegacyDatabase<DataModel>.legacyStorageURL(for: legacyStorageFileName)
@@ -122,5 +67,22 @@ class LegacyMigrationTests {
         let sortDescriptor = SortDescriptor<RawWorkout>(\.startDate)
         #expect(Set(actualWorkouts.map(\.id)) == Set(expectedWorkouts.map(\.id)))
         #expect(actualWorkouts.sorted(using: sortDescriptor) == expectedWorkouts.sorted(using: sortDescriptor))
+    }
+    
+    private func performLegacyMigration<R: Codable, L: LegacyDataModel>(
+        legacyBackupName: String,
+        expectedWorkoutsName: String,
+        insertImplementation: @escaping (LegacyDatabase<L>, [R]) async throws -> Void
+    ) async throws {
+        let legacyBackup: LegacyBackup<R> = try TestUtil.readJSON(with: legacyBackupName)
+        let legacyWorkouts: [R] = legacyBackup.workoutData
+        let legacyStorageFileName = legacyBackupName + "Migration"
+        let manager: LegacyDatabase<L> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)
+        try await insertImplementation(manager, legacyWorkouts)
+        await manager.close()
+        #expect(await manager.storageExistsOnDisk())
+        let expectedWorkouts: [RawWorkout] = try TestUtil.readJSON(with: expectedWorkoutsName)
+        try await migrateAndCheckResults(for: legacyStorageFileName, and: expectedWorkouts)
+        #expect(!(await manager.storageExistsOnDisk()))
     }
 }
