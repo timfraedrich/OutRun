@@ -23,6 +23,20 @@ public protocol WorkoutCardStyle: Sendable {
     func makeBody(configuration: Configuration) -> Body
 }
 
+@MainActor
+public struct AnyWorkoutCardStyle: WorkoutCardStyle {
+    
+    private let makeBody: (Configuration) -> AnyView
+    
+    public init<W: WorkoutCardStyle>(_ style: W) {
+        self.makeBody = { AnyView(style.makeBody(configuration: $0)) }
+    }
+    
+    public func makeBody(configuration: Configuration) -> some View {
+        makeBody(configuration)
+    }
+}
+
 public struct WorkoutCardStyleConfiguration {
     
     public let workout: any WorkoutProtocol
