@@ -3,6 +3,20 @@ import SwiftUI
 extension View {
     
     @ViewBuilder
+    func compatibleSafeAreaBar<Content: View>(
+        edge: VerticalEdge,
+        alignment: HorizontalAlignment = .center,
+        spacing: CGFloat? = .none,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        if #available(iOS 26.0, *) {
+            safeAreaBar(edge: edge, alignment: alignment, spacing: spacing, content: content)
+        } else {
+            safeAreaInset(edge: edge, alignment: alignment, spacing: spacing, content: content)
+        }
+    }
+    
+    @ViewBuilder
     func errorPopover<E: Error>(_ errorBinding: Binding<E?>) -> some View {
         let showErrorBinding = Binding(
             get: { errorBinding.wrappedValue != nil },
