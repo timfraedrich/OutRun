@@ -15,6 +15,7 @@ extension View {
             safeAreaInset(edge: edge, alignment: alignment, spacing: spacing) {
                 ZStack {
                     BackgroundBlackoutGradient(startPoint: edge == .top ? .bottom : .top, endPoint: .center)
+                        .ignoresSafeArea()
                     content()
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -44,6 +45,15 @@ extension View {
                 }
                 return Color.clear
             }
+        }
+    }
+    
+    @ViewBuilder
+    func ignoresBottomSafeAreaOnIOS26OrLater(regions: SafeAreaRegions = .all) -> some View {
+        if #available(iOS 26.0, *) {
+            ignoresSafeArea(regions, edges: .bottom)
+        } else {
+            self
         }
     }
 }

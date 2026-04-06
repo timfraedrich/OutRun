@@ -29,8 +29,7 @@ struct MainScene: View {
                 .padding(.horizontal, .regular)
             }
             .background()
-            .compatibleSafeAreaBar(edge: .bottom, content: bottomSafeAreaBarContent)
-            .ignoresSafeArea(edges: .bottom)
+            .customBottomSafeAreaBar(content: bottomSafeAreaBarContent)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: toolbarContent)
             .sheet(item: $mainRouter.currentSheet) { sheet in
@@ -117,19 +116,16 @@ struct MainScene: View {
     
     @ViewBuilder
     private func bottomSafeAreaBarContent() -> some View {
-        Group {
-            if recorder.status.isCollectingData {
-                WorkoutInProgressButton(
-                    workoutType: recorder.workoutType,
-                    distance: recorder.distance,
-                    duration: recorder.duration,
-                    action: showRecordingScene
-                )
-            } else {
-                ActionButton(verbatim: "Record a Workout", action: showRecordingScene)
-            }
+        if recorder.status.isCollectingData {
+            WorkoutInProgressButton(
+                workoutType: recorder.workoutType,
+                distance: recorder.distance,
+                duration: recorder.duration,
+                action: showRecordingScene
+            )
+        } else {
+            ActionButton(verbatim: "Record a Workout", action: showRecordingScene)
         }
-        .padding(.extraLarge)
     }
     
     init() {
