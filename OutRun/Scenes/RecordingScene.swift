@@ -3,7 +3,7 @@ import OutRunCore
 import SwiftData
 import SwiftUI
 
-struct RecordingView: View {
+struct RecordingScene: View {
     
     @Environment(OutRunCore.self) private var core: OutRunCore
     @Environment(\.dismiss) private var dismiss
@@ -41,8 +41,10 @@ struct RecordingView: View {
     
     var body: some View {
         WorkoutRouteMap(coordinates: recorder.route, strokeColor: .accent, showUserLocation: true)
+            .safeAreaInset(edge: .top, content: closeButtonContent)
             .safeAreaInset(edge: .bottom, content: informationCard)
-            .overlay(alignment: .topTrailing, content: closeButtonContent)
+            .ignoresBottomSafeAreaOnIOS26OrLater()
+            .toolbarVisibility(.hidden, for: .navigationBar)
             .alert(error?.localizedDescription ?? "Error", isPresented: errorIsPresented) {
                 Button("Ok") {}
             }
@@ -50,6 +52,8 @@ struct RecordingView: View {
     
     @ViewBuilder
     private func informationCard() -> some View {
+        let verticalPadding: Spacing = if #available(iOS 26, *) { .large } else { .regular }
+        let recordingButtonPadding: Spacing? = if #available(iOS 26, *) { .small } else { .none }
         VStack(spacing: .regular) {
             HStack(spacing: .regular) {
                 Menu {
@@ -71,12 +75,12 @@ struct RecordingView: View {
                     Text(recorder.status.description)
                         .font(.footnote)
                         .textCase(.uppercase)
-                        .foregroundStyle(.tertiary)
+                        .foregroundStyle(.secondary)
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(.background.secondary)
-                .clipShape(.capsule)
+                .compatibleRegularGlassEffect(in: .capsule)
+                .backgroundStyle(.secondaryBackground)
             }
             .bold()
             
@@ -109,29 +113,33 @@ struct RecordingView: View {
                 pauseAction: pauseAction,
                 resumeAction: resumeAction
             )
+            .padding(recordingButtonPadding?.rawValue ?? .zero)
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 16)
+        .padding(.horizontal, .large)
+        .padding(.vertical, verticalPadding)
         .background(content: MapOverlayBackground.init)
     }
     
     @ViewBuilder
     private func closeButtonContent() -> some View {
-        let button = Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
-            .labelStyle(.iconOnly)
-            .tint(.primary)
-        if #available(iOS 26.0, *) {
-            button
-                .font(.title2.weight(.medium))
-                .frame(width: 44, height: 44)
-                .glassEffect(.regular.interactive(), in: .circle)
-                .padding(24)
-        } else {
-            button
-                .font(.title)
-                .symbolVariant(.circle.fill)
-                .symbolRenderingMode(.hierarchical)
-                .padding(16)
+        HStack {
+            Spacer()
+            let button = Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
+                .labelStyle(.iconOnly)
+                .tint(.primary)
+            if #available(iOS 26.0, *) {
+                button
+                    .font(.title2.weight(.medium))
+                    .frame(width: 44, height: 44)
+                    .glassEffect(.regular.interactive(), in: .circle)
+                    .padding(.large)
+            } else {
+                button
+                    .font(.title)
+                    .symbolVariant(.circle.fill)
+                    .symbolRenderingMode(.hierarchical)
+                    .padding(.regular)
+            }
         }
     }
     
@@ -143,53 +151,29 @@ struct RecordingView: View {
     
     // MARK: Actions
     
-    private func startAction() {
+    private func errorHandledAsyncAction(_ action: @escaping () async throws -> Void) {
         Task {
             do {
-                try await recorder.startRecording()
+                try await action()
             } catch {
                 self.error = error
             }
         }
+    }
+    
+    private func startAction() {
+        errorHandledAsyncAction { try await recorder.startRecording() }
     }
     
     private func endAction() {
-        Task {
-            do {
-                _ = try await recorder.endRecording()
-            } catch {
-                self.error = error
-            }
-        }
+        errorHandledAsyncAction { _ = try await recorder.endRecording() }
     }
     
     private func pauseAction() {
-        Task {
-            do {
-                try await recorder.pauseRecording()
-            } catch {
-                self.error = error
-            }
-        }
+        errorHandledAsyncAction { try await recorder.pauseRecording() }
     }
     
     private func resumeAction() {
-        Task {
-            do {
-                try await recorder.resumeRecording()
-            } catch {
-                self.error = error
-            }
-        }
-    }
-}
-
-extension WorkoutRecorderStatus {
-    var color: Color {
-        switch self {
-        case .idle: .green
-        case .recording: .red
-        case .failed, .initializing, .paused: .gray
-        }
+        errorHandledAsyncAction { try await recorder.resumeRecording() }
     }
 }

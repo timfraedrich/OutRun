@@ -39,7 +39,7 @@ struct MainScene: View {
                         QueriedWorkoutDetailView(id: workoutID)
                     case .recording:
                         if let recorder = core.recorder {
-                            RecordingView(recorder: recorder)
+                            RecordingScene(recorder: recorder)
                         }
                     case .settings:
                         if let userPreferences = core.userPreferences {
