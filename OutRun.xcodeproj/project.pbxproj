@@ -35,7 +35,7 @@
 		22AD549F2DE62770007297E7 /* Exceptions for "OutRun" folder in "OutRun" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Support Files/Info.plist",
+				App/Info.plist,
 			);
 			target = 22BC11812DE61964008B0A4C /* OutRun */;
 		};
@@ -507,7 +507,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = DebugAppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = "OutRun/Support Files/OutRun.entitlements";
+				CODE_SIGN_ENTITLEMENTS = OutRun/App/OutRun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
@@ -517,7 +517,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = AppIcon.icon;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = "OutRun/Support Files/Info.plist";
+				INFOPLIST_FILE = OutRun/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OutRun;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -553,7 +553,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = "OutRun/Support Files/OutRun.entitlements";
+				CODE_SIGN_ENTITLEMENTS = OutRun/App/OutRun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
@@ -563,7 +563,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = DebugAppIcon.icon;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = "OutRun/Support Files/Info.plist";
+				INFOPLIST_FILE = OutRun/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OutRun;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
