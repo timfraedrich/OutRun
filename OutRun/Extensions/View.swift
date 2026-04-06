@@ -12,7 +12,13 @@ extension View {
         if #available(iOS 26.0, *) {
             safeAreaBar(edge: edge, alignment: alignment, spacing: spacing, content: content)
         } else {
-            safeAreaInset(edge: edge, alignment: alignment, spacing: spacing, content: content)
+            safeAreaInset(edge: edge, alignment: alignment, spacing: spacing) {
+                ZStack {
+                    BackgroundBlackoutGradient(startPoint: edge == .top ? .bottom : .top, endPoint: .center)
+                    content()
+                }
+                .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
     
