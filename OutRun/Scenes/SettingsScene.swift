@@ -126,6 +126,15 @@ struct SettingsScene: View {
                     Button("Clear Map Cache") {
                         try? StaticWorkoutMapService.clearCache()
                     }
+                    Button("Reset", role: .destructive) {
+                        Task {
+                            do {
+                                try await core.reset()
+                            } catch {
+                                print("Reset failed: \(error)")
+                            }
+                        }
+                    }
                 }
                 
                 Section("Info") {
