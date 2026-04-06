@@ -31,6 +31,7 @@ struct WorkoutDetailView: View {
         .overlay(alignment: .topTrailing, content: closeButtonContent)
         .backgroundStyle(.secondaryBackground)
         .labeledContentStyle(.metric)
+        .toolbarVisibility(.hidden, for: .navigationBar)
     }
     
     @ViewBuilder
