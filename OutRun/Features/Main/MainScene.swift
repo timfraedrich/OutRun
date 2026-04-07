@@ -42,9 +42,7 @@ struct MainScene: View {
                             RecordingScene(recorder: recorder)
                         }
                     case .settings:
-                        if let userPreferences = core.userPreferences {
-                            SettingsScene(userPreferences: userPreferences)
-                        }
+                        SettingsScene()
                     }
                 }
             }

@@ -1,11 +1,18 @@
-import SwiftUI
 import OutRunCore
+import SwiftData
+import SwiftUI
+import WebKit
 
 struct SettingsScene: View {
     
     @Environment(OutRunCore.self) private var core
+    @Environment(UserPreferences.self) private var userPreferences
+    @Environment(SettingsRouter.self) private var settingsRouter
+    @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
-    @Bindable private var userPreferences: UserPreferences
+    @Query private var workouts: [Workout]
+    @State private var confirmReset: Bool = false
+    @State private var resetError: Error?
     
     private var version: String {
         let marketingVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
@@ -16,15 +23,17 @@ struct SettingsScene: View {
         }
     }
     
+    private var databaseSize: Int {
+        (try? core.modelContainer.configurations.first?.url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? .zero
+    }
+    
     var body: some View {
-        NavigationStack {
-            Form {
+        @Bindable var settingsRouter = settingsRouter
+        @Bindable var userPreferences = userPreferences
+        NavigationStack(path: $settingsRouter.path) {
+            List {
                 Section {
-                    NavigationLink {
-                        if let user = core.user {
-                            UserProfileView(user: user)
-                        }
-                    } label: {
+                    NavigationLink(value: SettingsDestination.profile) {
                         HStack(spacing: .regular) {
                             Image(systemName: "person.crop.circle.fill")
                                 .resizable()
@@ -40,105 +49,87 @@ struct SettingsScene: View {
                     }
                 }
                 
-                Section("Units") {
-                    Picker(selection: $userPreferences.distanceUnit) {
-                        Text("System").tag(UnitLength?.none)
-                        ForEach(UserPreferences.supportedDistanceUnits, id: \.symbol) { unit in
-                            Text(formattedUnit(unit)).tag(unit)
+                Section {
+                    NavigationLink(value: SettingsDestination.units) {
+                        SettingsRowLabel {
+                            Text("Unit Settings")
+                        } icon: {
+                            Image(systemName: "ruler.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
                         }
-                    } label: {
-                        Text("Distance Unit")
                     }
-                    Picker(selection: $userPreferences.altitudeUnit) {
-                        Text("System").tag(UnitLength?.none)
-                        ForEach(UserPreferences.supportedAltitudeUnits, id: \.symbol) { unit in
-                            Text(formattedUnit(unit)).tag(unit)
+                    NavigationLink(value: SettingsDestination.recording) {
+                        SettingsRowLabel {
+                            Text("Recording Preferences")
+                        } icon: {
+                            Image(systemName: "record.circle")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.extraSmall)
                         }
-                    } label: {
-                        Text("Altitude Unit")
                     }
-                    Picker(selection: $userPreferences.speedUnit) {
-                        Text("System").tag(UnitSpeed?.none)
-                        ForEach(UserPreferences.supportedSpeedUnits, id: \.symbol) { unit in
-                            Text(formattedUnit(unit)).tag(unit)
+                    NavigationLink(value: SettingsDestination.appleHealth) {
+                        SettingsRowLabel {
+                            Text("Apple Health")
+                        } icon: {
+                            Image(systemName: "heart.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(6)
+                                .offset(x: 3, y: -3)
                         }
-                    } label: {
-                        Text("Speed Unit")
                     }
-                    Picker(selection: $userPreferences.energyUnit) {
-                        Text("System").tag(UnitEnergy?.none)
-                        ForEach(UserPreferences.supportedEnergyUnits, id: \.symbol) { unit in
-                            Text(formattedUnit(unit)).tag(unit)
+                    NavigationLink(value: SettingsDestination.backup) {
+                        SettingsRowLabel {
+                            Text("Backup")
+                        } icon: {
+                            Image(systemName: "document.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.extraSmall)
                         }
-                    } label: {
-                        Text("Energy Unit")
                     }
-                    Picker(selection: $userPreferences.weightUnit) {
-                        Text("System").tag(UnitMass?.none)
-                        ForEach(UserPreferences.supportedWeightUnits, id: \.symbol) { unit in
-                            Text(formattedUnit(unit)).tag(unit)
-                        }
-                    } label: {
-                        Text("Weight Unit")
-                    }
-                }
-                
-                Section("Recording") {
-                    
-                    Picker(selection: $userPreferences.defaultWorkoutType) {
-                        Text("Latest").tag(WorkoutType?.none)
-                        ForEach(WorkoutType.allCases, id: \.rawValue) { type in
-                            Text(type.description).tag(type)
-                        }
-                    } label: {
-                        Text("Default Workout Type")
-                    }
-                    
-                    Picker(selection: $userPreferences.requiredGPSAccuracy) {
-                        Text("10 m").tag(10.0)
-                        Text("20 m (Default)").tag(UserPreferences.defaultGPSAccuracy)
-                        Text("30 m").tag(30.0)
-                        Text("40 m").tag(40.0)
-                        Text("50 m").tag(50.0)
-                    } label: {
-                        Text("GPS Accuracy")
-                    }
-                    
-                    Toggle("Rolling Speed", isOn: $userPreferences.calculateRollingSpeed)
-                }
-                
-                if let healthSyncService = core.syncService(HealthSyncService.self) {
-                    Section("Apple Health") {
-                        Button("Grant Permissions") {
-                            Task {
-                                do {
-                                    try await healthSyncService.requestAuthorization()
-                                    healthSyncService.outwardSyncMode = .enabled
-                                } catch {
-                                    print("HealthSyncService authorization failed: \(error)")
-                                }
-                            }
+                    NavigationLink(value: SettingsDestination.cache) {
+                        SettingsRowLabel {
+                            Text("Cache")
+                        } icon: {
+                            Image(systemName: "internaldrive.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.extraSmall)
                         }
                     }
                 }
                 
-                Section("Data") {
-                    Button("Clear Map Cache") {
-                        try? StaticWorkoutMapService.clearCache()
+                Section {
+                    SettingsOpenURLButton("https://tfr.software/terms") {
+                        Text("Terms of Service")
                     }
-                    Button("Reset", role: .destructive) {
-                        Task {
-                            do {
-                                try await core.reset()
-                            } catch {
-                                print("Reset failed: \(error)")
-                            }
-                        }
+                    SettingsOpenURLButton("https://tfr.software/privacy") {
+                        Text("Privacy Policy")
+                    }
+                    SettingsOpenURLButton("https://tfr.software/imprint") {
+                        Text("Imprint")
+                    }
+                    SettingsOpenURLButton("mailto:orca@tfr.software") {
+                        LabeledContent("Support", value: "orca@tfr.software")
                     }
                 }
                 
-                Section("Info") {
+                Section {
                     LabeledContent("Version", value: version)
+                    LabeledContent("Database Size", value: databaseSize.formatted(.byteCount(style: .file)))
+                    LabeledContent("Number of Workouts", value: workouts.count.description)
+                    Button("Reset App", role: .destructive, action: askForResetConfirmation)
+                        .errorPopover($resetError)
+                        .confirmationDialog("Reset App", isPresented: $confirmReset, titleVisibility: .visible) {
+                            Button("Reset", role: .destructive, action: reset)
+                        } message: {
+                            Text("Are you sure you want to reset the app. This will delete all data saved locally including your workouts and personal information. This action connot be undone.")
+                        }
+                        .foregroundStyle(.tint)
+                        .tint(.red)
                 }
             }
             .navigationTitle("Settings")
@@ -149,164 +140,35 @@ struct SettingsScene: View {
                     }
                 }
             }
-        }
-    }
-    
-    func formattedUnit(_ unit: Unit) -> String {
-        let formatter = MeasurementFormatter()
-        formatter.unitStyle = .short
-        return formatter.string(from: unit)
-    }
-    
-    init(userPreferences: UserPreferences) {
-        self.userPreferences = userPreferences
-    }
-}
-
-struct UserProfileView: View {
-    
-    @Environment(OutRunCore.self) private var core
-    @Environment(UserPreferences.self) private var userPreferences
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.locale) private var locale
-    @State private var name: String
-    @State private var weight: Measurement<UnitMass>?
-    @State private var provideAge: Bool = false
-    @State private var birthdate: Date?
-    @State private var sex: Sex?
-    @State private var error: Error?
-    @State private var showPopover: Bool = false
-    
-    var body: some View {
-        Form {
-            LabeledContent("Name") {
-                TextField("Your name", text: $name).fixedSize()
-            }
-            LabeledContent("Birthday") {
-                OptionalDatePicker(
-                    selection: $birthdate,
-                    in: ...Date.now,
-                    displayedComponents: .date,
-                    labelFormatStyle: .init(date: .abbreviated)
-                )
-                .buttonStyle(.plain)
-                .symbolRenderingMode(.hierarchical)
-            }
-            LabeledContent("Weight") {
-                MeasurementTextField("Your weight", measurement: $weight, unit: userPreferences.safeWeightUnit(for: locale))
-            }
-            Picker(selection: $sex) {
-                Text("Not specified").tag(Sex?.none)
-                ForEach(Sex.allCases, id: \.hashValue) { sex in
-                    Text(sex.description.capitalized).tag(sex)
+            .navigationDestination(for: SettingsDestination.self) { destination in
+                switch destination {
+                case .appleHealth:
+                    HealthSettingsScene()
+                case .backup:
+                    BackupSettingsScene()
+                case .cache:
+                    CacheSettingsScene()
+                case .profile:
+                    ProfileScene()
+                case .recording:
+                    RecordingSettingsScene()
+                case .units:
+                    UnitSettingsScene()
                 }
-            } label: {
-                Text("Sex")
-            }
-        }
-        .animation(.default, value: provideAge)
-        .multilineTextAlignment(.trailing)
-        .navigationTitle("User Profile")
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Save", action: save).errorPopover($error)
             }
         }
     }
     
-    init(user: any UserProtocol) {
-        self._name = .init(initialValue: user.name)
-        self._birthdate = .init(initialValue: try? user.birthday?.date())
-        let userWeight: Measurement<UnitMass>? = if let weight = user.weight {
-            .init(value: weight, unit: .kilograms)
-        } else {
-            nil
-        }
-        self._weight = .init(initialValue: userWeight)
-        self._sex = .init(initialValue: user.sex)
+    private func askForResetConfirmation() {
+        confirmReset = true
     }
     
-    private func save() {
+    private func reset() {
         Task {
             do {
-                let birthday = birthdate.map(Day.init)
-                let weight = weight?.converted(to: .kilograms).value
-                try await core.updateUserProperties(name: name, birthday: birthday, weight: weight, sex: sex)
-                dismiss()
+                try await core.reset()
             } catch {
-                self.error = error
-            }
-        }
-    }
-}
-
-#Preview {
-    
-    @Previewable @State var date: Date? = .now
-    
-    OptionalDatePicker(selection: $date, labelFormatStyle: .init(date: .abbreviated))
-}
-
-#Preview {
-    NavigationStack {
-        List {
-            Section("Settings") {
-                NavigationLink {
-                    EmptyView()
-                } label: {
-                    Label {
-                        Text("Units")
-                    } icon: {
-                        ZStack {
-                            Rectangle().opacity(0.2)
-                            Image(systemName: "ruler.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(4)
-                        }
-                        .frame(width: 32, height: 32)
-                        .clipShape(.rect(cornerRadius: 12))
-                    }
-                }
-                NavigationLink {
-                    EmptyView()
-                } label: {
-                    Label {
-                        Text("Apple Health")
-                    } icon: {
-                        ZStack {
-                            Rectangle().opacity(0.2)
-                            Image(systemName: "heart.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 14, height: 14)
-                                .offset(x: 3, y: -3)
-                        }
-                        .frame(width: 32, height: 32)
-                        .clipShape(.rect(cornerRadius: 12))
-                    }
-                }
-                NavigationLink {
-                    EmptyView()
-                } label: {
-                    Label {
-                        Text("Recording")
-                    } icon: {
-                        ZStack {
-                            Rectangle().opacity(0.2)
-                            Image(systemName: "record.circle")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            //.foregroundStyle(.white)
-                                .padding(4)
-                        }
-                        .frame(width: 32, height: 32)
-                        .clipShape(.rect(cornerRadius: 12))
-                    }
-                }
-            }
-            Section("Info") {
-                LabeledContent("Version", value: "2.0 (42)")
+                resetError = error
             }
         }
     }

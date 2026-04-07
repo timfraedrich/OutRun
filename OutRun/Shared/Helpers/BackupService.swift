@@ -3,6 +3,7 @@ import Foundation
 import OutRunCore
 import ZIPFoundation
 
+@Observable
 class BackupService {
     
     private let core: OutRunCore

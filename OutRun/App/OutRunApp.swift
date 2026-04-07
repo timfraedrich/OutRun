@@ -5,7 +5,9 @@ import SwiftUI
 struct OutRunApp: App {
     
     @State private var core: OutRunCore
+    @State private var backupService: BackupService
     @State private var mainRouter: MainRouter
+    @State private var settingsRouter: SettingsRouter
     @State private var showLegacyMigrationView: Bool
     
     var body: some Scene {
@@ -37,6 +39,8 @@ struct OutRunApp: App {
             .environment(core.recorder)
             .environment(core.userPreferences)
             .environment(mainRouter)
+            .environment(settingsRouter)
+            .environment(backupService)
             .foregroundStyle(.primaryLabel, .secondaryLabel, .tertiaryLabel)
             .backgroundStyle(.primaryBackground)
             .workoutCardStyle(.list)
@@ -46,13 +50,16 @@ struct OutRunApp: App {
     
     init() {
         let config: OutRunCoreConfiguration = .init(
-            containerName: "OutRun",
+            containerName: "ORCA",
             isStoredInMemoryOnly: false,
             appGroupIdentifier: nil,
             recordableDataTypes: [.location, .preciseAltitude]
         )
-        core = .init(config: config, syncServices: [HealthSyncService()])
+        let core = OutRunCore(config: config, syncServices: [HealthSyncService()])
+        self.core = core
+        backupService = .init(core: core)
         mainRouter = .init()
+        settingsRouter = .init()
         showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
     }
 }
