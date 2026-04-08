@@ -42,7 +42,7 @@ struct SettingsScene: View {
                                 .symbolRenderingMode(.hierarchical)
                             VStack(alignment: .leading, spacing: .zero) {
                                 Text(core.user?.name ?? "User").font(.title2.bold())
-                                Text("User Profile").font(.subheadline).opacity(0.6)
+                                Text("User Profile").font(.subheadline).foregroundStyle(.secondary)
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
