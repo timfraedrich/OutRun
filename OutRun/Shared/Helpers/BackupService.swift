@@ -45,6 +45,8 @@ class BackupService {
         continuation.yield(0)
         let task = Task { [core] in
             do {
+                let count = try await core.fetchWorkoutCount()
+                guard count > .zero else { throw BackupServiceError.noDataToBackUp }
                 let fileManager = FileManager.default
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyyMMdd-HHmmss"
@@ -56,7 +58,6 @@ class BackupService {
                     try fileManager.removeItem(at: tempDirectoryURL)
                 }
                 try fileManager.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: false)
-                let count = try await core.fetchWorkoutCount()
                 continuation.yield(0.05)
                 for offset in .zero...count {
                     guard let workout = try await core.fetchWorkouts(limit: 1, offset: offset).first else { break }
@@ -113,7 +114,7 @@ class BackupService {
                         await restoreWorkout(workout, at: offset)
                     }
                 } else {
-                    throw BackupNotReadableError()
+                    throw BackupServiceError.backupNotReadable
                 }
                 continuation.yield(1)
                 continuation.finish()
@@ -126,13 +127,13 @@ class BackupService {
         return (task, stream)
     }
     
-    struct RestoreBackupResult {
+    struct RestoreBackupResult: Hashable {
         var upserted: Int = 0
         var skipped: Int = 0
         var failed: Int = 0
+        
+        var total: Int { upserted + skipped + failed }
     }
     
     private struct ZIPWorkoutExtractionError: Error {}
-    
-    struct BackupNotReadableError: Error {}
 }
