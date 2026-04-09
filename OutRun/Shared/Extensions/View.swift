@@ -24,6 +24,15 @@ extension View {
     }
     
     @ViewBuilder
+    func compatibleScrollEffectHidden(_ hidden: Bool = true, for edges: Edge.Set = .all) -> some View {
+        if #available(iOS 26.0, *) {
+            scrollEdgeEffectHidden(hidden, for: edges)
+        } else {
+            self
+        }
+    }
+    
+    @ViewBuilder
     func errorPopover<E: Error>(_ errorBinding: Binding<E?>) -> some View {
         let showErrorBinding = Binding(
             get: { errorBinding.wrappedValue != nil },
