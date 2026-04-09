@@ -8,6 +8,7 @@ struct OutRunApp: App {
     @State private var backupService: BackupService
     @State private var mainRouter: MainRouter
     @State private var settingsRouter: SettingsRouter
+    @State private var calendarRouter: CalendarRouter
     @State private var showLegacyMigrationView: Bool
     
     var body: some Scene {
@@ -40,6 +41,7 @@ struct OutRunApp: App {
             .environment(core.userPreferences)
             .environment(mainRouter)
             .environment(settingsRouter)
+            .environment(calendarRouter)
             .environment(backupService)
             .foregroundStyle(.primaryLabel, .secondaryLabel, .tertiaryLabel)
             .backgroundStyle(.primaryBackground)
@@ -60,6 +62,7 @@ struct OutRunApp: App {
         backupService = .init(core: core)
         mainRouter = .init()
         settingsRouter = .init()
+        calendarRouter = .init()
         showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
     }
 }

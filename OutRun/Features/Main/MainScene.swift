@@ -25,6 +25,7 @@ struct MainScene: View {
                     } else {
                         workoutCards
                     }
+                    calendarLink
                 }
                 .padding(.horizontal, .regular)
             }
@@ -33,17 +34,17 @@ struct MainScene: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: toolbarContent)
             .sheet(item: $mainRouter.currentSheet) { sheet in
-                NavigationStack {
-                    switch sheet {
-                    case .workoutDetails(let workoutID):
-                        QueriedWorkoutDetailView(id: workoutID)
-                    case .recording:
-                        if let recorder = core.recorder {
-                            RecordingScene(recorder: recorder)
-                        }
-                    case .settings:
-                        SettingsScene()
+                switch sheet {
+                case .calendar:
+                    CalendarScene()
+                case .recording:
+                    if let recorder = core.recorder {
+                        RecordingScene(recorder: recorder)
                     }
+                case .settings:
+                    SettingsScene()
+                case .workoutDetails(let workoutID):
+                    QueriedWorkoutDetailView(id: workoutID)
                 }
             }
         }
@@ -88,13 +89,34 @@ struct MainScene: View {
             .aspectRatio(contentMode: .fit)
             .padding(.extraLarge)
     }
-    
+
     @ViewBuilder private var workoutCards: some View {
         ForEach(finishedWorkouts) { workout in
             let isFirstCard = workout.id == finishedWorkouts.first?.id
             WorkoutCard(workout: workout)
                 .workoutCardStyle(isFirstCard ? AnyWorkoutCardStyle(.latest) : AnyWorkoutCardStyle(.list))
                 .onTapGesture { showWorkoutDetailScene(for: workout.id) }
+        }
+    }
+    
+    @ViewBuilder private var calendarLink: some View {
+        Button {
+            mainRouter.currentSheet = .calendar
+        } label: {
+            HStack(spacing: .small) {
+                Image(systemName: "calendar")
+                    .font(.title3)
+                Text("Browse in Calendar")
+                    .fontWeight(.medium)
+                Spacer()
+                Image(systemName: "chevron.forward")
+                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+            }
+            .padding(.regular)
+            .background(.secondaryBackground)
+            .clipShape(.rect(cornerRadius: .regular))
         }
     }
     
@@ -131,7 +153,7 @@ struct MainScene: View {
             predicate: #Predicate<Workout> { $0.endDate != nil },
             sortBy: [SortDescriptor(\.startDate, order: .reverse)]
         )
-        descriptor.fetchLimit = 42
+        descriptor.fetchLimit = 13
         descriptor.propertiesToFetch = [\.rawType, \.startDate, \.endDate, \.distance, \.energy]
         descriptor.relationshipKeyPathsForPrefetching = [\.pauses]
         self._finishedWorkouts = Query(descriptor)
