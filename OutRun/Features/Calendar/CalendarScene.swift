@@ -57,7 +57,7 @@ struct CalendarScene: View {
             .navigationDestination(for: CalendarNavigationDestination.self) { destination in
                 switch destination {
                 case let .workoutDetails(id):
-                    QueriedWorkoutDetailView(id: id)
+                    QueriedWorkoutDetailScene(id: id, addCloseButton: false)
                 case let .workoutSelection(start, end):
                     WorkoutSelectionScene(between: start, and: end)
                 }

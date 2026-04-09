@@ -44,7 +44,9 @@ struct MainScene: View {
                 case .settings:
                     SettingsScene()
                 case .workoutDetails(let workoutID):
-                    QueriedWorkoutDetailView(id: workoutID)
+                    NavigationStack {
+                        QueriedWorkoutDetailScene(id: workoutID)
+                    }
                 }
             }
         }

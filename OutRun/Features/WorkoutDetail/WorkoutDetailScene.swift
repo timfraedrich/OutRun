@@ -1,12 +1,13 @@
 import OutRunCore
 import SwiftUI
 
-struct WorkoutDetailView: View {
+struct WorkoutDetailScene: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @State private var error: Error?
     private let workout: any WorkoutProtocol
+    private let addCloseButton: Bool
     
     var body: some View {
         ScrollView {
@@ -24,14 +25,13 @@ struct WorkoutDetailView: View {
                     .errorPopover($error)
                     .tint(.red)
             }
-            .padding(.top, .extraLarge)
             .padding(.horizontal, .large)
         }
         .background()
-        .overlay(alignment: .topTrailing, content: closeButtonContent)
+        .toolbar(content: closeButtonContent)
+        .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .backgroundStyle(.secondaryBackground)
         .labeledContentStyle(.metric)
-        .toolbarVisibility(.hidden, for: .navigationBar)
     }
     
     @ViewBuilder
@@ -57,26 +57,16 @@ struct WorkoutDetailView: View {
     
     @ViewBuilder
     private func closeButtonContent() -> some View {
-        let button = Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
-            .labelStyle(.iconOnly)
-            .tint(.primary)
-        if #available(iOS 26.0, *) {
-            button
-                .font(.title2.weight(.medium))
-                .frame(width: 44, height: 44)
-                .glassEffect(.regular.interactive(), in: .circle)
-                .padding(24)
-        } else {
-            button
-                .font(.title)
-                .symbolVariant(.circle.fill)
-                .symbolRenderingMode(.hierarchical)
-                .padding(16)
+        if addCloseButton {
+            Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
+                .labelStyle(.iconOnly)
+                .tint(.primary)
         }
     }
     
-    init(workout: any WorkoutProtocol) {
+    init(workout: any WorkoutProtocol, addCloseButton: Bool = true) {
         self.workout = workout
+        self.addCloseButton = addCloseButton
     }
     
     private func delete() {
@@ -92,5 +82,7 @@ struct WorkoutDetailView: View {
 }
 
 #Preview {
-    WorkoutDetailView(workout: PreviewConstants.runningWorkout)
+    NavigationStack {
+        WorkoutDetailScene(workout: PreviewConstants.runningWorkout)
+    }
 }
