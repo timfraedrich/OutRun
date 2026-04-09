@@ -7,16 +7,16 @@ struct SettingsOpenURLButton<Label: View>: View {
     private let label: () -> Label
     
     var body: some View {
-        Button {
-            guard let url = URL(string: urlString) else { return }
-            openURL.callAsFunction(url)
-        } label: {
-            NavigationLink(destination: EmptyView.init, label: label)
-        }
+        NavigationLinkButton(action: openURLAction, label: label)
     }
     
     init(_ urlString: String, @ViewBuilder label: @escaping () -> Label) {
         self.urlString = urlString
         self.label = label
+    }
+    
+    private func openURLAction() {
+        guard let url = URL(string: urlString) else { return }
+        openURL.callAsFunction(url)
     }
 }
