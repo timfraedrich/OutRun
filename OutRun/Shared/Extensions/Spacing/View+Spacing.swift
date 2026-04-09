@@ -14,11 +14,21 @@ extension View {
     
     @ViewBuilder
     func padding(_ length: Spacing) -> some View {
-        self.padding(length.rawValue)
+        padding(length.rawValue)
     }
     
     @ViewBuilder
-    func padding(_ edges: Edge.Set = .all, _ length: Spacing) -> some View {
-        self.padding(edges, length.rawValue)
+    func padding(_ edges: Edge.Set, _ length: Spacing) -> some View {
+        padding(edges, length.rawValue)
+    }
+    
+    @ViewBuilder
+    func safeAreaPadding(_ length: Spacing) -> some View {
+        safeAreaPadding(length.rawValue)
+    }
+    
+    @ViewBuilder
+    func safeAreaPadding(_ edges: Edge.Set, _ length: Spacing) -> some View {
+        safeAreaPadding(edges, length.rawValue)
     }
 }
