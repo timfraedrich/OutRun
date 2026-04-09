@@ -24,8 +24,8 @@ struct MainScene: View {
                         emptyWorkoutsView
                     } else {
                         workoutCards
+                        calendarLink
                     }
-                    calendarLink
                 }
                 .padding(.horizontal, .regular)
             }
