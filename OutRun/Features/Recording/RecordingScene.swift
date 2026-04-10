@@ -68,6 +68,7 @@ struct RecordingScene: View {
                         Image(systemName: "chevron.down").font(.headline)
                     }
                 }
+                .buttonStyle(.plain)
                 Spacer()
                 HStack(spacing: .extraSmall) {
                     Circle().fill(recorder.status.color)

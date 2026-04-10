@@ -14,6 +14,7 @@ struct WorkoutSelectionScene: View {
                     NavigationLink(value: CalendarNavigationDestination.workoutDetails(id: workout.id)) {
                         WorkoutCard(workout: workout)
                     }
+                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, .regular)

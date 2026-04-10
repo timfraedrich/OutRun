@@ -8,6 +8,7 @@ struct SettingsOpenURLButton<Label: View>: View {
     
     var body: some View {
         NavigationLinkButton(action: openURLAction, label: label)
+            .tint(.primary)
     }
     
     init(_ urlString: String, @ViewBuilder label: @escaping () -> Label) {

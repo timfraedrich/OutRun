@@ -108,6 +108,7 @@ struct MainScene: View {
             HStack(spacing: .small) {
                 Image(systemName: "calendar")
                     .font(.title3)
+                    .foregroundStyle(.tint)
                 Text("Browse in Calendar")
                     .fontWeight(.medium)
                 Spacer()
@@ -120,13 +121,13 @@ struct MainScene: View {
             .background(.secondaryBackground)
             .clipShape(.rect(cornerRadius: .regular))
         }
+        .buttonStyle(.plain)
     }
     
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button("Settings", systemImage: "gear", action: showSettingsScene)
-                .labelStyle(.iconOnly)
         }
         ToolbarItem(placement: .principal) {
             greetingView

@@ -59,6 +59,7 @@ struct BackupSettingsScene: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
+            .buttonStyle(.plain)
             .disabled(processInProgress)
             .fileImporter(
                 isPresented: fileImporterIsPresented,

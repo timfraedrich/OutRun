@@ -89,8 +89,6 @@ struct CalendarScene: View {
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
-                .labelStyle(.iconOnly)
-                .tint(.primary)
         }
     }
     

@@ -31,7 +31,7 @@ struct WorkoutDetailScene: View {
             .padding(.horizontal, .regular)
         }
         .background()
-        .toolbar(content: closeButtonContent)
+        .toolbar(content: toolbarContent)
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .compatibleScrollEffectHidden(for: .top)
         .backgroundStyle(.primaryBackground)
@@ -76,11 +76,9 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder
-    private func closeButtonContent() -> some View {
+    private func toolbarContent() -> some View {
         if addCloseButton {
             Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
-                .labelStyle(.iconOnly)
-                .tint(.primary)
         }
     }
     
