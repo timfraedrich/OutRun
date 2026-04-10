@@ -40,7 +40,8 @@ struct CalendarScene: View {
                     }
                 }
             }
-            .defaultScrollAnchor(.bottom, for: .initialOffset)
+            .background()
+            .defaultScrollAnchor(.bottom)
             .safeAreaPadding(.top, .regular)
             .compatibleSafeAreaBar(edge: .top) {
                 if #available(iOS 26, *) {
@@ -49,7 +50,6 @@ struct CalendarScene: View {
                     weekdayHeaderBar.background()
                 }
             }
-            .background()
             .toolbar(content: toolbarContent)
             .toolbarBackground(toolbarBackgroundVisibility, for: .navigationBar)
             .navigationTitle("Calendar")
@@ -63,6 +63,7 @@ struct CalendarScene: View {
                 }
             }
         }
+        .onDisappear(perform: calendarRouter.reset)
     }
 
     @ViewBuilder private var weekdayHeaderBar: some View {

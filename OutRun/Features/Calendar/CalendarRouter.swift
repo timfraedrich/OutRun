@@ -8,4 +8,8 @@ class CalendarRouter {
     init(path: NavigationPath = .init()) {
         self.path = path
     }
+    
+    func reset() {
+        path = .init()
+    }
 }
