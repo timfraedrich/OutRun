@@ -12,14 +12,17 @@ struct CalendarScene: View {
     private var toolbarBackgroundVisibility: Visibility { if #available(iOS 26, *) { .automatic } else { .visible } }
     private var months: [CalendarMonth] {
         guard let startDate = workouts.first?.startDate, let startMonth = CalendarMonth(calendar: calendar, date: startDate) else { return [] }
-        if let endMonth = CalendarMonth(calendar: calendar, date: .now) {
-            var months = [startMonth]
-            while let nextMonth = months.last?.advanced(by: 1, calendar: calendar), nextMonth <= endMonth {
-                months.append(nextMonth)
+        var months: [CalendarMonth] = [startMonth]
+        if let currentMonth = CalendarMonth(calendar: calendar, date: .now) {
+            while let month = months.last?.advanced(by: 1, calendar: calendar), month <= currentMonth {
+                months.append(month)
             }
-            return months
         }
-        return [startMonth]
+        guard let nextMonth = months.last?.advanced(by: 1, calendar: calendar) else { return months }
+        months.append(nextMonth)
+        guard months.count < 3, let firstMonth = months.first?.advanced(by: -1, calendar: calendar) else { return months }
+        months.insert(firstMonth, at: .zero)
+        return months
     }
 
     var body: some View {
