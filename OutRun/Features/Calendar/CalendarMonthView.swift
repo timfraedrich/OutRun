@@ -20,30 +20,28 @@ struct CalendarMonthView: View {
             monthHeaderView
         }
         .task {
-            do {
-                let range = month.range
-                var descriptor = FetchDescriptor<Workout>(
-                    predicate: #Predicate { $0.startDate >= range.lowerBound && $0.startDate < range.upperBound },
-                    sortBy: [SortDescriptor(\.startDate, order: .forward)]
-                )
-                descriptor.propertiesToFetch = [\.id, \.startDate, \.rawType]
-                let workouts = try modelContext.fetch(descriptor)
-                var workoutIndex: Int = .zero
-                var gridCells = gridCells
-                for index in gridCells.indices {
-                    switch gridCells[index] {
-                    case .placeholder: continue
-                    case let .day(day, _, isToday):
-                        var entries: [CalendarDayEntry] = []
-                        while let workout = workouts[safeIndex: workoutIndex], calendar.component(.day, from: workout.startDate) == day {
-                            entries.append(.init(id: workout.id, type: workout.type))
-                            workoutIndex += 1
-                        }
-                        gridCells[index] = .day(number: day, entries: entries, isToday: isToday)
+            let range = month.range
+            var descriptor = FetchDescriptor<Workout>(
+                predicate: #Predicate { $0.startDate >= range.lowerBound && $0.startDate < range.upperBound },
+                sortBy: [SortDescriptor(\.startDate, order: .forward)]
+            )
+            descriptor.propertiesToFetch = [\.id, \.startDate, \.rawType]
+            guard let workouts = try? modelContext.fetch(descriptor) else { return }
+            var workoutIndex: Int = .zero
+            var gridCells = gridCells
+            for index in gridCells.indices {
+                switch gridCells[index] {
+                case .placeholder: continue
+                case let .day(day, _, isToday):
+                    var entries: [CalendarDayEntry] = []
+                    while let workout = workouts[safeIndex: workoutIndex], calendar.component(.day, from: workout.startDate) == day {
+                        entries.append(.init(id: workout.id, type: workout.type))
+                        workoutIndex += 1
                     }
+                    gridCells[index] = .day(number: day, entries: entries, isToday: isToday)
                 }
-                self.gridCells = gridCells
-            } catch {}
+            }
+            self.gridCells = gridCells
         }
     }
 
