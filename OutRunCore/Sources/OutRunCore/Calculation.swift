@@ -1,4 +1,5 @@
 import Foundation
+import Charts
 import NIOCore
 
 public enum Calculation {
@@ -162,6 +163,42 @@ public enum Calculation {
         }
         let safeMinimumDuration = max(minimumDuration, .leastNonzeroMagnitude)
         return pauses.filter { $0.duration >= safeMinimumDuration }
+    }
+    
+    /// Calculates the sections of samples defined by the provided pauses, where a section is a uninterrupted non-empty subsequence of
+    /// samples.
+    /// - note: This function assumes that the samples are sorted in ascending order by the provided timestampKeyPath and that the pauses
+    /// are sorted by their startDate.
+    public static func calculateSectionedSamples<Sample>(
+        from samples: [Sample],
+        timestampKeyPath: KeyPath<Sample, Date>,
+        pauses: [any WorkoutPauseProtocol]
+    ) -> [[Sample]] {
+        guard !pauses.isEmpty else { return [samples] }
+        var sectionedSamples: [[Sample]] = [[]]
+        var pauseIndex = 0
+        var pause: any WorkoutPauseProtocol { pauses[pauseIndex] }
+        sampleIteration: for (sampleIndex, sample) in samples.enumerated() {
+            let timestamp = sample[keyPath: timestampKeyPath]
+            switch timestamp {
+            case ...pause.startDate:
+                sectionedSamples[sectionedSamples.count - 1].append(sample)
+            case pause.startDate...pause.endDate:
+                continue
+            default:
+                let nextPauseIndex = pauses[pauseIndex...].firstIndex { timestamp <= $0.startDate }
+                if let nextPauseIndex {
+                    pauseIndex = nextPauseIndex
+                    sectionedSamples.append([sample])
+                } else {
+                    // In this case we know there are no more pauses coming after the current sample.
+                    // We can add the remaining samples as their own segment at the end.
+                    sectionedSamples.append(Array(samples[sampleIndex...]))
+                    break sampleIteration
+                }
+            }
+        }
+        return sectionedSamples
     }
     
     // MARK: Types
