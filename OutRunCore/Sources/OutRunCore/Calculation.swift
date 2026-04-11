@@ -178,34 +178,46 @@ public enum Calculation {
     /// Calculates the sections of samples defined by the provided pauses, where a section is a uninterrupted non-empty subsequence of
     /// samples.
     /// - note: This function assumes that the samples are sorted in ascending order by the provided timestampKeyPath and that the pauses
-    /// are sorted by their startDate.
+    /// are sorted by their startDate and do not overlap.
+    /// - returns: A CategorizedArray of the provided Sample type with Category Bool. The boolean value indicates whether the elements were
+    /// not recorded during a pause.
     public static func calculateSectionedSamples<Sample>(
         from samples: [Sample],
         timestampKeyPath: KeyPath<Sample, Date>,
         pauses: [any WorkoutPauseProtocol]
-    ) -> [[Sample]] {
-        guard !pauses.isEmpty else { return [samples] }
-        var sectionedSamples: [[Sample]] = [[]]
+    ) -> CategorizedArray<Bool, Sample> {
+        guard !pauses.isEmpty else { return [(true, samples)] }
+        var sectionedSamples: CategorizedArray<Bool, Sample> = []
         var pauseIndex = 0
         var pause: any WorkoutPauseProtocol { pauses[pauseIndex] }
         sampleIteration: for (sampleIndex, sample) in samples.enumerated() {
             let timestamp = sample[keyPath: timestampKeyPath]
-            switch timestamp {
-            case ...pause.startDate:
-                sectionedSamples[sectionedSamples.count - 1].append(sample)
-            case pause.startDate...pause.endDate:
-                continue
-            default:
-                let nextPauseIndex = pauses[pauseIndex...].firstIndex { timestamp <= $0.startDate }
-                if let nextPauseIndex {
+            while pause.endDate < timestamp {
+                let nextPauseIndex = pauses[pauseIndex...].index(after: pauseIndex)
+                if pauses.indices.contains(nextPauseIndex) {
                     pauseIndex = nextPauseIndex
-                    sectionedSamples.append([sample])
                 } else {
                     // In this case we know there are no more pauses coming after the current sample.
-                    // We can add the remaining samples as their own segment at the end.
-                    sectionedSamples.append(Array(samples[sampleIndex...]))
+                    // We can add the remaining samples as their own section at the end.
+                    sectionedSamples.append((true, Array(samples[sampleIndex...])))
                     break sampleIteration
                 }
+            }
+            switch timestamp {
+            case ...pause.startDate:
+                if sectionedSamples.last?.category == true {
+                    sectionedSamples[sectionedSamples.count - 1].elements.append(sample)
+                } else {
+                    sectionedSamples.append((true, [sample]))
+                }
+            case pause.startDate...pause.endDate:
+                if sectionedSamples.last?.category == false {
+                    sectionedSamples[sectionedSamples.count - 1].elements.append(sample)
+                } else {
+                    sectionedSamples.append((false, [sample]))
+                }
+            default:
+                fatalError("This case should not be reachable")
             }
         }
         return sectionedSamples

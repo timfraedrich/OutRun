@@ -12,7 +12,9 @@ struct HeartRateChart: View {
     
     var body: some View {
         Chart(items) { item in
-            switch item {
+            let foregroundStyle = item.active ? AnyShapeStyle(.tint) : AnyShapeStyle(.gray)
+            let zIndex: Double = item.active ? 1 : 0
+            switch item.type {
             case .range(let range):
                 BarMark(
                     x: .value("Timestamp", range.midTimestamp),
@@ -22,6 +24,8 @@ struct HeartRateChart: View {
                 )
                 .clipShape(.capsule)
                 .accessibilityValue(Text("\(range.valueRange.lowerBound) to \(range.valueRange.upperBound) BPM"))
+                .foregroundStyle(foregroundStyle)
+                .zIndex(zIndex)
             case .sample(let sample):
                 BarMark(
                     x: .value("Timestamp", sample.timestamp),
@@ -31,6 +35,8 @@ struct HeartRateChart: View {
                 )
                 .clipShape(.circle)
                 .accessibilityValue(Text("\(sample.value) BPM"))
+                .foregroundStyle(foregroundStyle)
+                .zIndex(zIndex)
             }
         }
         .chartXScale(domain: dateRange)
@@ -43,35 +49,26 @@ struct HeartRateChart: View {
         }
     }
     
-    init(samples: [any WorkoutHeartRateDataSampleProtocol], dateRange: ClosedRange<Date>) {
+    init(sectionedSamples: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>, dateRange: ClosedRange<Date>) {
         let bins = DateBins(range: dateRange, desiredCount: 60)
-        var groups: [Int: [any WorkoutHeartRateDataSampleProtocol]] = [:]
+        var activeGroups: [Int: [any WorkoutHeartRateDataSampleProtocol]] = [:]
+        var inactiveGroups: [Int: [any WorkoutHeartRateDataSampleProtocol]] = [:]
         var minValue = UInt8.max, maxValue = UInt8.min
-        for sample in samples {
-            minValue = min(minValue, sample.heartRate)
-            maxValue = max(maxValue, sample.heartRate)
-            let binIndex = bins.index(for: sample.timestamp)
-            guard bins.indices.contains(binIndex) else { continue }
-            groups[binIndex, default: []].append(sample)
-        }
-        var items: [Item] = []
-        for (index, groupSamples) in groups {
-            guard bins.indices.contains(index) else { continue }
-            var minGroupValue = UInt8.max, maxGroupValue = UInt8.min
-            for groupSample in groupSamples {
-                minGroupValue = min(minGroupValue, groupSample.heartRate)
-                maxGroupValue = max(maxGroupValue, groupSample.heartRate)
+        for (category, samples) in sectionedSamples {
+            for sample in samples {
+                minValue = min(minValue, sample.heartRate)
+                maxValue = max(maxValue, sample.heartRate)
+                let binIndex = bins.index(for: sample.timestamp)
+                guard bins.indices.contains(binIndex) else { continue }
+                if category {
+                    activeGroups[binIndex, default: []].append(sample)
+                } else {
+                    inactiveGroups[binIndex, default: []].append(sample)
+                }
             }
-            let item: Item
-            if minGroupValue == maxGroupValue, let sample = groupSamples.first {
-                item = .sample(.init(timestamp: sample.timestamp, value: sample.heartRate))
-            } else {
-                let timestampRange = bins.thresholds[index]...bins.thresholds[index + 1]
-                let valueRange = minGroupValue...maxGroupValue
-                item = .range(.init(timestampRange: timestampRange, valueRange: valueRange))
-            }
-            items.append(item)
         }
+        let activeItems = Self.itemize(groups: activeGroups, bins: bins).map { Item(active: true, type: $0) }
+        let inactiveItems = Self.itemize(groups: inactiveGroups, bins: bins).map { Item(active: false, type: $0) }
         var axisValues: [Date] = []
         for (index, threshold) in bins.thresholds.enumerated() where index.isMultiple(of: 10) {
             axisValues.append(threshold)
@@ -81,24 +78,48 @@ struct HeartRateChart: View {
         maxValue += 19 - maxValue % 10
         self.minValue = minValue
         self.maxValue = maxValue
-        self.items = items
+        self.items = activeItems + inactiveItems
         self.axisValues = axisValues
     }
     
-    private enum Item: Identifiable {
-        case sample(IdentifiableSample)
-        case range(IdentifiableSampleRange)
-        
-        var id: UUID {
-            switch self {
-            case .sample(let sample): sample.id
-            case .range(let range): range.id
-            }
-        }
+    init(samples: [any WorkoutHeartRateDataSampleProtocol], dateRange: ClosedRange<Date>) {
+        self.init(sectionedSamples: [(true, samples)], dateRange: dateRange)
     }
     
-    private struct IdentifiableSampleRange: Identifiable {
+    private static func itemize(groups: [Int: [any WorkoutHeartRateDataSampleProtocol]], bins: DateBins) -> [ItemType] {
+        var items: [ItemType] = []
+        for (index, groupSamples) in groups {
+            var minGroupValue = UInt8.max, maxGroupValue = UInt8.min
+            for groupSample in groupSamples {
+                minGroupValue = min(minGroupValue, groupSample.heartRate)
+                maxGroupValue = max(maxGroupValue, groupSample.heartRate)
+            }
+            let item: ItemType
+            let timestampRange = bins.thresholds[index]...bins.thresholds[index + 1]
+            if minGroupValue == maxGroupValue, let sample = groupSamples.first {
+                let timestamp = timestampRange.lowerBound.addingTimeInterval(timestampRange.lowerBound.distance(to: timestampRange.upperBound) / 2)
+                item = .sample(.init(timestamp: timestamp, value: sample.heartRate))
+            } else {
+                let valueRange = minGroupValue...maxGroupValue
+                item = .range(.init(timestampRange: timestampRange, valueRange: valueRange))
+            }
+            items.append(item)
+        }
+        return items
+    }
+    
+    private struct Item: Identifiable {
         let id = UUID()
+        let active: Bool
+        let type: ItemType
+    }
+    
+    private enum ItemType {
+        case sample(Sample)
+        case range(SampleRange)
+    }
+    
+    private struct SampleRange {
         let timestampRange: ClosedRange<Date>
         let valueRange: ClosedRange<UInt8>
         
@@ -112,8 +133,7 @@ struct HeartRateChart: View {
         }
     }
     
-    private struct IdentifiableSample: Identifiable {
-        let id = UUID()
+    private struct Sample {
         let timestamp: Date
         let value: UInt8
         
