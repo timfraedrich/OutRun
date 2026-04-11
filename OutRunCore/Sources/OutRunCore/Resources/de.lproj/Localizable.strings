@@ -24,6 +24,7 @@
 "step_service_error_authorization_missing" = "Schrittdaten können aufgrund fehlender Berechtigung nicht abgerufen werden.";
 "step_service_error_authorization_restricted" = "Schrittdaten können aufgrund von Systemeinstellungen nicht abgerufen werden. Diese Einstellung kann in der iOS Einstellungen App unter \"Datenschutz & Sicherheit > Bewegung & Fitness\" geändert werden.";
 "step_service_error_unknown_authorization_status" = "Schrittdaten können aufgrund eines unbekannten Berechtigungsstatus nicht abgerufen werden.";
+"unit_beats_per_minute" = "BPM";
 "workout_metric_active_duration" = "Dauer";
 "workout_metric_ascent" = "Anstieg";
 "workout_metric_average_speed" = "Durchschn. Geschw.";

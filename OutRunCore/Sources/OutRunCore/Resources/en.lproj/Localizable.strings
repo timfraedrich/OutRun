@@ -24,6 +24,7 @@
 "step_service_error_authorization_missing" = "Step data cannot be received due to missing authorization.";
 "step_service_error_authorization_restricted" = "Step data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\".";
 "step_service_error_unknown_authorization_status" = "Step data cannot be received due to an unknown authorization status.";
+"unit_beats_per_minute" = "BPM";
 "workout_metric_active_duration" = "Duration";
 "workout_metric_ascent" = "Ascend";
 "workout_metric_average_speed" = "Avg. speed";
