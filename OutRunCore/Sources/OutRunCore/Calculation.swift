@@ -62,6 +62,16 @@ public enum Calculation {
         return startDate.distance(to: endDate) - calculatePauseDuration(pauses: pauses)
     }
     
+    static func calculateAverageHeartRate(heartRates: [any WorkoutHeartRateDataSampleProtocol]) -> UInt8? {
+        guard !heartRates.isEmpty else { return nil }
+        return UInt8(heartRates.reduce(0) { $0 + Double($1.heartRate) } / Double(heartRates.count))
+    }
+    
+    static func calculateMaximumHeartRate(heartRates: [any WorkoutHeartRateDataSampleProtocol]) -> UInt8? {
+        guard !heartRates.isEmpty else { return nil }
+        return heartRates.map(\.heartRate).max()
+    }
+    
     static func calculateAverageSpeed(distance: Double, startDate: Date, endDate: Date?, pauses: [any WorkoutPauseProtocol]) -> Measurement<UnitSpeed> {
         let activeDuration = calculateActiveDuration(startDate: startDate, endDate: endDate, pauses: pauses)
         return calculateAverageSpeed(distance: distance, activeDuration: activeDuration)

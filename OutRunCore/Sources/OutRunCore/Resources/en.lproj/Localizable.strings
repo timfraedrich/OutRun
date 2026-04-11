@@ -27,6 +27,7 @@
 "unit_beats_per_minute" = "BPM";
 "workout_metric_active_duration" = "Duration";
 "workout_metric_ascent" = "Ascend";
+"workout_metric_average_heart_rate" = "Avg. heart rate.";
 "workout_metric_average_speed" = "Avg. speed";
 "workout_metric_date" = "Date";
 "workout_metric_descent" = "Descend";
@@ -34,6 +35,7 @@
 "workout_metric_end_time" = "End time";
 "workout_metric_energy" = "Energy";
 "workout_metric_energy_per_minute" = "Energy/minute";
+"workout_metric_maximum_heart_rate" = "Max. heart rate";
 "workout_metric_pace" = "Pace";
 "workout_metric_pause_duration" = "Pause duration";
 "workout_metric_repetitions" = "Repetitions";

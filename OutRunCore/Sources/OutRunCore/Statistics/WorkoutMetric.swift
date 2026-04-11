@@ -13,6 +13,8 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
     case pace
     case startTime
     case endTime
+    case averageHeartRate
+    case maximumHeartRate
     case averageSpeed
     case topSpeed
     case energy
@@ -31,6 +33,8 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
         case .pace: R.string.localizable.workout_metric_pace()
         case .startTime: R.string.localizable.workout_metric_start_time()
         case .endTime: R.string.localizable.workout_metric_end_time()
+        case .averageHeartRate: R.string.localizable.workout_metric_average_heart_rate()
+        case .maximumHeartRate: R.string.localizable.workout_metric_maximum_heart_rate()
         case .averageSpeed: R.string.localizable.workout_metric_average_speed()
         case .topSpeed: R.string.localizable.workout_metric_top_speed()
         case .energy: R.string.localizable.workout_metric_energy()
@@ -87,6 +91,18 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
             } else {
                 nil
             }
+        case .averageHeartRate:
+            if let averageHeartRate = averageHeartRate(for: workout) {
+                .heartRate(averageHeartRate)
+            } else {
+                nil
+            }
+        case .maximumHeartRate:
+            if let maximumHeartRate = maximumHeartRate(for: workout) {
+                .heartRate(maximumHeartRate)
+            } else {
+                nil
+            }
         case .averageSpeed:
             .speedMeasurement(averageSpeed(for: workout))
         case .topSpeed:
@@ -116,6 +132,14 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
     
     private func activeDuration(for workout: any WorkoutProtocol) -> TimeInterval? {
         Calculation.calculateActiveDuration(startDate: workout.startDate, endDate: workout.endDate, pauses: workout.pauses)
+    }
+    
+    private func averageHeartRate(for workout: any WorkoutProtocol) -> UInt8? {
+        Calculation.calculateAverageHeartRate(heartRates: workout.heartRates)
+    }
+    
+    private func maximumHeartRate(for workout: any WorkoutProtocol) -> UInt8? {
+        Calculation.calculateMaximumHeartRate(heartRates: workout.heartRates)
     }
     
     private func averageSpeed(for workout: any WorkoutProtocol) -> Measurement<UnitSpeed> {
@@ -168,5 +192,7 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
         case paceMeasurement(Measurement<UnitSpeed>)
         /// Represents energy burned during the workout.
         case energyMeasurement(Measurement<UnitEnergy>)
+        /// Represents a heart rate.
+        case heartRate(UInt8)
     }
 }

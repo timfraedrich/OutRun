@@ -58,6 +58,8 @@ public struct WorkoutMetricText: View {
             }
         case .energyMeasurement(let measurement):
             MeasurementText(measurement, unit: energyUnit, fractionLength: 0...0)
+        case .heartRate(let heartRate):
+            HeartRateText(heartRate)
         case .none:
             EmptyView()
         }
