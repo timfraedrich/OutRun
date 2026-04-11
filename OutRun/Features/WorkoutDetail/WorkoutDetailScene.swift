@@ -6,21 +6,20 @@ struct WorkoutDetailScene: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @State private var error: Error?
+    @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
+    @State private var sectionedHeartRates: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>?
     private let workout: any WorkoutProtocol
     private let addCloseButton: Bool
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: .large) {
-                
-                WorkoutHeaderLabeledContent(workout: workout)
-                    .labeledContentStyle(.metric(size: .large))
-                    .padding(.horizontal, .small)
-                
-                metricSection("Distance", metrics: [.distance, .repetitions, .ascent, .descent])
-                metricSection("Time", metrics: [.activeDuration, .pauseDuration, .pace, .startTime, .endTime])
-                metricSection("Speed", metrics: [.averageSpeed, .topSpeed])
-                metricSection("Energy", metrics: [.energy, .energyPerMinute])
+                header
+                distanceSection
+                timeSection
+                heartRateSection
+                speedSection
+                energySection
                 routeSection
                 
                 ActionButton(verbatim: "Delete", action: delete)
@@ -36,6 +35,27 @@ struct WorkoutDetailScene: View {
         .compatibleScrollEffectHidden(for: .top)
         .backgroundStyle(.primaryBackground)
         .labeledContentStyle(.metric)
+        .task {
+            let sortedPauses = workout.pauses.sorted(using: KeyPathComparator(\.startDate, order: .forward))
+            let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
+            self.sectionedRoute = Calculation.calculateSectionedSamples(
+                from: sortedRoute,
+                timestampKeyPath: \.timestamp,
+                pauses: sortedPauses
+            )
+            let sortedHeartRates = workout.heartRates.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
+            self.sectionedHeartRates = Calculation.calculateSectionedSamples(
+                from: sortedHeartRates,
+                timestampKeyPath: \.timestamp,
+                pauses: sortedPauses
+            )
+        }
+    }
+    
+    @ViewBuilder private var header: some View {
+        WorkoutHeaderLabeledContent(workout: workout)
+            .labeledContentStyle(.metric(size: .large))
+            .padding(.horizontal, .small)
     }
     
     @ViewBuilder
@@ -48,7 +68,7 @@ struct WorkoutDetailScene: View {
             Text(titleKey)
                 .font(.headline)
                 .padding(.horizontal, .regular)
-            content()
+            VStack(spacing: .regular, content: content)
                 .padding(contentPadding)
                 .background()
                 .clipShape(.containerRelative)
@@ -57,21 +77,54 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder
-    private func metricSection(_ titleKey: LocalizedStringKey, metrics: [WorkoutMetric]) -> some View {
-        section(titleKey) {
-            LazyVGrid(columns: [.init(alignment: .leading), .init(alignment: .leading)], alignment: .leading, spacing: .regular) {
-                ForEach(metrics, id: \.hashValue) { metric in
-                    WorkoutMetricLabeledContent(metric, for: workout)
-                }
+    private func metricGrid(with metrics: [WorkoutMetric]) -> some View {
+        LazyVGrid(columns: [.init(alignment: .leading), .init(alignment: .leading)], alignment: .leading, spacing: .regular) {
+            ForEach(metrics, id: \.hashValue) { metric in
+                WorkoutMetricLabeledContent(metric, for: workout)
             }
         }
     }
     
+    @ViewBuilder private var distanceSection: some View {
+        section("Distance") {
+            metricGrid(with: [.distance, .repetitions, .ascent, .descent])
+        }
+    }
+    
+    @ViewBuilder private var timeSection: some View {
+        section("Time") {
+            metricGrid(with: [.activeDuration, .pauseDuration, .pace, .startTime, .endTime])
+        }
+    }
+    
+    @ViewBuilder private var heartRateSection: some View {
+        if let endDate = workout.endDate, let sectionedHeartRates, !sectionedHeartRates.isEmpty {
+            section("Heart Rate") {
+                metricGrid(with: [.averageHeartRate, .maximumHeartRate])
+                HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: workout.startDate...endDate)
+            }
+        }
+    }
+    
+    @ViewBuilder private var speedSection: some View {
+        section("Speed") {
+            metricGrid(with: [.averageSpeed, .topSpeed])
+        }
+    }
+    
+    @ViewBuilder private var energySection: some View {
+        section("Energy") {
+            metricGrid(with: [.energy, .energyPerMinute])
+        }
+    }
+    
     @ViewBuilder private var routeSection: some View {
-        section("Route", contentPadding: .small) {
-            StaticWorkoutMap(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: .accent)
-                .frame(height: 300)
-                .clipShape(.containerRelative)
+        if !workout.route.isEmpty {
+            section("Route", contentPadding: .small) {
+                StaticWorkoutMap(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: .accent)
+                    .frame(height: 300)
+                    .clipShape(.containerRelative)
+            }
         }
     }
     
