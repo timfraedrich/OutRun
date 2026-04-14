@@ -2,7 +2,7 @@ import Charts
 import OutRunCore
 import SwiftUI
 
-struct RouteSampleChart<Value: Plottable>: View {
+struct RouteSampleChart<Value: Numeric & Comparable & Plottable>: View {
     
     private let series: [Series]
     private let dateRange: ClosedRange<Date>
@@ -39,7 +39,11 @@ struct RouteSampleChart<Value: Plottable>: View {
         dateRange: ClosedRange<Date>
     ) {
         self.series = sectionedSamples.map { active, samples in
-            .init(active: active, items: samples.map { .init(timestamp: $0.timestamp, value: $0[keyPath: valueKeyPath]) })
+            .init(active: active, items: samples.compactMap { sample in
+                let value = sample[keyPath: valueKeyPath]
+                guard value >= Value.zero else { return nil }
+                return .init(timestamp: sample.timestamp, value: value)
+            })
         }
         self.dateRange = dateRange
         self.axisValues = DateBins(range: dateRange, desiredCount: 6).thresholds.dropLast(1)
