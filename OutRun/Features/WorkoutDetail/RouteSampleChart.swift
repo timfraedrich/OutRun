@@ -12,12 +12,18 @@ struct RouteSampleChart<Value: Plottable>: View {
         Chart(series) { series in
             ForEach(series.items) { item in
                 LineMark(x: .value("Timestamp", item.timestamp), y: .value("", item.value))
-                    .foregroundStyle(by: .value("Type", series.active ? "Active" : "Paused"))
+                    .foregroundStyle(by: .value("Series", series.id.uuidString))
                     .zIndex(series.active ? 1 : 0)
             }
         }
         .chartLegend(.hidden)
-        .chartForegroundStyleScale(["Active": AnyShapeStyle(.tint), "Paused": AnyShapeStyle(.gray)])
+        .chartForegroundStyleScale { (plottable: String) in
+            if let id = UUID(uuidString: plottable), series.first(where: { $0.id == id })?.active == true {
+                AnyShapeStyle(.tint)
+            } else {
+                AnyShapeStyle(.gray)
+            }
+        }
         .chartXScale(domain: dateRange)
         .chartXAxis {
             AxisMarks(values: axisValues) { _ in
