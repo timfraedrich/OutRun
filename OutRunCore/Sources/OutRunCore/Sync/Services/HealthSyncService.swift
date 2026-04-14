@@ -15,8 +15,8 @@ public class HealthSyncService: SyncService {
     private var delegate: SyncDelegate?
     
     public let identifier: String = identifier
-    public var inwardSyncMode: SyncMode = .disabled { didSet { setPreference(inwardSyncMode, for: Self.inwardSyncModePreferenceKey) } }
-    public var outwardSyncMode: SyncMode = .disabled { didSet { setPreference(outwardSyncMode, for: Self.outwardSyncModePreferenceKey) } }
+    public private(set) var inwardSyncMode: SyncMode = .disabled
+    public private(set) var outwardSyncMode: SyncMode = .disabled
     public let relevantAttributes: Set<any PartialKeyPath<Workout> & Sendable> = [
         \.rawType,
          \.distance,
@@ -30,6 +30,24 @@ public class HealthSyncService: SyncService {
          \.pauses,
          \.events,
     ]
+    
+    public func setInwardSyncMode(_ mode: SyncMode) {
+        guard let delegate else { return }
+        if case .disabled = mode {
+            observationAnchor = nil
+        } else if case .enabledFrom(let startDate) = mode, case .disabled = inwardSyncMode {
+            let now = Date.now
+            initiallySync(from: startDate, to: now, into: delegate)
+        }
+        inwardSyncMode = mode
+        setPreference(inwardSyncMode, for: Self.inwardSyncModePreferenceKey)
+    }
+    
+    public func setOutwardSyncMode(_ mode: SyncMode) {
+        guard delegate != nil else { return }
+        outwardSyncMode = mode
+        setPreference(outwardSyncMode, for: Self.outwardSyncModePreferenceKey)
+    }
     
     public init() {
         Task { [weak self] in
@@ -196,6 +214,33 @@ public class HealthSyncService: SyncService {
         return true
     }
     
+    // MARK: - Inward Sync
+    
+    private func attemptToInwardSync(_ hkWorkout: HKWorkout, into delegate: any SyncDelegate) async {
+        do {
+            let workout = try await fetchFullWorkout(from: hkWorkout)
+            try await delegate.upsert(workout)
+            logger.info("Successfully upserted workout \(hkWorkout.uuid.uuidString) inward.")
+        } catch {
+            logger.error("Failed to upsert workout \(hkWorkout.uuid.uuidString) inward: \(error.localizedDescription)")
+        }
+    }
+    
+    private func initiallySync(from startDate: Date, to endDate: Date, into delegate: any SyncDelegate) {
+        Task {
+            do {
+                logger.info("Attempting to initial inward sync from \(startDate).")
+                let hkWorkouts = try await fetchWorkouts(from: startDate, to: endDate)
+                for hkWorkout in hkWorkouts {
+                    await attemptToInwardSync(hkWorkout, into: delegate)
+                }
+                logger.info("Finished initial inward sync from \(startDate).")
+            } catch {
+                logger.error("Initial inward sync failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     // MARK: - Observation
     
     private var observationTask: Task<Void, Never>?
@@ -213,20 +258,24 @@ public class HealthSyncService: SyncService {
         }
     }
     
+    private func workoutPredicate(from startDate: Date?, to endDate: Date?) -> HKSamplePredicate<HKWorkout> {
+        let sourcePredicate = HKQuery.predicateForObjects(from: .default())
+        let notSourcePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: sourcePredicate)
+        let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+        let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
+        let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
+        let filterPredicares = [notSourcePredicate, syncStartDatePredicate, activityTypesPredicate]
+        let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: filterPredicares)
+        return HKSamplePredicate.workout(filterPredicate)
+    }
+    
     private func startObservation() {
         guard inwardSyncMode.isEnabled else {
             logger.error("Tried to start observation in disabled mode.")
             return
         }
         let observationAnchor = self.observationAnchor
-        let sourcePredicate = HKQuery.predicateForObjects(from: .default())
-        let notSourcePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: sourcePredicate)
-        let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: inwardSyncMode.startDate, end: .none)
-        let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
-        let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
-        let filterPredicares = [notSourcePredicate, syncStartDatePredicate, activityTypesPredicate]
-        let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: filterPredicares)
-        let workoutPredicate = HKSamplePredicate.workout(filterPredicate)
+        let workoutPredicate = workoutPredicate(from: inwardSyncMode.startDate, to: .none)
         let descriptor = HKAnchoredObjectQueryDescriptor(predicates: [workoutPredicate], anchor: observationAnchor)
         observationTask = Task { [weak delegate] in
             do {
@@ -295,8 +344,8 @@ public class HealthSyncService: SyncService {
     }
     
     private func fetchCumulativeMetric(for hkWorkout: HKWorkout, with type: SupportedHealthKitType?) async throws -> Double? {
-        guard let type,
-              type.supportsCumulativeAggregation,
+        guard let type else { return nil }
+        guard type.supportsCumulativeAggregation,
               let quantityType = type.quanityType,
               let quantityUnit = type.quantityUnit
         else { throw HealthSyncServiceError.invalidHealthKitType }
@@ -389,6 +438,12 @@ public class HealthSyncService: SyncService {
                 )
             ]
         )
+    }
+    
+    private func fetchWorkouts(from startDate: Date, to endDate: Date) async throws -> [HKWorkout] {
+        let workoutPredicate = workoutPredicate(from: startDate, to: endDate)
+        let descriptor = HKSampleQueryDescriptor(predicates: [workoutPredicate], sortDescriptors: [])
+        return try await descriptor.result(for: healthStore)
     }
     
     // MARK: Insert
