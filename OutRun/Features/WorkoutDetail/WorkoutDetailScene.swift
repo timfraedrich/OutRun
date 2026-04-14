@@ -10,6 +10,7 @@ struct WorkoutDetailScene: View {
     @State private var sectionedHeartRates: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>?
     private let workout: any WorkoutProtocol
     private let addCloseButton: Bool
+    private let chartHeight: CGFloat = 125
     
     var body: some View {
         ScrollView {
@@ -88,6 +89,12 @@ struct WorkoutDetailScene: View {
     @ViewBuilder private var distanceSection: some View {
         section("Distance") {
             metricGrid(with: [.distance, .repetitions, .ascent, .descent])
+            if let endDate = workout.endDate, let sectionedRoute {
+                LabeledContent("Altitude") {
+                    RouteSampleChart(sectionedSamples: sectionedRoute, valueKeyPath: \.altitude, dateRange: workout.startDate...endDate)
+                        .frame(height: chartHeight)
+                }
+            }
         }
     }
     
@@ -109,6 +116,12 @@ struct WorkoutDetailScene: View {
     @ViewBuilder private var speedSection: some View {
         section("Speed") {
             metricGrid(with: [.averageSpeed, .topSpeed])
+            if let endDate = workout.endDate, let sectionedRoute {
+                LabeledContent("Speed") {
+                    RouteSampleChart(sectionedSamples: sectionedRoute, valueKeyPath: \.speed, dateRange: workout.startDate...endDate)
+                        .frame(height: chartHeight)
+                }
+            }
         }
     }
     
