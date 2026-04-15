@@ -2,7 +2,9 @@ import Charts
 import OutRunCore
 import SwiftUI
 
-struct RouteSampleChart<Value: Numeric & Comparable & Plottable>: View {
+struct SampleChart<Value: Numeric & Comparable & Plottable>: View {
+    
+    typealias Sample = (timestamp: Date, value: Value)
     
     private let series: [Series]
     private let dateRange: ClosedRange<Date>
@@ -34,13 +36,12 @@ struct RouteSampleChart<Value: Numeric & Comparable & Plottable>: View {
     }
     
     init(
-        sectionedSamples: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>,
-        valueKeyPath: KeyPath<any WorkoutRouteDataSampleProtocol, Value>,
+        sectionedSamples: CategorizedArray<Bool, Sample>,
         dateRange: ClosedRange<Date>
     ) {
         self.series = sectionedSamples.map { active, samples in
             .init(active: active, items: samples.compactMap { sample in
-                let value = sample[keyPath: valueKeyPath]
+                let value = sample.value
                 guard value >= Value.zero else { return nil }
                 return .init(timestamp: sample.timestamp, value: value)
             })
@@ -49,8 +50,8 @@ struct RouteSampleChart<Value: Numeric & Comparable & Plottable>: View {
         self.axisValues = DateBins(range: dateRange, desiredCount: 6).thresholds.dropLast(1)
     }
     
-    init(samples: [any WorkoutRouteDataSampleProtocol], valueKeyPath: KeyPath<any WorkoutRouteDataSampleProtocol, Value>, dateRange: ClosedRange<Date>) {
-        self.init(sectionedSamples: [(true, samples)], valueKeyPath: valueKeyPath, dateRange: dateRange)
+    init(samples: [Sample], dateRange: ClosedRange<Date>) {
+        self.init(sectionedSamples: [(true, samples)], dateRange: dateRange)
     }
     
     private struct Series: Identifiable {

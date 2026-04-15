@@ -1,7 +1,10 @@
+import Charts
 import OutRunCore
 import SwiftUI
 
 struct WorkoutDetailScene: View {
+    
+    private typealias ValueSamples<V: Numeric & Comparable & Plottable> = CategorizedArray<Bool, SampleChart<V>.Sample>
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -11,6 +14,9 @@ struct WorkoutDetailScene: View {
     private let workout: any WorkoutProtocol
     private let addCloseButton: Bool
     private let chartHeight: CGFloat = 125
+    
+    private var sectionedAltitudes: ValueSamples<Float>? { sectionedRouteSamples(for: \.altitude) }
+    private var sectionedSpeeds: ValueSamples<Float>? { sectionedRouteSamples(for: \.speed) }
     
     var body: some View {
         ScrollView {
@@ -89,9 +95,9 @@ struct WorkoutDetailScene: View {
     @ViewBuilder private var distanceSection: some View {
         section("Distance") {
             metricGrid(with: [.distance, .repetitions, .ascent, .descent])
-            if let endDate = workout.endDate, let sectionedRoute {
+            if let endDate = workout.endDate, let sectionedAltitudes {
                 LabeledContent("Altitude") {
-                    RouteSampleChart(sectionedSamples: sectionedRoute, valueKeyPath: \.altitude, dateRange: workout.startDate...endDate)
+                    SampleChart(sectionedSamples: sectionedAltitudes, dateRange: workout.startDate...endDate)
                         .frame(height: chartHeight)
                 }
             }
@@ -116,9 +122,9 @@ struct WorkoutDetailScene: View {
     @ViewBuilder private var speedSection: some View {
         section("Speed") {
             metricGrid(with: [.averageSpeed, .topSpeed])
-            if let endDate = workout.endDate, let sectionedRoute {
+            if let endDate = workout.endDate, let sectionedSpeeds {
                 LabeledContent("Speed") {
-                    RouteSampleChart(sectionedSamples: sectionedRoute, valueKeyPath: \.speed, dateRange: workout.startDate...endDate)
+                    SampleChart(sectionedSamples: sectionedSpeeds, dateRange: workout.startDate...endDate)
                         .frame(height: chartHeight)
                 }
             }
@@ -151,6 +157,17 @@ struct WorkoutDetailScene: View {
     init(workout: any WorkoutProtocol, addCloseButton: Bool = true) {
         self.workout = workout
         self.addCloseButton = addCloseButton
+    }
+    
+    private func sectionedRouteSamples<V>(for keyPath: KeyPath<any WorkoutRouteDataSampleProtocol, V>) -> ValueSamples<V>? {
+        guard let sectionedRoute else { return nil }
+        let sectionedAltitudes: ValueSamples<V> = sectionedRoute.compactMap { active, samples in
+            let filteredValues = samples.compactMap { $0[keyPath: keyPath] >= 0 ? ($0.timestamp, $0[keyPath: keyPath]) : nil }
+            guard !filteredValues.isEmpty else { return nil }
+            return (active, filteredValues)
+        }
+        guard !sectionedAltitudes.isEmpty else { return nil }
+        return sectionedAltitudes
     }
     
     private func delete() {
