@@ -226,11 +226,11 @@ class StepService {
         
         var errorDescription: String? {
             switch self {
-            case .stepsNotAvailable: R.string.localizable.step_service_error_steps_not_available()
-            case .authorizationMissing: R.string.localizable.step_service_error_authorization_missing()
-            case .authorizationDenied: R.string.localizable.step_service_error_authorization_denied()
-            case .authorizationRestricted: R.string.localizable.step_service_error_authorization_restricted()
-            case .unknownAuthorizationStatus: R.string.localizable.step_service_error_unknown_authorization_status()
+            case .stepsNotAvailable: .init(localized: "step_service_error_steps_not_available")
+            case .authorizationMissing: .init(localized: "step_service_error_authorization_missing")
+            case .authorizationDenied: .init(localized: "step_service_error_authorization_denied")
+            case .authorizationRestricted: .init(localized: "step_service_error_authorization_restricted")
+            case .unknownAuthorizationStatus: .init(localized: "step_service_error_unknown_authorization_status")
             }
         }
     }

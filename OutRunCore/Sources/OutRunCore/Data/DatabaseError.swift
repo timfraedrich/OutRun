@@ -22,10 +22,10 @@ enum DatabaseError: LocalizedError, CustomDebugStringConvertible {
     
     var errorDescription: String? {
         switch self {
-        case .objectNotFound: R.string.localizable.database_error_object_not_found()
-        case .workoutNotFinished: R.string.localizable.database_error_workout_not_finished()
-        case .workoutAlreadyFinished: R.string.localizable.database_error_workout_already_finished()
-        case .userAlreadyPresent: R.string.localizable.database_error_user_already_present()
+        case .objectNotFound: .init(localized: "database_error_object_not_found")
+        case .workoutNotFinished: .init(localized: "database_error_workout_not_finished")
+        case .workoutAlreadyFinished: .init(localized: "database_error_workout_already_finished")
+        case .userAlreadyPresent: .init(localized: "database_error_user_already_present")
         }
     }
 }

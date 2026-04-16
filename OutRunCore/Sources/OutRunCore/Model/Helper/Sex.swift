@@ -5,8 +5,8 @@ public enum Sex: String, CaseIterable, Codable, CustomDebugStringConvertible, Cu
     
     public var description: String {
         switch self {
-        case .male: R.string.localizable.sex_male()
-        case .female: R.string.localizable.sex_female()
+        case .male: .init(localized: "sex_male")
+        case .female: .init(localized: "sex_female")
         }
     }
     
