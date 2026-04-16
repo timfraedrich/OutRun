@@ -6,7 +6,7 @@ struct WorkoutDetailScene: View {
     
     private typealias ValueSamples<V: Numeric & Comparable & Plottable> = CategorizedArray<Bool, SampleChart<V>.Sample>
     
-    @Environment(\.modelContext) private var modelContext
+    @Environment(OutRunCore.self) private var core
     @Environment(\.dismiss) private var dismiss
     @State private var error: Error?
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
@@ -171,13 +171,13 @@ struct WorkoutDetailScene: View {
     }
     
     private func delete() {
-        do {
-            let identifer = workout.id
-            try modelContext.delete(model: Workout.self, where: #Predicate { $0.id == identifer })
-            try modelContext.save()
-            dismiss()
-        } catch {
-            self.error = error
+        Task {
+            do {
+                try await core.delete(workoutWithIdentifier: workout.id)
+                dismiss()
+            } catch {
+                self.error = error
+            }
         }
     }
 }
