@@ -102,9 +102,7 @@ struct MainScene: View {
     }
     
     @ViewBuilder private var calendarLink: some View {
-        Button {
-            mainRouter.currentSheet = .calendar
-        } label: {
+        Button(action: showCalendarScene) {
             HStack(spacing: .small) {
                 Image(systemName: "calendar")
                     .font(.title3)
@@ -126,6 +124,9 @@ struct MainScene: View {
     
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button("Calendar", systemImage: "calendar", action: showCalendarScene)
+        }
         ToolbarItem(placement: .topBarTrailing) {
             Button("Settings", systemImage: "gear", action: showSettingsScene)
         }
@@ -147,7 +148,7 @@ struct MainScene: View {
                 action: showRecordingScene
             )
         } else {
-            ActionButton(verbatim: "Record a Workout", action: showRecordingScene)
+            ActionButton("Record a Workout", action: showRecordingScene)
         }
     }
     
@@ -168,6 +169,10 @@ struct MainScene: View {
     
     private func showSettingsScene() {
         mainRouter.currentSheet = .settings
+    }
+    
+    private func showCalendarScene() {
+        mainRouter.currentSheet = .calendar
     }
     
     private func showWorkoutDetailScene(for workoutID: Workout.ID) {
