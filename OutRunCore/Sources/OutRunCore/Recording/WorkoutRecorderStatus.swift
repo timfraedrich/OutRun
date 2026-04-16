@@ -15,16 +15,16 @@ public enum WorkoutRecorderStatus: Equatable, CustomStringConvertible, CustomDeb
     
     public var description: String {
         switch self {
-        case .initializing: .init(localized: "workout_recorder_status_initializing")
-        case .idle: .init(localized: "workout_recorder_status_idle")
-        case .recording: .init(localized: "workout_recorder_status_recording")
+        case .initializing: .init(localized: "workout_recorder_status_initializing", bundle: .module)
+        case .idle: .init(localized: "workout_recorder_status_idle", bundle: .module)
+        case .recording: .init(localized: "workout_recorder_status_recording", bundle: .module)
         case .paused(let manual):
             if manual {
-                .init(localized: "workout_recorder_status_paused_manual")
+                .init(localized: "workout_recorder_status_paused_manual", bundle: .module)
             } else {
-                .init(localized: "workout_recorder_status_paused_automatic")
+                .init(localized: "workout_recorder_status_paused_automatic", bundle: .module)
             }
-        case .failed: .init(localized: "workout_recorder_status_failed")
+        case .failed: .init(localized: "workout_recorder_status_failed", bundle: .module)
         }
     }
     

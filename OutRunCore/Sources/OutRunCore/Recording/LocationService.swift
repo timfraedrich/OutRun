@@ -231,8 +231,8 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
         
         var errorDescription: String? {
             switch self {
-            case .authorizationDenied: .init(localized: "location_service_error_authorization_denied")
-            case .authorizationRestricted: .init(localized: "location_service_error_authorization_restricted")
+            case .authorizationDenied: .init(localized: "location_service_error_authorization_denied", bundle: .module)
+            case .authorizationRestricted: .init(localized: "location_service_error_authorization_restricted", bundle: .module)
             }
         }
     }

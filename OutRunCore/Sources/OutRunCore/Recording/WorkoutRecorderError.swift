@@ -26,14 +26,14 @@ public enum WorkoutRecorderError: LocalizedError, Equatable, CustomDebugStringCo
     
     public var errorDescription: String? {
         switch self {
-        case .alreadyRecording: .init(localized: "workout_recorder_error_already_recording")
-        case .inFailedState: .init(localized: "workout_recorder_error_in_failed_state")
-        case .notInitialized: .init(localized: "workout_recorder_error_not_initialized")
-        case .notRecording: .init(localized: "workout_recorder_error_not_recording")
-        case .notPaused: .init(localized: "workout_recorder_error_not_paused")
-        case .alreadyPaused: .init(localized: "workout_recorder_error_already_paused")
-        case .locationAuthorizationInsufficient: .init(localized: "workout_recorder_error_location_authorization_insufficient")
-        case .invalidStatusTransition: .init(localized: "workout_recorder_error_invalid_status_transition")
+        case .alreadyRecording: .init(localized: "workout_recorder_error_already_recording", bundle: .module)
+        case .inFailedState: .init(localized: "workout_recorder_error_in_failed_state", bundle: .module)
+        case .notInitialized: .init(localized: "workout_recorder_error_not_initialized", bundle: .module)
+        case .notRecording: .init(localized: "workout_recorder_error_not_recording", bundle: .module)
+        case .notPaused: .init(localized: "workout_recorder_error_not_paused", bundle: .module)
+        case .alreadyPaused: .init(localized: "workout_recorder_error_already_paused", bundle: .module)
+        case .locationAuthorizationInsufficient: .init(localized: "workout_recorder_error_location_authorization_insufficient", bundle: .module)
+        case .invalidStatusTransition: .init(localized: "workout_recorder_error_invalid_status_transition", bundle: .module)
         }
     }
 }

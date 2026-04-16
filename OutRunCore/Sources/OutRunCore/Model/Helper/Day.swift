@@ -45,7 +45,7 @@ public struct Day: Codable, CustomDebugStringConvertible, CustomStringConvertibl
     
     public struct ConversionError: LocalizedError {
         
-        public var errorDescription: String? { .init(localized: "day_conversion_error_description") }
+        public var errorDescription: String? { .init(localized: "day_conversion_error_description", bundle: .module) }
         
         fileprivate init() {}
     }

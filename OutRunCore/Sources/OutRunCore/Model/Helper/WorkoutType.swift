@@ -51,12 +51,12 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Cu
     
     public var description: String {
         switch self {
-        case .running: .init(localized: "workout_type_running")
-        case .walking: .init(localized: "workout_type_walking")
-        case .cycling: .init(localized: "workout_type_cycling")
-        case .skating: .init(localized: "workout_type_skating")
-        case .hiking: .init(localized: "workout_type_hiking")
-        case .unknown: .init(localized: "workout_type_unknown")
+        case .running: .init(localized: "workout_type_running", bundle: .module)
+        case .walking: .init(localized: "workout_type_walking", bundle: .module)
+        case .cycling: .init(localized: "workout_type_cycling", bundle: .module)
+        case .skating: .init(localized: "workout_type_skating", bundle: .module)
+        case .hiking: .init(localized: "workout_type_hiking", bundle: .module)
+        case .unknown: .init(localized: "workout_type_unknown", bundle: .module)
         }
     }
     

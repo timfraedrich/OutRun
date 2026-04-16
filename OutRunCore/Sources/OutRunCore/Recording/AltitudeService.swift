@@ -288,11 +288,11 @@ class AltitudeService {
         
         var errorDescription: String? {
             switch self {
-            case .altitudeNotAvailable: .init(localized: "altitude_service_error_altitude_not_available")
-            case .authorizationMissing: .init(localized: "altitude_service_error_authorization_missing")
-            case .authorizationDenied: .init(localized: "altitude_service_error_authorization_denied")
-            case .authorizationRestricted: .init(localized: "altitude_service_error_authorization_restricted")
-            case .unknownAuthorizationStatus: .init(localized: "altitude_service_error_unknown_authorization_status")
+            case .altitudeNotAvailable: .init(localized: "altitude_service_error_altitude_not_available", bundle: .module)
+            case .authorizationMissing: .init(localized: "altitude_service_error_authorization_missing", bundle: .module)
+            case .authorizationDenied: .init(localized: "altitude_service_error_authorization_denied", bundle: .module)
+            case .authorizationRestricted: .init(localized: "altitude_service_error_authorization_restricted", bundle: .module)
+            case .unknownAuthorizationStatus: .init(localized: "altitude_service_error_unknown_authorization_status", bundle: .module)
             }
         }
     }

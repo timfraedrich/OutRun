@@ -12,7 +12,7 @@ public struct HeartRateText: View {
             numberFormatStyle: .number.rounded()
         )
         .locale(locale)
-        .format(.init(value: Double(heartRate), unit: UnitFrequency(symbol: .init(localized: "unit_beats_per_minute"))))
+        .format(.init(value: Double(heartRate), unit: UnitFrequency(symbol: .init(localized: "unit_beats_per_minute", bundle: .module))))
     }
     
     public var body: some View {

@@ -19,9 +19,9 @@ public enum OutRunCoreError: CustomDebugStringConvertible, LocalizedError {
     
     public var errorDescription: String? {
         switch self {
-        case .invalidNameProvided: .init(localized: "core_error_invalid_name_provided")
-        case .notInitialized: .init(localized: "core_error_not_initialized")
-        case .setupNotRequired: .init(localized: "core_error_setup_not_required")
+        case .invalidNameProvided: .init(localized: "core_error_invalid_name_provided", bundle: .module)
+        case .notInitialized: .init(localized: "core_error_not_initialized", bundle: .module)
+        case .setupNotRequired: .init(localized: "core_error_setup_not_required", bundle: .module)
         case .newerWorkoutVersionExists: ""
         }
     }

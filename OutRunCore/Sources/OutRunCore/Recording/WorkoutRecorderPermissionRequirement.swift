@@ -13,8 +13,8 @@ public enum WorkoutRecorderPermission: Equatable, CustomStringConvertible, Custo
     
     public var description: String {
         switch self {
-        case .location: .init(localized: "workout_recorder_permission_location")
-        case .motionAndFitness: .init(localized: "workout_recorder_permission_motion_and_fitness")
+        case .location: .init(localized: "workout_recorder_permission_location", bundle: .module)
+        case .motionAndFitness: .init(localized: "workout_recorder_permission_motion_and_fitness", bundle: .module)
         }
     }
     

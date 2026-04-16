@@ -37,9 +37,9 @@ public struct WorkoutMetricLabeledContent<Label: View>: View {
     public init?(_ metric: WorkoutMetric, for workout: any WorkoutProtocol) where Label == Text {
         guard let metricValue = metric.value(for: workout) else { return nil }
         let title: String = if metric == .repetitions, workout.type == .cycling {
-            .init(localized: "workout_metric_repetitions_cycle_strokes")
+            .init(localized: "workout_metric_repetitions_cycle_strokes", bundle: .module)
         } else if metric == .repetitions {
-            .init(localized: "workout_metric_repetitions_steps")
+            .init(localized: "workout_metric_repetitions_steps", bundle: .module)
         } else {
             metric.description
         }

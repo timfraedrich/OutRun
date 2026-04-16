@@ -175,8 +175,8 @@ public enum StaticWorkoutMapService {
         
         public var errorDescription: String? {
             switch self {
-            case .noCoordinates: .init(localized: "static_workout_map_service_error_no_coordinates")
-            case .renderingFailed: .init(localized: "static_workout_map_service_error_rendering_failed")
+            case .noCoordinates: .init(localized: "static_workout_map_service_error_no_coordinates", bundle: .module)
+            case .renderingFailed: .init(localized: "static_workout_map_service_error_rendering_failed", bundle: .module)
             }
         }
     }
