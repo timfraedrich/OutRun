@@ -28,10 +28,7 @@ struct WorkoutDetailScene: View {
                 speedSection
                 energySection
                 routeSection
-                
-                ActionButton(verbatim: "Delete", action: delete)
-                    .errorPopover($error)
-                    .tint(.red)
+                actionSection
             }
             .backgroundStyle(.secondaryBackground)
             .padding(.horizontal, .regular)
@@ -145,6 +142,13 @@ struct WorkoutDetailScene: View {
                     .clipShape(.containerRelative)
             }
         }
+    }
+    
+    @ViewBuilder private var actionSection: some View {
+        ActionButton("Delete", action: delete)
+            .errorPopover($error)
+            .tint(.red)
+            .padding(.regular)
     }
     
     @ViewBuilder
