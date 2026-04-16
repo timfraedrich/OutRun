@@ -33,7 +33,7 @@ struct WorkoutInProgressButton: View {
         if #available(iOS 26, *) {
             button.buttonStyle(.glass)
         } else {
-            button.buttonStyle(.action)
+            button.buttonStyle(.actionProminent)
         }
     }
 }

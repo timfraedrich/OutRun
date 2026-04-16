@@ -4,11 +4,11 @@ struct ActionButtonStyle: PrimitiveButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         if #available(iOS 26, *) {
-            GlassProminentButtonStyle()
+            GlassButtonStyle()
                 .makeBody(configuration: configuration)
                 
         } else {
-            BorderedProminentButtonStyle()
+            BorderedButtonStyle()
                 .makeBody(configuration: configuration)
                 .buttonBorderShape(.roundedRectangle(radius: .regular))
         }
