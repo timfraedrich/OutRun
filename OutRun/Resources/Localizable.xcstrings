@@ -3,6 +3,12 @@
   "strings" : {
     "altitude" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Höhenmeter"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13,6 +19,12 @@
     },
     "apple_health" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23,6 +35,12 @@
     },
     "backup" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33,6 +51,12 @@
     },
     "backup_export_action" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup erstellen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43,6 +67,12 @@
     },
     "backup_export_description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportiere deine Workoutdaten zur sicheren Aufbewahrung und um sie später wiederherzustellen. Das Backup wird als .zip-Archiv mit einer .json-Datei für jedes Workout gespeichert."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53,6 +83,12 @@
     },
     "backup_export_failed_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup fehlgeschlagen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63,6 +99,12 @@
     },
     "backup_export_running_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup wird erstellt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73,6 +115,12 @@
     },
     "backup_export_success_message" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Backup wurde im ausgewählten Ordner gespeichert."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83,6 +131,12 @@
     },
     "backup_export_success_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup erstellt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93,6 +147,12 @@
     },
     "backup_import_action" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup wiederherstellen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,6 +163,12 @@
     },
     "backup_import_description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importiere ein von dieser App erstelltes Backup. Die App akzeptiert .zip-Archive und die alten .orbup-Dateien. Bereits in der App vorhandene Daten werden nicht überschrieben oder gelöscht. Wird ein veraltetes Workout importiert, wird es übersprungen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113,6 +179,12 @@
     },
     "backup_import_export_running_message" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dies kann einige Minuten dauern. Bitte schließe die App nicht."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123,6 +195,12 @@
     },
     "backup_import_failed_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import fehlgeschlagen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -133,6 +211,12 @@
     },
     "backup_import_running_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup wird importiert"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -143,6 +227,12 @@
     },
     "backup_import_success_message_%lld_total_%lld_successfull_%lld_skipped_%lld_failed" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von den %1$lld Workouts im ausgewählten Backup wurden %2$lld erfolgreich importiert, %3$lld übersprungen und %4$lld konnten nicht importiert werden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
@@ -153,6 +243,12 @@
     },
     "backup_import_success_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup importiert"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162,7 +258,14 @@
       }
     },
     "beats_per_minute_unit" : {
+      "comment" : "Abbreviation for beats per minute, used as a unit label for heart rate.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BPM"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -173,6 +276,12 @@
     },
     "browse_in_calendar" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Kalender ansehen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -183,6 +292,12 @@
     },
     "cache" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cache"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193,6 +308,12 @@
     },
     "cache_settings_clear_maps_action" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karten-Cache leeren"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -203,6 +324,12 @@
     },
     "cache_settings_maps_size" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karten-Cache-Größe"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -213,6 +340,12 @@
     },
     "calendar" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalender"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -223,6 +356,12 @@
     },
     "close" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -232,7 +371,14 @@
       }
     },
     "default" : {
+      "comment" : "Label appended to the default GPS accuracy value in the recording settings picker, e.g. '20 m (Standard)'.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -243,6 +389,12 @@
     },
     "delete" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -252,10 +404,30 @@
       }
     },
     "error" : {
-
+      "comment" : "Generic error alert title used as a fallback when no specific error message is available.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
     },
     "error_health_sync_service_not_available" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health ist nicht verfügbar."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -266,6 +438,12 @@
     },
     "error_setup_name_empty" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Feld \"Name\" darf nicht leer sein."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -420,6 +598,12 @@
     },
     "legacy_migration_view_migration_estimated_time_%@" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschätzte verbleibende Zeit: %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -449,7 +633,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die App führt derzeit eine Datenmigration durch, um neue Funktionalität zu ermöglichen. Die App stollte während der Migration geöffnet bleiben"
+            "value" : "Die App führt derzeit eine Datenmigration durch, um neue Funktionalität zu ermöglichen. Die App sollte während der Migration geöffnet bleiben."
           }
         },
         "en" : {
@@ -494,6 +678,12 @@
     },
     "legal_imprint" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impressum"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -504,6 +694,12 @@
     },
     "legal_privacy_policy" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenschutzerklärung"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -514,6 +710,12 @@
     },
     "legal_terms_of_service" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzungsbedingungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -523,7 +725,14 @@
       }
     },
     "maximum_beats_per_minute_short" : {
+      "comment" : "Short label for the maximum heart rate metric displayed in the workout detail heart rate section.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max. BPM"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -533,7 +742,14 @@
       }
     },
     "minimum_beats_per_minute_short" : {
+      "comment" : "Short label for the minimum heart rate metric displayed in the workout detail heart rate section.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min. BPM"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -544,6 +760,12 @@
     },
     "ok" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -570,6 +792,12 @@
     },
     "record_workout_action" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout aufnehmen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -579,7 +807,14 @@
       }
     },
     "recording_end" : {
+      "comment" : "Button label to end/finish a workout recording session.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beenden"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -589,7 +824,14 @@
       }
     },
     "recording_preferences_default_workout_type_latest" : {
+      "comment" : "Option in the default workout type picker meaning the most recently used workout type will be automatically selected when starting a new recording.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuletzt verwendet"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -600,6 +842,12 @@
     },
     "recording_settings" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufnahmeeinstellungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -610,6 +858,12 @@
     },
     "recording_settings_default_workout_type" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard-Workouttyp"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -620,6 +874,12 @@
     },
     "recording_settings_gps_accuracy" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mindest-GPS-Genauigkeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -629,7 +889,14 @@
       }
     },
     "recording_settings_rolling_speed" : {
+      "comment" : "Toggle in recording settings that enables calculation of a rolling (moving) average speed, smoothing out speed fluctuations by averaging over a sliding time window.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gleitende Geschwindigkeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -639,7 +906,14 @@
       }
     },
     "recording_start" : {
+      "comment" : "Button label to start a workout recording session.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -649,7 +923,14 @@
       }
     },
     "recording_workout_type" : {
+      "comment" : "Label for the workout type menu/picker shown during an active recording session.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouttyp"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -675,7 +956,14 @@
       }
     },
     "reset" : {
+      "comment" : "Destructive confirm button in the reset app confirmation dialog.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurücksetzen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -686,6 +974,12 @@
     },
     "reset_app_action" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App zurücksetzen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -696,6 +990,12 @@
     },
     "reset_app_confirmation_message" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bist du sicher, dass du die App zurücksetzen möchtest? Dadurch werden alle lokal gespeicherten Daten einschließlich deiner Workouts und persönlichen Informationen gelöscht. Diese Aktion kann nicht rückgängig gemacht werden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -706,6 +1006,12 @@
     },
     "save" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -731,7 +1037,14 @@
       }
     },
     "series" : {
+      "comment" : "Accessibility label used by Swift Charts to identify grouped chart data series (e.g. active vs. paused workout segments). Not visible in the chart UI as the legend is hidden.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reihe"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -742,6 +1055,12 @@
     },
     "settings" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -752,6 +1071,12 @@
     },
     "settings_info_database_size" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenbankgröße"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -762,6 +1087,12 @@
     },
     "settings_info_number_of_workouts" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anzahl der Workouts"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -772,6 +1103,12 @@
     },
     "settings_info_version" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -782,6 +1119,12 @@
     },
     "settings_support" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -791,7 +1134,14 @@
       }
     },
     "setup_action" : {
+      "comment" : "Button label on the initial app setup screen to begin the setup process.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einrichten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -801,7 +1151,14 @@
       }
     },
     "setup_units" : {
+      "comment" : "Section heading on the setup screen for choosing the user's preferred measurement units.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einheiten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -811,7 +1168,14 @@
       }
     },
     "speed" : {
+      "comment" : "Label for the speed chart in the workout detail speed section, used as the y-axis value label in Swift Charts.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschwindigkeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -821,7 +1185,14 @@
       }
     },
     "system" : {
+      "comment" : "Option in unit pickers (distance, altitude, speed, energy, weight) meaning the device's system default unit will be used automatically.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -831,7 +1202,14 @@
       }
     },
     "timestamp" : {
+      "comment" : "Accessibility label used by Swift Charts for the x-axis data point timestamps in workout sample charts (speed, altitude).",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeitstempel"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -842,6 +1220,12 @@
     },
     "unit_settings" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einheiteneinstellungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -852,6 +1236,12 @@
     },
     "unit_settings_altitude_unit" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Höheneinheit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -862,6 +1252,12 @@
     },
     "unit_settings_distance_unit" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entfernungseinheit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -872,6 +1268,12 @@
     },
     "unit_settings_energy_unit" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energieeinheit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -882,6 +1284,12 @@
     },
     "unit_settings_speed_unit" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschwindigkeitseinheit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -892,6 +1300,12 @@
     },
     "unit_settings_weight_unit" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewichtseinheit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -902,6 +1316,12 @@
     },
     "unit_system_imperial" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperiell"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -912,6 +1332,12 @@
     },
     "unit_system_metric" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metrisch"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -922,6 +1348,12 @@
     },
     "user_birthday" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geburtstag"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -932,6 +1364,12 @@
     },
     "user_name" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -941,7 +1379,14 @@
       }
     },
     "user_name_fallback" : {
+      "comment" : "Fallback display name shown in the settings profile section when the user has not set a name yet.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzer"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -952,6 +1397,12 @@
     },
     "user_name_placeholder" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -962,6 +1413,12 @@
     },
     "user_profile" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzerprofil"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -972,6 +1429,12 @@
     },
     "user_sex" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschlecht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -982,6 +1445,12 @@
     },
     "user_sex_not_specified" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht angegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -992,6 +1461,12 @@
     },
     "user_weight" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewicht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1002,6 +1477,12 @@
     },
     "user_weight_placeholder" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Gewicht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1012,6 +1493,12 @@
     },
     "workout_detail_section_distance" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distanz"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1022,6 +1509,12 @@
     },
     "workout_detail_section_energy" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1032,6 +1525,12 @@
     },
     "workout_detail_section_heart_rate" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herzfrequenz"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1042,6 +1541,12 @@
     },
     "workout_detail_section_route" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1052,6 +1557,12 @@
     },
     "workout_detail_section_speed" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschwindigkeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1062,6 +1573,12 @@
     },
     "workout_detail_section_time" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1071,7 +1588,14 @@
       }
     },
     "workout_recorder_grant_%@_permission" : {
+      "comment" : "Button label prompting the user to grant a specific system permission required for recording a workout. %@ is replaced with the permission name (e.g. 'Location').",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Berechtigung erteilen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1082,6 +1606,12 @@
     },
     "workouts" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouts"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
