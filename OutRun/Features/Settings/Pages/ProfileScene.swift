@@ -15,10 +15,10 @@ struct ProfileScene: View {
     
     var body: some View {
         Form {
-            LabeledContent("Name") {
-                TextField("Your name", text: $name).fixedSize()
+            LabeledContent("user_name") {
+                TextField("user_name_placeholder", text: $name).fixedSize()
             }
-            LabeledContent("birthday") {
+            LabeledContent("user_birthday") {
                 OptionalDatePicker(
                     selection: $birthdate,
                     in: ...Date.now,
@@ -28,23 +28,23 @@ struct ProfileScene: View {
                 .buttonStyle(.plain)
                 .symbolRenderingMode(.hierarchical)
             }
-            LabeledContent("Weight") {
+            LabeledContent("user_weight") {
                 MeasurementTextField("Your weight", measurement: $weight, unit: userPreferences.safeWeightUnit(for: locale))
             }
             Picker(selection: $sex) {
-                Text("Not specified").tag(Sex?.none)
+                Text("user_sex_not_specified").tag(Sex?.none)
                 ForEach(Sex.allCases, id: \.hashValue) { sex in
                     Text(sex.description.capitalized).tag(sex)
                 }
             } label: {
-                Text("Sex")
+                Text("user_sex")
             }
         }
         .multilineTextAlignment(.trailing)
-        .navigationTitle("User Profile")
+        .navigationTitle("user_profile")
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Save", action: save).errorPopover($error)
+                Button("save", action: save).errorPopover($error)
             }
         }
         .onAppear {

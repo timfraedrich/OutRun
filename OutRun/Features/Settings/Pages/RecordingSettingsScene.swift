@@ -14,12 +14,12 @@ struct RecordingSettingsScene: View {
         @Bindable var userPreferences = userPreferences
         Form {
             Picker(selection: $userPreferences.defaultWorkoutType) {
-                Text("Latest").tag(WorkoutType?.none)
+                Text("recording_preferences_default_workout_type_latest").tag(WorkoutType?.none)
                 ForEach(WorkoutType.allCases, id: \.rawValue) { type in
                     Text(type.description).tag(type)
                 }
             } label: {
-                Text("recording_preferences_default_workout_type")
+                Text("recording_settings_default_workout_type")
             }
 
             Picker(selection: $userPreferences.requiredGPSAccuracy) {
@@ -37,12 +37,12 @@ struct RecordingSettingsScene: View {
                     }
                 }
             } label: {
-                Text("GPS Accuracy")
+                Text("recording_settings_gps_accuracy")
             }
 
-            Toggle("Rolling Speed", isOn: $userPreferences.calculateRollingSpeed)
+            Toggle("recording_settings_rolling_speed", isOn: $userPreferences.calculateRollingSpeed)
 
         }
-        .navigationTitle("Recording Preferences")
+        .navigationTitle("recording_settings")
     }
 }

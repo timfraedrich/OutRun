@@ -22,7 +22,7 @@ struct BackupSettingsScene: View {
                 fileImporterOnCompletion: processExportResult
             )
             section(
-                title: "Restore Backup",
+                title: "backup_import_action",
                 systemName: "arrow.down.document.fill",
                 explanation: "backup_import_description",
                 fileImporterIsPresented: $pickBackupToRestore,
@@ -151,17 +151,17 @@ struct BackupSettingsScene: View {
             case .export: "backup_export_running_title"
             case .exportSucceeded: "backup_export_success_title"
             case .exportFailed: "backup_export_failed_title"
-            case .import: "Importing Backup"
+            case .import: "backup_import_running_title"
             case .importSucceeded: "backup_import_success_title"
-            case .importFailed: "Import Failed"
+            case .importFailed: "backup_import_failed_title"
             }
         }
         
         var message: String {
             switch self {
-            case .export, .import: .init(localized: "This may take a couple of minutes. Please do not close the app.")
-            case .exportSucceeded: .init(localized: "The backup was saved to the selected folder.")
-            case .importSucceeded(let result): .init(localized: "Of the \(result.total) workouts in the provided backup, \(result.upserted) were successfully imported, \(result.skipped) were skipped, and \(result.failed) failed to import.")
+            case .export, .import: .init(localized: "backup_import_export_running_message")
+            case .exportSucceeded: .init(localized: "backup_export_success_message")
+            case .importSucceeded(let result): .init(localized: "backup_import_success_message_\(result.total)_total_\(result.upserted)_successfull_\(result.skipped)_skipped_\(result.failed)_failed")
             case .exportFailed(let error), .importFailed(let error): error.localizedDescription
             }
         }

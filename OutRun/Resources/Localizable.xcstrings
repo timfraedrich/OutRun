@@ -11,16 +11,6 @@
         }
       }
     },
-    "altitude_unit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Altitude Unit"
-          }
-        }
-      }
-    },
     "apple_health" : {
       "localizations" : {
         "en" : {
@@ -81,12 +71,32 @@
         }
       }
     },
+    "backup_export_success_message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The backup was saved to the selected folder."
+          }
+        }
+      }
+    },
     "backup_export_success_title" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Backup Created"
+          }
+        }
+      }
+    },
+    "backup_import_action" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Backup"
           }
         }
       }
@@ -101,6 +111,46 @@
         }
       }
     },
+    "backup_import_export_running_message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This may take a couple of minutes. Please do not close the app."
+          }
+        }
+      }
+    },
+    "backup_import_failed_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Failed"
+          }
+        }
+      }
+    },
+    "backup_import_running_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importing Backup"
+          }
+        }
+      }
+    },
+    "backup_import_success_message_%lld_total_%lld_successfull_%lld_skipped_%lld_failed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Of the %1$lld workouts in the provided backup, %2$lld were successfully imported, %3$lld were skipped, and %4$lld failed to import."
+          }
+        }
+      }
+    },
     "backup_import_success_title" : {
       "localizations" : {
         "en" : {
@@ -111,12 +161,22 @@
         }
       }
     },
-    "birthday" : {
+    "beats_per_minute_unit" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Birthday"
+            "value" : "BPM"
+          }
+        }
+      }
+    },
+    "browse_in_calendar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Browse in Calendar"
           }
         }
       }
@@ -141,6 +201,16 @@
         }
       }
     },
+    "cache_settings_maps_size" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map Cache Size"
+          }
+        }
+      }
+    },
     "calendar" : {
       "localizations" : {
         "en" : {
@@ -157,16 +227,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close"
-          }
-        }
-      }
-    },
-    "database_size" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Database Size"
           }
         }
       }
@@ -191,25 +251,8 @@
         }
       }
     },
-    "distance_unit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distance Unit"
-          }
-        }
-      }
-    },
-    "energy_unit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Energy Unit"
-          }
-        }
-      }
+    "error" : {
+
     },
     "error_health_sync_service_not_available" : {
       "localizations" : {
@@ -221,32 +264,12 @@
         }
       }
     },
-    "GPS Accuracy" : {
+    "error_setup_name_empty" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GPS Accuracy"
-          }
-        }
-      }
-    },
-    "Grant %@ Permission" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Grant %@ Permission"
-          }
-        }
-      }
-    },
-    "Grant Permissions" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Grant Permissions"
+            "value" : "The field \"Name\" must not be empty."
           }
         }
       }
@@ -331,36 +354,6 @@
         }
       }
     },
-    "Import Failed" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Import Failed"
-          }
-        }
-      }
-    },
-    "Importing Backup" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Importing Backup"
-          }
-        }
-      }
-    },
-    "Imprint" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imprint"
-          }
-        }
-      }
-    },
     "info" : {
       "localizations" : {
         "de" : {
@@ -373,26 +366,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info"
-          }
-        }
-      }
-    },
-    "Inward Mode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inward Mode"
-          }
-        }
-      }
-    },
-    "Latest" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latest"
           }
         }
       }
@@ -519,22 +492,32 @@
         }
       }
     },
-    "main_scene_browse_in_calendar" : {
+    "legal_imprint" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Browse in Calendar"
+            "value" : "Imprint"
           }
         }
       }
     },
-    "Map Cache Size" : {
+    "legal_privacy_policy" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Map Cache Size"
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "legal_terms_of_service" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Service"
           }
         }
       }
@@ -559,47 +542,7 @@
         }
       }
     },
-    "Name" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name"
-          }
-        }
-      }
-    },
-    "Not specified" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not specified"
-          }
-        }
-      }
-    },
-    "Number of Workouts" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Number of Workouts"
-          }
-        }
-      }
-    },
-    "Of the %lld workouts in the provided backup, %lld were successfully imported, %lld were skipped, and %lld failed to import." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Of the %1$lld workouts in the provided backup, %2$lld were successfully imported, %3$lld were skipped, and %4$lld failed to import."
-          }
-        }
-      }
-    },
-    "Ok" : {
+    "ok" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -625,27 +568,7 @@
         }
       }
     },
-    "Outward Mode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Outward Mode"
-          }
-        }
-      }
-    },
-    "Privacy Policy" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy Policy"
-          }
-        }
-      }
-    },
-    "Record a Workout" : {
+    "record_workout_action" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -655,7 +578,27 @@
         }
       }
     },
-    "Recording Preferences" : {
+    "recording_end" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End"
+          }
+        }
+      }
+    },
+    "recording_preferences_default_workout_type_latest" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest"
+          }
+        }
+      }
+    },
+    "recording_settings" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -665,12 +608,52 @@
         }
       }
     },
-    "recording_preferences_default_workout_type" : {
+    "recording_settings_default_workout_type" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Default Workout Type"
+          }
+        }
+      }
+    },
+    "recording_settings_gps_accuracy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum GPS Accuracy"
+          }
+        }
+      }
+    },
+    "recording_settings_rolling_speed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rolling Speed"
+          }
+        }
+      }
+    },
+    "recording_start" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        }
+      }
+    },
+    "recording_workout_type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout Type"
           }
         }
       }
@@ -691,7 +674,7 @@
         }
       }
     },
-    "Reset" : {
+    "reset" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -701,7 +684,7 @@
         }
       }
     },
-    "Reset App" : {
+    "reset_app_action" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -721,37 +704,7 @@
         }
       }
     },
-    "Restore Backup" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restore Backup"
-          }
-        }
-      }
-    },
-    "Rolling Speed" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rolling Speed"
-          }
-        }
-      }
-    },
-    "Route" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Route"
-          }
-        }
-      }
-    },
-    "Save" : {
+    "save" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -777,7 +730,7 @@
         }
       }
     },
-    "Series" : {
+    "series" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -787,17 +740,7 @@
         }
       }
     },
-    "Set Mode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set Mode"
-          }
-        }
-      }
-    },
-    "Settings" : {
+    "settings" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -807,52 +750,72 @@
         }
       }
     },
-    "Setup" : {
+    "settings_info_database_size" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setup"
+            "value" : "Database Size"
           }
         }
       }
     },
-    "Sex" : {
+    "settings_info_number_of_workouts" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sex"
+            "value" : "Number of Workouts"
           }
         }
       }
     },
-    "Speed" : {
+    "settings_info_version" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Speed"
+            "value" : "Version"
           }
         }
       }
     },
-    "speed_unit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Speed Unit"
-          }
-        }
-      }
-    },
-    "Support" : {
+    "settings_support" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Support"
+          }
+        }
+      }
+    },
+    "setup_action" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set Up"
+          }
+        }
+      }
+    },
+    "setup_units" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Units"
+          }
+        }
+      }
+    },
+    "speed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed"
           }
         }
       }
@@ -867,56 +830,6 @@
         }
       }
     },
-    "Terms of Service" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Terms of Service"
-          }
-        }
-      }
-    },
-    "The backup was saved to the selected folder." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The backup was saved to the selected folder."
-          }
-        }
-      }
-    },
-    "The field \"Name\" must not be empty." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The field \"Name\" must not be empty."
-          }
-        }
-      }
-    },
-    "This may take a couple of minutes. Please do not close the app." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This may take a couple of minutes. Please do not close the app."
-          }
-        }
-      }
-    },
-    "time" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Time"
-          }
-        }
-      }
-    },
     "timestamp" : {
       "localizations" : {
         "en" : {
@@ -927,22 +840,62 @@
         }
       }
     },
-    "unit_beats_per_minute" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BPM"
-          }
-        }
-      }
-    },
     "unit_settings" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unit Settings"
+          }
+        }
+      }
+    },
+    "unit_settings_altitude_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude Unit"
+          }
+        }
+      }
+    },
+    "unit_settings_distance_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance Unit"
+          }
+        }
+      }
+    },
+    "unit_settings_energy_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy Unit"
+          }
+        }
+      }
+    },
+    "unit_settings_speed_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed Unit"
+          }
+        }
+      }
+    },
+    "unit_settings_weight_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight Unit"
           }
         }
       }
@@ -967,17 +920,47 @@
         }
       }
     },
-    "Units" : {
+    "user_birthday" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Units"
+            "value" : "Birthday"
           }
         }
       }
     },
-    "User Profile" : {
+    "user_name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "user_name_fallback" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User"
+          }
+        }
+      }
+    },
+    "user_name_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your name"
+          }
+        }
+      }
+    },
+    "user_profile" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -987,17 +970,27 @@
         }
       }
     },
-    "Version" : {
+    "user_sex" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Version"
+            "value" : "Sex"
           }
         }
       }
     },
-    "Weight" : {
+    "user_sex_not_specified" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not specified"
+          }
+        }
+      }
+    },
+    "user_weight" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1007,22 +1000,12 @@
         }
       }
     },
-    "weight_unit" : {
+    "user_weight_placeholder" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Weight Unit"
-          }
-        }
-      }
-    },
-    "Workout Type" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workout Type"
+            "value" : "Your weight"
           }
         }
       }
@@ -1057,32 +1040,52 @@
         }
       }
     },
-    "Workouts" : {
+    "workout_detail_section_route" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
+        }
+      }
+    },
+    "workout_detail_section_speed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed"
+          }
+        }
+      }
+    },
+    "workout_detail_section_time" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time"
+          }
+        }
+      }
+    },
+    "workout_recorder_grant_%@_permission" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant %@ Permission"
+          }
+        }
+      }
+    },
+    "workouts" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Workouts"
-          }
-        }
-      }
-    },
-    "Your name" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your name"
-          }
-        }
-      }
-    },
-    "Your weight" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your weight"
           }
         }
       }

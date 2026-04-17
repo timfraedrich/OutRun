@@ -102,7 +102,7 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var timeSection: some View {
-        section("time") {
+        section("workout_detail_section_time") {
             metricGrid(with: [.activeDuration, .pauseDuration, .pace, .startTime, .endTime])
         }
     }
@@ -117,11 +117,11 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var speedSection: some View {
-        section("Speed") {
+        section("workout_detail_section_speed") {
             metricGrid(with: [.averageSpeed, .topSpeed])
             if let endDate = workout.endDate, let sectionedSpeeds {
-                LabeledContent("Speed") {
-                    SampleChart("Speed", sectionedSamples: sectionedSpeeds, dateRange: workout.startDate...endDate)
+                LabeledContent("speed") {
+                    SampleChart("speed", sectionedSamples: sectionedSpeeds, dateRange: workout.startDate...endDate)
                         .frame(height: chartHeight)
                 }
             }
@@ -136,7 +136,7 @@ struct WorkoutDetailScene: View {
     
     @ViewBuilder private var routeSection: some View {
         if !workout.route.isEmpty {
-            section("Route", contentPadding: .small) {
+            section("workout_detail_section_route", contentPadding: .small) {
                 StaticWorkoutMap(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: .accent)
                     .frame(height: 300)
                     .clipShape(.containerRelative)

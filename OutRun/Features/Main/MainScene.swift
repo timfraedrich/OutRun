@@ -11,7 +11,7 @@ struct MainScene: View {
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
     
-    private var userName: String { core.user?.name ?? "User" }
+    private var userName: String { core.user?.name ?? .init(localized: "user_name_fallback") }
     
     var body: some View {
         @Bindable var mainRouter = mainRouter
@@ -75,7 +75,7 @@ struct MainScene: View {
     @ViewBuilder private var grantPermissionViews: some View {
         if let recorder = core.recorder, !recorder.missingPermissions.isEmpty {
             ForEach(Array(recorder.missingPermissions), id: \.hashValue) { permission in
-                Button("Grant \(permission.description) Permission") {
+                Button("workout_recorder_grant_\(permission.description)_permission") {
                     Task {
                         try await recorder.requestAuthorization(for: permission)
                     }
@@ -107,7 +107,7 @@ struct MainScene: View {
                 Image(systemName: "calendar")
                     .font(.title3)
                     .foregroundStyle(.tint)
-                Text("main_scene_browse_in_calendar")
+                Text("browse_in_calendar")
                     .fontWeight(.medium)
                 Spacer()
                 Image(systemName: "chevron.forward")
@@ -128,7 +128,7 @@ struct MainScene: View {
             Button("calendar", systemImage: "calendar", action: showCalendarScene)
         }
         ToolbarItem(placement: .topBarTrailing) {
-            Button("Settings", systemImage: "gear", action: showSettingsScene)
+            Button("settings", systemImage: "gear", action: showSettingsScene)
         }
         ToolbarItem(placement: .principal) {
             greetingView
@@ -148,7 +148,7 @@ struct MainScene: View {
                 action: showRecordingScene
             )
         } else {
-            ActionButton("Record a Workout", action: showRecordingScene)
+            ActionButton("record_workout_action", action: showRecordingScene)
         }
     }
     

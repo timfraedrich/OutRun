@@ -29,12 +29,12 @@ struct HeartRateChart: View {
             case .sample(let sample):
                 BarMark(
                     x: .value("timestamp", sample.timestamp),
-                    yStart: .value("unit_beats_per_minute", sample.value + 8),
-                    yEnd: .value("unit_beats_per_minute", sample.value - 8),
+                    yStart: .value("beats_per_minute_unit", sample.value + 8),
+                    yEnd: .value("beats_per_minute_unit", sample.value - 8),
                     width: .inset(2)
                 )
                 .clipShape(.circle)
-                .accessibilityValue(Text(verbatim: sample.value.description + .init(localized: "unit_beats_per_minute")))
+                .accessibilityValue(Text(verbatim: sample.value.description + .init(localized: "beats_per_minute_unit")))
                 .foregroundStyle(foregroundStyle)
                 .zIndex(zIndex)
             }

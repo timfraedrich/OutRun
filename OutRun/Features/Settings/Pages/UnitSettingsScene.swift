@@ -14,7 +14,7 @@ struct UnitSettingsScene: View {
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("distance_unit")
+                Text("unit_settings_distance_unit")
             }
             Picker(selection: $userPreferences.altitudeUnit) {
                 Text("system").tag(UnitLength?.none)
@@ -22,7 +22,7 @@ struct UnitSettingsScene: View {
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("altitude_unit")
+                Text("unit_settings_altitude_unit")
             }
             Picker(selection: $userPreferences.speedUnit) {
                 Text("system").tag(UnitSpeed?.none)
@@ -30,7 +30,7 @@ struct UnitSettingsScene: View {
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("speed_unit")
+                Text("unit_settings_speed_unit")
             }
             Picker(selection: $userPreferences.energyUnit) {
                 Text("system").tag(UnitEnergy?.none)
@@ -38,7 +38,7 @@ struct UnitSettingsScene: View {
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("energy_unit")
+                Text("unit_settings_energy_unit")
             }
             Picker(selection: $userPreferences.weightUnit) {
                 Text("system").tag(UnitMass?.none)
@@ -46,7 +46,7 @@ struct UnitSettingsScene: View {
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("weight_unit")
+                Text("unit_settings_weight_unit")
             }
         }
         .navigationTitle("unit_settings")

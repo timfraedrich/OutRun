@@ -9,7 +9,7 @@ struct CacheSettingsScene: View {
     
     var body: some View {
         List {
-            LabeledContent("Map Cache Size", value: cacheSize.formatted(.byteCount(style: .file)))
+            LabeledContent("cache_settings_maps_size", value: cacheSize.formatted(.byteCount(style: .file)))
             Button("cache_settings_clear_maps_action", role: .destructive, action: clearCache)
                 .errorPopover($clearCacheError)
                 .foregroundStyle(.tint)

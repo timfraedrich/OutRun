@@ -12,34 +12,64 @@ struct HealthSettingsScene: View {
         if let healthSyncService = core.syncService(HealthSyncService.self) {
             List {
                 Section {
-                    Button("Grant Permissions") { grantPermissions(for: healthSyncService) }
-                        .errorPopover($grantPermissionError)
+                    Button {
+                        grantPermissions(for: healthSyncService)
+                    } label: {
+                        Text(verbatim: "Grant Permissions")
+                    }
+                    .errorPopover($grantPermissionError)
                 }
                 Section {
-                    LabeledContent("Inward Mode", value: String(describing: healthSyncService.inwardSyncMode))
-                    OptionalDatePicker(selection: $inwardSyncDate)
-                    Button("Set Mode") {
+                    LabeledContent {
+                        Text(String(describing: healthSyncService.inwardSyncMode))
+                    } label: {
+                        Text(verbatim: "Inward Mode")
+                    }
+                    LabeledContent {
+                        OptionalDatePicker(selection: $inwardSyncDate)
+                    } label: {
+                        Text(verbatim: "Start Date")
+                    }
+                    
+                    Button {
                         let mode: SyncMode = if let date = inwardSyncDate {
                             .enabledFrom(date: date)
                         } else {
                             .enabled
                         }
                         healthSyncService.setInwardSyncMode(mode)
+                    } label: {
+                        Text(verbatim: "Set Mode")
                     }
-                    Button("Reset") { healthSyncService.setInwardSyncMode(.disabled) }
+                    Button("reset") {
+                        healthSyncService.setInwardSyncMode(.disabled)
+                    }
                 }
                 Section {
-                    LabeledContent("Outward Mode", value: String(describing: healthSyncService.outwardSyncMode))
-                    OptionalDatePicker(selection: $outwardSyncDate)
-                    Button("Set Mode") {
+                    LabeledContent {
+                        Text(String(describing: healthSyncService.outwardSyncMode))
+                    } label: {
+                        Text(verbatim: "Outward Mode")
+                    }
+                    LabeledContent {
+                        OptionalDatePicker(selection: $outwardSyncDate)
+                    } label: {
+                        Text(verbatim: "Start Date")
+                    }
+                    
+                    Button {
                         let mode: SyncMode = if let date = outwardSyncDate {
                             .enabledFrom(date: date)
                         } else {
                             .enabled
                         }
                         healthSyncService.setOutwardSyncMode(mode)
+                    } label: {
+                        Text(verbatim: "Set Mode")
                     }
-                    Button("Reset") { healthSyncService.setOutwardSyncMode(.disabled) }
+                    Button("reset") {
+                        healthSyncService.setOutwardSyncMode(.disabled)
+                    }
                 }
             }
             .navigationTitle("apple_health")

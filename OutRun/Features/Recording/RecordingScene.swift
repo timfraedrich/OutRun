@@ -45,8 +45,8 @@ struct RecordingScene: View {
             .safeAreaInset(edge: .bottom, content: informationCard)
             .ignoresBottomSafeAreaOnIOS26OrLater()
             .toolbarVisibility(.hidden, for: .navigationBar)
-            .alert(error?.localizedDescription ?? "Error", isPresented: errorIsPresented) {
-                Button("Ok") {}
+            .alert(error?.localizedDescription ?? .init(localized: "error"), isPresented: errorIsPresented) {
+                Button("ok") {}
             }
     }
     
@@ -57,7 +57,7 @@ struct RecordingScene: View {
         VStack(spacing: .regular) {
             HStack(spacing: .regular) {
                 Menu {
-                    Picker("Workout Type", selection: workoutTypeBinding) {
+                    Picker("recording_workout_type", selection: workoutTypeBinding) {
                         ForEach(WorkoutType.allCases, id: \.rawValue) { type in
                             Text(type.description).tag(type)
                         }

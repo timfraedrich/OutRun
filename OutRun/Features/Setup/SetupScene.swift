@@ -43,10 +43,10 @@ struct SetupScene: View {
     var body: some View {
         Form {
             Section {
-                LabeledContent("Name") {
-                    TextField("Your name", text: $name).fixedSize()
+                LabeledContent("user_name") {
+                    TextField("user_name_placeholder", text: $name).fixedSize()
                 }
-                LabeledContent("birthday") {
+                LabeledContent("user_birthday") {
                     OptionalDatePicker(
                         selection: $birthdate,
                         in: ...Date.now,
@@ -61,22 +61,22 @@ struct SetupScene: View {
                         Text(system.description).tag(system)
                     }
                 } label: {
-                    Text("Units")
+                    Text("setup_units")
                 }
 
-                LabeledContent("Weight") {
+                LabeledContent("user_weight") {
                     HStack(spacing: .small) {
-                        TextField("Your weight", value: weightValueBinding, format: .number).fixedSize()
+                        TextField("user_weight_placeholder", value: weightValueBinding, format: .number).fixedSize()
                         Text(formattedWeightUnit)
                     }
                 }
                 Picker(selection: $sex) {
-                    Text("Not specified").tag(Sex?.none)
+                    Text("user_sex_not_specified").tag(Sex?.none)
                     ForEach(Sex.allCases, id: \.hashValue) { sex in
                         Text(sex.description.capitalized).tag(sex)
                     }
                 } label: {
-                    Text("Sex")
+                    Text("user_sex")
                 }
             }
             .multilineTextAlignment(.trailing)
@@ -94,7 +94,7 @@ struct SetupScene: View {
                         .foregroundStyle(.red)
                         .font(.footnote)
                 }
-                ActionButton("Setup", action: setup)
+                ActionButton("setup_action", action: setup)
             }
             .padding([.horizontal, .bottom], .large)
             .padding(.top, .regular)
@@ -128,7 +128,7 @@ struct SetupScene: View {
         
         var errorDescription: String? {
             switch self {
-            case .nameEmpty: .init(localized: "The field \"Name\" must not be empty.")
+            case .nameEmpty: .init(localized: "error_setup_name_empty")
             }
         }
     }

@@ -21,7 +21,7 @@ struct WorkoutSelectionScene: View {
             .padding(.vertical, .regular)
         }
         .background()
-        .navigationTitle("Workouts")
+        .navigationTitle("workouts")
         .navigationBarTitleDisplayMode(.large)
     }
 

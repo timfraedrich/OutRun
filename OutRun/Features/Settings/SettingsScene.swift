@@ -36,7 +36,7 @@ struct SettingsScene: View {
                 legalSection
                 infoSection
             }
-            .navigationTitle("Settings")
+            .navigationTitle("settings")
             .toolbar(content: toolbarContent)
             .navigationDestination(for: SettingsDestination.self) { destination in
                 switch destination {
@@ -68,8 +68,8 @@ struct SettingsScene: View {
                         .foregroundStyle(.tint)
                         .symbolRenderingMode(.hierarchical)
                     VStack(alignment: .leading, spacing: .zero) {
-                        Text(core.user?.name ?? "User").font(.title2.bold())
-                        Text("User Profile").font(.subheadline).foregroundStyle(.secondary)
+                        Text(core.user?.name ?? .init(localized: "user_name_fallback")).font(.title2.bold())
+                        Text("user_profile").font(.subheadline).foregroundStyle(.secondary)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -90,7 +90,7 @@ struct SettingsScene: View {
             }
             NavigationLink(value: SettingsDestination.recording) {
                 SettingsRowLabel {
-                    Text("Recording Preferences")
+                    Text("recording_settings")
                 } icon: {
                     Image(systemName: "record.circle")
                         .resizable()
@@ -135,29 +135,29 @@ struct SettingsScene: View {
     @ViewBuilder private var legalSection: some View {
         Section {
             SettingsOpenURLButton("https://tfr.software/terms") {
-                Text("Terms of Service")
+                Text("legal_terms_of_service")
             }
             SettingsOpenURLButton("https://tfr.software/privacy") {
-                Text("Privacy Policy")
+                Text("legal_privacy_policy")
             }
             SettingsOpenURLButton("https://tfr.software/imprint") {
-                Text("Imprint")
+                Text("legal_imprint")
             }
             SettingsOpenURLButton("mailto:orca@tfr.software") {
-                LabeledContent("Support", value: "orca@tfr.software")
+                LabeledContent("settings_support", value: "orca@tfr.software")
             }
         }
     }
     
     @ViewBuilder private var infoSection: some View {
         Section {
-            LabeledContent("Version", value: version)
-            LabeledContent("database_size", value: databaseSize.formatted(.byteCount(style: .file)))
-            LabeledContent("Number of Workouts", value: workouts.count.description)
-            Button("Reset App", role: .destructive, action: askForResetConfirmation)
+            LabeledContent("settings_info_version", value: version)
+            LabeledContent("settings_info_database_size", value: databaseSize.formatted(.byteCount(style: .file)))
+            LabeledContent("settings_info_number_of_workouts", value: workouts.count.description)
+            Button("reset_app_action", role: .destructive, action: askForResetConfirmation)
                 .errorPopover($resetError)
-                .confirmationDialog("Reset App", isPresented: $confirmReset, titleVisibility: .visible) {
-                    Button("Reset", role: .destructive, action: reset)
+                .confirmationDialog("reset_app_action", isPresented: $confirmReset, titleVisibility: .visible) {
+                    Button("reset", role: .destructive, action: reset)
                 } message: {
                     Text("reset_app_confirmation_message")
                 }
