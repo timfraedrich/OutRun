@@ -90,11 +90,11 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var distanceSection: some View {
-        section("Distance") {
+        section("workout_detail_section_distance") {
             metricGrid(with: [.distance, .repetitions, .ascent, .descent])
             if let endDate = workout.endDate, let sectionedAltitudes {
-                LabeledContent("Altitude") {
-                    SampleChart("Altitude", sectionedSamples: sectionedAltitudes, dateRange: workout.startDate...endDate)
+                LabeledContent("altitude") {
+                    SampleChart("altitude", sectionedSamples: sectionedAltitudes, dateRange: workout.startDate...endDate)
                         .frame(height: chartHeight)
                 }
             }
@@ -102,14 +102,14 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var timeSection: some View {
-        section("Time") {
+        section("time") {
             metricGrid(with: [.activeDuration, .pauseDuration, .pace, .startTime, .endTime])
         }
     }
     
     @ViewBuilder private var heartRateSection: some View {
         if let endDate = workout.endDate, let sectionedHeartRates, !sectionedHeartRates.isEmpty {
-            section("Heart Rate") {
+            section("workout_detail_section_heart_rate") {
                 metricGrid(with: [.averageHeartRate, .maximumHeartRate])
                 HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: workout.startDate...endDate)
             }
@@ -129,7 +129,7 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var energySection: some View {
-        section("Energy") {
+        section("workout_detail_section_energy") {
             metricGrid(with: [.energy, .energyPerMinute])
         }
     }
@@ -145,7 +145,7 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var actionSection: some View {
-        ActionButton("Delete", action: delete)
+        ActionButton("delete", action: delete)
             .errorPopover($error)
             .tint(.red)
             .padding(.regular)
@@ -154,7 +154,7 @@ struct WorkoutDetailScene: View {
     @ViewBuilder
     private func toolbarContent() -> some View {
         if addCloseButton {
-            Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
+            Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
         }
     }
     

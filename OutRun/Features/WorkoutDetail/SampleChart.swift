@@ -14,7 +14,7 @@ struct SampleChart<Value: Numeric & Comparable & Plottable>: View {
     var body: some View {
         Chart(series) { series in
             ForEach(series.items) { item in
-                LineMark(x: .value("Timestamp", item.timestamp), y: .value(valueLabelKey, item.value))
+                LineMark(x: .value("timestamp", item.timestamp), y: .value(valueLabelKey, item.value))
                     .foregroundStyle(by: .value("Series", series.id.uuidString))
                     .zIndex(series.active ? 1 : 0)
             }

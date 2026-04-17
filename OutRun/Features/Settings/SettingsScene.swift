@@ -81,7 +81,7 @@ struct SettingsScene: View {
         Section {
             NavigationLink(value: SettingsDestination.units) {
                 SettingsRowLabel {
-                    Text("Unit Settings")
+                    Text("unit_settings")
                 } icon: {
                     Image(systemName: "ruler.fill")
                         .resizable()
@@ -100,7 +100,7 @@ struct SettingsScene: View {
             }
             NavigationLink(value: SettingsDestination.appleHealth) {
                 SettingsRowLabel {
-                    Text("Apple Health")
+                    Text("apple_health")
                 } icon: {
                     Image(systemName: "heart.fill")
                         .resizable()
@@ -111,7 +111,7 @@ struct SettingsScene: View {
             }
             NavigationLink(value: SettingsDestination.backup) {
                 SettingsRowLabel {
-                    Text("Backup")
+                    Text("backup")
                 } icon: {
                     Image(systemName: "document.fill")
                         .resizable()
@@ -121,7 +121,7 @@ struct SettingsScene: View {
             }
             NavigationLink(value: SettingsDestination.cache) {
                 SettingsRowLabel {
-                    Text("Cache")
+                    Text("cache")
                 } icon: {
                     Image(systemName: "internaldrive.fill")
                         .resizable()
@@ -152,14 +152,14 @@ struct SettingsScene: View {
     @ViewBuilder private var infoSection: some View {
         Section {
             LabeledContent("Version", value: version)
-            LabeledContent("Database Size", value: databaseSize.formatted(.byteCount(style: .file)))
+            LabeledContent("database_size", value: databaseSize.formatted(.byteCount(style: .file)))
             LabeledContent("Number of Workouts", value: workouts.count.description)
             Button("Reset App", role: .destructive, action: askForResetConfirmation)
                 .errorPopover($resetError)
                 .confirmationDialog("Reset App", isPresented: $confirmReset, titleVisibility: .visible) {
                     Button("Reset", role: .destructive, action: reset)
                 } message: {
-                    Text("Are you sure you want to reset the app. This will delete all data saved locally including your workouts and personal information. This action connot be undone.")
+                    Text("reset_app_confirmation_message")
                 }
                 .foregroundStyle(.tint)
                 .tint(.red)

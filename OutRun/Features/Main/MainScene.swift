@@ -107,7 +107,7 @@ struct MainScene: View {
                 Image(systemName: "calendar")
                     .font(.title3)
                     .foregroundStyle(.tint)
-                Text("Browse in Calendar")
+                Text("main_scene_browse_in_calendar")
                     .fontWeight(.medium)
                 Spacer()
                 Image(systemName: "chevron.forward")
@@ -125,7 +125,7 @@ struct MainScene: View {
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button("Calendar", systemImage: "calendar", action: showCalendarScene)
+            Button("calendar", systemImage: "calendar", action: showCalendarScene)
         }
         ToolbarItem(placement: .topBarTrailing) {
             Button("Settings", systemImage: "gear", action: showSettingsScene)

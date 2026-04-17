@@ -9,47 +9,47 @@ struct UnitSettingsScene: View {
         @Bindable var userPreferences = userPreferences
         Form {
             Picker(selection: $userPreferences.distanceUnit) {
-                Text("System").tag(UnitLength?.none)
+                Text("system").tag(UnitLength?.none)
                 ForEach(UserPreferences.supportedDistanceUnits, id: \.symbol) { unit in
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("Distance Unit")
+                Text("distance_unit")
             }
             Picker(selection: $userPreferences.altitudeUnit) {
-                Text("System").tag(UnitLength?.none)
+                Text("system").tag(UnitLength?.none)
                 ForEach(UserPreferences.supportedAltitudeUnits, id: \.symbol) { unit in
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("Altitude Unit")
+                Text("altitude_unit")
             }
             Picker(selection: $userPreferences.speedUnit) {
-                Text("System").tag(UnitSpeed?.none)
+                Text("system").tag(UnitSpeed?.none)
                 ForEach(UserPreferences.supportedSpeedUnits, id: \.symbol) { unit in
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("Speed Unit")
+                Text("speed_unit")
             }
             Picker(selection: $userPreferences.energyUnit) {
-                Text("System").tag(UnitEnergy?.none)
+                Text("system").tag(UnitEnergy?.none)
                 ForEach(UserPreferences.supportedEnergyUnits, id: \.symbol) { unit in
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("Energy Unit")
+                Text("energy_unit")
             }
             Picker(selection: $userPreferences.weightUnit) {
-                Text("System").tag(UnitMass?.none)
+                Text("system").tag(UnitMass?.none)
                 ForEach(UserPreferences.supportedWeightUnits, id: \.symbol) { unit in
                     Text(formattedUnit(unit)).tag(unit)
                 }
             } label: {
-                Text("Weight Unit")
+                Text("weight_unit")
             }
         }
-        .navigationTitle("Unit Settings")
+        .navigationTitle("unit_settings")
     }
     
     private func formattedUnit(_ unit: Unit) -> String {

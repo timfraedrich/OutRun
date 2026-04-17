@@ -17,9 +17,9 @@ struct HeartRateChart: View {
             switch item.type {
             case .range(let range):
                 BarMark(
-                    x: .value("Timestamp", range.midTimestamp),
-                    yStart: .value("beats_per_minute_minimum_short", range.valueRange.lowerBound),
-                    yEnd: .value("beats_per_minute_maximum_short", range.valueRange.upperBound),
+                    x: .value("timestamp", range.midTimestamp),
+                    yStart: .value("minimum_beats_per_minute_short", range.valueRange.lowerBound),
+                    yEnd: .value("maximum_beats_per_minute_short", range.valueRange.upperBound),
                     width: .inset(2)
                 )
                 .clipShape(.capsule)
@@ -28,7 +28,7 @@ struct HeartRateChart: View {
                 .zIndex(zIndex)
             case .sample(let sample):
                 BarMark(
-                    x: .value("Timestamp", sample.timestamp),
+                    x: .value("timestamp", sample.timestamp),
                     yStart: .value("unit_beats_per_minute", sample.value + 8),
                     yEnd: .value("unit_beats_per_minute", sample.value - 8),
                     width: .inset(2)

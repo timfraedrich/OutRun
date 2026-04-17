@@ -1,124 +1,255 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "10 m" : {
-
-    },
-    "20 m (Default)" : {
-
-    },
-    "30 m" : {
-
-    },
-    "40 m" : {
-
-    },
-    "50 m" : {
-
-    },
-    "Altitude" : {
-
-    },
-    "Altitude Unit" : {
-
-    },
-    "Apple Health" : {
-
-    },
-    "Apple Health is not available." : {
-
-    },
-    "Are you sure you want to reset the app. This will delete all data saved locally including your workouts and personal information. This action connot be undone." : {
-
-    },
-    "Backup" : {
-
-    },
-    "Backup Created" : {
-
-    },
-    "Backup Failed" : {
-
-    },
-    "Backup Imported" : {
-
-    },
-    "beats_per_minute_maximum_short" : {
+    "altitude" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Max. BPM"
+            "value" : "Altitude"
           }
         }
       }
     },
-    "beats_per_minute_minimum_short" : {
+    "altitude_unit" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Min. BPM"
+            "value" : "Altitude Unit"
           }
         }
       }
     },
-    "Birthday" : {
-
+    "apple_health" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health"
+          }
+        }
+      }
     },
-    "Browse in Calendar" : {
-
+    "backup" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup"
+          }
+        }
+      }
     },
-    "Cache" : {
-
+    "backup_export_action" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Backup"
+          }
+        }
+      }
     },
-    "Calendar" : {
-
+    "backup_export_description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export your workout data for safe keeping and to restore it later. The backup will be saved as a .zip archive with .json files for each workout."
+          }
+        }
+      }
     },
-    "Clear Map Cache" : {
-
+    "backup_export_failed_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup Failed"
+          }
+        }
+      }
     },
-    "Close" : {
-
+    "backup_export_running_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating Backup"
+          }
+        }
+      }
     },
-    "Create Backup" : {
-
+    "backup_export_success_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup Created"
+          }
+        }
+      }
     },
-    "Creating Backup" : {
-
+    "backup_import_description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import a backup created by this app. The app accepts .zip archives and the old .orbup files. Data already existing in the app will not be overwritten or removed. If you import an outdated workout, it will be skipped."
+          }
+        }
+      }
     },
-    "Database Size" : {
-
+    "backup_import_success_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup Imported"
+          }
+        }
+      }
     },
-    "Default Workout Type" : {
-
+    "birthday" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birthday"
+          }
+        }
+      }
     },
-    "Delete" : {
-
+    "cache" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cache"
+          }
+        }
+      }
     },
-    "Distance" : {
-
+    "cache_settings_clear_maps_action" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Map Cache"
+          }
+        }
+      }
     },
-    "Distance Unit" : {
-
+    "calendar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar"
+          }
+        }
+      }
     },
-    "Energy" : {
-
+    "close" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
     },
-    "Energy Unit" : {
-
+    "database_size" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database Size"
+          }
+        }
+      }
     },
-    "Export your workout data for safe keeping and to restore it later. The backup will be saved as a .zip archive with .json files for each workout." : {
-
+    "default" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
+          }
+        }
+      }
+    },
+    "delete" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "distance_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance Unit"
+          }
+        }
+      }
+    },
+    "energy_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy Unit"
+          }
+        }
+      }
+    },
+    "error_health_sync_service_not_available" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health is not available."
+          }
+        }
+      }
     },
     "GPS Accuracy" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS Accuracy"
+          }
+        }
+      }
     },
     "Grant %@ Permission" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant %@ Permission"
+          }
+        }
+      }
     },
     "Grant Permissions" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant Permissions"
+          }
+        }
+      }
     },
     "greeting_afternoon" : {
       "localizations" : {
@@ -200,20 +331,35 @@
         }
       }
     },
-    "Heart Rate" : {
-
-    },
-    "Import a backup created by this app. The app accepts .zip archives and the old .orbup files. Data already existing in the app will not be overwritten or removed. If you import an outdated workout, it will be skipped." : {
-
-    },
     "Import Failed" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Failed"
+          }
+        }
+      }
     },
     "Importing Backup" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importing Backup"
+          }
+        }
+      }
     },
     "Imprint" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imprint"
+          }
+        }
+      }
     },
     "info" : {
       "localizations" : {
@@ -232,10 +378,24 @@
       }
     },
     "Inward Mode" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inward Mode"
+          }
+        }
+      }
     },
     "Latest" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest"
+          }
+        }
+      }
     },
     "legacy_migration_user" : {
       "localizations" : {
@@ -285,15 +445,8 @@
         }
       }
     },
-    "legacy_migration_view_migration_estimated_time" : {
-      "extractionState" : "manual",
+    "legacy_migration_view_migration_estimated_time_%@" : {
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geschätzte verbleibende Zeit: %@"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -301,9 +454,6 @@
           }
         }
       }
-    },
-    "legacy_migration_view_migration_estimated_time_%@" : {
-
     },
     "legacy_migration_view_migration_estimating_time" : {
       "localizations" : {
@@ -369,17 +519,75 @@
         }
       }
     },
+    "main_scene_browse_in_calendar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Browse in Calendar"
+          }
+        }
+      }
+    },
     "Map Cache Size" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map Cache Size"
+          }
+        }
+      }
+    },
+    "maximum_beats_per_minute_short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max. BPM"
+          }
+        }
+      }
+    },
+    "minimum_beats_per_minute_short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min. BPM"
+          }
+        }
+      }
     },
     "Name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "Not specified" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not specified"
+          }
+        }
+      }
     },
     "Number of Workouts" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of Workouts"
+          }
+        }
+      }
     },
     "Of the %lld workouts in the provided backup, %lld were successfully imported, %lld were skipped, and %lld failed to import." : {
       "localizations" : {
@@ -392,7 +600,14 @@
       }
     },
     "Ok" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        }
+      }
     },
     "optional_date_picker_instruction" : {
       "localizations" : {
@@ -411,16 +626,54 @@
       }
     },
     "Outward Mode" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outward Mode"
+          }
+        }
+      }
     },
     "Privacy Policy" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
     },
     "Record a Workout" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Record a Workout"
+          }
+        }
+      }
     },
     "Recording Preferences" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recording Preferences"
+          }
+        }
+      }
+    },
+    "recording_preferences_default_workout_type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Workout Type"
+          }
+        }
+      }
     },
     "remove" : {
       "localizations" : {
@@ -439,22 +692,74 @@
       }
     },
     "Reset" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
     },
     "Reset App" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset App"
+          }
+        }
+      }
+    },
+    "reset_app_confirmation_message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to reset the app. This will delete all data saved locally including your workouts and personal information. This action connot be undone."
+          }
+        }
+      }
     },
     "Restore Backup" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Backup"
+          }
+        }
+      }
     },
     "Rolling Speed" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rolling Speed"
+          }
+        }
+      }
     },
     "Route" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
+        }
+      }
     },
     "Save" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
     },
     "select" : {
       "localizations" : {
@@ -473,50 +778,151 @@
       }
     },
     "Series" : {
-
-    },
-    "Set Mode" : {
-
-    },
-    "Settings" : {
-
-    },
-    "Sex" : {
-
-    },
-    "Speed" : {
-
-    },
-    "Speed Unit" : {
-
-    },
-    "Support" : {
-
-    },
-    "System" : {
-
-    },
-    "Terms of Service" : {
-
-    },
-    "The backup was saved to the selected folder." : {
-
-    },
-    "This may take a couple of minutes. Please do not close the app." : {
-
-    },
-    "Time" : {
-
-    },
-    "Timestamp" : {
-
-    },
-    "Unit Settings" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unit Settings"
+            "value" : "Series"
+          }
+        }
+      }
+    },
+    "Set Mode" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set Mode"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Setup" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setup"
+          }
+        }
+      }
+    },
+    "Sex" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sex"
+          }
+        }
+      }
+    },
+    "Speed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed"
+          }
+        }
+      }
+    },
+    "speed_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed Unit"
+          }
+        }
+      }
+    },
+    "Support" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        }
+      }
+    },
+    "system" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        }
+      }
+    },
+    "Terms of Service" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Service"
+          }
+        }
+      }
+    },
+    "The backup was saved to the selected folder." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The backup was saved to the selected folder."
+          }
+        }
+      }
+    },
+    "The field \"Name\" must not be empty." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The field \"Name\" must not be empty."
+          }
+        }
+      }
+    },
+    "This may take a couple of minutes. Please do not close the app." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This may take a couple of minutes. Please do not close the app."
+          }
+        }
+      }
+    },
+    "time" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time"
+          }
+        }
+      }
+    },
+    "timestamp" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timestamp"
           }
         }
       }
@@ -531,32 +937,155 @@
         }
       }
     },
+    "unit_settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unit Settings"
+          }
+        }
+      }
+    },
+    "unit_system_imperial" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperial"
+          }
+        }
+      }
+    },
+    "unit_system_metric" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metric"
+          }
+        }
+      }
+    },
     "Units" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Units"
+          }
+        }
+      }
     },
     "User Profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User Profile"
+          }
+        }
+      }
     },
     "Version" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        }
+      }
     },
     "Weight" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight"
+          }
+        }
+      }
     },
-    "Weight Unit" : {
-
+    "weight_unit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight Unit"
+          }
+        }
+      }
     },
     "Workout Type" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout Type"
+          }
+        }
+      }
+    },
+    "workout_detail_section_distance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance"
+          }
+        }
+      }
+    },
+    "workout_detail_section_energy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy"
+          }
+        }
+      }
+    },
+    "workout_detail_section_heart_rate" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heart Rate"
+          }
+        }
+      }
     },
     "Workouts" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouts"
+          }
+        }
+      }
     },
     "Your name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your name"
+          }
+        }
+      }
     },
     "Your weight" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your weight"
+          }
+        }
+      }
     }
   },
   "version" : "1.2"

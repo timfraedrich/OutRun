@@ -42,9 +42,9 @@ struct HealthSettingsScene: View {
                     Button("Reset") { healthSyncService.setOutwardSyncMode(.disabled) }
                 }
             }
-            .navigationTitle("Apple Health")
+            .navigationTitle("apple_health")
         } else {
-            Text("Apple Health is not available.")
+            Text("error_health_sync_service_not_available")
         }
     }
     

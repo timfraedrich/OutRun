@@ -10,12 +10,12 @@ struct CacheSettingsScene: View {
     var body: some View {
         List {
             LabeledContent("Map Cache Size", value: cacheSize.formatted(.byteCount(style: .file)))
-            Button("Clear Map Cache", role: .destructive, action: clearCache)
+            Button("cache_settings_clear_maps_action", role: .destructive, action: clearCache)
                 .errorPopover($clearCacheError)
                 .foregroundStyle(.tint)
                 .tint(.red)
         }
-        .navigationTitle("Cache")
+        .navigationTitle("cache")
     }
     
     private func clearCache() {

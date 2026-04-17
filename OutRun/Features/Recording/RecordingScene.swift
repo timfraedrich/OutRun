@@ -125,7 +125,7 @@ struct RecordingScene: View {
     private func closeButtonContent() -> some View {
         HStack {
             Spacer()
-            let button = Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
+            let button = Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
                 .labelStyle(.iconOnly)
                 .tint(.primary)
             if #available(iOS 26.0, *) {

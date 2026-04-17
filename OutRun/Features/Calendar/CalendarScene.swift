@@ -55,7 +55,7 @@ struct CalendarScene: View {
             }
             .toolbar(content: toolbarContent)
             .toolbarBackground(toolbarBackgroundVisibility, for: .navigationBar)
-            .navigationTitle("Calendar")
+            .navigationTitle("calendar")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: CalendarNavigationDestination.self) { destination in
                 switch destination {
@@ -88,7 +88,7 @@ struct CalendarScene: View {
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            Button("Close", systemImage: "xmark", action: dismiss.callAsFunction)
+            Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
         }
     }
     

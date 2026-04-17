@@ -14,9 +14,9 @@ struct BackupSettingsScene: View {
     var body: some View {
         List {
             section(
-                title: "Create Backup",
+                title: "backup_export_action",
                 systemName: "arrow.up.document.fill",
-                explanation: "Export your workout data for safe keeping and to restore it later. The backup will be saved as a .zip archive with .json files for each workout.",
+                explanation: "backup_export_description",
                 fileImporterIsPresented: $pickBackupLocation,
                 fileImporterAllowedContentTypes: [.folder],
                 fileImporterOnCompletion: processExportResult
@@ -24,7 +24,7 @@ struct BackupSettingsScene: View {
             section(
                 title: "Restore Backup",
                 systemName: "arrow.down.document.fill",
-                explanation: "Import a backup created by this app. The app accepts .zip archives and the old .orbup files. Data already existing in the app will not be overwritten or removed. If you import an outdated workout, it will be skipped.",
+                explanation: "backup_import_description",
                 fileImporterIsPresented: $pickBackupToRestore,
                 fileImporterAllowedContentTypes: [.zip, .init(filenameExtension: "orbup")!],
                 fileImporterOnCompletion: processImportResult
@@ -32,7 +32,7 @@ struct BackupSettingsScene: View {
         }
         .navigationBarBackButtonHidden(processInProgress)
         .interactiveDismissDisabled(processInProgress)
-        .navigationTitle("Backup")
+        .navigationTitle("backup")
         .dynamicSheet(item: $process, content: processSheetContent)
     }
     
@@ -148,11 +148,11 @@ struct BackupSettingsScene: View {
         
         var title: LocalizedStringKey {
             switch self {
-            case .export: "Creating Backup"
-            case .exportSucceeded: "Backup Created"
-            case .exportFailed: "Backup Failed"
+            case .export: "backup_export_running_title"
+            case .exportSucceeded: "backup_export_success_title"
+            case .exportFailed: "backup_export_failed_title"
             case .import: "Importing Backup"
-            case .importSucceeded: "Backup Imported"
+            case .importSucceeded: "backup_import_success_title"
             case .importFailed: "Import Failed"
             }
         }

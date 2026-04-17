@@ -18,7 +18,7 @@ struct ProfileScene: View {
             LabeledContent("Name") {
                 TextField("Your name", text: $name).fixedSize()
             }
-            LabeledContent("Birthday") {
+            LabeledContent("birthday") {
                 OptionalDatePicker(
                     selection: $birthdate,
                     in: ...Date.now,

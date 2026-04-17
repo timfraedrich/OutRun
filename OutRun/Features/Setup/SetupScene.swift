@@ -46,7 +46,7 @@ struct SetupScene: View {
                 LabeledContent("Name") {
                     TextField("Your name", text: $name).fixedSize()
                 }
-                LabeledContent("Birthday") {
+                LabeledContent("birthday") {
                     OptionalDatePicker(
                         selection: $birthdate,
                         in: ...Date.now,
@@ -94,7 +94,7 @@ struct SetupScene: View {
                         .foregroundStyle(.red)
                         .font(.footnote)
                 }
-                ActionButton(verbatim: "Setup", action: setup)
+                ActionButton("Setup", action: setup)
             }
             .padding([.horizontal, .bottom], .large)
             .padding(.top, .regular)
@@ -122,12 +122,13 @@ struct SetupScene: View {
         }
     }
     
+    // TODO: Localize
     private enum SetupSceneError: LocalizedError {
         case nameEmpty
         
         var errorDescription: String? {
             switch self {
-            case .nameEmpty: "The field \"Name\" must not be empty."
+            case .nameEmpty: .init(localized: "The field \"Name\" must not be empty.")
             }
         }
     }
@@ -140,9 +141,9 @@ enum UnitSystem: CaseIterable, CustomStringConvertible, Hashable {
     
     var description: String {
         switch self {
-        case .system: "System"
-        case .metric: "Metric"
-        case .imperial: "Imperial"
+        case .system: .init(localized: "system")
+        case .metric: .init(localized: "unit_system_metric")
+        case .imperial: .init(localized: "unit_system_imperial")
         }
     }
 }
