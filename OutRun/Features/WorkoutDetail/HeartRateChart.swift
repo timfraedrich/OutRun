@@ -18,23 +18,23 @@ struct HeartRateChart: View {
             case .range(let range):
                 BarMark(
                     x: .value("Timestamp", range.midTimestamp),
-                    yStart: .value("Min BPM", range.valueRange.lowerBound),
-                    yEnd: .value("Max BPM", range.valueRange.upperBound),
+                    yStart: .value("beats_per_minute_minimum_short", range.valueRange.lowerBound),
+                    yEnd: .value("beats_per_minute_maximum_short", range.valueRange.upperBound),
                     width: .inset(2)
                 )
                 .clipShape(.capsule)
-                .accessibilityValue(Text("\(range.valueRange.lowerBound) to \(range.valueRange.upperBound) BPM"))
+                .accessibilityValue(Text("\(range.valueRange.lowerBound) to \(range.valueRange.upperBound)" + "unit_beats_per_minute"))
                 .foregroundStyle(foregroundStyle)
                 .zIndex(zIndex)
             case .sample(let sample):
                 BarMark(
                     x: .value("Timestamp", sample.timestamp),
-                    yStart: .value("BPM", sample.value + 8),
-                    yEnd: .value("BPM", sample.value - 8),
+                    yStart: .value("unit_beats_per_minute", sample.value + 8),
+                    yEnd: .value("unit_beats_per_minute", sample.value - 8),
                     width: .inset(2)
                 )
                 .clipShape(.circle)
-                .accessibilityValue(Text("\(sample.value) BPM"))
+                .accessibilityValue(Text(verbatim: sample.value.description + .init(localized: "unit_beats_per_minute")))
                 .foregroundStyle(foregroundStyle)
                 .zIndex(zIndex)
             }

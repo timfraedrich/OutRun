@@ -94,7 +94,7 @@ struct WorkoutDetailScene: View {
             metricGrid(with: [.distance, .repetitions, .ascent, .descent])
             if let endDate = workout.endDate, let sectionedAltitudes {
                 LabeledContent("Altitude") {
-                    SampleChart(sectionedSamples: sectionedAltitudes, dateRange: workout.startDate...endDate)
+                    SampleChart("Altitude", sectionedSamples: sectionedAltitudes, dateRange: workout.startDate...endDate)
                         .frame(height: chartHeight)
                 }
             }
@@ -121,7 +121,7 @@ struct WorkoutDetailScene: View {
             metricGrid(with: [.averageSpeed, .topSpeed])
             if let endDate = workout.endDate, let sectionedSpeeds {
                 LabeledContent("Speed") {
-                    SampleChart(sectionedSamples: sectionedSpeeds, dateRange: workout.startDate...endDate)
+                    SampleChart("Speed", sectionedSamples: sectionedSpeeds, dateRange: workout.startDate...endDate)
                         .frame(height: chartHeight)
                 }
             }

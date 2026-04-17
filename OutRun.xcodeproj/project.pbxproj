@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		223D71EE2E68B1C90088F92C /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 223D71ED2E68B1C90088F92C /* RswiftLibrary */; };
 		2265FD312E6F11D8004F1E09 /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 2265FD302E6F11D8004F1E09 /* CoreStore */; };
 		2275CB462E8C537B00328632 /* Perception in Frameworks */ = {isa = PBXBuildFile; productRef = 2275CB452E8C537B00328632 /* Perception */; };
 		22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22AD54992DE6274B007297E7 /* OutRunCore */; };
@@ -71,7 +70,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */,
-				223D71EE2E68B1C90088F92C /* RswiftLibrary in Frameworks */,
 				22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */,
 				2265FD312E6F11D8004F1E09 /* CoreStore in Frameworks */,
 				22FDD4F22F8012DF00707D70 /* ZIPFoundation in Frameworks */,
@@ -149,7 +147,6 @@
 			);
 			dependencies = (
 				224538272F797F1A0050158C /* PBXTargetDependency */,
-				223D71F02E68B1DB0088F92C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				22AD53FA2DE626EA007297E7 /* OutRun */,
@@ -158,7 +155,6 @@
 			packageProductDependencies = (
 				22AD54992DE6274B007297E7 /* OutRunCore */,
 				22E72E252DEA0EA400CCF525 /* OutRunCore */,
-				223D71ED2E68B1C90088F92C /* RswiftLibrary */,
 				2265FD302E6F11D8004F1E09 /* CoreStore */,
 				22FDD4F12F8012DF00707D70 /* ZIPFoundation */,
 			);
@@ -201,7 +197,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				224B42572E1EC8B10089C1B1 /* XCLocalSwiftPackageReference "OutRunCore" */,
-				223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */,
 				2265FD2F2E6F11D8004F1E09 /* XCRemoteSwiftPackageReference "CoreStore" */,
 				2275CB422E8C536F00328632 /* XCRemoteSwiftPackageReference "swift-perception" */,
 				224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */,
@@ -292,10 +287,6 @@
 			isa = PBXTargetDependency;
 			target = 22BC11812DE61964008B0A4C /* OutRun */;
 			targetProxy = 223D71C62E6889BF0088F92C /* PBXContainerItemProxy */;
-		};
-		223D71F02E68B1DB0088F92C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 223D71EF2E68B1DB0088F92C /* RswiftGenerateInternalResources */;
 		};
 		224538272F797F1A0050158C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -424,6 +415,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 			};
@@ -484,6 +476,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -621,14 +614,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mac-cain13/R.swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.8.0;
-			};
-		};
 		224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mono0926/LicensePlist";
@@ -664,16 +649,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		223D71ED2E68B1C90088F92C /* RswiftLibrary */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */;
-			productName = RswiftLibrary;
-		};
-		223D71EF2E68B1DB0088F92C /* RswiftGenerateInternalResources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 223D71EC2E68B1C90088F92C /* XCRemoteSwiftPackageReference "R" */;
-			productName = "plugin:RswiftGenerateInternalResources";
-		};
 		224538262F797F1A0050158C /* LicensePlistBuildTool */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */;

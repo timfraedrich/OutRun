@@ -9,11 +9,12 @@ struct SampleChart<Value: Numeric & Comparable & Plottable>: View {
     private let series: [Series]
     private let dateRange: ClosedRange<Date>
     private let axisValues: [Date]
+    private let valueLabelKey: LocalizedStringKey
     
     var body: some View {
         Chart(series) { series in
             ForEach(series.items) { item in
-                LineMark(x: .value("Timestamp", item.timestamp), y: .value("", item.value))
+                LineMark(x: .value("Timestamp", item.timestamp), y: .value(valueLabelKey, item.value))
                     .foregroundStyle(by: .value("Series", series.id.uuidString))
                     .zIndex(series.active ? 1 : 0)
             }
@@ -36,6 +37,7 @@ struct SampleChart<Value: Numeric & Comparable & Plottable>: View {
     }
     
     init(
+        _ valueLabelKey: LocalizedStringKey,
         sectionedSamples: CategorizedArray<Bool, Sample>,
         dateRange: ClosedRange<Date>
     ) {
@@ -48,10 +50,11 @@ struct SampleChart<Value: Numeric & Comparable & Plottable>: View {
         }
         self.dateRange = dateRange
         self.axisValues = DateBins(range: dateRange, desiredCount: 6).thresholds.dropLast(1)
+        self.valueLabelKey = valueLabelKey
     }
     
-    init(samples: [Sample], dateRange: ClosedRange<Date>) {
-        self.init(sectionedSamples: [(true, samples)], dateRange: dateRange)
+    init(_ valueLabelKey: LocalizedStringKey, samples: [Sample], dateRange: ClosedRange<Date>) {
+        self.init(valueLabelKey, sectionedSamples: [(true, samples)], dateRange: dateRange)
     }
     
     private struct Series: Identifiable {

@@ -86,7 +86,7 @@ struct MainScene: View {
     }
     
     @ViewBuilder private var emptyWorkoutsView: some View {
-        Image(R.image.illustration)
+        Image("illustration")
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding(.extraLarge)

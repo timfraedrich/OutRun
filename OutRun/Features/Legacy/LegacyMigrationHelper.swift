@@ -81,7 +81,7 @@ enum LegacyMigrationHelper {
         userPreferences.speedUnit = legacyUserPreference(for: "speedMeasurementType", possibleValues: [.kilometersPerHour, .milesPerHour])
         userPreferences.energyUnit = legacyUserPreference(for: "energyMeasurementType", possibleValues: [.kilojoules, .kilocalories])
         userPreferences.weightUnit = legacyUserPreference(for: "weightMeasurementType", possibleValues: [.kilograms, .pounds])
-        let userName = legacyUserPreference(for: "name") ?? R.string.localizable.legacy_migration_user()
+        let userName = legacyUserPreference(for: "name") ?? String(localized: "legacy_migration_user")
         let userWeight: Double? = legacyUserPreference(for: "weight")
         return RawUser(name: userName, birthday: nil, weight: userWeight, sex: nil, preferences: userPreferences.preferences, creationDate: .now)
     }

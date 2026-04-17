@@ -68,11 +68,11 @@ struct LegacyMigrationView: View {
     private func bottomSafeAreaContent() -> some View {
         Group {
             if error != nil {
-                safeAreaActionButton(R.string.localizable.legacy_migration_view_failed_action()) {
+                safeAreaActionButton("legacy_migration_view_failed_action") {
                     // TODO: open support email
                 }
             } else if finishedMigration {
-                safeAreaActionButton(R.string.localizable.legacy_migration_view_success_action(), action: dismissAction)
+                safeAreaActionButton("legacy_migration_view_success_action", action: dismissAction)
             } else {
                 migrationContent
             }
@@ -85,14 +85,14 @@ struct LegacyMigrationView: View {
     @ViewBuilder private var migrationContent: some View {
         VStack(alignment: .leading, spacing: .extraSmall) {
             HStack(spacing: .small) {
-                Text(R.string.localizable.legacy_migration_view_migration_title).font(.headline)
-                Button(R.string.localizable.info(), systemImage: "info") {
+                Text("legacy_migration_view_migration_title").font(.headline)
+                Button("info", systemImage: "info") {
                     showMigrationExplanation.toggle()
                 }
                 .symbolVariant(.circle)
                 .labelStyle(.iconOnly)
                 .popover(isPresented: $showMigrationExplanation) {
-                    Text(R.string.localizable.legacy_migration_view_migration_message)
+                    Text("legacy_migration_view_migration_message")
                         .font(.subheadline)
                         .padding(.regular)
                         .frame(width: 300)
@@ -103,10 +103,10 @@ struct LegacyMigrationView: View {
                 if let estimatedEnd {
                     TimelineView(.animation(minimumInterval: 1)) { context in
                         let remainingTime = formattedRemainingTime(for: context.date, estimatedEnd: estimatedEnd)
-                        Text(R.string.localizable.legacy_migration_view_migration_estimated_time(remainingTime))
+                        Text("legacy_migration_view_migration_estimated_time_\(remainingTime)")
                     }
                 } else {
-                    Text(R.string.localizable.legacy_migration_view_migration_estimating_time)
+                    Text("legacy_migration_view_migration_estimating_time")
                 }
             }
             .font(.subheadline)
@@ -139,7 +139,7 @@ struct LegacyMigrationView: View {
             Image(systemName: "exclamationmark.triangle")
                 .symbolVariant(.fill)
                 .font(.system(size: 64))
-            Text(R.string.localizable.legacy_migration_view_failed_title)
+            Text("legacy_migration_view_failed_title")
                 .font(.title.bold())
             Text(error.localizedDescription)
                 .font(.title3)
@@ -151,8 +151,8 @@ struct LegacyMigrationView: View {
     }
     
     @ViewBuilder
-    private func safeAreaActionButton(_ title: String, action: @escaping () -> Void) -> some View {
-        ActionButton(verbatim: title, action: action)
+    private func safeAreaActionButton(_ titleKey: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+        ActionButton(titleKey, action: action)
             .padding(.extraLarge)
             .matchedGeometryEffect(id: "safeArea", in: namespace, anchor: .bottom)
     }

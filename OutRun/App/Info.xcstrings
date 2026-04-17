@@ -1,0 +1,252 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSHealthShareUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App braucht Zugriff auf deine Health-Daten, um die erstellten Workouts zu speichern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs access to your health data to save workouts constructed by this app"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs access to your health data to save workouts constructed by this app"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta aplicación necesita acceso a sus datos de salud para guardar los entrenamientos construidos por esta aplicación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette application a besoin d'accéder à vos données de santé pour enregistrer les entraînements créés par cette application"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze app heeft toegang nodig tot je gezondheidsgegevens om de gemaakte trainingen op te slaan"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App braucht Zugriff auf deine Health-Daten um gespeicherte Workouts auszulesen und gegebenenfalls zu korrigieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs access to your health data to read and possible correct workouts constructed by this app"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs access to your health data to read and possible correct workouts constructed by this app"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta aplicación necesita acceso a sus datos de salud para leer y corregir posibles entrenamientos construidos por esta aplicación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette application a besoin d'accéder à vos données de santé pour lire et éventuellement corriger les entraînements élaborés par cette application"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze app heeft toegang nodig tot je gezondheidsgegevens om ze te kunnen lezen en eventueel gemaakte trainingen van deze app te corrigeren"
+          }
+        }
+      }
+    },
+    "NSLocationAlwaysAndWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs your location to track workouts"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs your location to track workouts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta aplicación necesita tu ubicación para realizar un seguimiento de los entrenamientos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette application a besoin de votre emplacement pour suivre les entraînements"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze app heeft je locatie nodig om trainingen te volgen"
+          }
+        }
+      }
+    },
+    "NSLocationAlwaysUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs your location to track workouts"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs your location to track workouts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta aplicación necesita tu ubicación para realizar un seguimiento de los entrenamientos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette application a besoin de votre emplacement pour suivre les entraînements"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze app heeft je locatie nodig om trainingen te volgen"
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs your location to track workouts"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs your location to track workouts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta aplicación necesita tu ubicación para realizar un seguimiento de los entrenamientos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette application a besoin de votre emplacement pour suivre les entraînements"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze app heeft je locatie nodig om trainingen te volgen"
+          }
+        }
+      }
+    },
+    "NSMotionUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App braucht bewegungsbezogene Trackingberechtigung, um Daten wie Schritte aufzuzeichnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs motion related tracking capabilities to record data like steps during a workout"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app needs motion related tracking capabilities to record data like steps during a workout"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta aplicación necesita capacidades de seguimiento relacionadas con el movimiento para registrar datos como pasos durante un entrenamiento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette application a besoin de capacités de suivi liées au mouvement pour enregistrer des données telles que les étapes d'un entraînement"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze app heeft bewegingsgerelateerde traceermogelijkheden nodig om bijvoorbeeld stappen tijdens een training vast te leggen"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.2"
+}

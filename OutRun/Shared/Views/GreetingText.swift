@@ -19,11 +19,11 @@ struct GreetingText: View {
     
     private func greeting(for date: Date) -> String {
         return switch Calendar.current.component(.hour, from: date) {
-        case 5..<10: R.string.localizable.greeting_morning()
-        case 10..<12: R.string.localizable.greeting_day()
-        case 12..<18: R.string.localizable.greeting_afternoon()
-        case 18..<22: R.string.localizable.greeting_evening()
-        default: R.string.localizable.greeting_night()
+        case 5..<10: .init(localized: "greeting_morning")
+        case 10..<12: .init(localized: "greeting_day")
+        case 12..<18: .init(localized: "greeting_afternoon")
+        case 18..<22: .init(localized: "greeting_evening")
+        default: .init(localized: "greeting_night")
         }
     }
     

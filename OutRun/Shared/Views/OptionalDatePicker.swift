@@ -9,7 +9,7 @@ struct OptionalDatePicker<Range>: View {
     private let displayedComponents: DatePickerComponents
     private let labelFormatStyle: Date.FormatStyle
     
-    private var title: String { date?.formatted(labelFormatStyle) ?? R.string.localizable.select() }
+    private var title: String { date?.formatted(labelFormatStyle) ?? .init(localized: "select") }
     private var dateBinding: Binding<Date> {
         Binding(
             get: { date ?? Calendar.current.date(byAdding: .year, value: -25, to: .now) ?? .now },
@@ -22,7 +22,7 @@ struct OptionalDatePicker<Range>: View {
             Button(title, action: startSelection)
                 .contentTransition(.numericText())
             if date != nil {
-                Button(R.string.localizable.remove(), systemImage: "xmark", action: remove)
+                Button("remove", systemImage: "xmark", action: remove)
                     .labelStyle(.iconOnly)
                     .symbolVariant(.circle.fill)
             }
@@ -30,7 +30,7 @@ struct OptionalDatePicker<Range>: View {
         .animation(.default, value: date)
         .popover(isPresented: $showPopover, attachmentAnchor: .rect(.bounds)) {
             Group {
-                let instruction = R.string.localizable.optional_date_picker_instruction()
+                let instruction = String(localized: "optional_date_picker_instruction")
                 if let range = range as? ClosedRange<Date> {
                     DatePicker(instruction, selection: dateBinding, in: range, displayedComponents: displayedComponents)
                 } else if let range = range as? PartialRangeFrom<Date> {
