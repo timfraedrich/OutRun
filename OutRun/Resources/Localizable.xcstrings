@@ -641,6 +641,26 @@
         }
       }
     },
+    "backup_service_error_backup_not_readable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The backup could not be read, it might be corrupted."
+          }
+        }
+      }
+    },
+    "backup_service_error_no_data_to_back_up" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There is no data to back up in the database."
+          }
+        }
+      }
+    },
     "beats_per_minute_unit" : {
       "comment" : "Abbreviation for beats per minute, used as a unit label for heart rate.",
       "localizations" : {
@@ -1084,46 +1104,6 @@
         }
       }
     },
-    "error_setup_name_empty" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das Feld \"Name\" darf nicht leer sein."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The field \"Name\" must not be empty."
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The field \"Name\" must not be empty."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El campo \"Nombre\" no debe estar vacío."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le champ « Nom » ne doit pas être vide."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het veld \"Naam\" mag niet leeg zijn."
-          }
-        }
-      }
-    },
     "greeting_afternoon" : {
       "localizations" : {
         "de" : {
@@ -1360,6 +1340,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info"
+          }
+        }
+      }
+    },
+    "legacy_backup_error_corrupted_data" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The legacy backup could not be read, it might be corrupted."
+          }
+        }
+      }
+    },
+    "legacy_backup_error_invalid_version" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The legacy backup version is not supported by this app."
+          }
+        }
+      }
+    },
+    "legacy_backup_error_missing_version" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The legacy backup does not have a version."
           }
         }
       }
@@ -2850,6 +2860,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Instellen"
+          }
+        }
+      }
+    },
+    "setup_scene_error_name_empty" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Feld \"Name\" darf nicht leer sein."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The field \"Name\" must not be empty."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The field \"Name\" must not be empty."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El campo \"Nombre\" no debe estar vacío."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le champ « Nom » ne doit pas être vide."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het veld \"Naam\" mag niet leeg zijn."
           }
         }
       }

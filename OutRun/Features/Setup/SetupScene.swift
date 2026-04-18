@@ -122,13 +122,14 @@ struct SetupScene: View {
         }
     }
     
-    // TODO: Localize
     private enum SetupSceneError: LocalizedError {
+        
+        /// The field "Name" must not be empty.
         case nameEmpty
         
         var errorDescription: String? {
             switch self {
-            case .nameEmpty: .init(localized: "error_setup_name_empty")
+            case .nameEmpty: .init(localized: "setup_scene_error_name_empty")
             }
         }
     }

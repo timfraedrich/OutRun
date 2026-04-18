@@ -241,6 +241,16 @@
         }
       }
     },
+    "core_error_newer_workout_version_exists" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout could not be saved as a newer version already exists in the database."
+          }
+        }
+      }
+    },
     "core_error_not_initialized" : {
       "localizations" : {
         "de" : {
@@ -597,6 +607,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er is een fout opgetreden bij het converteren naar of van een Day-object."
+          }
+        }
+      }
+    },
+    "health_sync_service_error_authorization_denied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The operation could not be completed because this app was denied authorization for Apple Health."
+          }
+        }
+      }
+    },
+    "health_sync_service_error_authorization_missing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The operation could not be completed because this app is missing authorization for Apple Health."
+          }
+        }
+      }
+    },
+    "health_sync_service_error_invalid_health_kit_type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Apple Health type is not valid."
+          }
+        }
+      }
+    },
+    "health_sync_service_error_object_not_found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Apple Health object could not be found."
+          }
+        }
+      }
+    },
+    "health_sync_service_error_permission_prompt_unavailable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The permission prompt for Apple Health could not be shown. The permissions must be adjusted in the Settings or Apple Health app."
+          }
+        }
+      }
+    },
+    "health_sync_service_error_unknown" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An unknown error occurred while synchronizing with Apple Health."
+          }
+        }
+      }
+    },
+    "health_sync_service_error_unsupported_activity_type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The activity type is unsupported for synchronization with Apple Health."
           }
         }
       }
@@ -1037,6 +1117,56 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stapgegevens kunnen niet worden ontvangen vanwege een onbekende toestemmingsstatus."
+          }
+        }
+      }
+    },
+    "sync_error_authentication_required" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronization failed due to missing authorization."
+          }
+        }
+      }
+    },
+    "sync_error_conflict" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronization failed due to a data conflict."
+          }
+        }
+      }
+    },
+    "sync_error_network_error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronization failed due to a network error. Please check your internet connection."
+          }
+        }
+      }
+    },
+    "sync_error_service_unavailable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronization service is unavailable."
+          }
+        }
+      }
+    },
+    "sync_error_unknown" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An unknown error occurred while synchronizing data."
           }
         }
       }
