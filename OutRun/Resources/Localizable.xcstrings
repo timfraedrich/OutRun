@@ -26,6 +26,12 @@
             "state" : "translated",
             "value" : "Altitud"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude"
+          }
         }
       }
     },
@@ -50,6 +56,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apple Health"
@@ -82,6 +94,12 @@
             "state" : "translated",
             "value" : "Copia de seguridad"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvegarde"
+          }
         }
       }
     },
@@ -109,6 +127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crear copia de seguridad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer une sauvegarde"
           }
         }
       }
@@ -138,6 +162,12 @@
             "state" : "translated",
             "value" : "Exporta tus datos de entrenamiento para guardarlos de forma segura y restaurarlos más adelante. La copia de seguridad se guardará como un archivo .zip con archivos .json por cada entrenamiento."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportez vos données d'entraînement pour les conserver en sécurité et les restaurer ultérieurement. La sauvegarde sera enregistrée sous forme d'archive .zip avec des fichiers .json pour chaque entraînement."
+          }
         }
       }
     },
@@ -165,6 +195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error al crear la copia de seguridad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec de la sauvegarde"
           }
         }
       }
@@ -194,6 +230,12 @@
             "state" : "translated",
             "value" : "Creando copia de seguridad"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Création de la sauvegarde"
+          }
         }
       }
     },
@@ -221,6 +263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La copia de seguridad se guardó en la carpeta seleccionada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sauvegarde a été enregistrée dans le dossier sélectionné."
           }
         }
       }
@@ -250,6 +298,12 @@
             "state" : "translated",
             "value" : "Copia de seguridad creada"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvegarde créée"
+          }
         }
       }
     },
@@ -277,6 +331,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restaurar copia de seguridad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurer une sauvegarde"
           }
         }
       }
@@ -306,6 +366,12 @@
             "state" : "translated",
             "value" : "Importa una copia de seguridad creada por esta app. La aplicación acepta archivos .zip y los archivos .orbup antiguos. Los datos ya existentes en la app no serán sobreescritos ni eliminados. Si importas un entrenamiento desactualizado, se omitirá."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importez une sauvegarde créée par cette app. L'app accepte les archives .zip et les anciens fichiers .orbup. Les données déjà présentes dans l'app ne seront pas écrasées ni supprimées. Si vous importez un entraînement obsolète, il sera ignoré."
+          }
         }
       }
     },
@@ -333,6 +399,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esto puede tardar unos minutos. Por favor, no cierres la app."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela peut prendre quelques minutes. Veuillez ne pas fermer l'app."
           }
         }
       }
@@ -362,6 +434,12 @@
             "state" : "translated",
             "value" : "Error al importar"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec de l'importation"
+          }
         }
       }
     },
@@ -389,6 +467,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importando copia de seguridad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importation de la sauvegarde"
           }
         }
       }
@@ -418,6 +502,12 @@
             "state" : "translated",
             "value" : "De los %1$lld entrenamientos en la copia de seguridad proporcionada, %2$lld se importaron correctamente, %3$lld se omitieron y %4$lld no se pudieron importar."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur les %1$lld entraînements dans la sauvegarde fournie, %2$lld ont été importés avec succès, %3$lld ont été ignorés et %4$lld n'ont pas pu être importés."
+          }
         }
       }
     },
@@ -445,6 +535,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copia de seguridad importada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvegarde importée"
           }
         }
       }
@@ -475,6 +571,12 @@
             "state" : "translated",
             "value" : "lpm"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bpm"
+          }
         }
       }
     },
@@ -502,6 +604,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver en el calendario"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir dans le calendrier"
           }
         }
       }
@@ -531,6 +639,12 @@
             "state" : "translated",
             "value" : "Caché"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cache"
+          }
         }
       }
     },
@@ -558,6 +672,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Borrar caché de mapas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vider le cache des cartes"
           }
         }
       }
@@ -587,6 +707,12 @@
             "state" : "translated",
             "value" : "Tamaño de la caché de mapas"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taille du cache des cartes"
+          }
         }
       }
     },
@@ -615,6 +741,12 @@
             "state" : "translated",
             "value" : "Calendario"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendrier"
+          }
         }
       }
     },
@@ -642,6 +774,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerrar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
           }
         }
       }
@@ -672,6 +810,12 @@
             "state" : "translated",
             "value" : "Predeterminado"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par défaut"
+          }
         }
       }
     },
@@ -699,6 +843,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer"
           }
         }
       }
@@ -729,6 +879,12 @@
             "state" : "translated",
             "value" : "Error"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur"
+          }
         }
       }
     },
@@ -756,6 +912,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apple Health no está disponible."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health n'est pas disponible."
           }
         }
       }
@@ -785,6 +947,12 @@
             "state" : "translated",
             "value" : "El campo \"Nombre\" no debe estar vacío."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le champ « Nom » ne doit pas être vide."
+          }
         }
       }
     },
@@ -812,6 +980,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buenas tardes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bon après-midi"
           }
         }
       }
@@ -841,6 +1015,12 @@
             "state" : "translated",
             "value" : "Buenos días"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonjour"
+          }
         }
       }
     },
@@ -868,6 +1048,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buenas noches"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonsoir"
           }
         }
       }
@@ -897,6 +1083,12 @@
             "state" : "translated",
             "value" : "Buenos días"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonjour"
+          }
         }
       }
     },
@@ -925,6 +1117,12 @@
             "state" : "translated",
             "value" : "Buenas noches"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonne nuit"
+          }
         }
       }
     },
@@ -949,6 +1147,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info"
@@ -981,6 +1185,12 @@
             "state" : "translated",
             "value" : "Usuario"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisateur"
+          }
         }
       }
     },
@@ -1008,6 +1218,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contactar soporte"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacter le support"
           }
         }
       }
@@ -1037,6 +1253,12 @@
             "state" : "translated",
             "value" : "Error en la migración de datos"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec de la migration de données"
+          }
         }
       }
     },
@@ -1064,6 +1286,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiempo restante estimado: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temps restant estimé : %@"
           }
         }
       }
@@ -1093,6 +1321,12 @@
             "state" : "translated",
             "value" : "Estimando el tiempo restante..."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimation du temps restant..."
+          }
         }
       }
     },
@@ -1120,6 +1354,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La app está realizando una migración de datos para habilitar nuevas funciones. La app debe permanecer abierta mientras la migración esté en progreso."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'app effectue actuellement une migration de données pour activer de nouvelles fonctionnalités. L'app doit rester ouverte pendant la migration."
           }
         }
       }
@@ -1149,6 +1389,12 @@
             "state" : "translated",
             "value" : "Migración de datos en progreso"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Migration de données en cours"
+          }
         }
       }
     },
@@ -1176,6 +1422,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "¡Empecemos!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C'est parti !"
           }
         }
       }
@@ -1205,6 +1457,12 @@
             "state" : "translated",
             "value" : "Aviso legal"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mentions légales"
+          }
         }
       }
     },
@@ -1233,6 +1491,12 @@
             "state" : "translated",
             "value" : "Política de privacidad"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Politique de confidentialité"
+          }
         }
       }
     },
@@ -1260,6 +1524,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Términos de servicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conditions d'utilisation"
           }
         }
       }
@@ -1290,6 +1560,12 @@
             "state" : "translated",
             "value" : "lpm máx."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bpm max."
+          }
         }
       }
     },
@@ -1319,6 +1595,12 @@
             "state" : "translated",
             "value" : "lpm mín."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bpm min."
+          }
         }
       }
     },
@@ -1346,6 +1628,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aceptar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
@@ -1375,6 +1663,12 @@
             "state" : "translated",
             "value" : "Por favor, selecciona una fecha."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez sélectionner une date."
+          }
         }
       }
     },
@@ -1402,6 +1696,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Registrar un entrenamiento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer un entraînement"
           }
         }
       }
@@ -1432,6 +1732,12 @@
             "state" : "translated",
             "value" : "Finalizar"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminer"
+          }
         }
       }
     },
@@ -1461,6 +1767,12 @@
             "state" : "translated",
             "value" : "Último usado"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernier utilisé"
+          }
         }
       }
     },
@@ -1488,6 +1800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Preferencias de grabación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Préférences d'enregistrement"
           }
         }
       }
@@ -1517,6 +1835,12 @@
             "state" : "translated",
             "value" : "Tipo de entrenamiento predeterminado"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type d'entraînement par défaut"
+          }
         }
       }
     },
@@ -1544,6 +1868,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Precisión mínima de GPS"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Précision GPS minimale"
           }
         }
       }
@@ -1574,6 +1904,12 @@
             "state" : "translated",
             "value" : "Velocidad media móvil"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vitesse glissante"
+          }
         }
       }
     },
@@ -1602,6 +1938,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Iniciar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrer"
           }
         }
       }
@@ -1632,6 +1974,12 @@
             "state" : "translated",
             "value" : "Tipo de entrenamiento"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type d'entraînement"
+          }
         }
       }
     },
@@ -1659,6 +2007,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer"
           }
         }
       }
@@ -1689,6 +2043,12 @@
             "state" : "translated",
             "value" : "Restablecer"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser"
+          }
         }
       }
     },
@@ -1716,6 +2076,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restablecer app"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser l'app"
           }
         }
       }
@@ -1745,6 +2111,12 @@
             "state" : "translated",
             "value" : "¿Estás seguro de que quieres restablecer la app? Esto eliminará todos los datos guardados localmente, incluyendo tus entrenamientos e información personal. Esta acción no se puede deshacer."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Êtes-vous sûr de vouloir réinitialiser l'app ? Toutes les données enregistrées localement, y compris vos entraînements et vos informations personnelles, seront supprimées. Cette action est irréversible."
+          }
         }
       }
     },
@@ -1773,6 +2145,12 @@
             "state" : "translated",
             "value" : "Guardar"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer"
+          }
         }
       }
     },
@@ -1800,6 +2178,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seleccionar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionner"
           }
         }
       }
@@ -1830,6 +2214,12 @@
             "state" : "translated",
             "value" : "Serie"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Série"
+          }
         }
       }
     },
@@ -1857,6 +2247,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajustes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages"
           }
         }
       }
@@ -1886,6 +2282,12 @@
             "state" : "translated",
             "value" : "Tamaño de la base de datos"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taille de la base de données"
+          }
         }
       }
     },
@@ -1913,6 +2315,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Número de entrenamientos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre d'entraînements"
           }
         }
       }
@@ -1942,6 +2350,12 @@
             "state" : "translated",
             "value" : "Versión"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
         }
       }
     },
@@ -1969,6 +2383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Soporte"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
           }
         }
       }
@@ -1999,6 +2419,12 @@
             "state" : "translated",
             "value" : "Configurar"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurer"
+          }
         }
       }
     },
@@ -2027,6 +2453,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unidades"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unités"
           }
         }
       }
@@ -2057,6 +2489,12 @@
             "state" : "translated",
             "value" : "Velocidad"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vitesse"
+          }
         }
       }
     },
@@ -2085,6 +2523,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sistema"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Système"
           }
         }
       }
@@ -2115,6 +2559,12 @@
             "state" : "translated",
             "value" : "Marca de tiempo"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Horodatage"
+          }
         }
       }
     },
@@ -2142,6 +2592,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configuración de unidades"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages des unités"
           }
         }
       }
@@ -2171,6 +2627,12 @@
             "state" : "translated",
             "value" : "Unidad de altitud"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unité d'altitude"
+          }
         }
       }
     },
@@ -2198,6 +2660,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unidad de distancia"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unité de distance"
           }
         }
       }
@@ -2227,6 +2695,12 @@
             "state" : "translated",
             "value" : "Unidad de energía"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unité d'énergie"
+          }
         }
       }
     },
@@ -2254,6 +2728,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unidad de velocidad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unité de vitesse"
           }
         }
       }
@@ -2283,6 +2763,12 @@
             "state" : "translated",
             "value" : "Unidad de peso"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unité de poids"
+          }
         }
       }
     },
@@ -2310,6 +2796,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Imperial"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impérial"
           }
         }
       }
@@ -2339,6 +2831,12 @@
             "state" : "translated",
             "value" : "Métrico"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Métrique"
+          }
         }
       }
     },
@@ -2367,6 +2865,12 @@
             "state" : "translated",
             "value" : "Fecha de nacimiento"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date de naissance"
+          }
         }
       }
     },
@@ -2394,6 +2898,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom"
           }
         }
       }
@@ -2424,6 +2934,12 @@
             "state" : "translated",
             "value" : "Usuario"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisateur"
+          }
         }
       }
     },
@@ -2451,6 +2967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tu nombre"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre nom"
           }
         }
       }
@@ -2480,6 +3002,12 @@
             "state" : "translated",
             "value" : "Perfil de usuario"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil utilisateur"
+          }
         }
       }
     },
@@ -2507,6 +3035,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sexo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sexe"
           }
         }
       }
@@ -2536,6 +3070,12 @@
             "state" : "translated",
             "value" : "No especificado"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non spécifié"
+          }
         }
       }
     },
@@ -2563,6 +3103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Peso"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poids"
           }
         }
       }
@@ -2592,6 +3138,12 @@
             "state" : "translated",
             "value" : "Tu peso"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre poids"
+          }
         }
       }
     },
@@ -2619,6 +3171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Distancia"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance"
           }
         }
       }
@@ -2648,6 +3206,12 @@
             "state" : "translated",
             "value" : "Energía"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Énergie"
+          }
         }
       }
     },
@@ -2675,6 +3239,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Frecuencia cardíaca"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fréquence cardiaque"
           }
         }
       }
@@ -2704,6 +3274,12 @@
             "state" : "translated",
             "value" : "Ruta"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parcours"
+          }
         }
       }
     },
@@ -2732,6 +3308,12 @@
             "state" : "translated",
             "value" : "Velocidad"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vitesse"
+          }
         }
       }
     },
@@ -2759,6 +3341,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiempo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temps"
           }
         }
       }
@@ -2789,6 +3377,12 @@
             "state" : "translated",
             "value" : "Conceder permiso de %@"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accorder l'autorisation %@"
+          }
         }
       }
     },
@@ -2816,6 +3410,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entrenamientos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entraînements"
           }
         }
       }
