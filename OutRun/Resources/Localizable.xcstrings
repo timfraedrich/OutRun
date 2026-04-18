@@ -32,6 +32,12 @@
             "state" : "translated",
             "value" : "Altitude"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoogte"
+          }
         }
       }
     },
@@ -62,6 +68,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apple Health"
@@ -100,6 +112,12 @@
             "state" : "translated",
             "value" : "Sauvegarde"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up"
+          }
         }
       }
     },
@@ -133,6 +151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Créer une sauvegarde"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up maken"
           }
         }
       }
@@ -168,6 +192,12 @@
             "state" : "translated",
             "value" : "Exportez vos données d'entraînement pour les conserver en sécurité et les restaurer ultérieurement. La sauvegarde sera enregistrée sous forme d'archive .zip avec des fichiers .json pour chaque entraînement."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporteer je trainingsgegevens voor veilige opslag en om ze later te herstellen. De back-up wordt opgeslagen als een .zip-archief met .json-bestanden voor elke training."
+          }
         }
       }
     },
@@ -201,6 +231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Échec de la sauvegarde"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up mislukt"
           }
         }
       }
@@ -236,6 +272,12 @@
             "state" : "translated",
             "value" : "Création de la sauvegarde"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up maken"
+          }
         }
       }
     },
@@ -269,6 +311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La sauvegarde a été enregistrée dans le dossier sélectionné."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De back-up is opgeslagen in de geselecteerde map."
           }
         }
       }
@@ -304,6 +352,12 @@
             "state" : "translated",
             "value" : "Sauvegarde créée"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up gemaakt"
+          }
         }
       }
     },
@@ -337,6 +391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restaurer une sauvegarde"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up herstellen"
           }
         }
       }
@@ -372,6 +432,12 @@
             "state" : "translated",
             "value" : "Importez une sauvegarde créée par cette app. L'app accepte les archives .zip et les anciens fichiers .orbup. Les données déjà présentes dans l'app ne seront pas écrasées ni supprimées. Si vous importez un entraînement obsolète, il sera ignoré."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importeer een back-up die door deze app is gemaakt. De app accepteert .zip-archieven en de oude .orbup-bestanden. Bestaande gegevens in de app worden niet overschreven of verwijderd. Als je een verouderde training importeert, wordt deze overgeslagen."
+          }
         }
       }
     },
@@ -405,6 +471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cela peut prendre quelques minutes. Veuillez ne pas fermer l'app."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit kan een paar minuten duren. Sluit de app niet."
           }
         }
       }
@@ -440,6 +512,12 @@
             "state" : "translated",
             "value" : "Échec de l'importation"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importeren mislukt"
+          }
         }
       }
     },
@@ -473,6 +551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importation de la sauvegarde"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up importeren"
           }
         }
       }
@@ -508,6 +592,12 @@
             "state" : "translated",
             "value" : "Sur les %1$lld entraînements dans la sauvegarde fournie, %2$lld ont été importés avec succès, %3$lld ont été ignorés et %4$lld n'ont pas pu être importés."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Van de %1$lld trainingen in de opgegeven back-up zijn %2$lld succesvol geïmporteerd, %3$lld overgeslagen en %4$lld mislukt."
+          }
         }
       }
     },
@@ -541,6 +631,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sauvegarde importée"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up geïmporteerd"
           }
         }
       }
@@ -577,6 +673,12 @@
             "state" : "translated",
             "value" : "bpm"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "spm"
+          }
         }
       }
     },
@@ -611,6 +713,12 @@
             "state" : "translated",
             "value" : "Voir dans le calendrier"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijken in agenda"
+          }
         }
       }
     },
@@ -641,6 +749,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cache"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cache"
@@ -679,6 +793,12 @@
             "state" : "translated",
             "value" : "Vider le cache des cartes"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaartcache wissen"
+          }
         }
       }
     },
@@ -712,6 +832,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Taille du cache des cartes"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grootte kaartcache"
           }
         }
       }
@@ -747,6 +873,12 @@
             "state" : "translated",
             "value" : "Calendrier"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agenda"
+          }
         }
       }
     },
@@ -780,6 +912,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fermer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sluiten"
           }
         }
       }
@@ -816,6 +954,12 @@
             "state" : "translated",
             "value" : "Par défaut"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaard"
+          }
         }
       }
     },
@@ -849,6 +993,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijderen"
           }
         }
       }
@@ -885,6 +1035,12 @@
             "state" : "translated",
             "value" : "Erreur"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fout"
+          }
         }
       }
     },
@@ -918,6 +1074,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apple Health n'est pas disponible."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health is niet beschikbaar."
           }
         }
       }
@@ -953,6 +1115,12 @@
             "state" : "translated",
             "value" : "Le champ « Nom » ne doit pas être vide."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het veld \"Naam\" mag niet leeg zijn."
+          }
         }
       }
     },
@@ -986,6 +1154,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bon après-midi"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goedemiddag"
           }
         }
       }
@@ -1021,6 +1195,12 @@
             "state" : "translated",
             "value" : "Bonjour"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goedemorgen"
+          }
         }
       }
     },
@@ -1054,6 +1234,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bonsoir"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goedenavond"
           }
         }
       }
@@ -1089,6 +1275,12 @@
             "state" : "translated",
             "value" : "Bonjour"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goedemorgen"
+          }
         }
       }
     },
@@ -1123,6 +1315,12 @@
             "state" : "translated",
             "value" : "Bonne nuit"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goedenacht"
+          }
         }
       }
     },
@@ -1153,6 +1351,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info"
@@ -1191,6 +1395,12 @@
             "state" : "translated",
             "value" : "Utilisateur"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruiker"
+          }
         }
       }
     },
@@ -1224,6 +1434,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contacter le support"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact opnemen"
           }
         }
       }
@@ -1259,6 +1475,12 @@
             "state" : "translated",
             "value" : "Échec de la migration de données"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gegevensmigratie mislukt"
+          }
         }
       }
     },
@@ -1292,6 +1514,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Temps restant estimé : %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschatte resterende tijd: %@"
           }
         }
       }
@@ -1327,6 +1555,12 @@
             "state" : "translated",
             "value" : "Estimation du temps restant..."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resterende tijd berekenen..."
+          }
         }
       }
     },
@@ -1360,6 +1594,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'app effectue actuellement une migration de données pour activer de nouvelles fonctionnalités. L'app doit rester ouverte pendant la migration."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De app voert momenteel een gegevensmigratie uit om nieuwe functionaliteit mogelijk te maken. De app moet open blijven tijdens de migratie."
           }
         }
       }
@@ -1395,6 +1635,12 @@
             "state" : "translated",
             "value" : "Migration de données en cours"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gegevensmigratie bezig"
+          }
         }
       }
     },
@@ -1428,6 +1674,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "C'est parti !"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aan de slag!"
           }
         }
       }
@@ -1463,6 +1715,12 @@
             "state" : "translated",
             "value" : "Mentions légales"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impressum"
+          }
         }
       }
     },
@@ -1497,6 +1755,12 @@
             "state" : "translated",
             "value" : "Politique de confidentialité"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacybeleid"
+          }
         }
       }
     },
@@ -1530,6 +1794,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conditions d'utilisation"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruiksvoorwaarden"
           }
         }
       }
@@ -1566,6 +1836,12 @@
             "state" : "translated",
             "value" : "bpm max."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max. spm"
+          }
         }
       }
     },
@@ -1601,6 +1877,12 @@
             "state" : "translated",
             "value" : "bpm min."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min. spm"
+          }
         }
       }
     },
@@ -1631,6 +1913,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -1669,6 +1957,12 @@
             "state" : "translated",
             "value" : "Veuillez sélectionner une date."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecteer een datum."
+          }
         }
       }
     },
@@ -1702,6 +1996,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistrer un entraînement"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Training opnemen"
           }
         }
       }
@@ -1738,6 +2038,12 @@
             "state" : "translated",
             "value" : "Terminer"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stoppen"
+          }
         }
       }
     },
@@ -1773,6 +2079,12 @@
             "state" : "translated",
             "value" : "Dernier utilisé"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laatst gebruikt"
+          }
         }
       }
     },
@@ -1806,6 +2118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Préférences d'enregistrement"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opname-instellingen"
           }
         }
       }
@@ -1841,6 +2159,12 @@
             "state" : "translated",
             "value" : "Type d'entraînement par défaut"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaard trainingstype"
+          }
         }
       }
     },
@@ -1874,6 +2198,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Précision GPS minimale"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimale GPS-nauwkeurigheid"
           }
         }
       }
@@ -1910,6 +2240,12 @@
             "state" : "translated",
             "value" : "Vitesse glissante"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voortschrijdende snelheid"
+          }
         }
       }
     },
@@ -1944,6 +2280,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Démarrer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starten"
           }
         }
       }
@@ -1980,6 +2322,12 @@
             "state" : "translated",
             "value" : "Type d'entraînement"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainingstype"
+          }
         }
       }
     },
@@ -2013,6 +2361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Retirer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijderen"
           }
         }
       }
@@ -2049,6 +2403,12 @@
             "state" : "translated",
             "value" : "Réinitialiser"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herstellen"
+          }
         }
       }
     },
@@ -2082,6 +2442,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réinitialiser l'app"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App herstellen"
           }
         }
       }
@@ -2117,6 +2483,12 @@
             "state" : "translated",
             "value" : "Êtes-vous sûr de vouloir réinitialiser l'app ? Toutes les données enregistrées localement, y compris vos entraînements et vos informations personnelles, seront supprimées. Cette action est irréversible."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weet je zeker dat je de app wilt herstellen? Alle lokaal opgeslagen gegevens, inclusief je trainingen en persoonlijke informatie, worden verwijderd. Deze actie kan niet ongedaan worden gemaakt."
+          }
         }
       }
     },
@@ -2151,6 +2523,12 @@
             "state" : "translated",
             "value" : "Enregistrer"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opslaan"
+          }
         }
       }
     },
@@ -2184,6 +2562,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sélectionner"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecteren"
           }
         }
       }
@@ -2220,6 +2604,12 @@
             "state" : "translated",
             "value" : "Série"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reeks"
+          }
         }
       }
     },
@@ -2253,6 +2643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réglages"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instellingen"
           }
         }
       }
@@ -2288,6 +2684,12 @@
             "state" : "translated",
             "value" : "Taille de la base de données"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Databasegrootte"
+          }
         }
       }
     },
@@ -2321,6 +2723,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre d'entraînements"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aantal trainingen"
           }
         }
       }
@@ -2356,6 +2764,12 @@
             "state" : "translated",
             "value" : "Version"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versie"
+          }
         }
       }
     },
@@ -2389,6 +2803,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Support"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ondersteuning"
           }
         }
       }
@@ -2425,6 +2845,12 @@
             "state" : "translated",
             "value" : "Configurer"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instellen"
+          }
         }
       }
     },
@@ -2459,6 +2885,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unités"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eenheden"
           }
         }
       }
@@ -2495,6 +2927,12 @@
             "state" : "translated",
             "value" : "Vitesse"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snelheid"
+          }
         }
       }
     },
@@ -2529,6 +2967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Système"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systeem"
           }
         }
       }
@@ -2565,6 +3009,12 @@
             "state" : "translated",
             "value" : "Horodatage"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tijdstempel"
+          }
         }
       }
     },
@@ -2598,6 +3048,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réglages des unités"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eenheidsinstellingen"
           }
         }
       }
@@ -2633,6 +3089,12 @@
             "state" : "translated",
             "value" : "Unité d'altitude"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoogte-eenheid"
+          }
         }
       }
     },
@@ -2666,6 +3128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unité de distance"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afstandseenheid"
           }
         }
       }
@@ -2701,6 +3169,12 @@
             "state" : "translated",
             "value" : "Unité d'énergie"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energie-eenheid"
+          }
         }
       }
     },
@@ -2734,6 +3208,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unité de vitesse"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snelheidseenheid"
           }
         }
       }
@@ -2769,6 +3249,12 @@
             "state" : "translated",
             "value" : "Unité de poids"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewichtseenheid"
+          }
         }
       }
     },
@@ -2802,6 +3288,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impérial"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperiaal"
           }
         }
       }
@@ -2837,6 +3329,12 @@
             "state" : "translated",
             "value" : "Métrique"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metrisch"
+          }
         }
       }
     },
@@ -2871,6 +3369,12 @@
             "state" : "translated",
             "value" : "Date de naissance"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geboortedatum"
+          }
         }
       }
     },
@@ -2904,6 +3408,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naam"
           }
         }
       }
@@ -2940,6 +3450,12 @@
             "state" : "translated",
             "value" : "Utilisateur"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruiker"
+          }
         }
       }
     },
@@ -2973,6 +3489,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Votre nom"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jouw naam"
           }
         }
       }
@@ -3008,6 +3530,12 @@
             "state" : "translated",
             "value" : "Profil utilisateur"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruikersprofiel"
+          }
         }
       }
     },
@@ -3041,6 +3569,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sexe"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geslacht"
           }
         }
       }
@@ -3076,6 +3610,12 @@
             "state" : "translated",
             "value" : "Non spécifié"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet opgegeven"
+          }
         }
       }
     },
@@ -3109,6 +3649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Poids"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewicht"
           }
         }
       }
@@ -3144,6 +3690,12 @@
             "state" : "translated",
             "value" : "Votre poids"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jouw gewicht"
+          }
         }
       }
     },
@@ -3177,6 +3729,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Distance"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afstand"
           }
         }
       }
@@ -3212,6 +3770,12 @@
             "state" : "translated",
             "value" : "Énergie"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energie"
+          }
         }
       }
     },
@@ -3245,6 +3809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fréquence cardiaque"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hartslag"
           }
         }
       }
@@ -3280,6 +3850,12 @@
             "state" : "translated",
             "value" : "Parcours"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
         }
       }
     },
@@ -3314,6 +3890,12 @@
             "state" : "translated",
             "value" : "Vitesse"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snelheid"
+          }
         }
       }
     },
@@ -3347,6 +3929,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Temps"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tijd"
           }
         }
       }
@@ -3383,6 +3971,12 @@
             "state" : "translated",
             "value" : "Accorder l'autorisation %@"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-toestemming verlenen"
+          }
         }
       }
     },
@@ -3416,6 +4010,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entraînements"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainingen"
           }
         }
       }

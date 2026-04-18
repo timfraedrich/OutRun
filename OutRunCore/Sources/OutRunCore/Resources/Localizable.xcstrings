@@ -32,6 +32,12 @@
             "state" : "translated",
             "value" : "Les données d'altitude ne sont pas disponibles sur cet appareil."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoogtegegevens zijn niet beschikbaar op dit apparaat."
+          }
         }
       }
     },
@@ -65,6 +71,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les données d'altitude ne peuvent pas être reçues car l'autorisation a été refusée."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoogtegegevens kunnen niet worden ontvangen omdat de toestemming is geweigerd."
           }
         }
       }
@@ -100,6 +112,12 @@
             "state" : "translated",
             "value" : "Les données d'altitude ne peuvent pas être reçues en raison d'une autorisation manquante."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoogtegegevens kunnen niet worden ontvangen vanwege ontbrekende toestemming."
+          }
         }
       }
     },
@@ -133,6 +151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les données d'altitude ne peuvent pas être reçues en raison des réglages système. Vous pouvez modifier cela dans l'app Réglages iOS sous « Confidentialité et sécurité > Activité physique »."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoogtegegevens kunnen niet worden ontvangen vanwege systeeminstellingen. Je kunt dit wijzigen in de iOS Instellingen-app onder \"Privacy en beveiliging > Beweging en conditie\"."
           }
         }
       }
@@ -168,6 +192,12 @@
             "state" : "translated",
             "value" : "Les données d'altitude ne peuvent pas être reçues en raison d'un statut d'autorisation inconnu."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoogtegegevens kunnen niet worden ontvangen vanwege een onbekende toestemmingsstatus."
+          }
         }
       }
     },
@@ -201,6 +231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le nom fourni ne peut pas être vide."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De opgegeven naam mag niet leeg zijn."
           }
         }
       }
@@ -236,6 +272,12 @@
             "state" : "translated",
             "value" : "Cette action ne peut pas être effectuée avant que le noyau ait été initialisé."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze actie kan niet worden uitgevoerd voordat de kern is geïnitialiseerd."
+          }
         }
       }
     },
@@ -269,6 +311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette action ne peut pas être effectuée car la configuration du noyau n'est pas requise en ce moment."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze actie kan niet worden uitgevoerd omdat de kern momenteel niet hoeft te worden ingesteld."
           }
         }
       }
@@ -304,6 +352,12 @@
             "state" : "translated",
             "value" : "L'objet n'a pas pu être trouvé dans la base de données."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het object kon niet worden gevonden in de database."
+          }
         }
       }
     },
@@ -337,6 +391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un utilisateur existe déjà dans la base de données. Un seul utilisateur est pris en charge."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is al een gebruiker aanwezig in de database. Slechts één gebruiker wordt ondersteund."
           }
         }
       }
@@ -372,6 +432,12 @@
             "state" : "translated",
             "value" : "La modification enregistrée n'a pas pu être sauvegardée car l'entraînement est déjà terminé."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De geregistreerde wijziging kon niet worden opgeslagen omdat de training al is beëindigd."
+          }
         }
       }
     },
@@ -405,6 +471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'entraînement n'a pas pu être continué car il n'est pas encore terminé."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training kon niet worden voortgezet omdat deze nog niet is beëindigd."
           }
         }
       }
@@ -440,6 +512,12 @@
             "state" : "translated",
             "value" : "Aujourd'hui"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vandaag"
+          }
         }
       }
     },
@@ -473,6 +551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hier"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gisteren"
           }
         }
       }
@@ -508,6 +592,12 @@
             "state" : "translated",
             "value" : "Une erreur s'est produite lors de la conversion vers ou depuis un objet Day."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een fout opgetreden bij het converteren naar of van een Day-object."
+          }
         }
       }
     },
@@ -541,6 +631,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les données de localisation ne peuvent pas être reçues car l'autorisation a été refusée."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locatiegegevens kunnen niet worden ontvangen omdat de toestemming is geweigerd."
           }
         }
       }
@@ -576,6 +672,12 @@
             "state" : "translated",
             "value" : "Seules des données de localisation approximatives sont disponibles. Pour enregistrer un entraînement, l'autorisation de localisation précise doit être accordée."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alleen bij benadering locatiegegevens zijn beschikbaar. Voor het vastleggen van een training moet nauwkeurige locatietoestemming worden verleend."
+          }
         }
       }
     },
@@ -609,6 +711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "féminin"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vrouwelijk"
           }
         }
       }
@@ -644,6 +752,12 @@
             "state" : "translated",
             "value" : "masculin"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mannelijk"
+          }
         }
       }
     },
@@ -677,6 +791,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucune image disponible pour le parcours fourni."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen afbeelding beschikbaar vanwege de opgegeven route."
           }
         }
       }
@@ -712,6 +832,12 @@
             "state" : "translated",
             "value" : "La création de l'image a échoué."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het aanmaken van de afbeelding is mislukt."
+          }
         }
       }
     },
@@ -745,6 +871,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les données de pas ne peuvent pas être reçues car l'autorisation a été refusée."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stapgegevens kunnen niet worden ontvangen omdat de toestemming is geweigerd."
           }
         }
       }
@@ -780,6 +912,12 @@
             "state" : "translated",
             "value" : "Les données de pas ne peuvent pas être reçues en raison d'une autorisation manquante."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stapgegevens kunnen niet worden ontvangen vanwege ontbrekende toestemming."
+          }
         }
       }
     },
@@ -813,6 +951,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les données de pas ne peuvent pas être reçues en raison des réglages système. Vous pouvez modifier cela dans l'app Réglages iOS sous « Confidentialité et sécurité > Activité physique »."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stapgegevens kunnen niet worden ontvangen vanwege systeeminstellingen. Je kunt dit wijzigen in de iOS Instellingen-app onder \"Privacy en beveiliging > Beweging en conditie\"."
           }
         }
       }
@@ -848,6 +992,12 @@
             "state" : "translated",
             "value" : "Les données de pas ne sont pas disponibles sur cet appareil."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stapgegevens zijn niet beschikbaar op dit apparaat."
+          }
         }
       }
     },
@@ -882,6 +1032,12 @@
             "state" : "translated",
             "value" : "Les données de pas ne peuvent pas être reçues en raison d'un statut d'autorisation inconnu."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stapgegevens kunnen niet worden ontvangen vanwege een onbekende toestemmingsstatus."
+          }
         }
       }
     },
@@ -912,6 +1068,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bpm"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "bpm"
@@ -950,6 +1112,12 @@
             "state" : "translated",
             "value" : "Durée"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duur"
+          }
         }
       }
     },
@@ -983,6 +1151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Montée"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stijging"
           }
         }
       }
@@ -1018,6 +1192,12 @@
             "state" : "translated",
             "value" : "Fréq. card. moy."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gem. hartslag"
+          }
         }
       }
     },
@@ -1051,6 +1231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vit. moyenne"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gem. snelheid"
           }
         }
       }
@@ -1086,6 +1272,12 @@
             "state" : "translated",
             "value" : "Date"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datum"
+          }
         }
       }
     },
@@ -1119,6 +1311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descente"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daling"
           }
         }
       }
@@ -1154,6 +1352,12 @@
             "state" : "translated",
             "value" : "Distance"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afstand"
+          }
         }
       }
     },
@@ -1187,6 +1391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Heure de fin"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eindtijd"
           }
         }
       }
@@ -1222,6 +1432,12 @@
             "state" : "translated",
             "value" : "Énergie"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energie"
+          }
         }
       }
     },
@@ -1255,6 +1471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Énergie/minute"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energie/minuut"
           }
         }
       }
@@ -1290,6 +1512,12 @@
             "state" : "translated",
             "value" : "Fréq. card. max."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max. hartslag"
+          }
         }
       }
     },
@@ -1323,6 +1551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Allure"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo"
           }
         }
       }
@@ -1358,6 +1592,12 @@
             "state" : "translated",
             "value" : "Durée de pause"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pauzeduur"
+          }
         }
       }
     },
@@ -1391,6 +1631,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Répétitions"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herhalingen"
           }
         }
       }
@@ -1426,6 +1672,12 @@
             "state" : "translated",
             "value" : "Coups de pédale"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slagen"
+          }
         }
       }
     },
@@ -1459,6 +1711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pas"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stappen"
           }
         }
       }
@@ -1494,6 +1752,12 @@
             "state" : "translated",
             "value" : "Heure de début"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starttijd"
+          }
         }
       }
     },
@@ -1528,6 +1792,12 @@
             "state" : "translated",
             "value" : "Vit. maximale"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Topsnelheid"
+          }
         }
       }
     },
@@ -1558,6 +1828,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Type"
@@ -1596,6 +1872,12 @@
             "state" : "translated",
             "value" : "L'entraînement est déjà en pause."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training is al gepauzeerd."
+          }
         }
       }
     },
@@ -1629,6 +1911,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un entraînement est déjà en cours d'enregistrement."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er wordt al een training opgenomen."
           }
         }
       }
@@ -1664,6 +1952,12 @@
             "state" : "translated",
             "value" : "Impossible d'enregistrer un entraînement en ce moment. Redémarrer l'app pourrait résoudre le problème."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er kan momenteel geen training worden opgenomen. Een herstart van de app kan het probleem oplossen."
+          }
         }
       }
     },
@@ -1697,6 +1991,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'action effectuée n'est pas autorisée dans l'état actuel."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De uitgevoerde actie is niet toegestaan in de huidige toestand."
           }
         }
       }
@@ -1732,6 +2032,12 @@
             "state" : "translated",
             "value" : "L'enregistrement n'a pas pu démarrer car l'autorisation de localisation est insuffisante."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De opname kon niet worden gestart omdat de locatietoestemming onvoldoende is."
+          }
         }
       }
     },
@@ -1765,6 +2071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'app n'était pas encore prête pour l'enregistrement, veuillez réessayer."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De app was nog niet klaar voor opname. Probeer het opnieuw."
           }
         }
       }
@@ -1800,6 +2112,12 @@
             "state" : "translated",
             "value" : "L'entraînement n'est pas en pause."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training is niet gepauzeerd."
+          }
         }
       }
     },
@@ -1833,6 +2151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun entraînement n'est en cours d'enregistrement."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er wordt geen training opgenomen."
           }
         }
       }
@@ -1868,6 +2192,12 @@
             "state" : "translated",
             "value" : "Localisation"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locatie"
+          }
         }
       }
     },
@@ -1901,6 +2231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activité physique"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beweging en conditie"
           }
         }
       }
@@ -1936,6 +2272,12 @@
             "state" : "translated",
             "value" : "Erreur"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fout"
+          }
         }
       }
     },
@@ -1969,6 +2311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prêt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gereed"
           }
         }
       }
@@ -2004,6 +2352,12 @@
             "state" : "translated",
             "value" : "Chargement"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laden"
+          }
         }
       }
     },
@@ -2037,6 +2391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pause auto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch gepauzeerd"
           }
         }
       }
@@ -2072,6 +2432,12 @@
             "state" : "translated",
             "value" : "En pause"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gepauzeerd"
+          }
         }
       }
     },
@@ -2105,6 +2471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistrement"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bezig met opnemen"
           }
         }
       }
@@ -2140,6 +2512,12 @@
             "state" : "translated",
             "value" : "Vélo"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fietsen"
+          }
         }
       }
     },
@@ -2173,6 +2551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Randonnée"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiken"
           }
         }
       }
@@ -2208,6 +2592,12 @@
             "state" : "translated",
             "value" : "Course à pied"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hardlopen"
+          }
         }
       }
     },
@@ -2241,6 +2631,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Patinage"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schaatsen"
           }
         }
       }
@@ -2276,6 +2672,12 @@
             "state" : "translated",
             "value" : "Inconnu"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onbekend"
+          }
         }
       }
     },
@@ -2309,6 +2711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Marche"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wandelen"
           }
         }
       }
