@@ -130,7 +130,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen"
+            "value" : "Diese App braucht deinen Standort, um deine Workouts aufzuzeichnen"
           }
         },
         "en" : {
@@ -171,7 +171,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen"
+            "value" : "Diese App braucht deinen Standort, um deine Workouts aufzuzeichnen"
           }
         },
         "en" : {
