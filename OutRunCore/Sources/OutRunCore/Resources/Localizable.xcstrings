@@ -243,10 +243,40 @@
     },
     "core_error_newer_workout_version_exists" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Workout konnte nicht gespeichert werden, da bereits eine neuere Version in der Datenbank vorhanden ist."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The workout could not be saved as a newer version already exists in the database."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout could not be saved as a newer version already exists in the database."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El entrenamiento no se pudo guardar porque ya existe una versión más reciente en la base de datos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'entraînement n'a pas pu être sauvegardé car une version plus récente existe déjà dans la base de données."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training kon niet worden opgeslagen omdat er al een nieuwere versie in de database bestaat."
           }
         }
       }
@@ -613,70 +643,280 @@
     },
     "health_sync_service_error_authorization_denied" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Vorgang konnte nicht abgeschlossen werden, da die Berechtigung für Apple Health abgelehnt wurde."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The operation could not be completed because this app was denied authorization for Apple Health."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The operation could not be completed because this app was denied authorisation for Apple Health."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La operación no se pudo completar porque se denegó el permiso de esta app para Apple Health."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'opération n'a pas pu être effectuée car l'autorisation pour Apple Health a été refusée à cette app."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De bewerking kon niet worden voltooid omdat de toestemming voor Apple Health is geweigerd."
           }
         }
       }
     },
     "health_sync_service_error_authorization_missing" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Vorgang konnte nicht abgeschlossen werden, da die Berechtigung für Apple Health fehlt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The operation could not be completed because this app is missing authorization for Apple Health."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The operation could not be completed because this app is missing authorisation for Apple Health."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La operación no se pudo completar porque falta el permiso para Apple Health."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'opération n'a pas pu être effectuée car l'autorisation pour Apple Health est manquante."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De bewerking kon niet worden voltooid omdat de toestemming voor Apple Health ontbreekt."
           }
         }
       }
     },
     "health_sync_service_error_invalid_health_kit_type" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Apple Health-Typ ist ungültig."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The Apple Health type is not valid."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Apple Health type is not valid."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El tipo de Apple Health no es válido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le type Apple Health n'est pas valide."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het Apple Health-type is niet geldig."
           }
         }
       }
     },
     "health_sync_service_error_object_not_found" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Apple Health-Objekt konnte nicht gefunden werden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The Apple Health object could not be found."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Apple Health object could not be found."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El objeto de Apple Health no se pudo encontrar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'objet Apple Health n'a pas pu être trouvé."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het Apple Health-object kon niet worden gevonden."
           }
         }
       }
     },
     "health_sync_service_error_permission_prompt_unavailable" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Berechtigungsdialog für Apple Health konnte nicht angezeigt werden. Die Berechtigungen müssen in der Einstellungen- oder Apple Health-App angepasst werden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The permission prompt for Apple Health could not be shown. The permissions must be adjusted in the Settings or Apple Health app."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The permission prompt for Apple Health could not be shown. The permissions must be adjusted in the Settings or Apple Health app."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo mostrar el diálogo de permisos para Apple Health. Los permisos deben ajustarse en la app de Ajustes o en Apple Health."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La demande d'autorisation pour Apple Health n'a pas pu être affichée. Les autorisations doivent être ajustées dans l'app Réglages ou Apple Health."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De toestemmingsprompt voor Apple Health kon niet worden weergegeven. De toestemmingen moeten worden aangepast in de Instellingen- of Apple Health-app."
           }
         }
       }
     },
     "health_sync_service_error_unknown" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei der Synchronisierung mit Apple Health ist ein unbekannter Fehler aufgetreten."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "An unknown error occurred while synchronizing with Apple Health."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An unknown error occurred while synchronising with Apple Health."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se produjo un error desconocido al sincronizar con Apple Health."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une erreur inconnue s'est produite lors de la synchronisation avec Apple Health."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een onbekende fout opgetreden tijdens het synchroniseren met Apple Health."
           }
         }
       }
     },
     "health_sync_service_error_unsupported_activity_type" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Aktivitätstyp wird für die Synchronisierung mit Apple Health nicht unterstützt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The activity type is unsupported for synchronization with Apple Health."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The activity type is unsupported for synchronisation with Apple Health."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El tipo de actividad no es compatible con la sincronización con Apple Health."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le type d'activité n'est pas pris en charge pour la synchronisation avec Apple Health."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het activiteitstype wordt niet ondersteund voor synchronisatie met Apple Health."
           }
         }
       }
@@ -1123,50 +1363,200 @@
     },
     "sync_error_authentication_required" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Synchronisierung ist aufgrund fehlender Berechtigung fehlgeschlagen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The synchronization failed due to missing authorization."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronisation failed due to missing authorisation."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sincronización falló por falta de autorización."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La synchronisation a échoué en raison d'une autorisation manquante."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De synchronisatie is mislukt vanwege ontbrekende autorisatie."
           }
         }
       }
     },
     "sync_error_conflict" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Synchronisierung ist aufgrund eines Datenkonflikts fehlgeschlagen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The synchronization failed due to a data conflict."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronisation failed due to a data conflict."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sincronización falló debido a un conflicto de datos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La synchronisation a échoué en raison d'un conflit de données."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De synchronisatie is mislukt vanwege een gegevensconflict."
           }
         }
       }
     },
     "sync_error_network_error" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Synchronisierung ist aufgrund eines Netzwerkfehlers fehlgeschlagen. Bitte überprüfe deine Internetverbindung."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The synchronization failed due to a network error. Please check your internet connection."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronisation failed due to a network error. Please check your internet connection."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sincronización falló debido a un error de red. Por favor, comprueba tu conexión a internet."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La synchronisation a échoué en raison d'une erreur réseau. Veuillez vérifier votre connexion internet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De synchronisatie is mislukt vanwege een netwerkfout. Controleer je internetverbinding."
           }
         }
       }
     },
     "sync_error_service_unavailable" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Synchronisierungsdienst ist nicht verfügbar."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The synchronization service is unavailable."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The synchronisation service is unavailable."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servicio de sincronización no está disponible."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le service de synchronisation n'est pas disponible."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De synchronisatieservice is niet beschikbaar."
           }
         }
       }
     },
     "sync_error_unknown" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei der Datensynchronisierung ist ein unbekannter Fehler aufgetreten."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "An unknown error occurred while synchronizing data."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An unknown error occurred while synchronising data."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se produjo un error desconocido al sincronizar los datos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une erreur inconnue s'est produite lors de la synchronisation des données."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een onbekende fout opgetreden tijdens het synchroniseren van gegevens."
           }
         }
       }

@@ -643,20 +643,80 @@
     },
     "backup_service_error_backup_not_readable" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Backup konnte nicht gelesen werden, es könnte beschädigt sein."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The backup could not be read, it might be corrupted."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The backup could not be read, it might be corrupted."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia de seguridad no se pudo leer, podría estar dañada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sauvegarde n'a pas pu être lue, elle pourrait être corrompue."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De back-up kon niet worden gelezen, deze is mogelijk beschadigd."
           }
         }
       }
     },
     "backup_service_error_no_data_to_back_up" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt keine Daten in der Datenbank, die gesichert werden könnten."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "There is no data to back up in the database."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There is no data to back up in the database."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay datos en la base de datos para hacer una copia de seguridad."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il n'y a aucune donnée à sauvegarder dans la base de données."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er zijn geen gegevens in de database om van een back-up te maken."
           }
         }
       }
@@ -1346,30 +1406,120 @@
     },
     "legacy_backup_error_corrupted_data" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das alte Backup konnte nicht gelesen werden, es könnte beschädigt sein."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The legacy backup could not be read, it might be corrupted."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The legacy backup could not be read, it might be corrupted."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia de seguridad antigua no se pudo leer, podría estar dañada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'ancienne sauvegarde n'a pas pu être lue, elle pourrait être corrompue."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De oude back-up kon niet worden gelezen, deze is mogelijk beschadigd."
           }
         }
       }
     },
     "legacy_backup_error_invalid_version" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Version des alten Backups wird von dieser App nicht unterstützt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The legacy backup version is not supported by this app."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The legacy backup version is not supported by this app."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La versión de la copia de seguridad antigua no es compatible con esta app."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La version de l'ancienne sauvegarde n'est pas prise en charge par cette app."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De versie van de oude back-up wordt niet ondersteund door deze app."
           }
         }
       }
     },
     "legacy_backup_error_missing_version" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das alte Backup hat keine Versionsangabe."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The legacy backup does not have a version."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The legacy backup does not have a version."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La copia de seguridad antigua no tiene versión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'ancienne sauvegarde ne possède pas de version."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De oude back-up heeft geen versie."
           }
         }
       }
