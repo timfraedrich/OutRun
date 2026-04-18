@@ -15,6 +15,12 @@
             "value" : "Altitude data is not available on this device."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude data is not available on this device."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35,6 +41,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Altitude data cannot be received due to denied authorization."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude data cannot be received due to denied authorisation."
           }
         },
         "es" : {
@@ -59,6 +71,12 @@
             "value" : "Altitude data cannot be received due to missing authorization."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude data cannot be received due to missing authorisation."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76,6 +94,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\"."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Altitude data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\"."
@@ -103,6 +127,12 @@
             "value" : "Altitude data cannot be received due to an unknown authorization status."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude data cannot be received due to an unknown authorisation status."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -120,6 +150,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The provided name cannot be empty."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The provided name cannot be empty."
@@ -147,6 +183,12 @@
             "value" : "This action cannot be preformed before the core has been initialized."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This action cannot be preformed before the core has been initialised."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164,6 +206,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This action cannot be performed as the core is not required to be set up at the moment."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This action cannot be performed as the core is not required to be set up at the moment."
@@ -191,6 +239,12 @@
             "value" : "The object could not be found in the database."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The object could not be found in the database."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -208,6 +262,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There already is a user present in the database. Only one user is supported."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "There already is a user present in the database. Only one user is supported."
@@ -235,6 +295,12 @@
             "value" : "The recorded change could not be saved, as the workout has already been finished."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The recorded change could not be saved, as the workout has already been finished."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -252,6 +318,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout could not be continued, as it has not been finished."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The workout could not be continued, as it has not been finished."
@@ -279,6 +351,12 @@
             "value" : "Today"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -296,6 +374,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yesterday"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yesterday"
@@ -323,6 +407,12 @@
             "value" : "There was an error while converting to or from a Day object."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There was an error while converting to or from a Day object."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -343,6 +433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Location data cannot be received due to denied authorization."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location data cannot be received due to denied authorisation."
           }
         },
         "es" : {
@@ -367,6 +463,12 @@
             "value" : "Only approximate location data is available. To record a workout precise location authorization needs to be granted."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only approximate location data is available. To record a workout precise location authorisation needs to be granted."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -384,6 +486,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "female"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "female"
@@ -411,6 +519,12 @@
             "value" : "male"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "male"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -433,6 +547,12 @@
             "value" : "No image available due to the provided route."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No image available due to the provided route."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -449,24 +569,13 @@
             "value" : "Das Erstellen des Bildes ist fehlgeschlagen."
           }
         },
-        "es" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La creación de la imagen falló."
-          }
-        }
-      }
-    },
-    "static_workout_map_service_error_renderingFailed" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das Erstellen des Bildes ist fehlgeschlagen."
+            "value" : "The creation of the image failed."
           }
         },
-        "en" : {
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The creation of the image failed."
@@ -494,6 +603,12 @@
             "value" : "Step data cannot be received due to denied authorization."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step data cannot be received due to denied authorisation."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -516,6 +631,12 @@
             "value" : "Step data cannot be received due to missing authorization."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step data cannot be received due to missing authorisation."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -533,6 +654,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\"."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Step data cannot be received due to system settings. You can change this in the iOS Settings app under \"Privacy & Security > Motion & Fitness\"."
@@ -560,6 +687,12 @@
             "value" : "Step data is not available on this device."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step data is not available on this device."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -582,6 +715,12 @@
             "value" : "Step data cannot be received due to an unknown authorization status."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step data cannot be received due to an unknown authorisation status."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -599,6 +738,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BPM"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "BPM"
@@ -626,6 +771,12 @@
             "value" : "Duration"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duration"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -643,6 +794,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ascend"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ascend"
@@ -670,6 +827,12 @@
             "value" : "Avg. heart rate."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avg. heart rate."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -687,6 +850,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avg. speed"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avg. speed"
@@ -714,6 +883,12 @@
             "value" : "Date"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -731,6 +906,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descend"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descend"
@@ -758,6 +939,12 @@
             "value" : "Distance"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -775,6 +962,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End time"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "End time"
@@ -802,6 +995,12 @@
             "value" : "Energy"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -819,6 +1018,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy/minute"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Energy/minute"
@@ -846,6 +1051,12 @@
             "value" : "Max. heart rate"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max. heart rate"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -863,6 +1074,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pace"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pace"
@@ -890,6 +1107,12 @@
             "value" : "Pause duration"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause duration"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -907,6 +1130,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetitions"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Repetitions"
@@ -934,6 +1163,12 @@
             "value" : "Strokes"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strokes"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -951,6 +1186,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steps"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Steps"
@@ -978,6 +1219,12 @@
             "value" : "Start time"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start time"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -995,6 +1242,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top speed"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Top speed"
@@ -1022,6 +1275,12 @@
             "value" : "Type"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1039,6 +1298,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout is already paused."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The workout is already paused."
@@ -1066,6 +1331,12 @@
             "value" : "A workout is already being recorded."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A workout is already being recorded."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1083,6 +1354,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot record a workout at this moment. A restart of this app might solve the underlying problem."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cannot record a workout at this moment. A restart of this app might solve the underlying problem."
@@ -1110,6 +1387,12 @@
             "value" : "The performed action is not allowed in the current state."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The performed action is not allowed in the current state."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1132,6 +1415,12 @@
             "value" : "The recording could not be started, as the location authorization is insufficient."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The recording could not be started, as the location authorisation is insufficient."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1149,6 +1438,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The app was not ready for recording yet, please try again."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The app was not ready for recording yet, please try again."
@@ -1176,6 +1471,12 @@
             "value" : "The workout is not paused."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout is not paused."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1193,6 +1494,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No workout is being recorded."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No workout is being recorded."
@@ -1220,6 +1527,12 @@
             "value" : "Location"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1237,6 +1550,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Motion & Fitness"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Motion & Fitness"
@@ -1264,6 +1583,12 @@
             "value" : "Error"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1281,6 +1606,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ready"
@@ -1308,6 +1639,12 @@
             "value" : "Loading"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1325,6 +1662,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto paused"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auto paused"
@@ -1352,6 +1695,12 @@
             "value" : "Paused"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paused"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1369,6 +1718,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recording"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recording"
@@ -1396,6 +1751,12 @@
             "value" : "Cycling"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cycling"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1413,6 +1774,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiking"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hiking"
@@ -1440,6 +1807,12 @@
             "value" : "Running"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1457,6 +1830,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skating"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skating"
@@ -1484,6 +1863,12 @@
             "value" : "Unknown"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1501,6 +1886,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walking"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Walking"

@@ -15,6 +15,12 @@
             "value" : "Altitude"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32,6 +38,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apple Health"
@@ -59,6 +71,12 @@
             "value" : "Backup"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76,6 +94,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Backup"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create Backup"
@@ -103,6 +127,12 @@
             "value" : "Export your workout data for safe keeping and to restore it later. The backup will be saved as a .zip archive with .json files for each workout."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export your workout data for safe keeping and to restore it later. The backup will be saved as a .zip archive with .json files for each workout."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -120,6 +150,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup Failed"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Backup Failed"
@@ -147,6 +183,12 @@
             "value" : "Creating Backup"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating Backup"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164,6 +206,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The backup was saved to the selected folder."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The backup was saved to the selected folder."
@@ -191,6 +239,12 @@
             "value" : "Backup Created"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup Created"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -208,6 +262,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Backup"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore Backup"
@@ -235,6 +295,12 @@
             "value" : "Import a backup created by this app. The app accepts .zip archives and the old .orbup files. Data already existing in the app will not be overwritten or removed. If you import an outdated workout, it will be skipped."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import a backup created by this app. The app accepts .zip archives and the old .orbup files. Data already existing in the app will not be overwritten or removed. If you import an outdated workout, it will be skipped."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -252,6 +318,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This may take a couple of minutes. Please do not close the app."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This may take a couple of minutes. Please do not close the app."
@@ -279,6 +351,12 @@
             "value" : "Import Failed"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Failed"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -296,6 +374,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importing Backup"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importing Backup"
@@ -323,6 +407,12 @@
             "value" : "Of the %1$lld workouts in the provided backup, %2$lld were successfully imported, %3$lld were skipped, and %4$lld failed to import."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Of the %1$lld workouts in the provided backup, %2$lld were successfully imported, %3$lld were skipped, and %4$lld failed to import."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -340,6 +430,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup Imported"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Backup Imported"
@@ -368,6 +464,12 @@
             "value" : "BPM"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BPM"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -385,6 +487,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Browse in Calendar"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Browse in Calendar"
@@ -412,6 +520,12 @@
             "value" : "Cache"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cache"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -429,6 +543,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Map Cache"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clear Map Cache"
@@ -456,6 +576,12 @@
             "value" : "Map Cache Size"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map Cache Size"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -478,6 +604,12 @@
             "value" : "Calendar"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -495,6 +627,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Close"
@@ -523,6 +661,12 @@
             "value" : "Default"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -540,6 +684,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete"
@@ -568,6 +718,12 @@
             "value" : "Error"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -585,6 +741,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health is not available."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apple Health is not available."
@@ -612,6 +774,12 @@
             "value" : "The field \"Name\" must not be empty."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The field \"Name\" must not be empty."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -629,6 +797,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good afternoon"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Good afternoon"
@@ -656,6 +830,12 @@
             "value" : "Good morning"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good morning"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -673,6 +853,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good evening"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Good evening"
@@ -700,6 +886,12 @@
             "value" : "Good morning"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good morning"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -717,6 +909,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Good night"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Good night"
@@ -744,6 +942,12 @@
             "value" : "Info"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -761,6 +965,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "User"
@@ -788,6 +998,12 @@
             "value" : "Contact Support"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact Support"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -805,6 +1021,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Migration Failed"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data Migration Failed"
@@ -832,6 +1054,12 @@
             "value" : "Estimated time remaining: %@"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated time remaining: %@"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -849,6 +1077,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimating time remaining..."
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Estimating time remaining..."
@@ -876,6 +1110,12 @@
             "value" : "The app is currently performing a data migration to enable new functionality. The app should remain open while the migrtion is in progress."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The app is currently performing a data migration to enable new functionality. The app should remain open while the migrtion is in progress."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -893,6 +1133,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Migration in Progress"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data Migration in Progress"
@@ -920,6 +1166,12 @@
             "value" : "Get Started"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Started"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -937,6 +1189,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imprint"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Imprint"
@@ -964,6 +1222,12 @@
             "value" : "Privacy Policy"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -981,6 +1245,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Service"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Terms of Service"
@@ -1009,6 +1279,12 @@
             "value" : "Max. BPM"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max. BPM"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1027,6 +1303,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min. BPM"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Min. BPM"
@@ -1054,6 +1336,12 @@
             "value" : "Ok"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1076,6 +1364,12 @@
             "value" : "Please select a date."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a date."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1093,6 +1387,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Record a Workout"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Record a Workout"
@@ -1121,6 +1421,12 @@
             "value" : "End"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1139,6 +1445,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Latest"
@@ -1166,6 +1478,12 @@
             "value" : "Recording Preferences"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recording Preferences"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1188,6 +1506,12 @@
             "value" : "Default Workout Type"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Workout Type"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1205,6 +1529,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum GPS Accuracy"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Minimum GPS Accuracy"
@@ -1233,6 +1563,12 @@
             "value" : "Rolling Speed"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rolling Speed"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1251,6 +1587,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start"
@@ -1279,6 +1621,12 @@
             "value" : "Workout Type"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout Type"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1296,6 +1644,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove"
@@ -1324,6 +1678,12 @@
             "value" : "Reset"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1341,6 +1701,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset App"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset App"
@@ -1368,6 +1734,12 @@
             "value" : "Are you sure you want to reset the app. This will delete all data saved locally including your workouts and personal information. This action connot be undone."
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to reset the app. This will delete all data saved locally including your workouts and personal information. This action connot be undone."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1390,6 +1762,12 @@
             "value" : "Save"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1407,6 +1785,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select"
@@ -1435,6 +1819,12 @@
             "value" : "Series"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1452,6 +1842,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"
@@ -1479,6 +1875,12 @@
             "value" : "Database Size"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database Size"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1496,6 +1898,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of Workouts"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Number of Workouts"
@@ -1523,6 +1931,12 @@
             "value" : "Version"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1540,6 +1954,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Support"
@@ -1568,6 +1988,12 @@
             "value" : "Set Up"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set Up"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1586,6 +2012,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Units"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Units"
@@ -1614,6 +2046,12 @@
             "value" : "Speed"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1632,6 +2070,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "System"
@@ -1660,6 +2104,12 @@
             "value" : "Timestamp"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timestamp"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1677,6 +2127,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unit Settings"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unit Settings"
@@ -1704,6 +2160,12 @@
             "value" : "Altitude Unit"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altitude Unit"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1721,6 +2183,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance Unit"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Distance Unit"
@@ -1748,6 +2216,12 @@
             "value" : "Energy Unit"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy Unit"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1765,6 +2239,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed Unit"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speed Unit"
@@ -1792,6 +2272,12 @@
             "value" : "Weight Unit"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight Unit"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1809,6 +2295,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperial"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Imperial"
@@ -1836,6 +2328,12 @@
             "value" : "Metric"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metric"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1858,6 +2356,12 @@
             "value" : "Birthday"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birthday"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1875,6 +2379,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
@@ -1903,6 +2413,12 @@
             "value" : "User"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1920,6 +2436,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your name"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your name"
@@ -1947,6 +2469,12 @@
             "value" : "User Profile"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User Profile"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1964,6 +2492,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sex"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sex"
@@ -1991,6 +2525,12 @@
             "value" : "Not specified"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not specified"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2008,6 +2548,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weight"
@@ -2035,6 +2581,12 @@
             "value" : "Your weight"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your weight"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2052,6 +2604,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Distance"
@@ -2079,6 +2637,12 @@
             "value" : "Energy"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2096,6 +2660,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heart Rate"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Heart Rate"
@@ -2123,6 +2693,12 @@
             "value" : "Route"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2145,6 +2721,12 @@
             "value" : "Speed"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speed"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2162,6 +2744,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Time"
@@ -2190,6 +2778,12 @@
             "value" : "Grant %@ Permission"
           }
         },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant %@ Permission"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2207,6 +2801,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouts"
+          }
+        },
+        "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Workouts"
