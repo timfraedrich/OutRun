@@ -11,6 +11,7 @@ struct HealthSettingsScene: View {
     var body: some View {
         if let healthSyncService = core.syncService(HealthSyncService.self) {
             List {
+                // TODO: Implement proper permission management + warnings if insufficient permissions are given
                 Section {
                     Button {
                         grantPermissions(for: healthSyncService)
@@ -31,7 +32,7 @@ struct HealthSettingsScene: View {
     
     @ViewBuilder
     private func exportSection(for healthSyncService: HealthSyncService) -> some View {
-        Section("Export Mode") {
+        Section("health_sync_export_mode") {
             let outwardSyncModeBinding: Binding<SyncMode> = .init {
                 healthSyncService.outwardSyncMode
             } set: { syncMode in
@@ -47,31 +48,31 @@ struct HealthSettingsScene: View {
             }
             Picker(selection: outwardSyncModeBinding) {
                 HealthSyncModeOptionView(
-                    "Do not Export",
+                    "health_sync_export_disabled",
                     imageName: "xmark",
-                    messageKey: "No data will be exported to Apple Health."
+                    messageKey: "health_sync_export_disabled_message"
                 )
                 .tag(SyncMode.disabled)
                 if case .enabledFrom(let startDate) = healthSyncService.outwardSyncMode {
                     let formattedStartDate = startDate.formatted(date: .numeric, time: .shortened)
                     HealthSyncModeOptionView(
-                        "Exporting Since \(formattedStartDate)",
+                        "health_sync_exporting_since_\(formattedStartDate)",
                         imageName: "clock",
-                        messageKey: "All new workouts created in this app after \(formattedStartDate) will be exported to Apple Health."
+                        messageKey: "health_sync_export_since_date_message_\(formattedStartDate)"
                     )
                     .tag(healthSyncService.outwardSyncMode)
                 } else {
                     HealthSyncModeOptionView(
-                        "Export Starting Now",
+                        "health_sync_export_starting_now",
                         imageName: "clock",
-                        messageKey: "All new workouts created in this app after turning this option on will be exported to Apple Health."
+                        messageKey: "health_sync_export_starting_now_message"
                     )
                     .tag(SyncMode.enabledFrom(date: .now))
                 }
                 HealthSyncModeOptionView(
-                    "Export Everything",
+                    "health_sync_export_everything",
                     imageName: "arrow.up",
-                    messageKey: "All existing and new workouts created in this app will be exported to Apple Health."
+                    messageKey: "health_sync_export_everything_message"
                 )
                 .tag(SyncMode.enabled)
             } label: {
@@ -82,7 +83,7 @@ struct HealthSettingsScene: View {
     
     @ViewBuilder
     private func importSection(for healthSyncService: HealthSyncService) -> some View {
-        Section("Import Mode") {
+        Section("health_sync_import_mode") {
             let inwardSyncModeBinding: Binding<SyncMode> = .init {
                 healthSyncService.inwardSyncMode
             } set: { syncMode in
@@ -98,31 +99,31 @@ struct HealthSettingsScene: View {
             }
             Picker(selection: inwardSyncModeBinding) {
                 HealthSyncModeOptionView(
-                    "Do not Import",
+                    "health_sync_import_disabled",
                     imageName: "xmark",
-                    messageKey: "No data will be imported from Apple Health."
+                    messageKey: "health_sync_import_disabled_message"
                 )
                 .tag(SyncMode.disabled)
                 if case .enabledFrom(let startDate) = healthSyncService.inwardSyncMode {
                     let formattedStartDate = startDate.formatted(date: .numeric, time: .shortened)
                     HealthSyncModeOptionView(
-                        "Importing Since \(formattedStartDate)",
+                        "health_sync_importing_since_\(formattedStartDate)",
                         imageName: "clock",
-                        messageKey: "All Apple Health workouts started after \(formattedStartDate) will be imported into this app."
+                        messageKey: "health_sync_import_since_date_message_\(formattedStartDate)"
                     )
                     .tag(healthSyncService.inwardSyncMode)
                 } else {
                     HealthSyncModeOptionView(
-                        "Import Starting Now",
+                        "health_sync_import_starting_now",
                         imageName: "clock",
-                        messageKey: "All Apple Health workouts started after turning this option on will be imported into this app."
+                        messageKey: "health_sync_import_starting_now_message"
                     )
                     .tag(SyncMode.enabledFrom(date: .now))
                 }
                 HealthSyncModeOptionView(
-                    "Import Everything",
+                    "health_sync_import_everything",
                     imageName: "arrow.down",
-                    messageKey: "All existing and new Apple Health workouts will be imported into this app."
+                    messageKey: "health_sync_import_everything_message"
                 )
                 .tag(SyncMode.enabled)
             } label: {
