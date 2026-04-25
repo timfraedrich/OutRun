@@ -32,19 +32,24 @@ public class HealthSyncService: SyncService {
     ]
     
     public func setInwardSyncMode(_ mode: SyncMode) {
-        guard let delegate else { return }
-        if case .disabled = mode {
+        guard let delegate, inwardSyncMode != mode else { return }
+        let now = Date.now
+        switch (inwardSyncMode, mode) {
+        case (_, .disabled):
             observationAnchor = nil
-        } else if case .enabledFrom(let startDate) = mode, case .disabled = inwardSyncMode {
-            let now = Date.now
+        case (.disabled, .enabledFrom(let startDate)):
             initiallySync(from: startDate, to: now, into: delegate)
+        case (.disabled, .enabled):
+            initiallySync(from: nil, to: now, into: delegate)
+        default:
+            break
         }
         inwardSyncMode = mode
         setPreference(inwardSyncMode, for: Self.inwardSyncModePreferenceKey)
     }
     
     public func setOutwardSyncMode(_ mode: SyncMode) {
-        guard delegate != nil else { return }
+        guard delegate != nil, outwardSyncMode != mode else { return }
         outwardSyncMode = mode
         setPreference(outwardSyncMode, for: Self.outwardSyncModePreferenceKey)
     }
@@ -226,15 +231,15 @@ public class HealthSyncService: SyncService {
         }
     }
     
-    private func initiallySync(from startDate: Date, to endDate: Date, into delegate: any SyncDelegate) {
+    private func initiallySync(from startDate: Date?, to endDate: Date?, into delegate: any SyncDelegate) {
         Task {
             do {
-                logger.info("Attempting to initial inward sync from \(startDate).")
+                logger.info("Attempting to initial inward sync from \(startDate ?? .distantPast) to \(endDate ?? .distantFuture).")
                 let hkWorkouts = try await fetchWorkouts(from: startDate, to: endDate)
                 for hkWorkout in hkWorkouts {
                     await attemptToInwardSync(hkWorkout, into: delegate)
                 }
-                logger.info("Finished initial inward sync from \(startDate).")
+                logger.info("Finished initial inward sync from \(startDate ?? .distantPast) to \(endDate ?? .distantFuture).")
             } catch {
                 logger.error("Initial inward sync failed: \(error.localizedDescription)")
             }
@@ -440,7 +445,7 @@ public class HealthSyncService: SyncService {
         )
     }
     
-    private func fetchWorkouts(from startDate: Date, to endDate: Date) async throws -> [HKWorkout] {
+    private func fetchWorkouts(from startDate: Date?, to endDate: Date?) async throws -> [HKWorkout] {
         let workoutPredicate = workoutPredicate(from: startDate, to: endDate)
         let descriptor = HKSampleQueryDescriptor(predicates: [workoutPredicate], sortDescriptors: [])
         return try await descriptor.result(for: healthStore)

@@ -347,7 +347,15 @@ actor Database: ModelActor {
     @discardableResult
     func upsert(_ workout: RawWorkout) async throws -> UUID {
         do {
-            let databaseWorkout = try fetchWorkout(with: workout.id)
+            let serviceInformation: (externalIdentifier: String, serviceIdentifier: String)?
+            if case .syncService(let serviceIdentifier) = workout.source,
+               let serviceMapping = workout.serviceMappings.first(where: { $0.serviceIdentifier == serviceIdentifier }),
+               let externalIdentifier = serviceMapping.externalId ?? serviceMapping.externalUrl {
+                serviceInformation = (externalIdentifier, serviceIdentifier)
+            } else {
+                serviceInformation = nil
+            }
+            let databaseWorkout = try fetchWorkout(with: workout.id, or: serviceInformation)
             if databaseWorkout.lastEditDate > workout.lastEditDate {
                 throw SyncError.conflict
             }
@@ -409,11 +417,28 @@ actor Database: ModelActor {
         return state
     }
     
-    private func fetchWorkout(with identifier: UUID) throws -> Workout {
-        var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
-        descriptor.fetchLimit = 1
-        guard let workout = try modelContext.fetch(descriptor).first else { throw DatabaseError.objectNotFound }
-        return workout
+    private func fetchWorkout(
+        with identifier: UUID,
+        or serviceInformation: (externalIdentifier: String, serviceIdentifier: String)? = nil
+    ) throws -> Workout {
+        do {
+            var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
+            descriptor.fetchLimit = 1
+            guard let workout = try modelContext.fetch(descriptor).first else { throw DatabaseError.objectNotFound }
+            return workout
+        } catch DatabaseError.objectNotFound {
+            guard let (externalIdentifier, serviceIdentifier) = serviceInformation else { throw DatabaseError.objectNotFound }
+            var descriptor = FetchDescriptor<SyncServiceMapping>(predicate: #Predicate {
+                $0.serviceIdentifier == serviceIdentifier
+                && $0.workout != nil
+                && $0.externalId == externalIdentifier || $0.externalUrl == externalIdentifier
+            })
+            descriptor.fetchLimit = 1
+            guard let workout = try modelContext.fetch(descriptor).first?.workout else { throw DatabaseError.objectNotFound }
+            return workout
+        } catch {
+            throw error
+        }
     }
     
     // MARK: - Internal
