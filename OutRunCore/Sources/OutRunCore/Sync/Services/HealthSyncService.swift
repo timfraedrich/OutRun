@@ -265,11 +265,10 @@ public class HealthSyncService: SyncService {
     
     private func workoutPredicate(from startDate: Date?, to endDate: Date?) -> HKSamplePredicate<HKWorkout> {
         let sourcePredicate = HKQuery.predicateForObjects(from: .default())
-        let notSourcePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: sourcePredicate)
         let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
         let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
         let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
-        let filterPredicares = [notSourcePredicate, syncStartDatePredicate, activityTypesPredicate]
+        let filterPredicares = [syncStartDatePredicate, activityTypesPredicate]
         let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: filterPredicares)
         return HKSamplePredicate.workout(filterPredicate)
     }
@@ -426,8 +425,8 @@ public class HealthSyncService: SyncService {
             isRace: false,
             name: hkWorkout.metadata?[HKMetadataKeyWorkoutBrandName] as? String,
             comment: .none,
-            creationDate: now,
-            lastEditDate: now,
+            creationDate: startDate,
+            lastEditDate: startDate,
             source: .syncService(identifier: identifier),
             heartRates: try await fetchHeartRates(for: hkWorkout),
             route: try await fetchRoute(for: hkWorkout),

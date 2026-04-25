@@ -356,7 +356,7 @@ actor Database: ModelActor {
                 serviceInformation = nil
             }
             let databaseWorkout = try fetchWorkout(with: workout.id, or: serviceInformation)
-            if databaseWorkout.lastEditDate > workout.lastEditDate {
+            if databaseWorkout.lastEditDate >= workout.lastEditDate {
                 throw SyncError.conflict
             }
             databaseWorkout.type = workout.type
