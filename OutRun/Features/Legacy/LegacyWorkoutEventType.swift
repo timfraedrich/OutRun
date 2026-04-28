@@ -1,3 +1,5 @@
+import OutRunCore
+
 enum LegacyWorkoutEventType: Int {
     
     case pause = 0
@@ -19,6 +21,19 @@ enum LegacyWorkoutEventType: Int {
         case 5: self = .marker
         case 6: self = .segment
         default: self = .unknown
+        }
+    }
+}
+
+extension Calculation.PauseEventType {
+    
+    init?(legacyEventType: LegacyWorkoutEventType) {
+        switch legacyEventType {
+        case .pause: self = .pause
+        case .autoPause: self = .autoPause
+        case .resume: self = .resume
+        case .autoResume: self = .autoResume
+        default: return nil
         }
     }
 }

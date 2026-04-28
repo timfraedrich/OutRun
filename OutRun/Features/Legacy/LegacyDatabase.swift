@@ -207,18 +207,11 @@ extension LegacyDatabase where DataModel == LegacyDataModelV3 {
     }
     
     @MainActor
-    func extractWorkoutBatch() throws -> [LegacyRawDataModelV3.Workout] {
-        try dataStack.fetchAll(workoutBatch()).map(LegacyRawDataModelV3.Workout.init)
-    }
-    
-    @MainActor
-    func deleteWorkoutBatch() throws {
-        _ = try dataStack.perform { transaction in
-            try transaction.deleteAll(workoutBatch())
+    func extractWorkout(at offset: Int) throws -> LegacyRawDataModelV3.Workout? {
+        let fetchClause = From<DataModel.Workout>().tweak { query in
+            query.fetchLimit = 1
+            query.fetchOffset = offset
         }
-    }
-    
-    private func workoutBatch() -> FetchChainBuilder<DataModel.Workout> {
-        From<DataModel.Workout>().tweak { $0.fetchLimit = 10 }
+        return try dataStack.fetchAll(fetchClause).first.map(LegacyRawDataModelV3.Workout.init)
     }
 }

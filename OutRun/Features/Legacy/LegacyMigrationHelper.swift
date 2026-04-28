@@ -7,15 +7,15 @@ import Perception
 
 enum LegacyMigrationHelper {
     
-    private static var legacyStorageFileName: String { "OutRun.sqlite" }
+    private static var defaultLegacyStorageFileName: String { "OutRun.sqlite" }
     private static let logger = Logger(subsystem: "de.tadris.OutRun", category: "LegacyMigrationHelper")
     
     static var isLegacyMigrationAppropriate: Bool {
-        LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: legacyStorageFileName)
+        LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: defaultLegacyStorageFileName)
     }
     
     static func performLegacyMigration(
-        for legacyStorageFileName: String = legacyStorageFileName,
+        for legacyStorageFileName: String = defaultLegacyStorageFileName,
         core: OutRunCore
     ) -> (task: Task<Void, Never>?, progressStream: AsyncThrowingStream<Float, Error>) {
         let (stream, continuation) = AsyncThrowingStream<Float, Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
@@ -25,50 +25,79 @@ enum LegacyMigrationHelper {
             continuation.finish()
             return (nil, stream)
         }
-        let task = Task(priority: .high) {
+        let task = startMigrationTask(for: legacyStorageFileName, core: core, continuation: continuation)
+        return (task, stream)
+    }
+    
+    private static func startMigrationTask(
+        for legacyStorageFileName: String,
+        core: OutRunCore,
+        continuation: AsyncThrowingStream<Float, Error>.Continuation
+    ) -> Task<Void, Never> {
+        Task(priority: .userInitiated) {
             do {
-                let coreStatusSequence = await MainActor.run { Perceptions { core.status }.buffer(policy: .unbounded) }
-                for await status in coreStatusSequence where status == .needsSetup || status == .initialized {
-                    break
-                }
-                if await core.status == .needsSetup {
-                    let user = userFromLegacyUserPreferences()
-                    try await core.setup(for: user)
-                }
-                continuation.yield(0.05)
-                let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
-                let totalCount = try await manager.fetchWorkoutCount()
-                var count = 0
-                while var rawWorkouts = try await manager.extractWorkoutBatch().map(RawWorkout.init) as Optional, rawWorkouts.count > 0 {
-                    // Check if source is App or Apple Health
-                    // -> YES (or UNKNOWN): Keep source as .native
-                    // -> NO: Set source as .syncService(HealthSyncService.identifier)
-                    for index in rawWorkouts.indices {
-                        var rawWorkout = rawWorkouts[index]
-                        let serviceIdentifier = HealthSyncService.identifier
-                        let mappingIndex = rawWorkout.serviceMappings.firstIndex(where: { $0.serviceIdentifier == serviceIdentifier })
-                        guard let mappingIndex,
-                              let healthWorkoutID = rawWorkout.serviceMappings[safeIndex: mappingIndex]?.externalId,
-                              let healthWorkoutUUID = UUID(uuidString: healthWorkoutID),
-                              await !isHealthWorkoutNative(healthWorkoutUUID)
-                        else { continue }
-                        rawWorkout.source = .syncService(identifier: serviceIdentifier)
-                        rawWorkouts[index] = rawWorkout
-                    }
-                    // Insert into new database
-                    try await core.insert(rawWorkouts)
-                    try await manager.deleteWorkoutBatch()
-                    count += 10
-                    continuation.yield(0.05 + 0.9 * Float(count) / Float(totalCount))
-                }
-                try await manager.deleteStorage()
-                continuation.yield(1)
+                try await migrationOperation(for: legacyStorageFileName, core: core, continuation: continuation)
                 continuation.finish()
             } catch {
                 continuation.finish(throwing: error)
             }
         }
-        return (task, stream)
+    }
+    
+    private static func migrationOperation(
+        for legacyStorageFileName: String,
+        core: OutRunCore,
+        continuation: AsyncThrowingStream<Float, Error>.Continuation
+    ) async throws {
+        let coreStatusSequence = await MainActor.run { Perceptions { core.status }.buffer(policy: .unbounded) }
+        for await status in coreStatusSequence where status == .needsSetup || status == .initialized {
+            break
+        }
+        if await core.status == .needsSetup {
+            let user = userFromLegacyUserPreferences()
+            try await core.setup(for: user)
+        }
+        let container = await core.modelContainer
+        continuation.yield(0.05)
+        let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
+        let totalCount = try await manager.fetchWorkoutCount()
+        let counter = AsyncCounter(value: 0)
+        try await withThrowingTaskGroup { group in
+            for offset in 0..<totalCount {
+                group.addTask {
+                    guard let workout = try await manager.extractWorkout(at: offset) else { return }
+                    try await migrateWorkout(.init(from: workout), into: container)
+                    let count = await counter.increase()
+                    continuation.yield(0.05 + 0.9 * Float(count) / Float(totalCount))
+                }
+            }
+            try await group.waitForAll()
+        }
+        try await manager.deleteStorage()
+        continuation.yield(1)
+    }
+    
+    private static func migrateWorkout(_ rawWorkout: RawWorkout, into container: ModelContainer) async throws {
+        let context = ModelContext(container)
+        var rawWorkout = rawWorkout
+        // Check if source is App or Apple Health
+        // -> YES (or UNKNOWN): Keep source as .native
+        // -> NO: Set source as .syncService(HealthSyncService.identifier)
+        let mappingIndex = rawWorkout.serviceMappings.firstIndex { $0.serviceIdentifier == HealthSyncService.identifier }
+        if let mappingIndex,
+           let healthWorkoutID = rawWorkout.serviceMappings[safeIndex: mappingIndex]?.externalId,
+           let healthWorkoutUUID = UUID(uuidString: healthWorkoutID),
+           await !isHealthWorkoutNative(healthWorkoutUUID) {
+            rawWorkout.source = .syncService(identifier: HealthSyncService.identifier)
+        }
+        let workout = Workout(from: rawWorkout)
+        workout.route = rawWorkout.route.map { WorkoutRouteDataSample.init(from: $0) }
+        workout.heartRates = rawWorkout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
+        workout.pauses = rawWorkout.pauses.map { WorkoutPause(from: $0) }
+        workout.events = rawWorkout.events.map { WorkoutEvent(from: $0) }
+        workout.serviceMappings = rawWorkout.serviceMappings.map { SyncServiceMapping(from: $0) }
+        context.insert(workout)
+        try context.save()
     }
     
     private static func userFromLegacyUserPreferences() -> RawUser {
@@ -133,18 +162,5 @@ enum LegacyMigrationHelper {
             logger.error("Failed to fetch workout with health store id \(healthWorkoutUUID): \(error.localizedDescription)")
         }
         return true
-    }
-}
-
-extension Calculation.PauseEventType {
-    
-    init?(legacyEventType: LegacyWorkoutEventType) {
-        switch legacyEventType {
-        case .pause: self = .pause
-        case .autoPause: self = .autoPause
-        case .resume: self = .resume
-        case .autoResume: self = .autoResume
-        default: return nil
-        }
     }
 }
