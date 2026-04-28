@@ -1,7 +1,6 @@
 import Combine
 @preconcurrency import CoreMotion
 import Foundation
-import RswiftResources
 import OSLog
 
 /// A class gathering altitude updates.

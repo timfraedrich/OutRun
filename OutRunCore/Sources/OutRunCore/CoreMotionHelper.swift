@@ -1,6 +1,5 @@
 import Combine
 import CoreMotion
-import RswiftResources
 
 /// A helper containing static functions to assist with CoreMotion components.
 enum CoreMotionHelper {
