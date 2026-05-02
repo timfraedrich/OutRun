@@ -63,6 +63,7 @@ struct SyncTests {
         let workouts = try await database.fetchWorkouts()
         guard var modifiedWorkout = workouts.first else { throw "No workout found after insert." }
         modifiedWorkout.name = "updated"
+        modifiedWorkout.lastEditDate = .now
         _ = try await database.upsert(modifiedWorkout)
 
         try await syncManager.performSync()
@@ -89,6 +90,7 @@ struct SyncTests {
         let workouts = try await database.fetchWorkouts()
         guard var modifiedWorkout = workouts.first else { throw "No workout found after insert." }
         modifiedWorkout.comment = "new comment"
+        modifiedWorkout.lastEditDate = .now
         _ = try await database.upsert(modifiedWorkout)
 
         try await syncManager.performSync()
@@ -215,6 +217,7 @@ struct SyncTests {
         // Now update the workout
         guard var modifiedWorkout = workouts.first else { throw "No workout found" }
         modifiedWorkout.name = "updated"
+        modifiedWorkout.lastEditDate = .now
         _ = try await database.upsert(modifiedWorkout)
 
         // Clear the mock's state
@@ -275,12 +278,24 @@ struct SyncTests {
         let delegate = await MockSyncDelegate(database: database)
         _ = try await delegate.upsert(workout)
 
-        var modified = workout
-        modified.name = "updated"
-        _ = try await delegate.upsert(modified)
+        var modifiedWorkout = workout
+        modifiedWorkout.name = "updated"
+        modifiedWorkout.lastEditDate = .now
+        _ = try await delegate.upsert(modifiedWorkout)
 
         let workouts = try await database.fetchWorkouts()
         #expect(workouts.first?.name == "updated")
+    }
+    
+    @Test("SyncDelegate update with outdated data throws")
+    func syncDelegateUpdateWithOutdatedDataThrows() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        let workout = makeWorkout()
+        let delegate = await MockSyncDelegate(database: database)
+        _ = try await delegate.upsert(workout)
+        await #expect(throws: SyncError.conflict) {
+            _ = try await delegate.upsert(workout)
+        }
     }
 
     @Test("SyncDelegate delete removes workout from database")
