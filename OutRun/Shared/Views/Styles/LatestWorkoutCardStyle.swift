@@ -50,7 +50,7 @@ struct LatestWorkoutCardStyle: WorkoutCardStyle {
         if !workout.route.isEmpty {
             Color.clear.overlay(alignment: .center) {
                 if workout is Workout {
-                    AsyncStaticWorkoutMap(workout: workout, accentColor: .accent)
+                    StaticWorkoutMap(identifier: workout.id, accentColor: .accent)
                 } else {
                     StaticWorkoutMap(workout: workout, accentColor: .accent)
                 }
