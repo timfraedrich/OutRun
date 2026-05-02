@@ -159,6 +159,7 @@ class SyncManager {
         upTo syncDate: Date
     ) async throws {
         let lastSyncDate = syncState.lastSyncDate ?? .distantPast
+        guard syncDate > lastSyncDate else { return }
         let summaries = try await aggregateHistory(in: lastSyncDate..<syncDate, relevantAttributes: service.relevantAttributes)
         var counts = SyncCounts()
         var processedWorkoutIds = Set<UUID>()
