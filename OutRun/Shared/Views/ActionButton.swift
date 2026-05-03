@@ -32,7 +32,12 @@ struct ActionButton<Label: View>: View {
         self.label = label
     }
     
-    init(_ localizedString: LocalizedStringKey, prominent: Bool = true, maxWidth: CGFloat? = .infinity, action: @escaping () -> Void) where Label == Text {
+    init(
+        _ localizedString: LocalizedStringKey,
+        prominent: Bool = true,
+        maxWidth: CGFloat? = .infinity,
+        action: @escaping () -> Void
+    ) where Label == Text {
         self.init(prominent: prominent, maxWidth: maxWidth, action: action) {
             Text(localizedString)
         }
@@ -41,6 +46,18 @@ struct ActionButton<Label: View>: View {
     init(verbatim content: String, prominent: Bool = true, maxWidth: CGFloat? = .infinity, action: @escaping () -> Void) where Label == Text {
         self.init(prominent: prominent, maxWidth: maxWidth, action: action) {
             Text(verbatim: content)
+        }
+    }
+    
+    init(
+        _ localizedString: LocalizedStringKey,
+        systemImage: String,
+        prominent: Bool = true,
+        maxWidth: CGFloat? = .infinity,
+        action: @escaping () -> Void
+    ) where Label == SwiftUI.Label<Text, Image> {
+        self.init(prominent: prominent, maxWidth: maxWidth, action: action) {
+            SwiftUI.Label(localizedString, systemImage: systemImage)
         }
     }
 }
