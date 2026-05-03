@@ -49,12 +49,12 @@ public struct MeasurementTextField<Label: View, U: Dimension, R: RangeExpression
         self.fractionLength = fractionLength
     }
     
-    public init(_ title: String, _ measurement: Binding<Measurement<U>?>, unit: U, fractionLength: R) where Label == Text {
+    public init(verbatim title: String, _ measurement: Binding<Measurement<U>?>, unit: U, fractionLength: R) where Label == Text {
         self.init(measurement, unit: unit, fractionLength: fractionLength) { Text(verbatim: title) }
     }
     
     public init(
-        _ title: String,
+        verbatim title: String,
         measurement: Binding<Measurement<U>?>,
         unit: U,
         fractionLength: ClosedRange<Int> = 0...2
