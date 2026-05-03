@@ -51,6 +51,18 @@ struct HeartRateChart: View {
     
     init(sectionedSamples: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>, dateRange: ClosedRange<Date>) {
         let bins = DateBins(range: dateRange, desiredCount: 60)
+        var axisValues: [Date] = []
+        for (index, threshold) in bins.thresholds.enumerated() where index.isMultiple(of: 10) {
+            axisValues.append(threshold)
+        }
+        self.dateRange = dateRange
+        self.axisValues = axisValues
+        guard !sectionedSamples.flatMap(\.elements).isEmpty else {
+            self.minValue = .min
+            self.maxValue = .max
+            self.items = []
+            return
+        }
         var activeGroups: [Int: [any WorkoutHeartRateDataSampleProtocol]] = [:]
         var inactiveGroups: [Int: [any WorkoutHeartRateDataSampleProtocol]] = [:]
         var minValue = UInt8.max, maxValue = UInt8.min
@@ -69,17 +81,11 @@ struct HeartRateChart: View {
         }
         let activeItems = Self.itemize(groups: activeGroups, bins: bins).map { Item(active: true, type: $0) }
         let inactiveItems = Self.itemize(groups: inactiveGroups, bins: bins).map { Item(active: false, type: $0) }
-        var axisValues: [Date] = []
-        for (index, threshold) in bins.thresholds.enumerated() where index.isMultiple(of: 10) {
-            axisValues.append(threshold)
-        }
-        self.dateRange = dateRange
         minValue -= 10 + minValue % 10
         maxValue += 19 - maxValue % 10
         self.minValue = minValue
         self.maxValue = maxValue
         self.items = activeItems + inactiveItems
-        self.axisValues = axisValues
     }
     
     init(samples: [any WorkoutHeartRateDataSampleProtocol], dateRange: ClosedRange<Date>) {
