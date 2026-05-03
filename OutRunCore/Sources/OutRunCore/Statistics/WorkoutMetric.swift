@@ -42,6 +42,16 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
         }
     }
     
+    public func description(for workoutType: WorkoutType) -> String {
+        if self == .repetitions, workoutType == .cycling {
+            .init(localized: "workout_metric_repetitions_cycle_strokes", bundle: .module)
+        } else if self == .repetitions {
+            .init(localized: "workout_metric_repetitions_steps", bundle: .module)
+        } else {
+            description
+        }
+    }
+    
     // TODO: add caching (uuid_lasteditdate_metric)
     public func value(for workout: any WorkoutProtocol) -> ValueRepresentation? {
         switch self {

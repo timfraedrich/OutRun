@@ -36,13 +36,7 @@ public struct WorkoutMetricLabeledContent<Label: View>: View {
     /// should therefore only be used if a missing metrics not being rendered at all is expected behaviour.
     public init?(_ metric: WorkoutMetric, for workout: any WorkoutProtocol) where Label == Text {
         guard let metricValue = metric.value(for: workout) else { return nil }
-        let title: String = if metric == .repetitions, workout.type == .cycling {
-            .init(localized: "workout_metric_repetitions_cycle_strokes", bundle: .module)
-        } else if metric == .repetitions {
-            .init(localized: "workout_metric_repetitions_steps", bundle: .module)
-        } else {
-            metric.description
-        }
+        let title: String = metric.description(for: workout.type)
         self.init(verbatim: title, metricValue: metricValue)
     }
 }
