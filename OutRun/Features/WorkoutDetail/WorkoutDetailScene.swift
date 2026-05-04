@@ -5,6 +5,7 @@ import SwiftUI
 struct WorkoutDetailScene: View {
     
     @Environment(OutRunCore.self) private var core
+    @Environment(UserPreferences.self) private var userPreferences
     @Environment(\.dismiss) private var dismiss
     @State private var error: Error?
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
@@ -14,11 +15,23 @@ struct WorkoutDetailScene: View {
     private let chartHeight: CGFloat = 125
     
     private var sectionedAltitudes: Calculation.SectionedValues<Float>? {
-        Calculation.calculateSectionedValues(for: \.altitude, and: \.timestamp, from: sectionedRoute)
+        Calculation.calculateSectionedValues(
+            from: sectionedRoute,
+            for: \.altitude,
+            and: \.timestamp,
+            sourceUnit: .meters,
+            destinationUnit: userPreferences.safeAltitudeUnit()
+        )
     }
     
     private var sectionedSpeeds: Calculation.SectionedValues<Float>? {
-        Calculation.calculateSectionedValues(for: \.speed, and: \.timestamp, from: sectionedRoute)
+        Calculation.calculateSectionedValues(
+            from: sectionedRoute,
+            for: \.speed,
+            and: \.timestamp,
+            sourceUnit: .metersPerSecond,
+            destinationUnit: userPreferences.safeSpeedUnit()
+        )
     }
     
     var body: some View {

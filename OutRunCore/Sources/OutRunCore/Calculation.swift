@@ -227,15 +227,16 @@ public enum Calculation {
     
     public typealias SectionedValues<Value> = CategorizedArray<Bool, (timestamp: Date, value: Value)>
     
-    public static func calculateSectionedValues<Sample, Value: Numeric & Comparable & Plottable>(
+    public static func calculateSectionedValues<Sample, Value, MappedValue: Numeric & Comparable & Plottable>(
+        from sectionedSamples: CategorizedArray<Bool, Sample>?,
         for valueKeyPath: KeyPath<Sample, Value>,
         and timestampKeyPath: KeyPath<Sample, Date>,
-        from sectionedSamples: CategorizedArray<Bool, Sample>?
-    ) -> SectionedValues<Value>? {
+        mapping: (Value) -> MappedValue
+    ) -> SectionedValues<MappedValue>? {
         guard let sectionedSamples else { return nil }
-        let result: CategorizedArray<Bool, (timestamp: Date, value: Value)> = sectionedSamples.compactMap { active, samples in
-            let filteredValues = samples.compactMap { sample -> (Date, Value)? in
-                let value = sample[keyPath: valueKeyPath]
+        let result: SectionedValues<MappedValue> = sectionedSamples.compactMap { active, samples in
+            let filteredValues = samples.compactMap { sample -> (Date, MappedValue)? in
+                let value = mapping(sample[keyPath: valueKeyPath])
                 guard value >= 0 else { return nil }
                 return (sample[keyPath: timestampKeyPath], value)
             }
@@ -243,6 +244,22 @@ public enum Calculation {
             return (active, filteredValues)
         }
         return result.isEmpty ? nil : result
+    }
+    
+    public static func calculateSectionedValues<Sample, Unit: Dimension>(
+        from sectionedSamples: CategorizedArray<Bool, Sample>?,
+        for valueKeyPath: KeyPath<Sample, Float>,
+        and timestampKeyPath: KeyPath<Sample, Date>,
+        sourceUnit: Unit,
+        destinationUnit: Unit
+    ) -> SectionedValues<Float>?{
+        calculateSectionedValues(from: sectionedSamples, for: valueKeyPath, and: timestampKeyPath) { value in
+            Float(Measurement(value: Double(value), unit: sourceUnit).converted(to: destinationUnit).value)
+        }
+    }
+    
+    public static func calculateDistance(from route: [any WorkoutRouteDataSampleProtocol], and pauses: [any WorkoutPauseProtocol]) -> Double {
+        return 0
     }
     
     // MARK: Types
