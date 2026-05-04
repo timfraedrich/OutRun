@@ -6,13 +6,14 @@ struct OptionalDatePicker<Range>: View {
     @State private var showPopover: Bool = false
     
     private let range: Range?
+    private let defaultValue: Date
     private let displayedComponents: DatePickerComponents
     private let labelFormatStyle: Date.FormatStyle
     
     private var title: String { date?.formatted(labelFormatStyle) ?? .init(localized: "select") }
     private var dateBinding: Binding<Date> {
         Binding(
-            get: { date ?? Calendar.current.date(byAdding: .year, value: -25, to: .now) ?? .now },
+            get: { date ?? defaultValue },
             set: { newValue in date = newValue }
         )
     }
@@ -51,11 +52,13 @@ struct OptionalDatePicker<Range>: View {
     init(
         selection: Binding<Date?>,
         in range: Range? = nil,
+        defaultValue: Date = .now,
         displayedComponents: DatePickerComponents = [.date, .hourAndMinute],
         labelFormatStyle: Date.FormatStyle = Date.FormatStyle(date: .abbreviated, time: .shortened)
     ) where Range == ClosedRange<Date> {
         self._date = selection
         self.range = range
+        self.defaultValue = defaultValue
         self.displayedComponents = displayedComponents
         self.labelFormatStyle = labelFormatStyle
     }
@@ -63,11 +66,13 @@ struct OptionalDatePicker<Range>: View {
     init(
         selection: Binding<Date?>,
         in range: Range,
+        defaultValue: Date = .now,
         displayedComponents: DatePickerComponents = [.date, .hourAndMinute],
         labelFormatStyle: Date.FormatStyle = Date.FormatStyle(date: .abbreviated, time: .shortened)
     ) where Range == PartialRangeFrom<Date> {
         self._date = selection
         self.range = range
+        self.defaultValue = defaultValue
         self.displayedComponents = displayedComponents
         self.labelFormatStyle = labelFormatStyle
     }
@@ -75,11 +80,13 @@ struct OptionalDatePicker<Range>: View {
     init(
         selection: Binding<Date?>,
         in range: Range,
+        defaultValue: Date = .now,
         displayedComponents: DatePickerComponents = [.date, .hourAndMinute],
         labelFormatStyle: Date.FormatStyle = Date.FormatStyle(date: .abbreviated, time: .shortened)
     ) where Range == PartialRangeThrough<Date> {
         self._date = selection
         self.range = range
+        self.defaultValue = defaultValue
         self.displayedComponents = displayedComponents
         self.labelFormatStyle = labelFormatStyle
     }

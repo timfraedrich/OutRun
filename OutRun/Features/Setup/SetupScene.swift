@@ -50,6 +50,7 @@ struct SetupScene: View {
                     OptionalDatePicker(
                         selection: $birthdate,
                         in: ...Date.now,
+                        defaultValue: Calendar.current.date(byAdding: .year, value: -25, to: .now) ?? .now,
                         displayedComponents: .date,
                         labelFormatStyle: .init(date: .abbreviated)
                     )
