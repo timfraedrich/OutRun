@@ -4,8 +4,6 @@ import SwiftUI
 
 struct WorkoutDetailScene: View {
     
-    private typealias ValueSamples<V: Numeric & Comparable & Plottable> = CategorizedArray<Bool, SampleChart<V>.Sample>
-    
     @Environment(OutRunCore.self) private var core
     @Environment(\.dismiss) private var dismiss
     @State private var error: Error?
@@ -15,8 +13,13 @@ struct WorkoutDetailScene: View {
     private let addCloseButton: Bool
     private let chartHeight: CGFloat = 125
     
-    private var sectionedAltitudes: ValueSamples<Float>? { sectionedRouteSamples(for: \.altitude) }
-    private var sectionedSpeeds: ValueSamples<Float>? { sectionedRouteSamples(for: \.speed) }
+    private var sectionedAltitudes: Calculation.SectionedValues<Float>? {
+        Calculation.calculateSectionedValues(for: \.altitude, and: \.timestamp, from: sectionedRoute)
+    }
+    
+    private var sectionedSpeeds: Calculation.SectionedValues<Float>? {
+        Calculation.calculateSectionedValues(for: \.speed, and: \.timestamp, from: sectionedRoute)
+    }
     
     var body: some View {
         ScrollView {
@@ -161,11 +164,6 @@ struct WorkoutDetailScene: View {
     init(workout: any WorkoutProtocol, addCloseButton: Bool = true) {
         self.workout = workout
         self.addCloseButton = addCloseButton
-    }
-    
-    private func sectionedRouteSamples<V>(for keyPath: KeyPath<any WorkoutRouteDataSampleProtocol, V>) -> ValueSamples<V>? {
-        Calculation.calculateSectionedValues(for: keyPath, and: \.timestamp, from: sectionedRoute)
-    }
     }
     
     private func delete() {

@@ -175,6 +175,8 @@ public enum Calculation {
         return pauses.filter { $0.duration >= safeMinimumDuration }
     }
     
+    public typealias SectionedSamples<Sample> = CategorizedArray<Bool, Sample>
+    
     /// Calculates the sections of samples defined by the provided pauses, where a section is a uninterrupted non-empty subsequence of
     /// samples.
     /// - note: This function assumes that the samples are sorted in ascending order by the provided timestampKeyPath and that the pauses
@@ -185,7 +187,7 @@ public enum Calculation {
         from samples: [Sample],
         timestampKeyPath: KeyPath<Sample, Date>,
         pauses: [any WorkoutPauseProtocol]
-    ) -> CategorizedArray<Bool, Sample> {
+    ) -> SectionedSamples<Sample> {
         guard !pauses.isEmpty else { return [(true, samples)] }
         var sectionedSamples: CategorizedArray<Bool, Sample> = []
         var pauseIndex = 0
@@ -223,11 +225,13 @@ public enum Calculation {
         return sectionedSamples
     }
     
+    public typealias SectionedValues<Value> = CategorizedArray<Bool, (timestamp: Date, value: Value)>
+    
     public static func calculateSectionedValues<Sample, Value: Numeric & Comparable & Plottable>(
         for valueKeyPath: KeyPath<Sample, Value>,
         and timestampKeyPath: KeyPath<Sample, Date>,
         from sectionedSamples: CategorizedArray<Bool, Sample>?
-    ) -> CategorizedArray<Bool, (timestamp: Date, value: Value)>? {
+    ) -> SectionedValues<Value>? {
         guard let sectionedSamples else { return nil }
         let result: CategorizedArray<Bool, (timestamp: Date, value: Value)> = sectionedSamples.compactMap { active, samples in
             let filteredValues = samples.compactMap { sample -> (Date, Value)? in
