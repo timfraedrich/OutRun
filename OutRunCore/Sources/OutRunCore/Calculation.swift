@@ -223,6 +223,24 @@ public enum Calculation {
         return sectionedSamples
     }
     
+    public static func calculateSectionedValues<Sample, Value: Numeric & Comparable & Plottable>(
+        for valueKeyPath: KeyPath<Sample, Value>,
+        and timestampKeyPath: KeyPath<Sample, Date>,
+        from sectionedSamples: CategorizedArray<Bool, Sample>?
+    ) -> CategorizedArray<Bool, (timestamp: Date, value: Value)>? {
+        guard let sectionedSamples else { return nil }
+        let result: CategorizedArray<Bool, (timestamp: Date, value: Value)> = sectionedSamples.compactMap { active, samples in
+            let filteredValues = samples.compactMap { sample -> (Date, Value)? in
+                let value = sample[keyPath: valueKeyPath]
+                guard value >= 0 else { return nil }
+                return (sample[keyPath: timestampKeyPath], value)
+            }
+            guard !filteredValues.isEmpty else { return nil }
+            return (active, filteredValues)
+        }
+        return result.isEmpty ? nil : result
+    }
+    
     // MARK: Types
     
     public struct PauseEvent {

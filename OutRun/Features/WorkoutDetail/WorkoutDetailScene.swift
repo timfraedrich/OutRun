@@ -164,14 +164,8 @@ struct WorkoutDetailScene: View {
     }
     
     private func sectionedRouteSamples<V>(for keyPath: KeyPath<any WorkoutRouteDataSampleProtocol, V>) -> ValueSamples<V>? {
-        guard let sectionedRoute else { return nil }
-        let sectionedAltitudes: ValueSamples<V> = sectionedRoute.compactMap { active, samples in
-            let filteredValues = samples.compactMap { $0[keyPath: keyPath] >= 0 ? ($0.timestamp, $0[keyPath: keyPath]) : nil }
-            guard !filteredValues.isEmpty else { return nil }
-            return (active, filteredValues)
-        }
-        guard !sectionedAltitudes.isEmpty else { return nil }
-        return sectionedAltitudes
+        Calculation.calculateSectionedValues(for: keyPath, and: \.timestamp, from: sectionedRoute)
+    }
     }
     
     private func delete() {
