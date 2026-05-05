@@ -22,13 +22,13 @@ public struct RawSyncServiceMapping: Codable, Sendable, SyncServiceMappingProtoc
         self.syncStatus = syncStatus
     }
     
-    public init(from serviceMapping: SyncServiceMapping) {
+    public init(from mapping: any SyncServiceMappingProtocol) {
         self.init(
-            serviceIdentifier: serviceMapping.serviceIdentifier,
-            externalId: serviceMapping.externalId,
-            externalUrl: serviceMapping.externalUrl,
-            lastEditDateSynced: serviceMapping.lastEditDateSynced,
-            syncStatus: serviceMapping.syncStatus
+            serviceIdentifier: mapping.serviceIdentifier,
+            externalId: mapping.externalId,
+            externalUrl: mapping.externalUrl,
+            lastEditDateSynced: mapping.lastEditDateSynced,
+            syncStatus: mapping.syncStatus
         )
     }
 }

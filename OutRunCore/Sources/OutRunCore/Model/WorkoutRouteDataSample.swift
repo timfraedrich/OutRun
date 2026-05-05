@@ -35,15 +35,15 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
         self.workout = workout
     }
     
-    public convenience init(from rawRouteSample: RawWorkoutRouteDataSample, attachTo workout: Workout? = nil) {
+    public convenience init(from sample: any WorkoutRouteDataSampleProtocol, attachTo workout: Workout? = nil) {
         self.init(
-            timestamp: rawRouteSample.timestamp,
-            latitude: rawRouteSample.latitude,
-            longitude: rawRouteSample.longitude,
-            altitude: rawRouteSample.altitude,
-            horizontalAccuracy: rawRouteSample.horizontalAccuracy,
-            verticalAccuracy: rawRouteSample.verticalAccuracy,
-            speed: rawRouteSample.speed,
+            timestamp: sample.timestamp,
+            latitude: sample.latitude,
+            longitude: sample.longitude,
+            altitude: sample.altitude,
+            horizontalAccuracy: sample.horizontalAccuracy,
+            verticalAccuracy: sample.verticalAccuracy,
+            speed: sample.speed,
             workout: workout
         )
     }

@@ -33,13 +33,13 @@ public class SyncServiceMapping: SyncServiceMappingProtocol {
         self.workout = workout
     }
     
-    public convenience init(from rawServiceMapping: RawSyncServiceMapping, attachTo workout: Workout? = nil) {
+    public convenience init(from mapping: any SyncServiceMappingProtocol, attachTo workout: Workout? = nil) {
         self.init(
-            serviceIdentifier: rawServiceMapping.serviceIdentifier,
-            externalId: rawServiceMapping.externalId,
-            externalUrl: rawServiceMapping.externalUrl,
-            lastEditDateSynced: rawServiceMapping.lastEditDateSynced,
-            syncStatus: rawServiceMapping.syncStatus,
+            serviceIdentifier: mapping.serviceIdentifier,
+            externalId: mapping.externalId,
+            externalUrl: mapping.externalUrl,
+            lastEditDateSynced: mapping.lastEditDateSynced,
+            syncStatus: mapping.syncStatus,
             workout: workout
         )
     }

@@ -29,15 +29,15 @@ public struct RawWorkoutRouteDataSample: Codable, Sendable, WorkoutRouteDataSamp
         self.speed = speed
     }
     
-    public init(from routeDataSample: WorkoutRouteDataSample) {
+    public init(from sample: any WorkoutRouteDataSampleProtocol) {
         self.init(
-            timestamp: routeDataSample.timestamp,
-            latitude: routeDataSample.latitude,
-            longitude: routeDataSample.longitude,
-            altitude: routeDataSample.altitude,
-            horizontalAccuracy: routeDataSample.horizontalAccuracy,
-            verticalAccuracy: routeDataSample.verticalAccuracy,
-            speed: routeDataSample.speed
+            timestamp: sample.timestamp,
+            latitude: sample.latitude,
+            longitude: sample.longitude,
+            altitude: sample.altitude,
+            horizontalAccuracy: sample.horizontalAccuracy,
+            verticalAccuracy: sample.verticalAccuracy,
+            speed: sample.speed
         )
     }
     

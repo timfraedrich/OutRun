@@ -10,7 +10,7 @@ public struct RawWorkoutEvent: Codable, Sendable, WorkoutEventProtocol {
         self.timestamp = timestamp
     }
     
-    public init(from workoutEvent: WorkoutEvent) {
-        self.init(type: workoutEvent.type, timestamp: workoutEvent.timestamp)
+    public init(from event: any WorkoutEventProtocol) {
+        self.init(type: event.type, timestamp: event.timestamp)
     }
 }

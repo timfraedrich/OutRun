@@ -6,3 +6,9 @@ public protocol WorkoutPauseProtocol: Equatable {
     var userInitiated: Bool { get }
     var duration: TimeInterval { get }
 }
+
+public extension WorkoutPauseProtocol {
+    var duration: TimeInterval {
+        startDate.distance(to: endDate)
+    }
+}

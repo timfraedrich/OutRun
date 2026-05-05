@@ -35,16 +35,16 @@ public class User: UserProtocol {
         self.lastEditDate = lastEditDate ?? creationDate
     }
     
-    public convenience init(from rawUser: RawUser) {
+    public convenience init(from user: any UserProtocol) {
         self.init(
-            id: rawUser.id,
-            name: rawUser.name,
-            birthday: rawUser.birthday,
-            weight: rawUser.weight,
-            sex: rawUser.sex,
-            preferences: rawUser.preferences,
-            creationDate: rawUser.creationDate,
-            lastEditDate: rawUser.lastEditDate
+            id: user.id,
+            name: user.name,
+            birthday: user.birthday,
+            weight: user.weight,
+            sex: user.sex,
+            preferences: user.preferences,
+            creationDate: user.creationDate,
+            lastEditDate: user.lastEditDate
         )
     }
 }

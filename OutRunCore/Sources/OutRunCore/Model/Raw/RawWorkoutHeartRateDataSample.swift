@@ -10,10 +10,10 @@ public struct RawWorkoutHeartRateDataSample: Codable, Sendable, WorkoutHeartRate
         self.timestamp = timestamp
     }
     
-    public init(from heartRateSample: WorkoutHeartRateDataSample) {
+    public init(from sample: any WorkoutHeartRateDataSampleProtocol) {
         self.init(
-            heartRate: heartRateSample.heartRate,
-            timestamp: heartRateSample.timestamp
+            heartRate: sample.heartRate,
+            timestamp: sample.timestamp
         )
     }
 }

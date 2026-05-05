@@ -15,7 +15,7 @@ public class WorkoutHeartRateDataSample: WorkoutHeartRateDataSampleProtocol {
         self.workout = workout
     }
     
-    public convenience init(from rawHeartRateSample: RawWorkoutHeartRateDataSample, attachTo workout: Workout? = nil) {
-        self.init(heartRate: rawHeartRateSample.heartRate, timestamp: rawHeartRateSample.timestamp, workout: workout)
+    public convenience init(from sample: any WorkoutHeartRateDataSampleProtocol, attachTo workout: Workout? = nil) {
+        self.init(heartRate: sample.heartRate, timestamp: sample.timestamp, workout: workout)
     }
 }

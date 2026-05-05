@@ -62,7 +62,7 @@ public struct RawWorkout: Codable, Sendable, WorkoutProtocol {
         self.serviceMappings = serviceMappings
     }
     
-    public init(workout: Workout) {
+    public init(workout: any WorkoutProtocol) {
         self.init(
             id: workout.id,
             type: workout.type,

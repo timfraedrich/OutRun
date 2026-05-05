@@ -33,7 +33,7 @@ public struct RawUser: UserProtocol, Sendable {
         self.lastEditDate = lastEditDate ?? creationDate
     }
     
-    public init(from user: User) {
+    public init(from user: any UserProtocol) {
         self.init(
             id: user.id,
             name: user.name,

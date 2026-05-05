@@ -10,10 +10,6 @@ public class WorkoutPause: WorkoutPauseProtocol {
     
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
-    public var duration: TimeInterval {
-        startDate.distance(to: endDate)
-    }
-    
     public init(startDate: Date, endDate: Date, userInitiated: Bool, workout: Workout?) {
         self.startDate = startDate
         self.endDate = endDate
@@ -21,7 +17,7 @@ public class WorkoutPause: WorkoutPauseProtocol {
         self.workout = workout
     }
     
-    public convenience init(from rawPause: RawWorkoutPause, attachTo workout: Workout? = nil) {
-        self.init(startDate: rawPause.startDate, endDate: rawPause.endDate, userInitiated: rawPause.userInitiated, workout: workout)
+    public convenience init(from pause: any WorkoutPauseProtocol, attachTo workout: Workout? = nil) {
+        self.init(startDate: pause.startDate, endDate: pause.endDate, userInitiated: pause.userInitiated, workout: workout)
     }
 }

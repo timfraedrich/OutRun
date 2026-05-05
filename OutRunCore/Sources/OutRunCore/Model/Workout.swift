@@ -67,21 +67,21 @@ public class Workout: WorkoutProtocol {
     }
     
     /// - note: this initializer leaves out any kind of samples. Samples must be inserted into the context and linked manually.
-    public convenience init(from rawWorkout: RawWorkout) {
+    public convenience init(from workout: any WorkoutProtocol) {
         self.init(
-            id: rawWorkout.id,
-            type: rawWorkout.type,
-            distance: rawWorkout.distance,
-            startDate: rawWorkout.startDate,
-            endDate: rawWorkout.endDate,
-            energy: rawWorkout.energy,
-            repetitions: rawWorkout.repetitions,
-            isRace: rawWorkout.isRace,
-            name: rawWorkout.name,
-            comment: rawWorkout.comment,
-            creationDate: rawWorkout.creationDate,
-            lastEditDate: rawWorkout.lastEditDate,
-            source: rawWorkout.source
+            id: workout.id,
+            type: workout.type,
+            distance: workout.distance,
+            startDate: workout.startDate,
+            endDate: workout.endDate,
+            energy: workout.energy,
+            repetitions: workout.repetitions,
+            isRace: workout.isRace,
+            name: workout.name,
+            comment: workout.comment,
+            creationDate: workout.creationDate,
+            lastEditDate: workout.lastEditDate,
+            source: workout.source
         )
     }
 }

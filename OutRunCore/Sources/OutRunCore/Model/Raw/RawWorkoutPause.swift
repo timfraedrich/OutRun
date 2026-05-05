@@ -6,21 +6,17 @@ public struct RawWorkoutPause: Codable, Sendable, WorkoutPauseProtocol {
     public var endDate: Date
     public var userInitiated: Bool
     
-    public var duration: TimeInterval {
-        startDate.distance(to: endDate)
-    }
-    
     public init(startDate: Date, endDate: Date, userInitiated: Bool) {
         self.startDate = startDate
         self.endDate = endDate
         self.userInitiated = userInitiated
     }
     
-    public init(from workoutPause: WorkoutPause) {
+    public init(from pause: any WorkoutPauseProtocol) {
         self.init(
-            startDate: workoutPause.startDate,
-            endDate: workoutPause.endDate,
-            userInitiated: workoutPause.userInitiated
+            startDate: pause.startDate,
+            endDate: pause.endDate,
+            userInitiated: pause.userInitiated
         )
     }
 }

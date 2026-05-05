@@ -20,7 +20,7 @@ public class WorkoutEvent: WorkoutEventProtocol {
         self.workout = workout
     }
     
-    public convenience init(from rawEvent: RawWorkoutEvent, attachTo workout: Workout? = nil) {
-        self.init(type: rawEvent.type, timestamp: rawEvent.timestamp, workout: workout)
+    public convenience init(from event: any WorkoutEventProtocol, attachTo workout: Workout? = nil) {
+        self.init(type: event.type, timestamp: event.timestamp, workout: workout)
     }
 }
