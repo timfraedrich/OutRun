@@ -41,13 +41,22 @@ struct SampleChart<Value: Numeric & Comparable & Plottable>: View {
         sectionedSamples: CategorizedArray<Bool, Sample>,
         dateRange: ClosedRange<Date>
     ) {
-        self.series = sectionedSamples.map { active, samples in
-            .init(active: active, items: samples.compactMap { sample in
+        let activeSeries: [Series] = sectionedSamples.compactMap { active, samples in
+            guard active else { return nil }
+            return .init(active: active, items: samples.compactMap { sample in
                 let value = sample.value
                 guard value >= Value.zero else { return nil }
                 return .init(timestamp: sample.timestamp, value: value)
             })
         }
+        // we add all samples to an inactive series to have a continuous line in the background
+        let allSamples = sectionedSamples.flatMap { $0.elements }
+        let inactiveSeries: Series = .init(active: false, items: allSamples.compactMap { sample in
+            let value = sample.value
+            guard value >= Value.zero else { return nil }
+            return .init(timestamp: sample.timestamp, value: value)
+        })
+        self.series = [inactiveSeries] + activeSeries
         self.dateRange = dateRange
         self.axisValues = DateBins(range: dateRange, desiredCount: 6).thresholds.dropLast(1)
         self.valueLabelKey = valueLabelKey
