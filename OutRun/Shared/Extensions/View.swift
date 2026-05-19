@@ -33,12 +33,19 @@ extension View {
     }
     
     @ViewBuilder
+    func errorAlert<E: Error>(_ errorBinding: Binding<E?>) -> some View {
+        alert("error", isPresented: errorBinding.existenceBinding()) {
+            Button("dismiss") {}
+        } message: {
+            if let error = errorBinding.wrappedValue {
+                Text(error.localizedDescription)
+            }
+        }
+    }
+    
+    @ViewBuilder
     func errorPopover<E: Error>(_ errorBinding: Binding<E?>) -> some View {
-        let showErrorBinding = Binding(
-            get: { errorBinding.wrappedValue != nil },
-            set: { _ in errorBinding.wrappedValue = nil }
-        )
-        popover(isPresented: showErrorBinding) {
+        popover(isPresented: errorBinding.existenceBinding()) {
             if let error = errorBinding.wrappedValue {
                 Text(error.localizedDescription).frame(idealWidth: 240).padding(.regular).presentationCompactAdaptation(.popover)
             }
