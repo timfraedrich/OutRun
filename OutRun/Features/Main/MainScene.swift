@@ -47,6 +47,10 @@ struct MainScene: View {
                     NavigationStack {
                         QueriedWorkoutDetailScene(id: workoutID)
                     }
+                case .workoutEdit(let workoutID):
+                    NavigationStack {
+                        QueriedWorkoutEditScene(id: workoutID)
+                    }
                 }
             }
         }

@@ -6,6 +6,7 @@ struct WorkoutDetailScene: View {
     
     @Environment(OutRunCore.self) private var core
     @Environment(UserPreferences.self) private var userPreferences
+    @Environment(MainRouter.self) private var mainRouter
     @Environment(\.dismiss) private var dismiss
     @State private var error: Error?
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
@@ -164,10 +165,13 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var actionSection: some View {
-        ActionButton("delete", action: delete)
-            .errorPopover($error)
-            .tint(.red)
-            .padding(.regular)
+        VStack(spacing: .regular) {
+            ActionButton("edit", systemImage: "pencil", prominent: false, action: edit)
+            ActionButton("delete", systemImage: "trash", action: delete)
+                .errorPopover($error)
+                .tint(.red)
+        }
+        .padding(.regular)
     }
     
     @ViewBuilder
@@ -180,6 +184,10 @@ struct WorkoutDetailScene: View {
     init(workout: any WorkoutProtocol, addCloseButton: Bool = true) {
         self.workout = workout
         self.addCloseButton = addCloseButton
+    }
+    
+    private func edit() {
+        mainRouter.currentSheet = .workoutEdit(id: workout.id)
     }
     
     private func delete() {
