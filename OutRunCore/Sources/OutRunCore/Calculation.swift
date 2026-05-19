@@ -1,5 +1,6 @@
 import Foundation
 import Charts
+import CoreLocation
 import NIOCore
 
 public enum Calculation {
@@ -258,8 +259,21 @@ public enum Calculation {
         }
     }
     
-    public static func calculateDistance(from route: [any WorkoutRouteDataSampleProtocol], and pauses: [any WorkoutPauseProtocol]) -> Double {
-        return 0
+    public static func calculateDistance(from route: [any WorkoutRouteDataSampleProtocol], and pauses: [any WorkoutPauseProtocol]) -> Double? {
+        guard !route.isEmpty else { return nil }
+        let sortedRoute = route.sorted(using: KeyPathComparator(\.timestamp))
+        let sortedPauses = pauses.sorted(using: KeyPathComparator(\.startDate))
+        let sectionedRoute = calculateSectionedSamples(from: sortedRoute, timestampKeyPath: \.timestamp, pauses: sortedPauses)
+        var distance = 0.0
+        for (active, samples) in sectionedRoute where active {
+            var lastLocation: CLLocation?
+            for sample in samples {
+                let location = CLLocation(routeSample: sample)
+                distance += lastLocation.map { $0.distance(from: location) } ?? 0
+                lastLocation = location
+            }
+        }
+        return distance
     }
     
     // MARK: Types
