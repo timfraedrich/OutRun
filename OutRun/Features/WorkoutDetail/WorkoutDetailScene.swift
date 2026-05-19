@@ -127,7 +127,10 @@ struct WorkoutDetailScene: View {
         if let endDate = workout.endDate, let sectionedHeartRates, !sectionedHeartRates.isEmpty {
             section("workout_detail_section_heart_rate") {
                 metricGrid(with: [.averageHeartRate, .maximumHeartRate])
-                HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: workout.startDate...endDate)
+                LabeledContent("workout_detail_section_heart_rate") {
+                    HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: workout.startDate...endDate)
+                        .frame(height: chartHeight)
+                }
             }
         }
     }
