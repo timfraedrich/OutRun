@@ -74,9 +74,9 @@ struct HeartRateChart: View {
                 guard bins.indices.contains(binIndex) else { continue }
                 if category {
                     activeGroups[binIndex, default: []].append(sample)
-                } else {
-                    inactiveGroups[binIndex, default: []].append(sample)
                 }
+                // always add to inactive group to ensure a continuous segment with active values overlayed
+                inactiveGroups[binIndex, default: []].append(sample)
             }
         }
         let activeItems = Self.itemize(groups: activeGroups, bins: bins).map { Item(active: true, type: $0) }
