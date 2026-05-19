@@ -260,18 +260,50 @@ actor Database: ModelActor {
     // MARK: - Syncing
     
     /// Fetches the change history in the date range in ascending order.
-    func fetchHistory(in dateRange: Range<Date>) throws -> [some HistoryTransaction] {
-        let predicate = #Predicate<DefaultHistoryTransaction> { $0.timestamp >= dateRange.lowerBound && $0.timestamp < dateRange.upperBound }
-        var descriptor = HistoryDescriptor<DefaultHistoryTransaction>(predicate: predicate)
-        let sortDescriptor: SortDescriptor<DefaultHistoryTransaction> = .init(\.timestamp, order: .forward)
-        if #available(iOS 26, *) {
-            descriptor.sortBy = [sortDescriptor]
+    nonisolated func historySequence(in dateRange: Range<Date>) -> any AsyncSequence<[HistoryChange], Error> {
+        let sortDescriptor: SortDescriptor<DefaultHistoryTransaction> = .init(\.token, order: .forward)
+        let (stream, continuation) = AsyncThrowingStream<[HistoryChange], Error>.makeStream()
+        let task = Task {
+            let context = ModelContext(modelContainer)
+            var lastToken: DefaultHistoryToken?
+            do {
+                repeat {
+                    guard !Task.isCancelled else { break }
+                    let predicate: Predicate<DefaultHistoryTransaction>
+                    if let lastToken {
+                        predicate = #Predicate { $0.timestamp >= dateRange.lowerBound && $0.timestamp < dateRange.upperBound && $0.token > lastToken }
+                    } else {
+                        predicate = #Predicate { $0.timestamp >= dateRange.lowerBound && $0.timestamp < dateRange.upperBound }
+                    }
+                    var descriptor = HistoryDescriptor<DefaultHistoryTransaction>(predicate: predicate)
+                    descriptor.fetchLimit = 1
+                    if #available(iOS 26, *) {
+                        descriptor.sortBy = [sortDescriptor]
+                    }
+                    var history = try context.fetchHistory(descriptor)
+                    if #unavailable(iOS 26) {
+                        history.sort(using: sortDescriptor)
+                    }
+                    guard let transaction = history.first else { break }
+                    let changes = transaction.changes.filter { change in
+                        switch change {
+                        case .insert(let insert): insert is any HistoryInsert<Workout>
+                        case .update(let update): update is any HistoryUpdate<Workout>
+                        case .delete(let delete): delete is any HistoryDelete<Workout>
+                        default: false
+                        }
+                    }
+                    guard !changes.isEmpty else { break }
+                    continuation.yield(changes)
+                    lastToken = transaction.token
+                } while true
+                continuation.finish()
+            } catch {
+                continuation.finish(throwing: error)
+            }
         }
-        var history = try modelContext.fetchHistory(descriptor)
-        if #unavailable(iOS 26) {
-            history.sort(using: sortDescriptor)
-        }
-        return history
+        continuation.onTermination = { _ in task.cancel() }
+        return stream
     }
     
     func fetchWorkout(for identifier: PersistentIdentifier) throws -> RawWorkout {

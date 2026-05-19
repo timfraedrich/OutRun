@@ -177,7 +177,6 @@ class SyncManager {
             excluding: processedWorkoutIds,
             counts: &counts
         )
-        guard counts.hasChanges else { return }
         var updatedState = syncState
         updatedState.lastSyncDate = syncDate
         updatedState.lastSyncMode = syncMode
@@ -191,9 +190,9 @@ class SyncManager {
         relevantAttributes: Set<PartialKeyPath<Workout> & Sendable>
     ) async throws -> [PersistentIdentifier: WorkoutChangeSummary] {
         var summaries: [PersistentIdentifier: WorkoutChangeSummary] = [:]
-        let history = try await database.fetchHistory(in: dateRange)
-        for transaction in history {
-            for change in transaction.changes {
+        let historySequence = database.historySequence(in: dateRange)
+        for try await changes in historySequence {
+            for change in changes {
                 switch change {
                 case let .insert(insert):
                     guard insert is any HistoryInsert<Workout> else { continue }
