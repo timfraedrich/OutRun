@@ -177,6 +177,10 @@ class SyncManager {
             excluding: processedWorkoutIds,
             counts: &counts
         )
+        guard counts.hasChanges else {
+            logger.info("No changes while processing for sync service \"\(service.identifier)\".")
+            return
+        }
         var updatedState = syncState
         updatedState.lastSyncDate = syncDate
         updatedState.lastSyncMode = syncMode
