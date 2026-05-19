@@ -7,7 +7,7 @@ public enum Calculation {
     
     // TODO: Use more advanced energy calculation.
     /// - returns: The calculated energy in joules.
-    static func calculateBurnedEnergy(weight: Double?, distance: Double, workoutType: WorkoutType) -> Double? {
+    public static func calculateBurnedEnergy(weight: Double?, distance: Double, workoutType: WorkoutType) -> Double? {
         guard let weight else { return nil }
         // calories == MET ( speed ( kilometers / hours ) * METSpeedMultiplier ) * weight * hours
         //          == kilometers / hours * METSpeedMultiplier * weight * hours
