@@ -101,3 +101,7 @@ struct OptionalDatePicker<Range>: View {
         date = nil
     }
 }
+
+#Preview {
+    OptionalDatePicker(selection: .constant(.now))
+}
