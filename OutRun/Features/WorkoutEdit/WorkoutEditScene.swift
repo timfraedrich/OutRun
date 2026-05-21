@@ -23,8 +23,8 @@ struct WorkoutEditScene: View {
     @State private var name: String
     @State private var type: WorkoutType?
     @State private var isRace: Bool
-    @State private var startDate: Date?
-    @State private var endDate: Date?
+    @State private var startDate: Date
+    @State private var endDate: Date
     @State private var distance: Double?
     @State private var energy: Double?
     @State private var repetitions: Int?
@@ -38,7 +38,10 @@ struct WorkoutEditScene: View {
     private let chartHeight: CGFloat = 150
     
     private var defaultWorkoutType: WorkoutType { userPreferences.defaultWorkoutType ?? lastWorkout.last?.type ?? .running }
-    private var disableSaveButton: Bool { type == nil || startDate == nil || endDate == nil || distance == nil }
+    private var disableSaveButton: Bool {
+        guard type != nil, startDate < endDate, distance != nil else { return true }
+        return false
+    }
     
     private var calculatedEnergy: Double? {
         guard let distance, let type else { return nil }
@@ -70,9 +73,7 @@ struct WorkoutEditScene: View {
             "edit_workout"
         }
     }
-
-    private var defaultStartDate: Date { workout?.startDate ?? .now.addingTimeInterval(15 * 60) }
-    private var defaultEndDate: Date { workout?.endDate ?? .now }
+    
     private var optionalName: String? {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
         return name
@@ -86,7 +87,7 @@ struct WorkoutEditScene: View {
         var conflicts = Set<UUID>()
         for i in editablePauses.indices {
             let a = editablePauses[i]
-            if a.startDate >= a.endDate || a.startDate < (startDate ?? .distantPast) || a.endDate > (endDate ?? .distantFuture) {
+            if a.startDate >= a.endDate || a.startDate < startDate || a.endDate > endDate {
                 conflicts.insert(a.id)
             }
             for j in (i + 1)..<editablePauses.count {
@@ -136,7 +137,7 @@ struct WorkoutEditScene: View {
     }
 
     private var availableChartTypes: [ChartType] {
-        guard let startDate, let endDate, startDate < endDate else { return [] }
+        guard startDate < endDate else { return [] }
         var available: [ChartType] = []
         if sectionedSpeeds != nil { available.append(.speed) }
         if sectionedAltitudes != nil { available.append(.altitude) }
@@ -202,8 +203,8 @@ struct WorkoutEditScene: View {
 
     @ViewBuilder private var metricsSection: some View {
         Section {
-            optionalDatePicker(WorkoutMetric.startTime.description, date: $startDate, defaultValue: defaultStartDate)
-            optionalDatePicker(WorkoutMetric.endTime.description, date: $endDate, defaultValue: defaultEndDate)
+            datePicker(WorkoutMetric.startTime.description, date: $startDate)
+            datePicker(WorkoutMetric.endTime.description, date: $endDate)
             Group {
                 LabeledContent(WorkoutMetric.distance.description) {
                     MeasurementTextField(
@@ -230,7 +231,7 @@ struct WorkoutEditScene: View {
     }
 
     @ViewBuilder private var pausesSection: some View {
-        if let startDate, let endDate, startDate < endDate, !availableChartTypes.isEmpty {
+        if startDate < endDate, !availableChartTypes.isEmpty {
             Section("workout_edit_pauses") {
                 Picker("metric", selection: $selectedChartType) {
                     ForEach(availableChartTypes, id: \.self) { chartType in
@@ -300,16 +301,9 @@ struct WorkoutEditScene: View {
     }
 
     @ViewBuilder
-    private func optionalDatePicker(_ title: String, date: Binding<Date?>, defaultValue: Date) -> some View {
+    private func datePicker(_ title: String, date: Binding<Date>) -> some View {
         LabeledContent(title) {
-            OptionalDatePicker(
-                selection: date,
-                in: ...Date.now,
-                defaultValue: defaultValue,
-                displayedComponents: [.date, .hourAndMinute],
-                labelFormatStyle: .dateTime.year(.twoDigits).month(.abbreviated).day().hour().minute().second()
-            )
-            .tint(.primary)
+            ExactDatePicker(selection: date, in: ...Date.now)
         }
         .buttonStyle(.plain)
     }
@@ -347,7 +341,7 @@ struct WorkoutEditScene: View {
         }
     }
 
-    init(workout: (any WorkoutProtocol)?, addCloseButton: Bool) {
+    init(workout: (any WorkoutProtocol)?, addCloseButton: Bool = true) {
         self.workout = workout
         self.addCloseButton = addCloseButton
         var lastWorkoutDescriptor = FetchDescriptor<Workout>(sortBy: [SortDescriptor(\.startDate, order: .reverse)])
@@ -357,8 +351,8 @@ struct WorkoutEditScene: View {
 
         name = workout?.name ?? ""
         type = workout?.type
-        startDate = workout?.startDate
-        endDate = workout?.endDate
+        startDate = workout?.startDate ?? .now.addingTimeInterval(-15 * 60)
+        endDate = workout?.endDate ?? .now
         distance = workout?.distance
         energy = workout?.energy
         repetitions = workout?.repetitions
@@ -373,7 +367,8 @@ struct WorkoutEditScene: View {
     }
 
     private func addPause() {
-        let start = startDate ?? endDate?.addingTimeInterval(-3600) ?? .now.addingTimeInterval(-3600)
+        guard startDate < endDate else { return }
+        let start = startDate
         let end = start.addingTimeInterval(60)
         let pause = EditablePause(startDate: start, endDate: end, userInitiated: true)
         editablePausesBinding.wrappedValue.append(pause)
@@ -381,7 +376,7 @@ struct WorkoutEditScene: View {
     }
 
     private func recalculateDistance() {
-        guard !sortedRoute.isEmpty, let startDate, let endDate else { return }
+        guard !sortedRoute.isEmpty, startDate < endDate else { return }
         let filteredRoute = sortedRoute.filter { $0.timestamp >= startDate && $0.timestamp < endDate }
         distance = Calculation.calculateDistance(from: filteredRoute, and: sortedValidPauses)
     }
@@ -411,8 +406,7 @@ struct WorkoutEditScene: View {
     }
     
     private func confirmOrSave() {
-        guard let startDate,
-              let endDate,
+        guard startDate < endDate,
               let firstTimestamp = sortedRoute.first?.timestamp,
               let lastTimestamp = sortedRoute.last?.timestamp,
               firstTimestamp < startDate || lastTimestamp >= endDate
@@ -421,7 +415,7 @@ struct WorkoutEditScene: View {
     }
 
     private func save(truncateRoute: Bool = true) {
-        guard let type, let startDate, let endDate, let distance else { return }
+        guard let type, startDate < endDate, let distance else { return }
         let name = optionalName
         let comment = optionalComment
         do {
@@ -480,7 +474,7 @@ struct WorkoutEditScene: View {
         }
     }
 
-    struct EditablePause: Identifiable, WorkoutPauseProtocol {
+    private struct EditablePause: Identifiable, WorkoutPauseProtocol {
         var id = UUID()
         var startDate: Date
         var endDate: Date
@@ -488,7 +482,7 @@ struct WorkoutEditScene: View {
         var duration: TimeInterval { startDate.distance(to: endDate) }
     }
 
-    enum ChartType: CaseIterable, Hashable {
+    private enum ChartType: CaseIterable, Hashable {
         
         case speed, altitude, heartRate
 
