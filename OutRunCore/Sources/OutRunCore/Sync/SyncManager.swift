@@ -287,7 +287,8 @@ class SyncManager {
         guard workout.source.shouldSyncOutward else { return }
         var mapping = Self.serviceMapping(of: workout, for: service)
         let syncStatus = mapping.syncStatus
-        // guard syncStatus != .conflict else { return }
+        // this used to be commented out for no apparent reason, there might have been one though...
+        guard syncStatus != .conflict else { return }
         
         let action: SyncAction = switch syncStatus {
         case .synced:
