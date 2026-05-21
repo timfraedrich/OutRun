@@ -49,7 +49,11 @@ struct MainScene: View {
                     }
                 case .workoutEdit(let workoutID):
                     NavigationStack {
-                        QueriedWorkoutEditScene(id: workoutID)
+                        if let workoutID {
+                            QueriedWorkoutEditScene(id: workoutID)
+                        } else {
+                            WorkoutEditScene(workout: nil)
+                        }
                     }
                 }
             }
@@ -152,7 +156,11 @@ struct MainScene: View {
                 action: showRecordingScene
             )
         } else {
-            ActionButton("record_workout_action", action: showRecordingScene)
+            HStack {
+                ActionButton("record_workout_action", action: showRecordingScene)
+                ActionButton("add", systemImage: "plus", prominent: false, maxWidth: nil, action: showAddWorkoutScene)
+                    .labelStyle(.iconOnly)
+            }
         }
     }
     
@@ -181,5 +189,9 @@ struct MainScene: View {
     
     private func showWorkoutDetailScene(for workoutID: Workout.ID) {
         mainRouter.currentSheet = .workoutDetails(id: workoutID)
+    }
+    
+    private func showAddWorkoutScene() {
+        mainRouter.currentSheet = .workoutEdit(id: nil)
     }
 }
