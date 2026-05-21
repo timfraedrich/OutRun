@@ -427,7 +427,7 @@ public class HealthSyncService: SyncService {
             comment: .none,
             creationDate: startDate,
             lastEditDate: startDate,
-            source: .syncService(identifier: identifier),
+            source: hkWorkout.sourceRevision.source == .default() ? .native : .syncService(identifier: identifier),
             heartRates: try await fetchHeartRates(for: hkWorkout),
             route: try await fetchRoute(for: hkWorkout),
             pauses: pauses ?? [],
