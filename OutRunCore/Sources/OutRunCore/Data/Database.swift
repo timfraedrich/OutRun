@@ -293,8 +293,9 @@ actor Database: ModelActor {
                         default: false
                         }
                     }
-                    guard !changes.isEmpty else { break }
-                    continuation.yield(changes)
+                    if !changes.isEmpty {
+                        continuation.yield(changes)
+                    }
                     lastToken = transaction.token
                 } while true
                 continuation.finish()
