@@ -11,7 +11,8 @@ struct CalendarScene: View {
     
     private var toolbarBackgroundVisibility: Visibility { if #available(iOS 26, *) { .automatic } else { .visible } }
     private var months: [CalendarMonth] {
-        guard let startDate = workouts.first?.startDate, let startMonth = CalendarMonth(calendar: calendar, date: startDate) else { return [] }
+        let startDate = workouts.first?.startDate ?? .now
+        guard let startMonth = CalendarMonth(calendar: calendar, date: startDate) else { return [] }
         var months: [CalendarMonth] = [startMonth]
         if let currentMonth = CalendarMonth(calendar: calendar, date: .now) {
             while let month = months.last?.advanced(by: 1, calendar: calendar), month <= currentMonth {
