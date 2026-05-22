@@ -24,7 +24,6 @@ struct ListWorkoutCardStyle: WorkoutCardStyle {
         .clipShape(.containerRelative)
         .containerShape(.rect(cornerRadius: .regular))
         .geometryBackground { mapWidth = $0.size.width * 0.45 }
-        .backgroundStyle(Color(.secondarySystemGroupedBackground))
     }
     
     @ViewBuilder
