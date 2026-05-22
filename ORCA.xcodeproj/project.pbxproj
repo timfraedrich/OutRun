@@ -25,33 +25,33 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		223D71C22E6889BF0088F92C /* OutRunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutRunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		223D71C22E6889BF0088F92C /* orca-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "orca-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		224B42562E1EC7EA0089C1B1 /* OutRunCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OutRunCore; sourceTree = "<group>"; };
-		22BC11822DE61964008B0A4C /* OutRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		22BC11822DE61964008B0A4C /* orca-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "orca-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		22AD549F2DE62770007297E7 /* Exceptions for "OutRun" folder in "OutRun" target */ = {
+		22AD549F2DE62770007297E7 /* Exceptions for "App" folder in "orca-app" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				App/Info.plist,
+				Info.plist,
 			);
-			target = 22BC11812DE61964008B0A4C /* OutRun */;
+			target = 22BC11812DE61964008B0A4C /* orca-app */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		223D71C32E6889BF0088F92C /* OutRunTests */ = {
+		223D71C32E6889BF0088F92C /* Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = OutRunTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		22AD53FA2DE626EA007297E7 /* OutRun */ = {
+		22AD53FA2DE626EA007297E7 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				22AD549F2DE62770007297E7 /* Exceptions for "OutRun" folder in "OutRun" target */,
+				22AD549F2DE62770007297E7 /* Exceptions for "App" folder in "orca-app" target */,
 			);
-			path = OutRun;
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -89,9 +89,9 @@
 		22BC11792DE61964008B0A4C = {
 			isa = PBXGroup;
 			children = (
-				22AD53FA2DE626EA007297E7 /* OutRun */,
+				22AD53FA2DE626EA007297E7 /* App */,
 				224B42562E1EC7EA0089C1B1 /* OutRunCore */,
-				223D71C32E6889BF0088F92C /* OutRunTests */,
+				223D71C32E6889BF0088F92C /* Tests */,
 				2275CB442E8C537B00328632 /* Frameworks */,
 				22BC11832DE61964008B0A4C /* Products */,
 			);
@@ -100,8 +100,8 @@
 		22BC11832DE61964008B0A4C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				22BC11822DE61964008B0A4C /* OutRun.app */,
-				223D71C22E6889BF0088F92C /* OutRunTests.xctest */,
+				22BC11822DE61964008B0A4C /* orca-app.app */,
+				223D71C22E6889BF0088F92C /* orca-tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -109,9 +109,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		223D71C12E6889BF0088F92C /* OutRunTests */ = {
+		223D71C12E6889BF0088F92C /* orca-tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 223D71C82E6889BF0088F92C /* Build configuration list for PBXNativeTarget "OutRunTests" */;
+			buildConfigurationList = 223D71C82E6889BF0088F92C /* Build configuration list for PBXNativeTarget "orca-tests" */;
 			buildPhases = (
 				223D71BE2E6889BF0088F92C /* Sources */,
 				223D71BF2E6889BF0088F92C /* Frameworks */,
@@ -123,19 +123,19 @@
 				223D71C72E6889BF0088F92C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				223D71C32E6889BF0088F92C /* OutRunTests */,
+				223D71C32E6889BF0088F92C /* Tests */,
 			);
-			name = OutRunTests;
+			name = "orca-tests";
 			packageProductDependencies = (
 				2275CB452E8C537B00328632 /* Perception */,
 			);
 			productName = OutRunTests;
-			productReference = 223D71C22E6889BF0088F92C /* OutRunTests.xctest */;
+			productReference = 223D71C22E6889BF0088F92C /* orca-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		22BC11812DE61964008B0A4C /* OutRun */ = {
+		22BC11812DE61964008B0A4C /* orca-app */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 22BC118D2DE61965008B0A4C /* Build configuration list for PBXNativeTarget "OutRun" */;
+			buildConfigurationList = 22BC118D2DE61965008B0A4C /* Build configuration list for PBXNativeTarget "orca-app" */;
 			buildPhases = (
 				22BC117E2DE61964008B0A4C /* Sources */,
 				22BC117F2DE61964008B0A4C /* Frameworks */,
@@ -149,9 +149,9 @@
 				224538272F797F1A0050158C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				22AD53FA2DE626EA007297E7 /* OutRun */,
+				22AD53FA2DE626EA007297E7 /* App */,
 			);
-			name = OutRun;
+			name = "orca-app";
 			packageProductDependencies = (
 				22AD54992DE6274B007297E7 /* OutRunCore */,
 				22E72E252DEA0EA400CCF525 /* OutRunCore */,
@@ -159,7 +159,7 @@
 				22FDD4F12F8012DF00707D70 /* ZIPFoundation */,
 			);
 			productName = OutRun;
-			productReference = 22BC11822DE61964008B0A4C /* OutRun.app */;
+			productReference = 22BC11822DE61964008B0A4C /* orca-app.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -181,7 +181,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 22BC117D2DE61964008B0A4C /* Build configuration list for PBXProject "OutRun" */;
+			buildConfigurationList = 22BC117D2DE61964008B0A4C /* Build configuration list for PBXProject "ORCA" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -207,8 +207,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				22BC11812DE61964008B0A4C /* OutRun */,
-				223D71C12E6889BF0088F92C /* OutRunTests */,
+				22BC11812DE61964008B0A4C /* orca-app */,
+				223D71C12E6889BF0088F92C /* orca-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -285,7 +285,7 @@
 /* Begin PBXTargetDependency section */
 		223D71C72E6889BF0088F92C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 22BC11812DE61964008B0A4C /* OutRun */;
+			target = 22BC11812DE61964008B0A4C /* orca-app */;
 			targetProxy = 223D71C62E6889BF0088F92C /* PBXContainerItemProxy */;
 		};
 		224538272F797F1A0050158C /* PBXTargetDependency */ = {
@@ -317,7 +317,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OutRun.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OutRun";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ORCA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ORCA";
 				TVOS_DEPLOYMENT_TARGET = "";
 				WATCHOS_DEPLOYMENT_TARGET = "";
 				XROS_DEPLOYMENT_TARGET = "";
@@ -346,7 +346,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OutRun.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OutRun";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ORCA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ORCA";
 				TVOS_DEPLOYMENT_TARGET = "";
 				WATCHOS_DEPLOYMENT_TARGET = "";
 				XROS_DEPLOYMENT_TARGET = "";
@@ -488,7 +488,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = DebugAppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = OutRun/App/OutRun.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
@@ -498,8 +498,8 @@
 				EXCLUDED_SOURCE_FILE_NAMES = AppIcon.icon;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = OutRun/App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OutRun;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ORCA;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -534,7 +534,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = OutRun/App/OutRun.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
@@ -544,8 +544,8 @@
 				EXCLUDED_SOURCE_FILE_NAMES = DebugAppIcon.icon;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = OutRun/App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OutRun;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ORCA;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -577,7 +577,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		223D71C82E6889BF0088F92C /* Build configuration list for PBXNativeTarget "OutRunTests" */ = {
+		223D71C82E6889BF0088F92C /* Build configuration list for PBXNativeTarget "orca-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				223D71C92E6889BF0088F92C /* Debug */,
@@ -586,7 +586,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		22BC117D2DE61964008B0A4C /* Build configuration list for PBXProject "OutRun" */ = {
+		22BC117D2DE61964008B0A4C /* Build configuration list for PBXProject "ORCA" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				22BC118B2DE61965008B0A4C /* Debug */,
@@ -595,7 +595,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		22BC118D2DE61965008B0A4C /* Build configuration list for PBXNativeTarget "OutRun" */ = {
+		22BC118D2DE61965008B0A4C /* Build configuration list for PBXNativeTarget "orca-app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				22BC118E2DE61965008B0A4C /* Debug */,

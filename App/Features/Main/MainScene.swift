@@ -29,7 +29,7 @@ struct MainScene: View {
                 }
                 .padding(.horizontal, .regular)
             }
-            .background()
+            .background(Color(.systemGroupedBackground))
             .customBottomSafeAreaBar(content: bottomSafeAreaBarContent)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: toolbarContent)

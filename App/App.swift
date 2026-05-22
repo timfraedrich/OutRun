@@ -2,7 +2,7 @@ import OutRunCore
 import SwiftUI
 
 @main
-struct OutRunApp: App {
+struct App: SwiftUI.App {
     
     @State private var core: OutRunCore
     @State private var backupService: BackupService

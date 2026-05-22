@@ -2,12 +2,12 @@ import CoreLocation
 import OutRunCore
 import SwiftUI
 
-struct ListWorkoutCardStyle: WorkoutCardStyle {
+struct LatestWorkoutCardStyle: WorkoutCardStyle {
     
-    @State private var mapWidth: CGFloat?
+    @State private var width: CGFloat?
     
     func makeBody(configuration: Configuration) -> some View {
-        HStack(alignment: .top, spacing: .small) {
+        VStack(spacing: .small) {
             VStack(alignment: .leading, spacing: .small) {
                 header(for: configuration.workout)
                 metrics(for: configuration.workout)
@@ -17,14 +17,12 @@ struct ListWorkoutCardStyle: WorkoutCardStyle {
             
             optionalMap(for: configuration.workout)
         }
-        .fixedSize(horizontal: false, vertical: true)
         .padding(.small)
         .background()
         .overlay { optionalIsRaceBorder(for: configuration.workout) }
         .clipShape(.containerRelative)
         .containerShape(.rect(cornerRadius: .regular))
-        .geometryBackground { mapWidth = $0.size.width * 0.45 }
-        .backgroundStyle(.background.secondary)
+        .backgroundStyle(Color(.secondarySystemGroupedBackground))
     }
     
     @ViewBuilder
@@ -34,12 +32,17 @@ struct ListWorkoutCardStyle: WorkoutCardStyle {
     
     @ViewBuilder
     private func metrics(for workout: any WorkoutProtocol) -> some View {
-        HFlowLayout(horizontalSpacing: Spacing.regular, verticalSpacing: .small) {
-            WorkoutMetricLabeledContent(.distance, for: workout)
-            WorkoutMetricLabeledContent(.activeDuration, for: workout)
-            WorkoutMetricLabeledContent(.pace, for: workout)
+        AxisGeometryReader(axis: .horizontal, alignment: .leading) { size in
+            HFlowLayout(horizontalSpacing: .regular, verticalSpacing: .small) {
+                WorkoutMetricLabeledContent(.type, for: workout)
+                WorkoutMetricLabeledContent(.distance, for: workout)
+                WorkoutMetricLabeledContent(.activeDuration, for: workout)
+                WorkoutMetricLabeledContent(.pace, for: workout)
+                WorkoutMetricLabeledContent(.energy, for: workout)
+            }
+            .labeledContentStyle(.metric(size: .small))
+            .frame(width: size * 0.7, alignment: .leading)
         }
-        .labeledContentStyle(.metric(size: .small))
     }
     
     @ViewBuilder
@@ -52,7 +55,7 @@ struct ListWorkoutCardStyle: WorkoutCardStyle {
                     StaticWorkoutMap(workout: workout, accentColor: .accent)
                 }
             }
-            .frame(width: mapWidth)
+            .frame(height: 128)
             .clipShape(.containerRelative)
         }
     }
@@ -67,8 +70,8 @@ struct ListWorkoutCardStyle: WorkoutCardStyle {
     }
 }
 
-extension WorkoutCardStyle where Self == ListWorkoutCardStyle {
-    static var list: Self { .init() }
+extension WorkoutCardStyle where Self == LatestWorkoutCardStyle {
+    static var latest: Self { .init() }
 }
 
 #Preview {
@@ -76,6 +79,6 @@ extension WorkoutCardStyle where Self == ListWorkoutCardStyle {
         WorkoutCard(workout: PreviewConstants.cyclingWorkout)
         WorkoutCard(workout: PreviewConstants.runningWorkout)
     }
-    .workoutCardStyle(.list)
+    .workoutCardStyle(.latest)
     .padding()
 }
