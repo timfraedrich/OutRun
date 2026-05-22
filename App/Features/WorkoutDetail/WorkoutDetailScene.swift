@@ -179,11 +179,15 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var routeSection: some View {
-        if !workout.route.isEmpty {
+        if let sectionedRoute, !sectionedRoute.isEmpty {
             section("workout_detail_section_route", contentPadding: .small) {
-                StaticWorkoutMap(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: .accent)
-                    .frame(height: 300)
-                    .clipShape(.containerRelative)
+                StaticWorkoutMap(
+                    identifier: workout.id,
+                    coordinates: sectionedRoute.flatMap({ $0.elements.map(\.coordinate) }),
+                    accentColor: .accent
+                )
+                .frame(height: 300)
+                .clipShape(.containerRelative)
             }
         }
     }
