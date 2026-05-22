@@ -30,3 +30,10 @@ public protocol WorkoutProtocol: Identifiable, Equatable {
     var events: [WorkoutEventType] { get }
     var serviceMappings: [SyncServiceMappingType] { get }
 }
+
+public extension WorkoutProtocol {
+    
+    func serviceMapping(for identifier: String) -> SyncServiceMappingType? {
+        serviceMappings.first { $0.serviceIdentifier == identifier }
+    }
+}
