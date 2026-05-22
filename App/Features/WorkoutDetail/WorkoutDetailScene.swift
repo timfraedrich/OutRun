@@ -171,8 +171,10 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var energySection: some View {
-        section("workout_detail_section_energy") {
-            metricGrid(with: [.energy, .energyPerMinute])
+        if workout.energy != nil {
+            section("workout_detail_section_energy") {
+                metricGrid(with: [.energy, .energyPerMinute])
+            }
         }
     }
     
@@ -195,43 +197,46 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder private var metadataSection: some View {
-        section("metadata") {
-            VStack(spacing: .regular) {
-                LabeledContent("id", value: workout.id.uuidString)
-                Divider()
-                LabeledContent("created", value: workout.creationDate.formatted())
-                Divider()
-                LabeledContent("last_edited", value: workout.lastEditDate.formatted())
-                Divider()
-                LabeledContent("workout_source", value: workout.source.localized)
-            }
-        }
-        ForEach(workout.serviceMappings, id: \.serviceIdentifier) { mapping in
-            section(verbatim: WorkoutSource.syncService(identifier: mapping.serviceIdentifier).localized) {
-                if let id = mapping.externalId {
-                    LabeledContent("id", value: id)
+        Group {
+            section("metadata") {
+                VStack(spacing: .regular) {
+                    LabeledContent("id", value: workout.id.uuidString)
                     Divider()
-                }
-                LabeledContent("sync_status") {
-                    Label {
-                        Text(mapping.syncStatus.localized)
-                    } icon: {
-                        Image(systemName: mapping.syncStatus.systemImage)
-                    }
-                    .foregroundStyle(mapping.syncStatus.color)
-                }
-                if let lastEditDateSynced = mapping.lastEditDateSynced {
+                    LabeledContent("created", value: workout.creationDate.formatted())
                     Divider()
-                    LabeledContent("last_synced", value: lastEditDateSynced.formatted())
-                }
-                if let urlString = mapping.externalUrl, let url = URL(string: urlString) {
+                    LabeledContent("last_edited", value: workout.lastEditDate.formatted())
                     Divider()
-                    Button("sync_service_open_externally", systemImage: "link") {
-                        openURL(url)
-                    }
+                    LabeledContent("workout_source", value: workout.source.localized)
                 }
             }
+            ForEach(workout.serviceMappings, id: \.serviceIdentifier) { mapping in
+                section(verbatim: WorkoutSource.syncService(identifier: mapping.serviceIdentifier).localized) {
+                    if let id = mapping.externalId {
+                        LabeledContent("id", value: id)
+                        Divider()
+                    }
+                    LabeledContent("sync_status") {
+                        Label {
+                            Text(mapping.syncStatus.localized)
+                        } icon: {
+                            Image(systemName: mapping.syncStatus.systemImage)
+                        }
+                        .foregroundStyle(mapping.syncStatus.color)
+                    }
+                    if let lastEditDateSynced = mapping.lastEditDateSynced {
+                        Divider()
+                        LabeledContent("last_synced", value: lastEditDateSynced.formatted())
+                    }
+                    if let urlString = mapping.externalUrl, let url = URL(string: urlString) {
+                        Divider()
+                        Button("sync_service_open_externally", systemImage: "link") {
+                            openURL(url)
+                        }
+                    }
+                }
+            }
         }
+        .multilineTextAlignment(.trailing)
     }
     
     @ViewBuilder private var actionSection: some View {
