@@ -235,7 +235,8 @@ public class HealthSyncService: SyncService {
         Task {
             do {
                 logger.info("Attempting to initial inward sync from \(startDate ?? .distantPast) to \(endDate ?? .distantFuture).")
-                let hkWorkouts = try await fetchWorkouts(from: startDate, to: endDate)
+                // Here we sync our own workouts as the user might have deleted the app and expects his exported workouts to be imported.
+                let hkWorkouts = try await fetchWorkouts(from: startDate, to: endDate, excludeDefaultSource: false)
                 for hkWorkout in hkWorkouts {
                     await attemptToInwardSync(hkWorkout, into: delegate)
                 }
@@ -263,13 +264,17 @@ public class HealthSyncService: SyncService {
         }
     }
     
-    private func workoutPredicate(from startDate: Date?, to endDate: Date?) -> HKSamplePredicate<HKWorkout> {
-        let sourcePredicate = HKQuery.predicateForObjects(from: .default())
+    private func workoutPredicate(from startDate: Date?, to endDate: Date?, excludeDefaultSource: Bool) -> HKSamplePredicate<HKWorkout> {
         let syncStartDatePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
         let activityTypePredicates = WorkoutType.allCases.map { HKQuery.predicateForWorkouts(with: $0.healthKitType) }
         let activityTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: activityTypePredicates)
-        let filterPredicares = [syncStartDatePredicate, activityTypesPredicate]
-        let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: filterPredicares)
+        var filterPredicates = [syncStartDatePredicate, activityTypesPredicate]
+        if excludeDefaultSource {
+            let sourcePredicate = HKQuery.predicateForObjects(from: .default())
+            let notSourcePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: sourcePredicate)
+            filterPredicates.append(notSourcePredicate)
+        }
+        let filterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: filterPredicates)
         return HKSamplePredicate.workout(filterPredicate)
     }
     
@@ -279,7 +284,8 @@ public class HealthSyncService: SyncService {
             return
         }
         let observationAnchor = self.observationAnchor
-        let workoutPredicate = workoutPredicate(from: inwardSyncMode.startDate, to: .none)
+        // We exclude our own workouts here otherwise workouts we sync to health would be synced back.
+        let workoutPredicate = workoutPredicate(from: inwardSyncMode.startDate, to: .none, excludeDefaultSource: true)
         let descriptor = HKAnchoredObjectQueryDescriptor(predicates: [workoutPredicate], anchor: observationAnchor)
         observationTask = Task { [weak delegate] in
             do {
@@ -398,6 +404,13 @@ public class HealthSyncService: SyncService {
     private func fetchFullWorkout(from hkWorkout: HKWorkout) async throws -> RawWorkout {
         guard let workoutType = WorkoutType(hkType: hkWorkout.workoutActivityType)
         else { throw HealthSyncServiceError.unsupportedActivityType }
+        let isOwnWorkout = hkWorkout.sourceRevision.source == .default()
+        // We need to attach our own external id here to avoid workouts to be duplicated and synced back to us (does not usually happen).
+        let id: UUID = if isOwnWorkout, let uuid = (hkWorkout.metadata?[HKMetadataKeyExternalUUID] as? String).flatMap(UUID.init) {
+            uuid
+        } else {
+            .init()
+        }
         let now = Date.now
         let startDate = hkWorkout.startDate
         let endDate = hkWorkout.endDate
@@ -415,7 +428,7 @@ public class HealthSyncService: SyncService {
             return .init(type: type, timestamp: event.dateInterval.start)
         }
         return .init(
-            id: .init(),
+            id: id,
             type: workoutType,
             distance: try await fetchCumulativeMetric(for: hkWorkout, with: workoutType.healthKitDistanceType) ?? .zero,
             startDate: startDate,
@@ -444,8 +457,8 @@ public class HealthSyncService: SyncService {
         )
     }
     
-    private func fetchWorkouts(from startDate: Date?, to endDate: Date?) async throws -> [HKWorkout] {
-        let workoutPredicate = workoutPredicate(from: startDate, to: endDate)
+    private func fetchWorkouts(from startDate: Date?, to endDate: Date?, excludeDefaultSource: Bool) async throws -> [HKWorkout] {
+        let workoutPredicate = workoutPredicate(from: startDate, to: endDate, excludeDefaultSource: excludeDefaultSource)
         let descriptor = HKSampleQueryDescriptor(predicates: [workoutPredicate], sortDescriptors: [])
         return try await descriptor.result(for: healthStore)
     }
