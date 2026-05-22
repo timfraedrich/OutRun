@@ -1,6 +1,6 @@
 import Foundation
 
-public enum WorkoutSource: Codable, Hashable, RawRepresentable, Sendable {
+public enum WorkoutSource: Codable, Hashable, RawRepresentable, Sendable, CustomStringConvertible {
     
     case native
     case imported
@@ -38,6 +38,16 @@ public enum WorkoutSource: Codable, Hashable, RawRepresentable, Sendable {
         case .manuallyEntered: "manuallyEntered"
         case .syncService(let identifier): "syncService:\(identifier)"
         case .unknown(let rawValue): rawValue
+        }
+    }
+    
+    public var description: String {
+        switch self {
+        case .native: .init(localized: "workout_source_native", bundle: .module)
+        case .imported: .init(localized: "workout_source_imported", bundle: .module)
+        case .manuallyEntered: .init(localized: "workout_source_manually_entered", bundle: .module)
+        case .syncService(let identifier): .init(localized: "workout_source_sync_service_\(identifier)", bundle: .module)
+        case .unknown(let rawValue): .init(localized: "workout_source_unknown_\(rawValue)", bundle: .module)
         }
     }
 }

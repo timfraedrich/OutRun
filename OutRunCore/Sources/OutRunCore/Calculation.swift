@@ -189,6 +189,7 @@ public enum Calculation {
         timestampKeyPath: KeyPath<Sample, Date>,
         pauses: [any WorkoutPauseProtocol]
     ) -> SectionedSamples<Sample> {
+        guard !samples.isEmpty else { return [] }
         guard !pauses.isEmpty else { return [(true, samples)] }
         var sectionedSamples: CategorizedArray<Bool, Sample> = []
         var pauseIndex = 0
@@ -234,7 +235,7 @@ public enum Calculation {
         and timestampKeyPath: KeyPath<Sample, Date>,
         mapping: (Value) -> MappedValue
     ) -> SectionedValues<MappedValue>? {
-        guard let sectionedSamples else { return nil }
+        guard let sectionedSamples, !sectionedSamples.isEmpty else { return nil }
         let result: SectionedValues<MappedValue> = sectionedSamples.compactMap { active, samples in
             let filteredValues = samples.compactMap { sample -> (Date, MappedValue)? in
                 let value = mapping(sample[keyPath: valueKeyPath])

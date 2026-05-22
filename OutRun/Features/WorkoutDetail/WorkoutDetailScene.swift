@@ -8,6 +8,7 @@ struct WorkoutDetailScene: View {
     @Environment(UserPreferences.self) private var userPreferences
     @Environment(MainRouter.self) private var mainRouter
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @State private var error: Error?
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
     @State private var sectionedHeartRates: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>?
@@ -38,13 +39,18 @@ struct WorkoutDetailScene: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: .large) {
-                header
-                distanceSection
-                timeSection
-                heartRateSection
-                speedSection
-                energySection
+                Group {
+                    header
+                    distanceSection
+                    timeSection
+                    heartRateSection
+                    speedSection
+                    energySection
+                }
+                .labeledContentStyle(.metric)
                 routeSection
+                commentSection
+                metadataSection
                 actionSection
             }
             .backgroundStyle(.secondaryBackground)
@@ -55,7 +61,6 @@ struct WorkoutDetailScene: View {
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .compatibleScrollEffectHidden(for: .top)
         .backgroundStyle(.primaryBackground)
-        .labeledContentStyle(.metric)
         .task {
             let sortedPauses = workout.pauses.sorted(using: KeyPathComparator(\.startDate, order: .forward))
             let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
@@ -81,12 +86,12 @@ struct WorkoutDetailScene: View {
     
     @ViewBuilder
     private func section<C: View>(
-        _ titleKey: LocalizedStringKey,
+        _ text: Text,
         contentPadding: Spacing = .regular,
         @ViewBuilder content: () -> C
     ) -> some View {
         VStack(alignment: .leading, spacing: .small) {
-            Text(titleKey)
+            text
                 .font(.headline)
                 .padding(.horizontal, .regular)
             VStack(spacing: .regular, content: content)
@@ -95,6 +100,24 @@ struct WorkoutDetailScene: View {
                 .clipShape(.containerRelative)
                 .containerShape(.rect(cornerRadius: .regular))
         }
+    }
+    
+    @ViewBuilder
+    private func section<C: View>(
+        _ titleKey: LocalizedStringKey,
+        contentPadding: Spacing = .regular,
+        @ViewBuilder content: () -> C
+    ) -> some View {
+        section(Text(titleKey), contentPadding: contentPadding, content: content)
+    }
+    
+    @ViewBuilder
+    private func section<C: View>(
+        verbatim title: String,
+        contentPadding: Spacing = .regular,
+        @ViewBuilder content: () -> C
+    ) -> some View {
+        section(Text(verbatim: title), contentPadding: contentPadding, content: content)
     }
     
     @ViewBuilder
@@ -160,6 +183,54 @@ struct WorkoutDetailScene: View {
                 StaticWorkoutMap(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: .accent)
                     .frame(height: 300)
                     .clipShape(.containerRelative)
+            }
+        }
+    }
+    
+    @ViewBuilder private var commentSection: some View {
+        if let comment = workout.comment {
+            section("comment") {
+                Text(comment).frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
+    
+    @ViewBuilder private var metadataSection: some View {
+        section("metadata") {
+            VStack(spacing: .regular) {
+                LabeledContent("id", value: workout.id.uuidString)
+                Divider()
+                LabeledContent("created", value: workout.creationDate.formatted())
+                Divider()
+                LabeledContent("last_edited", value: workout.lastEditDate.formatted())
+                Divider()
+                LabeledContent("workout_source", value: workout.source.localized)
+            }
+        }
+        ForEach(workout.serviceMappings, id: \.serviceIdentifier) { mapping in
+            section(verbatim: WorkoutSource.syncService(identifier: mapping.serviceIdentifier).localized) {
+                if let id = mapping.externalId {
+                    LabeledContent("id", value: id)
+                    Divider()
+                }
+                LabeledContent("sync_status") {
+                    Label {
+                        Text(mapping.syncStatus.localized)
+                    } icon: {
+                        Image(systemName: mapping.syncStatus.systemImage)
+                    }
+                    .foregroundStyle(mapping.syncStatus.color)
+                }
+                if let lastEditDateSynced = mapping.lastEditDateSynced {
+                    Divider()
+                    LabeledContent("last_synced", value: lastEditDateSynced.formatted())
+                }
+                if let urlString = mapping.externalUrl, let url = URL(string: urlString) {
+                    Divider()
+                    Button("sync_service_open_externally", systemImage: "link") {
+                        openURL(url)
+                    }
+                }
             }
         }
     }
