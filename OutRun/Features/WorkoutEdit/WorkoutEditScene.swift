@@ -421,22 +421,33 @@ struct WorkoutEditScene: View {
         do {
             let tempWorkout: Workout
             if let workout = workout as? Workout {
-                workout.name = name
-                workout.type = type
-                workout.isRace = isRace
-                workout.startDate = startDate
-                workout.endDate = endDate
-                workout.distance = distance
-                workout.energy = energy
-                workout.repetitions = repetitions
-                workout.comment = comment
                 tempWorkout = workout
+                tempWorkout.name = name
+                tempWorkout.type = type
+                tempWorkout.isRace = isRace
+                tempWorkout.startDate = startDate
+                tempWorkout.endDate = endDate
+                tempWorkout.distance = distance
+                tempWorkout.energy = energy
+                tempWorkout.repetitions = repetitions
+                tempWorkout.comment = comment
+                tempWorkout.lastEditDate = .now
             } else if let workout {
                 let id = workout.id
                 var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == id })
                 descriptor.fetchLimit = 1
                 if let existingWorkout = try modelContext.fetch(descriptor).first {
                     tempWorkout = existingWorkout
+                    tempWorkout.name = name
+                    tempWorkout.type = type
+                    tempWorkout.isRace = isRace
+                    tempWorkout.startDate = startDate
+                    tempWorkout.endDate = endDate
+                    tempWorkout.distance = distance
+                    tempWorkout.energy = energy
+                    tempWorkout.repetitions = repetitions
+                    tempWorkout.comment = comment
+                    tempWorkout.lastEditDate = .now
                 } else {
                     tempWorkout = Workout(from: workout)
                     tempWorkout.route = workout.route.map { WorkoutRouteDataSample(from: $0) }
