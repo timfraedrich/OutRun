@@ -81,7 +81,7 @@ struct RecordingScene: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .compatibleRegularGlassEffect(in: .capsule)
-                .backgroundStyle(.secondaryBackground)
+                .backgroundStyle(.background.secondary)
             }
             .bold()
             

@@ -53,14 +53,14 @@ struct WorkoutDetailScene: View {
                 metadataSection
                 actionSection
             }
-            .backgroundStyle(.secondaryBackground)
+            .backgroundStyle(.background.secondary)
             .padding(.horizontal, .regular)
         }
         .background()
         .toolbar(content: toolbarContent)
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .compatibleScrollEffectHidden(for: .top)
-        .backgroundStyle(.primaryBackground)
+        .backgroundStyle(.background)
         .task {
             let sortedPauses = workout.pauses.sorted(using: KeyPathComparator(\.startDate, order: .forward))
             let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp, order: .forward))

@@ -43,7 +43,6 @@ struct OutRunApp: App {
             .environment(settingsRouter)
             .environment(calendarRouter)
             .environment(backupService)
-            .backgroundStyle(.primaryBackground)
             .workoutCardStyle(.list)
         }
         .modelContainer(core.modelContainer)

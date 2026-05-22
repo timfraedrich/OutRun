@@ -124,7 +124,7 @@ struct LegacyMigrationView: View {
                 if #available(iOS 26, *) {
                     Color.clear.glassEffect(.regular.interactive(), in: .containerRelative)
                 } else {
-                    Color.secondaryBackground.clipShape(.rect(cornerRadius: .large))
+                    Rectangle().fill(.background.secondary).clipShape(.rect(cornerRadius: .large))
                 }
             }
             .matchedGeometryEffect(id: "safeArea", in: namespace, anchor: .bottom)

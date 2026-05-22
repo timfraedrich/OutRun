@@ -1,16 +1,62 @@
 {
-  "fill" : {
-    "linear-gradient" : [
-      "display-p3:1.00000,0.57255,0.00000,1.00000",
-      "srgb:1.00000,0.42745,0.00000,1.00000"
-    ]
-  },
+  "fill-specializations" : [
+    {
+      "value" : {
+        "linear-gradient" : [
+          "display-p3:0.16471,0.40000,1.00000,1.00000",
+          "srgb:0.05490,0.07451,0.47451,1.00000"
+        ],
+        "orientation" : {
+          "start" : {
+            "x" : 0.5,
+            "y" : 0
+          },
+          "stop" : {
+            "x" : 0.5,
+            "y" : 0.7
+          }
+        }
+      }
+    },
+    {
+      "appearance" : "dark",
+      "value" : "system-dark"
+    }
+  ],
   "groups" : [
     {
       "layers" : [
         {
-          "image-name" : "glyph.svg",
-          "name" : "glyph"
+          "fill-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : {
+                "linear-gradient" : [
+                  "display-p3:0.29412,0.44314,0.99216,1.00000",
+                  "display-p3:0.16471,0.40000,1.00000,1.00000"
+                ],
+                "orientation" : {
+                  "start" : {
+                    "x" : 0.5,
+                    "y" : 0
+                  },
+                  "stop" : {
+                    "x" : 0.5,
+                    "y" : 0.7
+                  }
+                }
+              }
+            }
+          ],
+          "image-name" : "ORCA_O.svg",
+          "name" : "ORCA_O",
+          "position" : {
+            "scale" : 2.5,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
         }
       ],
       "shadow" : {

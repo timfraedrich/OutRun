@@ -22,7 +22,7 @@ struct LatestWorkoutCardStyle: WorkoutCardStyle {
         .overlay { optionalIsRaceBorder(for: configuration.workout) }
         .clipShape(.containerRelative)
         .containerShape(.rect(cornerRadius: .regular))
-        .backgroundStyle(.secondaryBackground)
+        .backgroundStyle(.background.secondary)
     }
     
     @ViewBuilder

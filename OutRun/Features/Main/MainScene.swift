@@ -124,7 +124,7 @@ struct MainScene: View {
                     .fontWeight(.semibold)
             }
             .padding(.regular)
-            .background(.secondaryBackground)
+            .background(.background.secondary)
             .clipShape(.rect(cornerRadius: .regular))
         }
         .buttonStyle(.plain)
