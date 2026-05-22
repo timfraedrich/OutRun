@@ -296,7 +296,9 @@ struct WorkoutEditScene: View {
     
     @ViewBuilder private var commentSection: some View {
         Section("comment") {
-            TextEditor(text: $comment).multilineTextAlignment(.leading)
+            TextEditor(text: $comment)
+                .multilineTextAlignment(.leading)
+                .frame(minHeight: 100)
         }
     }
 
@@ -325,10 +327,11 @@ struct WorkoutEditScene: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
             Group {
-                if #available(iOS 26.0, *) {
-                    Button("save", role: .confirm, action: confirmOrSave)
-                } else {
-                    Button("save", action: confirmOrSave)
+                let role: ButtonRole? = if #available(iOS 26.0, *) { .confirm } else { nil }
+                Button(role: role, action: confirmOrSave) {
+                    Text("save")
+                        .foregroundStyle(.white)
+                        .fontWeight(.semibold)
                 }
             }
             .disabled(disableSaveButton)
