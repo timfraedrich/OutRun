@@ -166,6 +166,12 @@ actor Database: ModelActor {
         return workout.route.sorted(by: { $0.timestamp > $1.timestamp }).map(RawWorkoutRouteDataSample.init)
     }
     
+    func delete(workoutWithIdentifier identifier: UUID) throws {
+        let databaseWorkout = try fetchWorkout(with: identifier)
+        modelContext.delete(databaseWorkout)
+        try modelContext.save()
+    }
+    
     // MARK: - User
     
     func insert(_ rawUser: RawUser) throws {
@@ -389,7 +395,10 @@ actor Database: ModelActor {
                 serviceInformation = nil
             }
             let databaseWorkout = try fetchWorkout(with: workout.id, or: serviceInformation)
-            if databaseWorkout.lastEditDate >= workout.lastEditDate {
+            // We need to check if the workout is equal up to the second
+            // as the conversion into ISO format looses some fractional second precision
+            let sameSecond = Calendar.current.isDate(databaseWorkout.lastEditDate, equalTo: workout.lastEditDate, toGranularity: .second)
+            if databaseWorkout.source != workout.source || databaseWorkout.lastEditDate >= workout.lastEditDate || sameSecond {
                 throw SyncError.conflict
             }
             databaseWorkout.type = workout.type
@@ -416,8 +425,9 @@ actor Database: ModelActor {
         return workout.id
     }
     
-    func delete(workoutWithIdentifier identifier: UUID) throws {
+    func delete(workoutWithIdentifier identifier: UUID, forServiceWith serviceIdentifier: String) throws {
         let databaseWorkout = try fetchWorkout(with: identifier)
+        guard databaseWorkout.source == .syncService(identifier: serviceIdentifier) else { throw SyncError.conflict }
         modelContext.delete(databaseWorkout)
         try modelContext.save()
     }
@@ -429,6 +439,7 @@ actor Database: ModelActor {
         var descriptor = FetchDescriptor<SyncServiceMapping>(predicate: fullPredicate)
         descriptor.fetchLimit = 1
         guard let workout = try modelContext.fetch(descriptor).first?.workout else { throw DatabaseError.objectNotFound }
+        guard workout.source == .syncService(identifier: serviceIdentifier) else { throw SyncError.conflict }
         modelContext.delete(workout)
         try modelContext.save()
     }

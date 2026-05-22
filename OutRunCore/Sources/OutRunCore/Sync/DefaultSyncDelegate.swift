@@ -15,8 +15,8 @@ class DefaultSyncDelegate: SyncDelegate {
         try await database.upsert(workout)
     }
     
-    func delete(workoutWithIdentifier identifier: UUID) async throws {
-        try await database.delete(workoutWithIdentifier: identifier)
+    func delete(workoutWithIdentifier identifier: UUID, forServiceWith serviceIdentifier: String) async throws {
+        try await database.delete(workoutWithIdentifier: identifier, forServiceWith: serviceIdentifier)
     }
     
     func delete(workoutWithExternalIdentifier externalIdentifier: String, forServiceWith serviceIdentifier: String) async throws {

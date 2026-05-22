@@ -10,7 +10,8 @@ public protocol SyncDelegate: AnyObject, Sendable {
     
     /// Called when a workout was deleted and should be synced to the core.
     /// - parameter identifier: The identifier of the workout from the core.
-    func delete(workoutWithIdentifier identifier: UUID) async throws
+    /// - parameter serviceIdentifier: The identifier of the service deleting the workout.
+    func delete(workoutWithIdentifier identifier: UUID, forServiceWith serviceIdentifier: String) async throws
     
     /// Called when a workout was deleted and should be synced to the core.
     /// - parameter externalIdentifier: The identifier of the workout from an external service.
