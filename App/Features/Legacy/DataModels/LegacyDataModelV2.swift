@@ -1,4 +1,4 @@
-@preconcurrency import CoreStore
+@unsafe @preconcurrency import CoreStore
 import Foundation
 
 enum LegacyDataModelV2: LegacyDataModel {

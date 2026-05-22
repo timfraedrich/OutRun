@@ -1,5 +1,5 @@
 import Combine
-@preconcurrency import CoreStore
+import CoreStore
 import Foundation
 
 /// A structure holding static instances and methods for database management and manipulation

@@ -55,15 +55,11 @@ struct DateOffsetPicker: View {
                     Text(verbatim: ":").font(.headline)
                 }
                 Picker("date_component_minute", selection: Binding(get: { minutes }, set: { apply(minutes: $0) })) {
-                    ForEach(0...maxMinutes, id: \.self) {
-                        Text(verbatim: String(format: "%02d", $0)).tag($0)
-                    }
+                    ForEach(0...maxMinutes, id: \.self, content: label)
                 }
                 Text(verbatim: ":").font(.headline)
                 Picker("date_component_second", selection: Binding(get: { seconds }, set: { apply(seconds: $0) })) {
-                    ForEach(0...maxSeconds, id: \.self) {
-                        Text(verbatim: String(format: "%02d", $0)).tag($0)
-                    }
+                    ForEach(0...maxSeconds, id: \.self, content: label)
                 }
             }
             .pickerStyle(.wheel)
@@ -73,11 +69,23 @@ struct DateOffsetPicker: View {
             .presentationCompactAdaptation(.popover)
         }
     }
-
+    
+    @ViewBuilder
+    private func label(for value: Int) -> some View {
+        Text(verbatim: paddedInteger(value)).tag(value)
+    }
+    
+    private func paddedInteger(_ value: Int) -> String {
+        value.formatted(.number.precision(.integerLength(2)))
+    }
+    
     private var formattedOffset: String {
         let total = Int(offset)
-        let h = total / 3600, m = (total % 3600) / 60, s = total % 60
-        return h > 0 ? String(format: "%d:%02d:%02d", h, m, s) : String(format: "%02d:%02d", m, s)
+        let hours = total / 3600, minutes = (total % 3600) / 60, seconds = total % 60
+        var result = ""
+        if hours > 0 { result += "\(hours):" }
+        result += "\(paddedInteger(minutes)):\(paddedInteger(seconds))"
+        return result
     }
     
     private func apply(hours: Int? = nil, minutes: Int? = nil, seconds: Int? = nil) {

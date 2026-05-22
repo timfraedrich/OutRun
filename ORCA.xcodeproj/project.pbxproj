@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 100;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -59,22 +59,18 @@
 /* Begin PBXFrameworksBuildPhase section */
 		223D71BF2E6889BF0088F92C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				2275CB462E8C537B00328632 /* Perception in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		22BC117F2DE61964008B0A4C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				22E72E262DEA0EA400CCF525 /* OutRunCore in Frameworks */,
 				22AD549A2DE6274B007297E7 /* OutRunCore in Frameworks */,
 				2265FD312E6F11D8004F1E09 /* CoreStore in Frameworks */,
 				22FDD4F22F8012DF00707D70 /* ZIPFoundation in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -170,7 +166,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					223D71C12E6889BF0088F92C = {
 						CreatedOnToolsVersion = 26.0;
@@ -202,7 +198,7 @@
 				224538252F797F070050158C /* XCRemoteSwiftPackageReference "LicensePlist" */,
 				22FDD4F02F8012DF00707D70 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 100;
 			productRefGroup = 22BC11832DE61964008B0A4C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -216,69 +212,58 @@
 /* Begin PBXResourcesBuildPhase section */
 		223D71C02E6889BF0088F92C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		22BC11802DE61964008B0A4C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		224538EE2F798C8C0050158C /* Set Version in Settings */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
+			alwaysOutOfDate = 1;
 			name = "Set Version in Settings";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${BUILT_PRODUCTS_DIR}\"\nMARKETING_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${INFOPLIST_PATH}\" )\nBUILD_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_PATH}\" )\n/usr/libexec/PlistBuddy -c \"Set PreferenceSpecifiers:0:DefaultValue $MARKETING_VERSION ($BUILD_VERSION)\" \"${CONTENTS_FOLDER_PATH}/Settings.bundle/Root.plist\"\n";
+			shellScript = (
+				"cd \"${BUILT_PRODUCTS_DIR}\"",
+				"MARKETING_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${INFOPLIST_PATH}\" )",
+				"BUILD_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_PATH}\" )",
+				"/usr/libexec/PlistBuddy -c \"Set PreferenceSpecifiers:0:DefaultValue $MARKETING_VERSION ($BUILD_VERSION)\" \"${CONTENTS_FOLDER_PATH}/Settings.bundle/Root.plist\"",
+				"",
+			);
 		};
 		22BCE5592F7984D7008B0A4C /* Copy Acknowledgements */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
+			alwaysOutOfDate = 1;
 			name = "Copy Acknowledgements";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Will copy acknowledgements\"\n\nACKNOWLEDGEMENTS_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/com.mono0926.LicensePlist.Output\nDESTINATION_PATH=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Settings.bundle/\n\ncp -r \"${ACKNOWLEDGEMENTS_DIR}\"/* \"${DESTINATION_PATH}\"\nrm -rf \"${ACKNOWLEDGEMENTS_DIR}\"\n";
+			shellScript = (
+				"echo \"Will copy acknowledgements\"",
+				"",
+				"ACKNOWLEDGEMENTS_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/com.mono0926.LicensePlist.Output",
+				"DESTINATION_PATH=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Settings.bundle/",
+				"",
+				"cp -r \"${ACKNOWLEDGEMENTS_DIR}\"/* \"${DESTINATION_PATH}\"",
+				"rm -rf \"${ACKNOWLEDGEMENTS_DIR}\"",
+				"",
+			);
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		223D71BE2E6889BF0088F92C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		22BC117E2DE61964008B0A4C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
@@ -295,17 +280,18 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		223D71C92E6889BF0088F92C /* Debug */ = {
+		223D71C92E6889BF0088F92C /* Debug configuration for PBXNativeTarget "orca-tests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(inherited)";
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRunTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -324,17 +310,18 @@
 			};
 			name = Debug;
 		};
-		223D71CA2E6889BF0088F92C /* Release */ = {
+		223D71CA2E6889BF0088F92C /* Release configuration for PBXNativeTarget "orca-tests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(inherited)";
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRunTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -353,11 +340,12 @@
 			};
 			name = Release;
 		};
-		22BC118B2DE61965008B0A4C /* Debug */ = {
+		22BC118B2DE61965008B0A4C /* Debug configuration for PBXProject "ORCA" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -414,6 +402,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -421,11 +410,12 @@
 			};
 			name = Debug;
 		};
-		22BC118C2DE61965008B0A4C /* Release */ = {
+		22BC118C2DE61965008B0A4C /* Release configuration for PBXProject "ORCA" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -475,6 +465,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -482,7 +473,7 @@
 			};
 			name = Release;
 		};
-		22BC118E2DE61965008B0A4C /* Debug */ = {
+		22BC118E2DE61965008B0A4C /* Debug configuration for PBXNativeTarget "orca-app" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = DebugAppIcon;
@@ -490,13 +481,14 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_SOURCE_FILE_NAMES = AppIcon.icon;
-				GENERATE_INFOPLIST_FILE = NO;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ORCA;
@@ -511,7 +503,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -520,6 +512,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TVOS_DEPLOYMENT_TARGET = "";
@@ -528,7 +521,7 @@
 			};
 			name = Debug;
 		};
-		22BC118F2DE61965008B0A4C /* Release */ = {
+		22BC118F2DE61965008B0A4C /* Release configuration for PBXNativeTarget "orca-app" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -536,13 +529,14 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = QT27QDFZ7N;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_SOURCE_FILE_NAMES = DebugAppIcon.icon;
-				GENERATE_INFOPLIST_FILE = NO;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ORCA;
@@ -557,7 +551,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = de.tadris.OutRun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -566,6 +560,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TVOS_DEPLOYMENT_TARGET = "";
@@ -580,28 +575,25 @@
 		223D71C82E6889BF0088F92C /* Build configuration list for PBXNativeTarget "orca-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				223D71C92E6889BF0088F92C /* Debug */,
-				223D71CA2E6889BF0088F92C /* Release */,
+				223D71C92E6889BF0088F92C /* Debug configuration for PBXNativeTarget "orca-tests" */,
+				223D71CA2E6889BF0088F92C /* Release configuration for PBXNativeTarget "orca-tests" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		22BC117D2DE61964008B0A4C /* Build configuration list for PBXProject "ORCA" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				22BC118B2DE61965008B0A4C /* Debug */,
-				22BC118C2DE61965008B0A4C /* Release */,
+				22BC118B2DE61965008B0A4C /* Debug configuration for PBXProject "ORCA" */,
+				22BC118C2DE61965008B0A4C /* Release configuration for PBXProject "ORCA" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		22BC118D2DE61965008B0A4C /* Build configuration list for PBXNativeTarget "orca-app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				22BC118E2DE61965008B0A4C /* Debug */,
-				22BC118F2DE61965008B0A4C /* Release */,
+				22BC118E2DE61965008B0A4C /* Debug configuration for PBXNativeTarget "orca-app" */,
+				22BC118F2DE61965008B0A4C /* Release configuration for PBXNativeTarget "orca-app" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */

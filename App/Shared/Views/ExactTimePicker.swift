@@ -219,15 +219,11 @@ struct ExactTimePicker<R: RangeExpression<Date>>: View {
             }
             Text(verbatim: ":").font(.headline)
             Picker("date_component_minute", selection: minutesBinding) {
-                ForEach(visibleMinutes, id: \.self) {
-                    Text(verbatim: String(format: "%02d", $0)).tag($0)
-                }
+                ForEach(visibleMinutes, id: \.self, content: label)
             }
             Text(verbatim: ":").font(.headline)
             Picker("date_component_second", selection: secondsBinding) {
-                ForEach(visibleSeconds, id: \.self) {
-                    Text(verbatim: String(format: "%02d", $0)).tag($0)
-                }
+                ForEach(visibleSeconds, id: \.self, content: label)
             }
             if uses12HourFormat {
                 Picker("date_component_period", selection: periodBinding) {
@@ -240,10 +236,16 @@ struct ExactTimePicker<R: RangeExpression<Date>>: View {
         .pickerStyle(.wheel)
         .labelsHidden()
     }
+    
+    @ViewBuilder
+    private func label(for value: Int) -> some View {
+        Text(verbatim: value.formatted(.number.precision(.integerLength(2)))).tag(value)
+    }
 }
 
 #Preview {
     
+    // both of these examples are for daylight saving time dates (too check this edge case)
     @Previewable @State var date1: Date = .init(timeIntervalSince1970: 1761444000)
     @Previewable @State var date2: Date = .init(timeIntervalSince1970: 1774746000)
     

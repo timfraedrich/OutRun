@@ -1,4 +1,4 @@
-@preconcurrency import CoreStore
+import CoreStore
 
 /// A protocol used to define data models for the data base this application saves workouts in.
 protocol LegacyDataModel: Sendable {
