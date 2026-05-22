@@ -28,6 +28,7 @@ struct MainScene: View {
                     }
                 }
                 .padding(.horizontal, .regular)
+                .backgroundStyle(Color(.secondarySystemGroupedBackground))
             }
             .background(Color(.systemGroupedBackground))
             .customBottomSafeAreaBar(content: bottomSafeAreaBarContent)
@@ -124,7 +125,7 @@ struct MainScene: View {
                     .fontWeight(.semibold)
             }
             .padding(.regular)
-            .background(.background.secondary)
+            .background()
             .clipShape(.rect(cornerRadius: .regular))
         }
         .buttonStyle(.plain)
