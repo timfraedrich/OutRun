@@ -98,7 +98,7 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
     
     @ChartContentBuilder private var selectionContent: some ChartContent {
         if let selectedItem {
-            RuleMark(x: .value("selected", selectedItem.timestamp))
+            RuleMark(x: .value("selected_value", selectedItem.timestamp))
                 .foregroundStyle(.gray.opacity(0.6))
                 .lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 2]))
             PointMark(

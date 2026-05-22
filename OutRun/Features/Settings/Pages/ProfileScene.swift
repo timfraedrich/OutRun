@@ -29,7 +29,7 @@ struct ProfileScene: View {
                 .symbolRenderingMode(.hierarchical)
             }
             LabeledContent("user_weight") {
-                MeasurementTextField("Your weight", measurement: $weight, unit: userPreferences.safeWeightUnit(for: locale))
+                MeasurementTextField("user_weight_placeholder", measurement: $weight, unit: userPreferences.safeWeightUnit(for: locale))
             }
             Picker(selection: $sex) {
                 Text("user_sex_not_specified").tag(Sex?.none)
