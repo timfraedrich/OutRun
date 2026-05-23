@@ -19,8 +19,9 @@ struct WorkoutSelectionScene: View {
             }
             .padding(.horizontal, .regular)
             .padding(.vertical, .regular)
+            .backgroundStyle(Color(.secondarySystemGroupedBackground))
         }
-        .background()
+        .background(Color(.systemGroupedBackground))
         .navigationTitle("workouts")
         .navigationBarTitleDisplayMode(.large)
     }
