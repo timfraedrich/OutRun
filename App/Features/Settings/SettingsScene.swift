@@ -143,6 +143,9 @@ struct SettingsScene: View {
             SettingsOpenURLButton("https://tfr.software/imprint") {
                 Text("legal_imprint")
             }
+            SettingsOpenURLButton(UIApplication.openSettingsURLString) {
+                Text("legal_acknowledgements")
+            }
             SettingsOpenURLButton("mailto:orca@tfr.software") {
                 LabeledContent("settings_support", value: "orca@tfr.software")
             }
