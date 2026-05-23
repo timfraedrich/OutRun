@@ -121,7 +121,7 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
         if let id = UUID(uuidString: plottable), series.first(where: { $0.id == id })?.active == true {
             AnyShapeStyle(.tint)
         } else {
-            AnyShapeStyle(.gray)
+            AnyShapeStyle(.gray.opacity(0.5))
         }
     }
     

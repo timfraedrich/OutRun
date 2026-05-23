@@ -12,7 +12,7 @@ struct HeartRateChart: View {
     
     var body: some View {
         Chart(items) { item in
-            let foregroundStyle = item.active ? AnyShapeStyle(.tint) : AnyShapeStyle(.gray)
+            let foregroundStyle = item.active ? AnyShapeStyle(.tint) : AnyShapeStyle(.gray.opacity(0.5))
             let zIndex: Double = item.active ? 1 : 0
             switch item.type {
             case .range(let range):
