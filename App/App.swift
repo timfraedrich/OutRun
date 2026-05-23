@@ -1,4 +1,5 @@
 import OutRunCore
+import SwiftData
 import SwiftUI
 
 @main

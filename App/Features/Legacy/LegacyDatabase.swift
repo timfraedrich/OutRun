@@ -1,4 +1,5 @@
 import Combine
+import CoreData
 import CoreStore
 import Foundation
 

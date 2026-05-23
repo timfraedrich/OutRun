@@ -1,4 +1,5 @@
 import Foundation
+import CoreStore
 
 enum LegacyRawDataModelV3 {
     

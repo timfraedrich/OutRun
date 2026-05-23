@@ -1,4 +1,5 @@
 import AsyncAlgorithms
+import Cache
 import Foundation
 import OutRunCore
 import ZIPFoundation

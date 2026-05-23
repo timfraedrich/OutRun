@@ -307,6 +307,8 @@ public class HealthSyncService: SyncService {
                         guard let delegate else { throw CancellationError() }
                         let healthIdentifier = deletedHKWorkout.uuid.uuidString
                         do {
+                            // TODO: Instead of filtering own workouts overall we could mark them as deleted (new sync status)
+                            // This requires us to filter them manually above (for added samples)
                             try await delegate.delete(workoutWithExternalIdentifier: healthIdentifier, forServiceWith: identifier)
                             logger.info("Successfully propagated workout delete for \(healthIdentifier) inward.")
                         } catch {

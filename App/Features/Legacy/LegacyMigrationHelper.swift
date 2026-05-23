@@ -4,6 +4,7 @@ import OutRunCore
 import OSLog
 import SwiftData
 import Perception
+import AsyncAlgorithms
 
 enum LegacyMigrationHelper {
     

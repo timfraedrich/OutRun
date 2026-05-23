@@ -1,3 +1,4 @@
+import Foundation
 import OutRunCore
 
 extension WorkoutSource {
