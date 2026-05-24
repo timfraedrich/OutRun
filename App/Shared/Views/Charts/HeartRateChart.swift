@@ -18,23 +18,23 @@ struct HeartRateChart: View {
             case .range(let range):
                 BarMark(
                     x: .value("timestamp", range.midTimestamp),
-                    yStart: .value("minimum_beats_per_minute_short", range.valueRange.lowerBound),
-                    yEnd: .value("maximum_beats_per_minute_short", range.valueRange.upperBound),
+                    yStart: .value("minimum_beats_per_minute_short", minValue),
+                    yEnd: .value("maximum_beats_per_minute_short", maxValue),
                     width: .inset(2)
                 )
-                .clipShape(.capsule)
+                .clipShape(ClipShape(start: range.valueRange.lowerBound, end: range.valueRange.upperBound, min: minValue, max: maxValue))
                 .accessibilityValue(Text("\(range.valueRange.lowerBound) to \(range.valueRange.upperBound)" + "unit_beats_per_minute"))
                 .foregroundStyle(foregroundStyle)
                 .zIndex(zIndex)
             case .sample(let sample):
                 BarMark(
                     x: .value("timestamp", sample.timestamp),
-                    yStart: .value("beats_per_minute_unit", sample.value + 8),
-                    yEnd: .value("beats_per_minute_unit", sample.value - 8),
+                    yStart: .value("beats_per_minute_unit", minValue),
+                    yEnd: .value("beats_per_minute_unit", maxValue),
                     width: .inset(2)
                 )
-                .clipShape(.circle)
-                .accessibilityValue(Text(verbatim: sample.value.description + .init(localized: "beats_per_minute_unit")))
+                .clipShape(ClipShape(start: sample.value, end: sample.value, min: minValue, max: maxValue))
+                .accessibilityValue(Text(verbatim: "\(sample.value) " + .init(localized: "beats_per_minute_unit")))
                 .foregroundStyle(foregroundStyle)
                 .zIndex(zIndex)
             }
@@ -146,6 +146,31 @@ struct HeartRateChart: View {
         init(timestamp: Date, value: UInt8) {
             self.timestamp = timestamp
             self.value = value
+        }
+    }
+    
+    private struct ClipShape: Shape {
+        
+        let start: UInt8
+        let end: UInt8
+        let min: UInt8
+        let max: UInt8
+        
+        func path(in rect: CGRect) -> Path {
+            let min = CGFloat(min), max = CGFloat(max), start = CGFloat(start), end = CGFloat(end)
+            let relativeOriginY = (max - start) / (max - min)
+            let relativeHeight = (end - start) / (max - min)
+            let originX = rect.origin.x
+            var originY = rect.origin.y + relativeOriginY * rect.size.height
+            let width = rect.size.width
+            var height = relativeHeight * rect.size.height
+            let cornerRadius = width / 2
+            originY -= cornerRadius
+            height += width
+            let origin = CGPoint(x: originX, y: originY)
+            let size = CGSize(width: width, height: height)
+            let newRect = CGRect(origin: origin, size: size)
+            return .init(roundedRect: newRect, cornerRadius: cornerRadius)
         }
     }
 }
