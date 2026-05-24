@@ -148,9 +148,9 @@ struct WorkoutDetailScene: View {
     
     @ViewBuilder private var heartRateSection: some View {
         if let endDate = workout.endDate, let sectionedHeartRates, !sectionedHeartRates.isEmpty {
-            section("workout_detail_section_heart_rate") {
+            section("heart_rate") {
                 metricGrid(with: [.averageHeartRate, .maximumHeartRate])
-                LabeledContent("workout_detail_section_heart_rate") {
+                LabeledContent("heart_rate") {
                     HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: workout.startDate...endDate)
                         .frame(height: chartHeight)
                 }
@@ -181,13 +181,15 @@ struct WorkoutDetailScene: View {
     @ViewBuilder private var routeSection: some View {
         if let sectionedRoute, !sectionedRoute.isEmpty {
             section("workout_detail_section_route", contentPadding: .small) {
-                StaticWorkoutMap(
-                    identifier: workout.id,
-                    coordinates: sectionedRoute.flatMap({ $0.elements.map(\.coordinate) }),
-                    accentColor: .accent
-                )
-                .frame(height: 300)
-                .clipShape(.containerRelative)
+                Button(action: openMap) {
+                    StaticWorkoutMap(
+                        identifier: workout.id,
+                        coordinates: sectionedRoute.flatMap({ $0.elements.map(\.coordinate) }),
+                        accentColor: .accent
+                    )
+                    .frame(height: 300)
+                    .clipShape(.containerRelative)
+                }
             }
         }
     }
@@ -267,6 +269,10 @@ struct WorkoutDetailScene: View {
     
     private func edit() {
         mainRouter.currentSheet = .workoutEdit(id: workout.id)
+    }
+    
+    private func openMap() {
+        mainRouter.currentSheet = .workoutMap(id: workout.id)
     }
     
     private func delete() {

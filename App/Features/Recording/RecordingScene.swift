@@ -130,7 +130,7 @@ struct RecordingScene: View {
                 .tint(.primary)
             if #available(iOS 26.0, *) {
                 button
-                    .font(.title2.weight(.medium))
+                    .font(.title2)
                     .frame(width: 44, height: 44)
                     .glassEffect(.regular.interactive(), in: .circle)
                     .padding(.large)

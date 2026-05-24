@@ -48,6 +48,8 @@ struct MainScene: View {
                     NavigationStack {
                         QueriedWorkoutDetailScene(id: workoutID)
                     }
+                case .workoutMap(let workoutID):
+                    WorkoutMapScene(id: workoutID)
                 case .workoutEdit(let workoutID):
                     NavigationStack {
                         if let workoutID {

@@ -7,6 +7,7 @@ enum MainSheetDestination: Hashable, Identifiable {
     case recording
     case settings
     case workoutDetails(id: Workout.ID)
+    case workoutMap(id: Workout.ID)
     case workoutEdit(id: Workout.ID?)
     
     var id: Int { hashValue }

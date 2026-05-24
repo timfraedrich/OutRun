@@ -14,11 +14,11 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
     private let pauseIndicatorYRange: ClosedRange<Value>?
     private let valueLabelKey: LocalizedStringKey
     
+    @Binding private var selectedDate: Date?
     @State private var visibleStartDate: Date
     @State private var visibleDomainLength: TimeInterval
     @State private var pendingMagnification: CGFloat = 1
     @State private var lastPanTranslation: CGFloat = 0
-    @State private var selectedDate: Date?
     @State private var isSelecting: Bool = false
     
     private var totalDuration: TimeInterval { dateRange.lowerBound.distance(to: dateRange.upperBound) }
@@ -213,8 +213,10 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
         _ valueLabelKey: LocalizedStringKey,
         sectionedSamples: CategorizedArray<Bool, Sample>,
         dateRange: ClosedRange<Date>,
-        pauses: [any WorkoutPauseProtocol] = []
+        pauses: [any WorkoutPauseProtocol] = [],
+        selection: Binding<Date?> = .variable(nil)
     ) {
+        self._selectedDate = selection
         let activeSeries: [Series] = sectionedSamples.compactMap { active, samples in
             guard active else { return nil }
             return .init(active: active, items: samples.compactMap { sample in
@@ -279,9 +281,10 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
         _ valueLabelKey: LocalizedStringKey,
         samples: [Sample],
         dateRange: ClosedRange<Date>,
-        pauses: [any WorkoutPauseProtocol] = []
+        pauses: [any WorkoutPauseProtocol] = [],
+        selection: Binding<Date?> = .variable(nil)
     ) {
-        self.init(valueLabelKey, sectionedSamples: [(true, samples)], dateRange: dateRange, pauses: pauses)
+        self.init(valueLabelKey, sectionedSamples: [(true, samples)], dateRange: dateRange, pauses: pauses, selection: selection)
     }
     
     private struct Series: Identifiable {

@@ -504,7 +504,7 @@ struct WorkoutEditScene: View {
             switch self {
             case .altitude: "altitude"
             case .speed: "speed"
-            case .heartRate: "workout_detail_section_heart_rate"
+            case .heartRate: "heart_rate"
             }
         }
     }
