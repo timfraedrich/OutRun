@@ -16,20 +16,25 @@ struct MainScene: View {
     var body: some View {
         @Bindable var mainRouter = mainRouter
         NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: .regular) {
-                    listGreetingView
-                    grantPermissionViews
-                    if finishedWorkouts.isEmpty {
-                        emptyWorkoutsView
-                    } else {
-                        workoutCards
-                        calendarLink
+            GeometryReader { proxy in
+                ScrollView {
+                    container {
+                        listGreetingView
+                        grantPermissionViews
+                        if finishedWorkouts.isEmpty {
+                            emptyWorkoutsView.frame(maxHeight: .infinity)
+                        } else {
+                            workoutCards
+                            if finishedWorkouts.count > 3 {
+                                calendarLink
+                            }
+                        }
                     }
+                    .padding(.horizontal, .regular)
+                    .frame(height: finishedWorkouts.isEmpty ? proxy.frame(in: .local).height : .none)
                 }
-                .padding(.horizontal, .regular)
-                .backgroundStyle(Color(.secondarySystemGroupedBackground))
             }
+            .backgroundStyle(Color(.secondarySystemGroupedBackground))
             .background(Color(.systemGroupedBackground))
             .customBottomSafeAreaBar(content: bottomSafeAreaBarContent)
             .navigationBarTitleDisplayMode(.inline)
@@ -146,6 +151,15 @@ struct MainScene: View {
                 .opacity(largeTitleVisible ?? true ? 0 : 1)
                 .offset(y: largeTitleVisible ?? true ? Spacing.small.rawValue : 0)
                 .animation(.spring(duration: 0.1), value: largeTitleVisible)
+        }
+    }
+    
+    @ViewBuilder
+    private func container(@ViewBuilder _ content: () -> some View) -> some View {
+        if finishedWorkouts.isEmpty {
+            VStack(spacing: .regular, content: content)
+        } else {
+            LazyVStack(spacing: .regular, content: content)
         }
     }
     
