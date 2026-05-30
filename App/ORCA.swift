@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 
 @main
-struct App: SwiftUI.App {
+struct ORCA: App {
     
     @State private var core: OutRunCore
     @State private var backupService: BackupService
