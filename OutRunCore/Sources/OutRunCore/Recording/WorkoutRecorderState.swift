@@ -163,7 +163,7 @@ class WorkoutRecorderState {
         else { return (nil, nil) }
         var pause: RawWorkoutPause? = nil
         // TODO: Improve auto pause functionality.
-        if let thresholds = workoutType.automaticPauseThresholds, location.speed >= 0 {
+        if userPreferences.pauseAutomatically, let thresholds = workoutType.automaticPauseThresholds, location.speed >= 0 {
             if automaticallyPausedSince == nil, location.speed < thresholds.pauseThreshold {
                 pause = try self.pause(manual: false, on: location.timestamp)
             } else if automaticallyPausedSince != nil, location.speed > thresholds.resumeThreshold {

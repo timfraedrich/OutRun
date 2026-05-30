@@ -27,4 +27,5 @@ public enum UserPreferenceKeys {
     public static let defaultWorkoutType = preferenceKey(for: "defaultWorkoutType")
     public static let requiredGPSAccuracy = preferenceKey(for: "requiredGPSAccuracy")
     public static let calculateRollingSpeed = preferenceKey(for: "calculateRollingSpeed")
+    public static let pauseAutomatically = preferenceKey(for: "pauseAutomatically")
 }

@@ -49,10 +49,10 @@ public class UserPreferences {
         return try? JSONDecoder().decode(T.self, from: preferenceData)
     }
     
-    /// - note: returns `false` in the event of a decoding failure or the value missing from the bare preferences dictionary.
-    public func value(for key: String) -> Bool {
-        guard let preferenceData = preferences[key] else { return false }
-        return (try? JSONDecoder().decode(Bool.self, from: preferenceData)) ?? false
+    /// - note: returns `defaultValue` in the event of a decoding failure or the value missing from the bare preferences dictionary.
+    public func value(for key: String, defaultValue: Bool = false) -> Bool {
+        guard let preferenceData = preferences[key] else { return defaultValue }
+        return (try? JSONDecoder().decode(Bool.self, from: preferenceData)) ?? defaultValue
     }
     
     // MARK: Setter
@@ -201,9 +201,17 @@ public class UserPreferences {
     
     /// Indicates whether the ``WorkoutRecorder`` should calculate it's ``WorkoutRecorder/speed`` measurement based on the last kilometer of
     /// route data or just on the last available location. The former of which will provide a more stable value while the latter will be
-    /// most accurate for displaying the current value.
+    /// most accurate for displaying the current speed. The default value is `false`.
     public var calculateRollingSpeed: Bool {
         get { value(for: UserPreferenceKeys.calculateRollingSpeed) }
         set { setValue(newValue, for: UserPreferenceKeys.calculateRollingSpeed) }
+    }
+    
+    /// Indicates whether the ``WorkoutRecorder`` should pause recording automatically if the speed falls below a certain threshold. This
+    /// setting only applies to workouts with a type that has ``WorkoutType/supportsAutomaticPause`` set to true. The default value for this
+    /// preference is `true`.
+    public var pauseAutomatically: Bool {
+        get { value(for: UserPreferenceKeys.pauseAutomatically, defaultValue: true) }
+        set { setValue(newValue, for: UserPreferenceKeys.pauseAutomatically) }
     }
 }

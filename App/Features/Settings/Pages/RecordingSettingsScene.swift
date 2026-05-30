@@ -40,9 +40,24 @@ struct RecordingSettingsScene: View {
                 Text("recording_settings_gps_accuracy")
             }
 
-            Toggle("recording_settings_rolling_speed", isOn: $userPreferences.calculateRollingSpeed)
+            descriptiveSetting(description: "recording_settings_rolling_speed_description") {
+                Toggle("recording_settings_rolling_speed", isOn: $userPreferences.calculateRollingSpeed)
+            }
+            
+            descriptiveSetting(description: "recording_settings_pause_automatically_description") {
+                Toggle("recording_settings_pause_automatically", isOn: $userPreferences.pauseAutomatically)
+            }
 
         }
+        .safeAreaPadding(.top, .regular)
         .navigationTitle("recording_settings")
+    }
+    
+    @ViewBuilder
+    private func descriptiveSetting<C: View>(description: LocalizedStringKey, @ViewBuilder _ content: () -> C) -> some View {
+        VStack(alignment: .leading, spacing: .regular) {
+            content()
+            Text(description).font(.footnote).opacity(0.6)
+        }
     }
 }
