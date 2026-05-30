@@ -94,10 +94,17 @@ struct RecordingScene: View {
                     verbatim: WorkoutMetric.activeDuration.description,
                     metricValue: duration
                 )
-                WorkoutMetricLabeledContent(
-                    verbatim: WorkoutMetric.pace.description,
-                    metricValue: .paceMeasurement(recorder.speed)
-                )
+                if recorder.workoutType == .cycling || recorder.workoutType == .skating {
+                    WorkoutMetricLabeledContent(
+                        verbatim: .init(localized: "speed"),
+                        metricValue: .speedMeasurement(recorder.speed)
+                    )
+                } else {
+                    WorkoutMetricLabeledContent(
+                        verbatim: WorkoutMetric.pace.description,
+                        metricValue: .paceMeasurement(recorder.speed)
+                    )
+                }
                 WorkoutMetricLabeledContent(
                     verbatim: WorkoutMetric.energy.description,
                     metricValue: .energyMeasurement(recorder.energy)
