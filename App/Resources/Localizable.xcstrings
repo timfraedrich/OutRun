@@ -3968,6 +3968,86 @@
         }
       }
     },
+    "recording_settings_pause_automatically" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch Pausieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause Automatically"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause Automatically"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausar automáticamente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause automatique"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch pauzeren"
+          }
+        }
+      }
+    },
+    "recording_settings_pause_automatically_description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn diese Option an ist, wird die Aufzeichnung eines Workouts automatisch pausiert, wenn deine Geschwindigkeit unter eine bestimmte Schwelle fällt, und fortgesetzt, wenn deine Geschwindigkeit wieder steigt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If this option is enabled, the workout will be paused automatically if your speed drops below a certain threshold and resumes if your speed rises again."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If this option is enabled, the workout will be paused automatically if your speed drops below a certain threshold and resumes if your speed rises again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si esta opción está activada, el entrenamiento se pausará automáticamente cuando tu velocidad caiga por debajo de cierto umbral y se reanudará cuando vuelva a subir."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si cette option est activée, l'entraînement sera automatiquement mis en pause lorsque ta vitesse descend sous un certain seuil et reprendra lorsque ta vitesse remontera."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als deze optie is ingeschakeld, wordt de training automatisch gepauzeerd wanneer je snelheid onder een bepaalde drempel zakt en hervat wanneer je snelheid weer stijgt."
+          }
+        }
+      }
+    },
     "recording_settings_rolling_speed" : {
       "comment" : "Toggle in recording settings that enables calculation of a rolling (moving) average speed, smoothing out speed fluctuations by averaging over a sliding time window.",
       "localizations" : {
@@ -4005,6 +4085,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voortschrijdende snelheid"
+          }
+        }
+      }
+    },
+    "recording_settings_rolling_speed_description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Während der Aufnahme wird normalerweise die GPS-Geschwindigkeit direkt angezeigt. Wenn diese Option an ist, wird stattdessen ein Durchschnittswert über den letzten Kilometer angezeigt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Normally, during recording, the speed provided by the Global Positioning System (GPS) is shown as is. If you enable this option, the speed shown will be an average over the last kilometer."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Normally, during recording, the speed provided by the Global Positioning System (GPS) is shown as is. If you enable this option, the speed shown will be an average over the last kilometre."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Normalmente, durante la grabación, se muestra directamente la velocidad proporcionada por el Sistema de Posicionamiento Global (GPS). Si activas esta opción, la velocidad mostrada será un promedio del último kilómetro."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Normalement, pendant l'enregistrement, la vitesse fournie par le Système de Positionnement Global (GPS) est affichée telle quelle. Si tu actives cette option, la vitesse affichée sera une moyenne sur le dernier kilomètre."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tijdens de opname wordt normaal gesproken de snelheid van het Global Positioning System (GPS) direct weergegeven. Als je deze optie inschakelt, wordt in plaats daarvan een gemiddelde over de laatste kilometer getoond."
           }
         }
       }
