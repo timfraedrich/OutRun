@@ -15,6 +15,7 @@ struct CacheSettingsScene: View {
                 .foregroundStyle(.tint)
                 .tint(.red)
         }
+        .safeAreaPadding(.top, .regular)
         .navigationTitle("cache")
     }
     

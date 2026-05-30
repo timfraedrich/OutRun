@@ -23,6 +23,7 @@ struct HealthSettingsScene: View {
                 exportSection(for: healthSyncService)
                 importSection(for: healthSyncService)
             }
+            .safeAreaPadding(.top, .regular)
             .navigationTitle("apple_health")
             .pickerStyle(.inline)
         } else {

@@ -40,6 +40,7 @@ struct ProfileScene: View {
                 Text("user_sex")
             }
         }
+        .safeAreaPadding(.top, .regular)
         .multilineTextAlignment(.trailing)
         .navigationTitle("user_profile")
         .toolbar {

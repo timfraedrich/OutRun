@@ -30,6 +30,7 @@ struct BackupSettingsScene: View {
                 fileImporterOnCompletion: processImportResult
             )
         }
+        .safeAreaPadding(.top, .regular)
         .navigationBarBackButtonHidden(processInProgress)
         .interactiveDismissDisabled(processInProgress)
         .navigationTitle("backup")

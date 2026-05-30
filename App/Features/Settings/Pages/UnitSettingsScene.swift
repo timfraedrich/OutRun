@@ -49,6 +49,7 @@ struct UnitSettingsScene: View {
                 Text("unit_settings_weight_unit")
             }
         }
+        .safeAreaPadding(.top, .regular)
         .navigationTitle("unit_settings")
     }
     

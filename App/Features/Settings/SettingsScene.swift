@@ -36,6 +36,7 @@ struct SettingsScene: View {
                 legalSection
                 infoSection
             }
+            .safeAreaPadding(.top, .regular)
             .navigationTitle("settings")
             .toolbar(content: toolbarContent)
             .navigationDestination(for: SettingsDestination.self) { destination in
