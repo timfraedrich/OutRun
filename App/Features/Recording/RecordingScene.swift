@@ -8,6 +8,7 @@ struct RecordingScene: View {
     @Environment(OutRunCore.self) private var core: OutRunCore
     @Environment(\.dismiss) private var dismiss
     @Bindable private var recorder: WorkoutRecorder
+    @State private var confirmClose: Bool = false
     @State private var error: Error?
     
     private var errorIsPresented: Binding<Bool> {
@@ -45,6 +46,7 @@ struct RecordingScene: View {
             .safeAreaInset(edge: .bottom, content: informationCard)
             .ignoresBottomSafeAreaOnIOS26OrLater()
             .toolbarVisibility(.hidden, for: .navigationBar)
+            .interactiveDismissDisabled(recorder.status.isCollectingData)
             .alert(error?.localizedDescription ?? .init(localized: "error"), isPresented: errorIsPresented) {
                 Button("ok") {}
             }
@@ -130,24 +132,43 @@ struct RecordingScene: View {
     
     @ViewBuilder
     private func closeButtonContent() -> some View {
+        let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
         HStack {
             Spacer()
-            let button = Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
-                .labelStyle(.iconOnly)
-                .tint(.primary)
-            if #available(iOS 26.0, *) {
-                button
-                    .font(.title2)
-                    .frame(width: 44, height: 44)
-                    .glassEffect(.regular.interactive(), in: .circle)
-                    .padding(.large)
+            if recorder.status.isCollectingData {
+                Menu {
+                    Button("recording_minimize", systemImage: "arrow.down.right.and.arrow.up.left", action: dismiss.callAsFunction)
+                    Button("recording_end", systemImage: "stop.fill", role: .destructive) {
+                        errorHandledAsyncAction {
+                            _ = try await recorder.endRecording()
+                            dismiss()
+                        }
+                    }
+                } label: {
+                    closeButton
+                }
             } else {
-                button
-                    .font(.title)
-                    .symbolVariant(.circle.fill)
-                    .symbolRenderingMode(.hierarchical)
-                    .padding(.regular)
+                closeButton
             }
+        }
+        .padding(padding)
+    }
+    
+    @ViewBuilder
+    private var closeButton: some View {
+        let button = Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
+            .labelStyle(.iconOnly)
+            .tint(.primary)
+        if #available(iOS 26.0, *) {
+            button
+                .font(.title2)
+                .frame(width: 44, height: 44)
+                .glassEffect(.regular.interactive(), in: .circle)
+        } else {
+            button
+                .font(.title)
+                .symbolVariant(.circle.fill)
+                .symbolRenderingMode(.hierarchical)
         }
     }
     

@@ -19,7 +19,7 @@ struct RecordingButtons: View {
     }
     
     @ViewBuilder private var startEndButton: some View {
-        ActionButton(isRecording ? "recording_end" : "recording_start", action: startEndAction)
+        ActionButton(isRecording ? "recording_end_short" : "recording_start_short", action: startEndAction)
     }
     
     @ViewBuilder private var pauseResumeButton: some View {

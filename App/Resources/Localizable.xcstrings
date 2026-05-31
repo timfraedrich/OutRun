@@ -3767,6 +3767,46 @@
       }
     },
     "recording_end" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufnahme beenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Recording"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Recording"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finalizar grabación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminer l'enregistrement"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opname stoppen"
+          }
+        }
+      }
+    },
+    "recording_end_short" : {
       "comment" : "Button label to end/finish a workout recording session.",
       "localizations" : {
         "de" : {
@@ -3803,6 +3843,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stoppen"
+          }
+        }
+      }
+    },
+    "recording_minimize" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimize"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimise"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimizar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réduire"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimaliseren"
           }
         }
       }
@@ -4129,7 +4209,7 @@
         }
       }
     },
-    "recording_start" : {
+    "recording_start_short" : {
       "comment" : "Button label to start a workout recording session.",
       "localizations" : {
         "de" : {
