@@ -10,6 +10,7 @@ struct WorkoutDetailScene: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @State private var error: Error?
+    @State private var confirmDelete: Bool = false
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
     @State private var sectionedHeartRates: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>?
     private let workout: any WorkoutProtocol
@@ -248,9 +249,16 @@ struct WorkoutDetailScene: View {
     @ViewBuilder private var actionSection: some View {
         VStack(spacing: .regular) {
             ActionButton("edit", systemImage: "pencil", prominent: false, action: edit)
-            ActionButton("delete", systemImage: "trash", action: delete)
-                .errorPopover($error)
-                .tint(.red)
+            ActionButton("delete", systemImage: "trash") {
+                confirmDelete = true
+            }
+            .tint(.red)
+            .errorPopover($error)
+            .confirmationDialog("workout_detail_delete_confirmation_title", isPresented: $confirmDelete) {
+                Button("delete", role: .destructive, action: delete)
+            } message: {
+                Text("workout_detail_delete_confirmation_message")
+            }
         }
         .padding(.regular)
     }

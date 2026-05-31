@@ -8,7 +8,6 @@ struct RecordingScene: View {
     @Environment(OutRunCore.self) private var core: OutRunCore
     @Environment(\.dismiss) private var dismiss
     @Bindable private var recorder: WorkoutRecorder
-    @State private var confirmClose: Bool = false
     @State private var error: Error?
     
     private var errorIsPresented: Binding<Bool> {
