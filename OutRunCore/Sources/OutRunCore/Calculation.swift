@@ -233,13 +233,12 @@ public enum Calculation {
         from sectionedSamples: CategorizedArray<Bool, Sample>?,
         for valueKeyPath: KeyPath<Sample, Value>,
         and timestampKeyPath: KeyPath<Sample, Date>,
-        mapping: (Value) -> MappedValue
+        mapping: (Value) -> MappedValue?
     ) -> SectionedValues<MappedValue>? {
         guard let sectionedSamples, !sectionedSamples.isEmpty else { return nil }
         let result: SectionedValues<MappedValue> = sectionedSamples.compactMap { active, samples in
             let filteredValues = samples.compactMap { sample -> (Date, MappedValue)? in
-                let value = mapping(sample[keyPath: valueKeyPath])
-                guard value >= 0 else { return nil }
+                guard let value = mapping(sample[keyPath: valueKeyPath]) else { return nil }
                 return (sample[keyPath: timestampKeyPath], value)
             }
             guard !filteredValues.isEmpty else { return nil }
@@ -257,6 +256,19 @@ public enum Calculation {
     ) -> SectionedValues<Float>?{
         calculateSectionedValues(from: sectionedSamples, for: valueKeyPath, and: timestampKeyPath) { value in
             Float(Measurement(value: Double(value), unit: sourceUnit).converted(to: destinationUnit).value)
+        }
+    }
+    
+    public static func calculateSectionedValues<Sample, Unit: Dimension>(
+        from sectionedSamples: CategorizedArray<Bool, Sample>?,
+        for valueKeyPath: KeyPath<Sample, Float?>,
+        and timestampKeyPath: KeyPath<Sample, Date>,
+        sourceUnit: Unit,
+        destinationUnit: Unit
+    ) -> SectionedValues<Float>?{
+        calculateSectionedValues(from: sectionedSamples, for: valueKeyPath, and: timestampKeyPath) { value in
+            guard let value else { return nil }
+            return Float(Measurement(value: Double(value), unit: sourceUnit).converted(to: destinationUnit).value)
         }
     }
     

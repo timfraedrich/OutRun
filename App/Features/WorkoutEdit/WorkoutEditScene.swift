@@ -119,7 +119,7 @@ struct WorkoutEditScene: View {
     private var sectionedAltitudes: Calculation.SectionedValues<Float>? {
         Calculation.calculateSectionedValues(
             from: sectionedRoute,
-            for: \.altitude,
+            for: \.validatedAltitude,
             and: \.timestamp,
             sourceUnit: .meters,
             destinationUnit: userPreferences.safeAltitudeUnit()
@@ -129,7 +129,7 @@ struct WorkoutEditScene: View {
     private var sectionedSpeeds: Calculation.SectionedValues<Float>? {
         Calculation.calculateSectionedValues(
             from: sectionedRoute,
-            for: \.speed,
+            for: \.validatedSpeed,
             and: \.timestamp,
             sourceUnit: .metersPerSecond,
             destinationUnit: userPreferences.safeSpeedUnit()

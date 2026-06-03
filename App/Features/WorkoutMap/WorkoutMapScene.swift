@@ -232,14 +232,14 @@ struct WorkoutMapScene: View {
             dateRange = startDate...endDate
             sectionedAltitudes = Calculation.calculateSectionedValues(
                 from: sectionedRoute,
-                for: \.altitude,
+                for: \.validatedAltitude,
                 and: \.timestamp,
                 sourceUnit: .meters,
                 destinationUnit: userPreferences.safeAltitudeUnit()
             )
             sectionedSpeeds = Calculation.calculateSectionedValues(
                 from: sectionedRoute,
-                for: \.speed,
+                for: \.validatedSpeed,
                 and: \.timestamp,
                 sourceUnit: .metersPerSecond,
                 destinationUnit: userPreferences.safeSpeedUnit()
