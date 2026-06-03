@@ -260,8 +260,12 @@ class WorkoutRecorderState {
             } else {
                 try transition(to: .recording)
                 lastResumeDate = date
-                logger.info("Resumed recording automatically.")
-                return RawWorkoutPause(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
+                if automaticallyPausedSince.distance(to: date) >= 5 {
+                    logger.info("Resumed recording automatically.")
+                    return RawWorkoutPause(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
+                } else {
+                    logger.info("Resumed recording automatically and discarded pause due to low duration.")
+                }
             }
         }
         return nil
