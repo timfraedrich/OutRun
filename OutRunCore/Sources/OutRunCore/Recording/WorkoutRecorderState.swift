@@ -10,6 +10,10 @@ class WorkoutRecorderState {
     
     typealias Status = WorkoutRecorderStatus
     
+    private static let minimumDistance: CLLocationDistance = 5
+    private static let minimumTimeDifference: TimeInterval = 0.5
+    private static let maximumTimeDifference: TimeInterval = 10
+    
     private let logger = Logger(category: "WorkoutRecorderState")
     @ObservationIgnored private let userPreferences: UserPreferences
     
@@ -180,6 +184,9 @@ class WorkoutRecorderState {
         } else {
             .zero
         }
+        guard addedDuration >= Self.minimumTimeDifference
+                && (addedDistance > Self.minimumDistance || addedDuration > Self.maximumTimeDifference)
+        else { return (nil, nil) }
         route.append(location.coordinate)
         rollingSpeedSamples.append((addedDistance, addedDuration))
         var newRollingDistance = rollingDistance + addedDistance
