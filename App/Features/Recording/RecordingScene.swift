@@ -10,6 +10,7 @@ struct RecordingScene: View {
     @Environment(OutRunCore.self) private var core: OutRunCore
     @Environment(\.dismiss) private var dismiss
     @Bindable private var recorder: WorkoutRecorder
+    @State private var keepUserCentered: Bool = true
     @State private var error: Error?
     
     private let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
@@ -44,7 +45,7 @@ struct RecordingScene: View {
     // MARK: Views
     
     var body: some View {
-        WorkoutMap(mapStyle: .standard, padding: padding) {
+        WorkoutMap(keepUserCentered: $keepUserCentered, padding: padding) {
             UserAnnotation()
             if !recorder.route.isEmpty {
                 MapPolyline(coordinates: recorder.route, contourStyle: .geodesic)
@@ -142,6 +143,9 @@ struct RecordingScene: View {
     @ViewBuilder
     private func closeButtonContent() -> some View {
         HStack {
+            if !keepUserCentered {
+                keepUserCenteredButton
+            }
             Spacer()
             if recorder.status.isCollectingData {
                 Menu {
@@ -162,8 +166,28 @@ struct RecordingScene: View {
         .padding(padding)
     }
     
-    @ViewBuilder
-    private var closeButton: some View {
+    @ViewBuilder private var keepUserCenteredButton: some View {
+        let button = Button("center", systemImage: "location.fill.viewfinder") {
+            withAnimation {
+                keepUserCentered = true
+            }
+        }
+        .tint(.primary)
+        if #available(iOS 26.0, *) {
+            button
+                .font(.headline)
+                .frame(height: 44)
+                .padding(.horizontal, .regular)
+                .glassEffect(.regular.interactive(), in: .capsule)
+        } else {
+            button
+                .buttonStyle(.bordered)
+                .font(.headline)
+                .symbolRenderingMode(.hierarchical)
+        }
+    }
+    
+    @ViewBuilder private var closeButton: some View {
         let button = Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
             .labelStyle(.iconOnly)
             .tint(.primary)

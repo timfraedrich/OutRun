@@ -58,7 +58,7 @@ struct WorkoutMapScene: View {
     }
     
     var body: some View {
-        WorkoutMap(mapStyle: mapStyleSelection.style, padding: padding) {
+        WorkoutMap(keepUserCentered: .constant(false), style: mapStyleSelection.style, padding: padding) {
             ForEach(routeSections) { section in
                 let color: Color = section.active ? .accentColor : .gray.opacity(0.75)
                 MapPolyline(coordinates: section.coordinates, contourStyle: .geodesic)

@@ -5,21 +5,33 @@ import SwiftUI
 struct WorkoutMap<Content: MapContent>: View {
     
     @Namespace private var mapScope
-    private let mapStyle: MapStyle
+    @State private var lastSetPosition: MapCameraPosition = .automatic
+    @Binding private var keepUserCentered: Bool
+    private let style: MapStyle
     private let padding: Spacing
     private let content: () -> Content
     
-    init(mapStyle: MapStyle, padding: Spacing, @MapContentBuilder content: @escaping () -> Content) {
-        self.mapStyle = mapStyle
+    private var position: Binding<MapCameraPosition> {
+        .init {
+            keepUserCentered ? .userLocation(fallback: .automatic) : lastSetPosition
+        } set: { position in
+            lastSetPosition = position
+            keepUserCentered = false
+        }
+    }
+    
+    init(keepUserCentered: Binding<Bool>, style: MapStyle = .standard, padding: Spacing, @MapContentBuilder content: @escaping () -> Content) {
+        self._keepUserCentered = keepUserCentered
+        self.style = style
         self.padding = padding
         self.content = content
     }
     
     var body: some View {
         ZStack {
-            Map(scope: mapScope, content: content)
+            Map(position: position, scope: mapScope, content: content)
                 .mapControls(EmptyView.init)
-                .mapStyle(mapStyle)
+                .mapStyle(style)
             MapScaleView(scope: mapScope)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.regular)
