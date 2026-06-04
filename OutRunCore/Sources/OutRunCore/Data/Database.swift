@@ -191,7 +191,8 @@ actor Database: ModelActor {
                 let user = try modelContext.fetch(descriptor).first.map(RawUser.init)
                 continuation.yield(user)
                 var lastUser: RawUser? = user
-                for await _ in NotificationCenter.default.notifications(named: ModelContext.didSave) where !Task.isCancelled {
+                let didSaveSequence = NotificationCenter.default.notifications(named: ModelContext.didSave).buffer(policy: .unbounded)
+                for await _ in didSaveSequence where !Task.isCancelled {
                     let user = try modelContext.fetch(descriptor).first.map(RawUser.init)
                     guard user != lastUser else { continue }
                     continuation.yield(user)
