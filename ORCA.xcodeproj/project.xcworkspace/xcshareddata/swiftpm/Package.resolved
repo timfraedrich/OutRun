@@ -1,5 +1,5 @@
 {
-  "originHash" : "7e472f73ce2efbcf5f9e5b693a78db9f38a9e0adfa37951e1983a63cd32b6ce1",
+  "originHash" : "5da81386fd752cf416d592272c8d79a93463df263b78d49a66d613f7b88517a3",
   "pins" : [
     {
       "identity" : "apikit",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mono0926/LicensePlist",
       "state" : {
-        "revision" : "f46478af22e096f61687d0c290b1f68b38c70450",
-        "version" : "3.27.8"
+        "revision" : "faa1f63e0bb0fb40bb49a29172c082b8d897558c",
+        "version" : "3.27.9"
       }
     },
     {
@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "626b5b7b2f45e1b0b1c6f4a309296d1d21d7311b",
-        "version" : "1.7.1"
+        "revision" : "ca37474853a4b5f59a22c74bfdd449b1f6bc4cc2",
+        "version" : "1.8.1"
       }
     },
     {
@@ -114,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "a012e0ad8a8a72de92b0e008c81a9b793f70e73a",
-        "version" : "1.12.1"
+        "revision" : "2aed77ae5ec9a86d8fe42c12275e4c2653a286ee",
+        "version" : "1.13.1"
       }
     },
     {
@@ -177,8 +177,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jpsim/Yams.git",
       "state" : {
-        "revision" : "deaf82e867fa2cbd3cd865978b079bfcf384ac28",
-        "version" : "6.2.1"
+        "revision" : "a27b21e0c81c5bf42049b897a62aaf387e80f279",
+        "version" : "6.2.2"
       }
     },
     {
