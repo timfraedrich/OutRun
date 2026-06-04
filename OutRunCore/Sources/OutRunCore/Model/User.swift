@@ -6,7 +6,7 @@ public class User: UserProtocol {
     
     @Attribute(.unique, .preserveValueOnDeletion) public var id: UUID?
     public var name: String
-    public var birthday: Day?
+    public var rawBirthday: String?
     public var weight: Double?
     public var sex: Sex?
     
@@ -14,6 +14,11 @@ public class User: UserProtocol {
     
     public private(set) var creationDate: Date
     public var lastEditDate: Date
+    
+    public var birthday: Day? {
+        get { rawBirthday.flatMap(Day.init(rawValue:)) }
+        set { rawBirthday = newValue?.rawValue }
+    }
     
     public init(
         id: UUID? = nil,
@@ -27,7 +32,7 @@ public class User: UserProtocol {
     ) {
         self.id = id
         self.name = name
-        self.birthday = birthday
+        self.rawBirthday = birthday?.rawValue
         self.weight = weight
         self.sex = sex
         self.preferences = preferences

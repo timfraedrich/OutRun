@@ -1,9 +1,10 @@
 import Foundation
 
-public struct Day: Codable, CustomDebugStringConvertible, CustomStringConvertible, Hashable, Sendable {
+public struct Day: RawRepresentable, Codable, CustomDebugStringConvertible, CustomStringConvertible, Hashable, Sendable {
     
     public let dayIdentifier: String
     
+    public var rawValue: String { dayIdentifier }
     public var description: String { dayIdentifier.description }
     public var debugDescription: String { dayIdentifier.debugDescription }
     
@@ -17,6 +18,10 @@ public struct Day: Codable, CustomDebugStringConvertible, CustomStringConvertibl
     public init(dayIdentifier: String) throws {
         guard Self.dateFormatter().date(from: dayIdentifier) != nil else { throw ConversionError() }
         self.dayIdentifier = dayIdentifier
+    }
+    
+    public init?(rawValue: String) {
+        try? self.init(dayIdentifier: rawValue)
     }
     
     public init(from date: Date) {

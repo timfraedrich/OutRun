@@ -287,10 +287,6 @@ actor Database: ModelActor {
                     if #available(iOS 26, *) {
                         descriptor.sortBy = [sortDescriptor]
                     }
-                    // TODO: (CRITICAL) This fetch results in a crash if any optional codable row of a swift data object gets modified and
-                    // this change gets fetched. The only resource I could find regarding this issue is this forum post from around a year
-                    // ago: https://developer.apple.com/forums/thread/784036 To resolve this issue, there either needs to be a workaround or
-                    // we need to change the affected models. (User in this instance)
                     var history = try context.fetchHistory(descriptor)
                     if #unavailable(iOS 26) {
                         history.sort(using: sortDescriptor)
