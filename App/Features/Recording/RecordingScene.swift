@@ -1,14 +1,18 @@
 import CoreLocation
+import MapKit
 import OutRunCore
 import SwiftData
 import SwiftUI
 
 struct RecordingScene: View {
     
+    @Environment(\.self) private var environment
     @Environment(OutRunCore.self) private var core: OutRunCore
     @Environment(\.dismiss) private var dismiss
     @Bindable private var recorder: WorkoutRecorder
     @State private var error: Error?
+    
+    private let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
     
     private var errorIsPresented: Binding<Bool> {
         Binding {
@@ -40,15 +44,21 @@ struct RecordingScene: View {
     // MARK: Views
     
     var body: some View {
-        WorkoutRouteMap(coordinates: recorder.route, strokeColor: .accent, showUserLocation: true)
-            .safeAreaInset(edge: .top, content: closeButtonContent)
-            .safeAreaInset(edge: .bottom, content: informationCard)
-            .ignoresBottomSafeAreaOnIOS26OrLater()
-            .toolbarVisibility(.hidden, for: .navigationBar)
-            .interactiveDismissDisabled(recorder.status.isCollectingData)
-            .alert(error?.localizedDescription ?? .init(localized: "error"), isPresented: errorIsPresented) {
-                Button("ok") {}
+        WorkoutMap(mapStyle: .standard, padding: padding) {
+            UserAnnotation()
+            if !recorder.route.isEmpty {
+                MapPolyline(coordinates: recorder.route, contourStyle: .geodesic)
+                    .stroke(.accent.resolve(in: environment), style: .init(lineWidth: 6, lineCap: .round, lineJoin: .round))
             }
+        }
+        .safeAreaInset(edge: .top, content: closeButtonContent)
+        .safeAreaInset(edge: .bottom, content: informationCard)
+        .ignoresBottomSafeAreaOnIOS26OrLater()
+        .toolbarVisibility(.hidden, for: .navigationBar)
+        .interactiveDismissDisabled(recorder.status.isCollectingData)
+        .alert(error?.localizedDescription ?? .init(localized: "error"), isPresented: errorIsPresented) {
+            Button("ok") {}
+        }
     }
     
     @ViewBuilder
@@ -131,7 +141,6 @@ struct RecordingScene: View {
     
     @ViewBuilder
     private func closeButtonContent() -> some View {
-        let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
         HStack {
             Spacer()
             if recorder.status.isCollectingData {

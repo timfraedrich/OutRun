@@ -58,33 +58,19 @@ struct WorkoutMapScene: View {
     }
     
     var body: some View {
-        ZStack {
-            Map(scope: mapScope) {
-                ForEach(routeSections) { section in
-                    let color: Color = section.active ? .accentColor : .gray.opacity(0.75)
-                    MapPolyline(coordinates: section.coordinates, contourStyle: .geodesic)
-                        .stroke(color.resolve(in: environment), style: .init(lineWidth: 6, lineCap: .round, lineJoin: .round))
-                }
-                if let coord = selectedCoordinate {
-                    Annotation("workout_map_selected_location", coordinate: coord) {
-                        selectedLocationMarker
-                    }
-                    .annotationTitles(.hidden)
-                }
+        WorkoutMap(mapStyle: mapStyleSelection.style, padding: padding) {
+            ForEach(routeSections) { section in
+                let color: Color = section.active ? .accentColor : .gray.opacity(0.75)
+                MapPolyline(coordinates: section.coordinates, contourStyle: .geodesic)
+                    .stroke(color.resolve(in: environment), style: .init(lineWidth: 6, lineCap: .round, lineJoin: .round))
             }
-            .mapControls(EmptyView.init)
-            .mapStyle(mapStyleSelection.style)
-            
-            MapScaleView(scope: mapScope)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(.regular)
-            
-            MapCompass(scope: mapScope)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                .padding([.top, .trailing], padding)
-            
+            if let coord = selectedCoordinate {
+                Annotation("workout_map_selected_location", coordinate: coord) {
+                    selectedLocationMarker
+                }
+                .annotationTitles(.hidden)
+            }
         }
-        .mapScope(mapScope)
         .safeAreaInset(edge: .top, content: topBarContent)
         .safeAreaInset(edge: .bottom, content: informationCard)
         .ignoresBottomSafeAreaOnIOS26OrLater()
