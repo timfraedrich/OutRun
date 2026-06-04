@@ -186,6 +186,7 @@ class WorkoutRecorderState {
         }
         guard addedDuration >= Self.minimumTimeDifference
                 && (addedDistance > Self.minimumDistance || addedDuration > Self.maximumTimeDifference)
+                || lastRecordedLocation == nil
         else { return (nil, nil) }
         route.append(location.coordinate)
         rollingSpeedSamples.append((addedDistance, addedDuration))
