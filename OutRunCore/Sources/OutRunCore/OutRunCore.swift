@@ -154,10 +154,14 @@ public class OutRunCore {
     /// - note: This method waits for the core to transition into the `.needsSetup` state before returning.
     public func reset() async throws {
         guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
-        try await database.deleteUser()
-        try await database.deleteAllData()
-        if case .needsSetup = status { return }
-        await wait(for: .needsSetup)
+        status = .initializing
+        do {
+            try await database.deleteAllData()
+            await deinitialize()
+        } catch {
+            status = .initialized
+            throw error
+        }
     }
     
     public func syncService<Service: SyncService>(_ type: Service.Type) -> Service? {
@@ -226,8 +230,11 @@ public class OutRunCore {
     private func startStreamingUserUpdates() throws {
         guard let database else { throw OutRunCoreError.notInitialized }
         Task {
-            let (userStream, task) = try await database.userStream()
+            var task: Task<Void, Never>?
             do {
+                let tuple = try await database.userStream()
+                task = tuple.task
+                let userStream = tuple.stream
                 for try await user in userStream where !Task.isCancelled {
                     if case .failed = status { break }
                     if let user {
@@ -244,7 +251,7 @@ public class OutRunCore {
                 status = .failed(error)
                 logger.critical("Failed streaming user updates: \((error as CustomDebugStringConvertible).debugDescription).")
             }
-            task.cancel()
+            task?.cancel()
         }
     }
     
