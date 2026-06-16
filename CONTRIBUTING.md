@@ -78,7 +78,7 @@ There are no solid rules for contribution yet, that will probably be a community
         var someProperty: SomeObject
 
         /**
-         Functions should always have more detail on what they will do, starting with a good summery
+         Functions should always have more detail on what they will do, starting with a good summary
          - parameter attr1: then a list of the parameters
          - parameter attr2: which should clearly state what they are for
          - returns: and if the function returns it should be described what exactly it returns
