@@ -58,7 +58,11 @@ struct WorkoutMapScene: View {
     }
     
     var body: some View {
-        WorkoutMap(keepUserCentered: .constant(false), style: mapStyleSelection.style, padding: padding) {
+        WorkoutMap(
+            keepUserCentered: .constant(false),
+            style: mapStyleSelection.style,
+            padding: padding
+        ) {
             ForEach(routeSections) { section in
                 let color: Color = section.active ? .accentColor : .gray.opacity(0.75)
                 MapPolyline(coordinates: section.coordinates, contourStyle: .geodesic)
@@ -94,7 +98,7 @@ struct WorkoutMapScene: View {
     
     @ViewBuilder
     private func topBarContent() -> some View {
-        HStack {
+        HStack(spacing: padding) {
             mapButton(closeButton)
             Spacer()
             mapButton(mapStyleMenu)
@@ -276,9 +280,9 @@ struct WorkoutMapScene: View {
         
         var style: MapStyle {
             switch self {
-            case .standard: .standard
-            case .hybrid: .hybrid
-            case .imagery: .imagery
+            case .standard: .standard(elevation: .automatic)
+            case .hybrid: .hybrid(elevation: .flat)
+            case .imagery: .imagery(elevation: .realistic)
             }
         }
     }
