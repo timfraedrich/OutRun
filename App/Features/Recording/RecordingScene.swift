@@ -52,7 +52,7 @@ struct RecordingScene: View {
                     .stroke(.accent.resolve(in: environment), style: .init(lineWidth: 6, lineCap: .round, lineJoin: .round))
             }
         }
-        .safeAreaInset(edge: .top, content: closeButtonContent)
+        .safeAreaInset(edge: .top, content: topBarContent)
         .safeAreaInset(edge: .bottom, content: informationCard)
         .ignoresBottomSafeAreaOnIOS26OrLater()
         .toolbarVisibility(.hidden, for: .navigationBar)
@@ -141,7 +141,7 @@ struct RecordingScene: View {
     }
     
     @ViewBuilder
-    private func closeButtonContent() -> some View {
+    private func topBarContent() -> some View {
         HStack {
             if !keepUserCentered {
                 keepUserCenteredButton
@@ -163,7 +163,7 @@ struct RecordingScene: View {
                 closeButton
             }
         }
-        .padding(padding)
+        .padding([.horizontal, .top], padding)
     }
     
     @ViewBuilder private var keepUserCenteredButton: some View {
