@@ -11,6 +11,7 @@
 		225E0A102FC219B50074232C /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0A0F2FC219B50074232C /* ZIPFoundation */; };
 		225E0A162FC219D60074232C /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0A152FC219D60074232C /* CoreStore */; };
 		225E0B412FC21E370074232C /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0B402FC21E370074232C /* OutRunCore */; };
+		22645EE82FD1C39F0025F234 /* GPXKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22645EE72FD1C39F0025F234 /* GPXKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		225E08F42FC219050074232C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				22645EE82FD1C39F0025F234 /* GPXKit in Frameworks */,
 				225E0A162FC219D60074232C /* CoreStore in Frameworks */,
 				225E0B412FC21E370074232C /* OutRunCore in Frameworks */,
 				225E0A0B2FC219AD0074232C /* Perception in Frameworks */,
@@ -119,6 +121,7 @@
 				225E0A0F2FC219B50074232C /* ZIPFoundation */,
 				225E0A152FC219D60074232C /* CoreStore */,
 				225E0B402FC21E370074232C /* OutRunCore */,
+				22645EE72FD1C39F0025F234 /* GPXKit */,
 			);
 			productName = outrun;
 			productReference = 225E08F72FC219050074232C /* orca-app.app */;
@@ -184,6 +187,7 @@
 				225E0A142FC219D60074232C /* XCRemoteSwiftPackageReference "CoreStore" */,
 				225E0B392FC21CDF0074232C /* XCRemoteSwiftPackageReference "LicensePlist" */,
 				225E0B3F2FC21E370074232C /* XCLocalSwiftPackageReference "OutRunCore" */,
+				22645EE62FD1C39F0025F234 /* XCRemoteSwiftPackageReference "GPXKit" */,
 			);
 			preferredProjectObjectVersion = 100;
 			productRefGroup = 225E08F82FC219050074232C /* Products */;
@@ -635,6 +639,14 @@
 				minimumVersion = 3.27.8;
 			};
 		};
+		22645EE62FD1C39F0025F234 /* XCRemoteSwiftPackageReference "GPXKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://codeberg.org/mmllr/GPXKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -661,6 +673,11 @@
 		225E0B402FC21E370074232C /* OutRunCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OutRunCore;
+		};
+		22645EE72FD1C39F0025F234 /* GPXKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22645EE62FD1C39F0025F234 /* XCRemoteSwiftPackageReference "GPXKit" */;
+			productName = GPXKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
