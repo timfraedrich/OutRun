@@ -185,8 +185,7 @@ struct WorkoutDetailScene: View {
                 Button(action: openMap) {
                     StaticWorkoutMap(
                         identifier: workout.id,
-                        coordinates: sectionedRoute.flatMap({ $0.elements.map(\.coordinate) }),
-                        accentColor: .accent
+                        coordinates: sectionedRoute.flatMap({ $0.elements.map(\.coordinate) })
                     )
                     .frame(height: 300)
                     .clipShape(.containerRelative)

@@ -27,19 +27,18 @@ public enum StaticWorkoutMapService {
         for workout: any WorkoutProtocol,
         size: CGSize,
         colorScheme: ColorScheme,
-        accentColor: Color
+        tintColor: CGColor
     ) -> UIImage? {
-        getCachedImage(for: workout.id, size: size, colorScheme: colorScheme, accentColor: accentColor)
+        getCachedImage(for: workout.id, size: size, colorScheme: colorScheme, tintColor: tintColor)
     }
     
     public static func getCachedImage(
         for identifier: UUID,
         size: CGSize,
         colorScheme: ColorScheme,
-        accentColor: Color
+        tintColor: CGColor
     ) -> UIImage? {
         let userInterfaceStyle = UIUserInterfaceStyle(colorScheme)
-        let tintColor = UIColor(accentColor).withAlphaComponent(1)
         let cacheKey = cacheKey(identifier: identifier, size: size, userInterfaceStyle: userInterfaceStyle, tintColor: tintColor)
         do {
             if let imageCache, try imageCache.existsObject(forKey: cacheKey) {
@@ -56,14 +55,14 @@ public enum StaticWorkoutMapService {
         for workout: any WorkoutProtocol,
         size: CGSize,
         colorScheme: ColorScheme,
-        accentColor: Color
+        tintColor: CGColor
     ) async throws -> UIImage? {
         try await generateImage(
             for: workout.id,
             coordinates: workout.route.map(\.coordinate),
             size: size,
             colorScheme: colorScheme,
-            accentColor: accentColor
+            tintColor: tintColor
         )
     }
     
@@ -73,14 +72,14 @@ public enum StaticWorkoutMapService {
         coordinates: [CLLocationCoordinate2D],
         size: CGSize,
         colorScheme: ColorScheme,
-        accentColor: Color
+        tintColor: CGColor
     ) async throws -> UIImage? {
         guard coordinates.count > 1 else { throw StaticWorkoutMapServiceError.noCoordinates }
-        if let cachedImage = getCachedImage(for: identifier, size: size, colorScheme: colorScheme, accentColor: accentColor) {
+        if let cachedImage = getCachedImage(for: identifier, size: size, colorScheme: colorScheme, tintColor: tintColor) {
             return cachedImage
         }
         let userInterfaceStyle = UIUserInterfaceStyle(colorScheme)
-        let tintColor = UIColor(accentColor).withAlphaComponent(1)
+        let tintColor = tintColor
         let cacheKey = cacheKey(identifier: identifier, size: size, userInterfaceStyle: userInterfaceStyle, tintColor: tintColor)
         let renderedImage = try await Task(priority: .background) {
             try await generateMapImage(for: coordinates, size: size, userInterfaceStyle: userInterfaceStyle, tintColor: tintColor)
@@ -110,10 +109,10 @@ public enum StaticWorkoutMapService {
         imageCache?.totalDiskStorageSize ?? .zero
     }
     
-    private static func cacheKey(identifier: UUID, size: CGSize, userInterfaceStyle: UIUserInterfaceStyle, tintColor: UIColor) -> String {
+    private static func cacheKey(identifier: UUID, size: CGSize, userInterfaceStyle: UIUserInterfaceStyle, tintColor: CGColor) -> String {
         let sizeString = "\(Int(size.width))x\(Int(size.height))"
         let appearanceString = userInterfaceStyle == .dark ? "dark" : "light"
-        let tintColorString = tintColor.hexRepresentation
+        let tintColorString = UIColor(cgColor: tintColor).hexRepresentation
         return "\(identifier.uuidString)_\(sizeString)_\(appearanceString)_\(tintColorString)"
     }
     
@@ -121,7 +120,7 @@ public enum StaticWorkoutMapService {
         for coordinates: [CLLocationCoordinate2D],
         size: CGSize,
         userInterfaceStyle: UIUserInterfaceStyle,
-        tintColor: UIColor
+        tintColor: CGColor
     ) async throws -> UIImage? {
         let route = MKPolyline(coordinates: coordinates, count: coordinates.count)
         let routeRect = route.boundingMapRect
@@ -142,7 +141,7 @@ public enum StaticWorkoutMapService {
                 context.cgContext.setLineWidth(5.0)
                 context.cgContext.setLineCap(.round)
                 context.cgContext.setLineJoin(.round)
-                context.cgContext.setStrokeColor(tintColor.resolvedColor(with: traitCollection).cgColor)
+                context.cgContext.setStrokeColor(tintColor)
                 context.cgContext.move(to: snapshot.point(for: coordinates[0]))
                 guard coordinates.count > 0 else { return }
                 let firstPoint = snapshot.point(for: coordinates[0])

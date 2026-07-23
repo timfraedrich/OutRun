@@ -46,9 +46,9 @@ struct ListWorkoutCardStyle: WorkoutCardStyle {
         if !workout.route.isEmpty {
             Color.clear.overlay(alignment: .center) {
                 if workout is Workout {
-                    StaticWorkoutMap(identifier: workout.id, accentColor: .accent)
+                    StaticWorkoutMap(identifier: workout.id)
                 } else {
-                    StaticWorkoutMap(workout: workout, accentColor: .accent)
+                    StaticWorkoutMap(workout: workout)
                 }
             }
             .frame(width: mapWidth)

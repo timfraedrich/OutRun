@@ -4,7 +4,7 @@ import SwiftUI
 
 public struct StaticWorkoutMap: View {
     
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.self) private var environment
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @State private var insertedOrCachedCoordinates: [CLLocationCoordinate2D]?
@@ -14,8 +14,11 @@ public struct StaticWorkoutMap: View {
     @State private var error: Error?
     @State private var animate: Bool = false
     @State private var showError: Bool = false
+    @State private var tintColor: CGColor?
+    // We set this explicitly rather than using the Environment property wrapper, as the wrapped colorScheme exposed the old value even
+    // after the onChange notification was received.
+    @State private var colorScheme: ColorScheme?
     private let identifier: UUID
-    private let accentColor: Color
     
     public var body: some View {
         ZStack {
@@ -41,8 +44,17 @@ public struct StaticWorkoutMap: View {
                     .onAppear { animate = true }
             }
         }
-        .onChange(of: colorScheme, reloadImage)
+        .onChange(of: environment.colorScheme, initial: true) { oldValue, newValue in
+            colorScheme = newValue
+            reloadImage()
+        }
         .onChange(of: scenePhase, sceneChangeAction)
+        .background {
+            ResolveTintColorView { color in
+                tintColor = color
+                reloadImage()
+            }
+        }
         .background {
             GeometryReader { geo in
                 DispatchQueue.main.async {
@@ -53,21 +65,19 @@ public struct StaticWorkoutMap: View {
                 return Color.clear
             }
         }
-        .tint(accentColor)
     }
     
     /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route and general tint color for other components
     /// must be provided through the ``accentColor`` parameter. The environment's tint color is not respected by this view.
-    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D]? = nil, accentColor: Color = .accentColor) {
+    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D]? = nil) {
         self.identifier = identifier
-        self.insertedOrCachedCoordinates = coordinates
-        self.accentColor = accentColor
+        self._insertedOrCachedCoordinates = .init(initialValue: coordinates)
     }
     
     /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route on map must be explicitly provided. The
     /// environment's tint color is not respected by this view.
-    public init(workout: any WorkoutProtocol, accentColor: Color = .accentColor) {
-        self.init(identifier: workout.id, coordinates: workout.route.map(\.coordinate), accentColor: accentColor)
+    public init(workout: any WorkoutProtocol) {
+        self.init(identifier: workout.id, coordinates: workout.route.map(\.coordinate))
     }
     
     private func sceneChangeAction() {
@@ -79,14 +89,15 @@ public struct StaticWorkoutMap: View {
     }
     
     private func loadImage() {
-        guard size.width != .zero, size.height != .zero else { return }
+        guard let tintColor, let colorScheme, size.width != .zero, size.height != .zero else { return }
+        let insertedOrCachedCoordinates = self.insertedOrCachedCoordinates
         task?.cancel()
-        if let cachedImage = StaticWorkoutMapService.getCachedImage(for: identifier, size: size, colorScheme: colorScheme, accentColor: accentColor) {
+        if let cachedImage = StaticWorkoutMapService.getCachedImage(for: identifier, size: size, colorScheme: colorScheme, tintColor: tintColor) {
             image = cachedImage
             return
         }
         let container = modelContext.container
-        task = Task { @BackgroundActor [insertedOrCachedCoordinates, container] in
+        task = Task { @BackgroundActor [insertedOrCachedCoordinates, colorScheme, container] in
             do {
                 let coordinates: [CLLocationCoordinate2D]
                 if let insertedOrCachedCoordinates {
@@ -106,7 +117,7 @@ public struct StaticWorkoutMap: View {
                     coordinates: coordinates,
                     size: size,
                     colorScheme: colorScheme,
-                    accentColor: accentColor
+                    tintColor: tintColor
                 )
                 guard !Task.isCancelled else { return }
                 await MainActor.run { self.image = image }
@@ -123,8 +134,12 @@ public struct StaticWorkoutMap: View {
 }
 
 #Preview {
-    StaticWorkoutMap(workout: PreviewConstants.runningWorkout)
-        .frame(height: 300)
-        .clipShape(.rect(cornerRadius: 32))
-        .padding()
+    List {
+        LazyVStack {
+            StaticWorkoutMap(workout: PreviewConstants.runningWorkout)
+                .frame(height: 300)
+                .clipShape(.rect(cornerRadius: 32))
+                .padding()
+        }
+    }
 }
