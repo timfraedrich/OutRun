@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5X8-Av-YYS">
+                            <view alpha="0.10000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5X8-Av-YYS">
                                 <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                                 <color key="backgroundColor" name="AccentColor"/>
                             </view>

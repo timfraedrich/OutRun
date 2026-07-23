@@ -721,6 +721,9 @@
         }
       }
     },
+    "backup_service_error_could_not_encode_data" : {
+
+    },
     "backup_service_error_no_data_to_back_up" : {
       "localizations" : {
         "de" : {
@@ -760,6 +763,12 @@
           }
         }
       }
+    },
+    "backup_service_error_unsupported_file" : {
+
+    },
+    "backup_type_gpx_warning" : {
+
     },
     "beats_per_minute_unit" : {
       "comment" : "Abbreviation for beats per minute, used as a unit label for heart rate.",
