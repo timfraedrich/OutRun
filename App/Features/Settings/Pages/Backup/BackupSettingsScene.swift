@@ -105,7 +105,7 @@ struct BackupSettingsScene: View {
                 let urls = try result.get()
                 guard let url = urls.first, url.startAccessingSecurityScopedResource() else { return }
                 defer { url.stopAccessingSecurityScopedResource() }
-                let (task, progressSequence) = backupService.backup(to: url)
+                let (task, progressSequence) = backupService.backup(to: url, using: .model)
                 for try await progress in progressSequence {
                     process = .export(progress: progress)
                 }
@@ -124,7 +124,7 @@ struct BackupSettingsScene: View {
                 let urls = try result.get()
                 guard let url = urls.first, url.startAccessingSecurityScopedResource() else { return }
                 defer { url.stopAccessingSecurityScopedResource() }
-                let (task, progressSequence) = backupService.restoreBackup(from: url)
+                let (task, progressSequence) = backupService.restore(from: url)
                 for try await progress in progressSequence {
                     process = .import(progress: progress)
                 }

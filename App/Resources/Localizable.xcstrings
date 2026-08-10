@@ -767,9 +767,6 @@
     "backup_service_error_unsupported_file" : {
 
     },
-    "backup_type_gpx_warning" : {
-
-    },
     "beats_per_minute_unit" : {
       "comment" : "Abbreviation for beats per minute, used as a unit label for heart rate.",
       "localizations" : {
