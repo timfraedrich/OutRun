@@ -722,7 +722,44 @@
       }
     },
     "backup_service_error_could_not_encode_data" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Kodieren der Trainingsdaten für das Backup ist ein Fehler aufgetreten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There was an error while encoding the workout data to create a backup."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There was an error while encoding the workout data to create a backup."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se produjo un error al codificar los datos del entrenamiento para crear una copia de seguridad."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une erreur s'est produite lors de l'encodage des données d'entraînement pour créer une sauvegarde."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een fout opgetreden bij het coderen van de trainingsgegevens om een back-up te maken."
+          }
+        }
+      }
     },
     "backup_service_error_no_data_to_back_up" : {
       "localizations" : {
@@ -765,7 +802,44 @@
       }
     },
     "backup_service_error_unsupported_file" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Trainingsdaten konnten nicht aus der bereitgestellten Datei wiederhergestellt werden, da sie nicht unterstützt wird."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not restore workout data from the provided file, because it is not supported."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not restore workout data from the provided file, because it is not supported."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron restaurar los datos del entrenamiento desde el archivo proporcionado, porque no es compatible."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de restaurer les données d'entraînement à partir du fichier fourni, car il n'est pas pris en charge."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kon de trainingsgegevens niet herstellen uit het opgegeven bestand, omdat het niet wordt ondersteund."
+          }
+        }
+      }
     },
     "beats_per_minute_unit" : {
       "comment" : "Abbreviation for beats per minute, used as a unit label for heart rate.",
