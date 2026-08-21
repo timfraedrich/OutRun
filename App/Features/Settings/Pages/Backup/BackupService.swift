@@ -100,7 +100,7 @@ class BackupService {
                 let fileManager = FileManager.default
                 let archive: Archive?
                 let targetURL: URL
-                if type.useZipCompression {
+                if type.useZipCompression, workoutIds == .none || count > 1 {
                     let archiveName = "orca_" + type.rawValue + "_" + BackupService.timestampFormatter.string(from: timestamp) + ".zip"
                     let archiveURL = url.appending(component: archiveName)
                     archive = try Archive(url: archiveURL, accessMode: .create, pathEncoding: .utf8)
@@ -192,16 +192,43 @@ class BackupService {
         try await core.upsert(workout)
     }
     
+    private static nonisolated func restoreGPXFile(at url: URL, into core: OutRunCore) async throws {
+        guard let parser = GPXFileParser(url: url), case .success(let track) = parser.parse()
+        else { throw BackupServiceError.backupNotReadable }
+        let workout = RawWorkout(from: track)
+        try await core.upsert(workout)
+    }
+    
+    /// - returns: A RestoreBackupResult instance if reading the file was successful.
+    /// - throws: If reading the legacy file fails, but not if inserting a workout fails.
+    private static nonisolated func restoreLegacyFile(at url: URL, into core: OutRunCore) async throws -> RestoreBackupResult {
+        let data = try Data(contentsOf: url)
+        let workouts = try LegacyBackupHelper.restore(from: data)
+        var result = RestoreBackupResult()
+        for workout in workouts {
+            do {
+                try await core.upsert(workout)
+                result.upserted += 1
+            } catch OutRunCoreError.newerWorkoutVersionExists {
+                result.skipped += 1
+            } catch {
+                result.failed += 1
+            }
+        }
+        return result
+    }
+    
     private static nonisolated func restoreBackupFile(
         at url: URL,
         into core: OutRunCore
-    ) async throws {
+    ) async throws -> RestoreBackupResult? {
         guard let type = backupTypeForFile(at: url) else { throw BackupServiceError.unsupportedFile }
         switch type {
         case .model: try await restoreModelFile(at: url, into: core)
-        case .gpx: break
-        case .legacy: break
+        case .gpx: try await restoreGPXFile(at: url, into: core)
+        case .legacy: return try await restoreLegacyFile(at: url, into: core)
         }
+        return nil
     }
     
     func restore(from url: URL) -> JobResult<RestoreBackupResult> {
@@ -227,13 +254,8 @@ class BackupService {
                     }
                     let total = Float(fileURLs.count)
                     for (index, fileURL) in fileURLs.enumerated() {
-                        do {
+                        await BackupService.handleResult(&result) {
                             try await BackupService.restoreBackupFile(at: fileURL, into: core)
-                            result.upserted += 1
-                        } catch OutRunCoreError.newerWorkoutVersionExists {
-                            result.skipped += 1
-                        } catch {
-                            result.failed += 1
                         }
                         continuation.yield(0.05 + 0.90 * Float(index + 1) / total)
                     }
@@ -243,20 +265,18 @@ class BackupService {
                         let archive = try Archive(url: url, accessMode: .read)
                         let entries = Array(archive), total = Float(entries.count)
                         for (index, entry) in entries.enumerated() {
-                            do {
+                            await BackupService.handleResult(&result) {
                                 let data = try await archive.extract(entry)
                                 let workout = try BackupService.decoder.decode(RawWorkout.self, from: data)
                                 try await core.upsert(workout)
-                                result.upserted += 1
-                            } catch OutRunCoreError.newerWorkoutVersionExists {
-                                result.skipped += 1
-                            } catch {
-                                result.failed += 1
+                                return nil
                             }
                             continuation.yield(0.05 + 0.90 * Float(index + 1) / total)
                         }
                     } else {
-                        try await BackupService.restoreBackupFile(at: url, into: core)
+                        await BackupService.handleResult(&result) {
+                            try await BackupService.restoreBackupFile(at: url, into: core)
+                        }
                     }
                 }
                 
@@ -289,14 +309,50 @@ class BackupService {
         return formatter
     }()
     
+    private static nonisolated func handleResult(
+        _ result: inout RestoreBackupResult,
+        action: @escaping () async throws -> RestoreBackupResult?
+    ) async {
+        do {
+            if let newResult = try await action() {
+                result += newResult
+            } else {
+                result.upserted += 1
+            }
+        } catch OutRunCoreError.newerWorkoutVersionExists {
+            result.skipped += 1
+        } catch {
+            result.failed += 1
+        }
+    }
+    
     // MARK: - Models
     
-    struct RestoreBackupResult: Hashable, Sendable {
+    struct RestoreBackupResult: Hashable, Sendable, AdditiveArithmetic {
+        
         var upserted: Int = 0
         var skipped: Int = 0
         var failed: Int = 0
         
         var total: Int { upserted + skipped + failed }
+        
+        static let zero: BackupService.RestoreBackupResult = .init()
+        
+        static func + (lhs: RestoreBackupResult, rhs: RestoreBackupResult) -> RestoreBackupResult {
+            .init(
+                upserted: lhs.upserted + rhs.upserted,
+                skipped: lhs.skipped + rhs.skipped,
+                failed: lhs.failed + rhs.failed
+            )
+        }
+        
+        static func - (lhs: BackupService.RestoreBackupResult, rhs: BackupService.RestoreBackupResult) -> BackupService.RestoreBackupResult {
+            .init(
+                upserted: lhs.upserted - rhs.upserted,
+                skipped: lhs.skipped - rhs.skipped,
+                failed: lhs.failed - rhs.failed
+            )
+        }
     }
     
     private struct WorkoutExtractionError: Error {}
