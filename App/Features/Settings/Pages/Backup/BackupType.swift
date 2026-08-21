@@ -1,10 +1,15 @@
 import Foundation
+import SwiftUI
 
-enum BackupType: String, CaseIterable, Sendable {
+enum BackupType: String, CaseIterable, Sendable, Identifiable {
     
     case model = "backup"
     case gpx = "gpx"
     case legacy = "legacy"
+    
+    var id: Int {
+        hashValue
+    }
     
     var fileExtension: String {
         switch self {
@@ -21,4 +26,14 @@ enum BackupType: String, CaseIterable, Sendable {
         case .gpx, .legacy: false
         }
     }
+    
+    var titleKey: LocalizedStringKey {
+        switch self {
+        case .model: "backup_type_title_model"
+        case .gpx: "backup_type_title_gpx"
+        case .legacy: "backup_type_title_legacy"
+        }
+    }
+    
+    static let exportableCases: [BackupType] = [.model, .gpx]
 }

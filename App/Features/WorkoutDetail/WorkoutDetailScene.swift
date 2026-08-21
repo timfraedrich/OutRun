@@ -16,6 +16,8 @@ struct WorkoutDetailScene: View {
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
     @State private var sectionedHeartRates: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>?
     @State private var resolvedTintColor: CGColor?
+    @State private var backupTypeToShare: BackupType?
+    @State private var exportProcess: BackupProcess?
     private let workout: any WorkoutProtocol
     private let addCloseButton: Bool
     private let chartHeight: CGFloat = 125
@@ -102,6 +104,8 @@ struct WorkoutDetailScene: View {
         .toolbar(content: toolbarContent)
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .compatibleScrollEffectHidden(for: .top)
+        .backupExport([workout.id], of: $backupTypeToShare, process: $exportProcess)
+        .backupProcessSheet(for: $exportProcess)
         .task {
             let sortedPauses = workout.pauses.sorted(using: KeyPathComparator(\.startDate, order: .forward))
             let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
@@ -288,10 +292,21 @@ struct WorkoutDetailScene: View {
         .padding(.regular)
     }
     
-    @ViewBuilder
-    private func toolbarContent() -> some View {
+    @ToolbarContentBuilder
+    private func toolbarContent() -> some ToolbarContent {
         if addCloseButton {
-            Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
+            }
+        }
+        ToolbarItem(placement: .topBarLeading) {
+            Menu("share", systemImage: "square.and.arrow.up") {
+                ForEach(BackupType.exportableCases) { type in 
+                    Button("\(Text(type.titleKey)) (.\(type.fileExtension))") {
+                        backupTypeToShare = type
+                    }
+                }
+            }
         }
     }
     
