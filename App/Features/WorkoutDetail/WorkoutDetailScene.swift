@@ -94,7 +94,6 @@ struct WorkoutDetailScene: View {
         .background {
             ResolveTintColorView { color in
                 resolvedTintColor = color
-                print("resolved color", color)
             }
         }
         .background()
