@@ -1,6 +1,8 @@
 import Charts
+import Glur
 import OutRunCore
 import SwiftUI
+import MapKit
 
 struct WorkoutDetailScene: View {
     
@@ -13,6 +15,7 @@ struct WorkoutDetailScene: View {
     @State private var confirmDelete: Bool = false
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
     @State private var sectionedHeartRates: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>?
+    @State private var resolvedTintColor: CGColor?
     private let workout: any WorkoutProtocol
     private let addCloseButton: Bool
     private let chartHeight: CGFloat = 125
@@ -38,26 +41,65 @@ struct WorkoutDetailScene: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: .large) {
-                Group {
-                    header
-                    distanceSection
-                    timeSection
-                    heartRateSection
-                    speedSection
-                    energySection
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(spacing: .zero) {
+                    let mapHeight = proxy.size.height * 0.6
+                    let overlapHeight = mapHeight / 3
+                    GeometryReader { mapProxy in
+                        let yOffset = mapProxy.frame(in: .scrollView).minY
+                        if let resolvedTintColor {
+                            StaticWorkoutMap(
+                                identifier: workout.id,
+                                coordinates: sectionedRoute?.flatMap(\.elements).map(\.coordinate) ?? [],
+                                tintColor: resolvedTintColor,
+                                insets: .init(top: proxy.safeAreaInsets.top, leading: .zero, bottom: overlapHeight, trailing: .zero)
+                            )
+                            .ignoresSafeArea()
+                            .glur(radius: 24, offset: 2 / 3, interpolation: 1 / 2, noise: 0.0)
+                            .mask {
+                                VStack(spacing: .zero) {
+                                    Rectangle()
+                                    BackgroundBlackoutGradient(startPoint: .bottom, endPoint: .top).frame(height: overlapHeight)
+                                }
+                            }
+                            .scaleEffect(1 + max(0, yOffset / mapHeight), anchor: .bottom)
+                            .offset(y: -min(0, yOffset))
+                            .opacity(1 + min(0, yOffset / mapHeight))
+                            .blur(radius: 10 * -min(0, yOffset / mapHeight))
+                        }
+                    }
+                    .frame(height: mapHeight)
+                    .onTapGesture(perform: openMap)
+                    VStack(alignment: .leading, spacing: .large) {
+                        Group {
+                            header
+                            distanceSection
+                            timeSection
+                            heartRateSection
+                            speedSection
+                            energySection
+                        }
+                        .labeledContentStyle(.metric)
+                        commentSection
+                        metadataSection
+                        actionSection
+                    }
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
+                    .padding(.horizontal, .regular)
+                    .padding(.top, -overlapHeight)
                 }
-                .labeledContentStyle(.metric)
-                routeSection
-                commentSection
-                metadataSection
-                actionSection
             }
-            .backgroundStyle(Color(.secondarySystemGroupedBackground))
-            .padding(.horizontal, .regular)
         }
-        .background(Color(.systemGroupedBackground))
+        .background {
+            ResolveTintColorView { color in
+                resolvedTintColor = color
+                print("resolved color", color)
+            }
+        }
+        .background()
+        .backgroundStyle(Color(.systemGroupedBackground))
+        .ignoresSafeArea(.all, edges: .top)
         .toolbar(content: toolbarContent)
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .compatibleScrollEffectHidden(for: .top)
@@ -175,21 +217,6 @@ struct WorkoutDetailScene: View {
         if workout.energy != nil {
             section("workout_detail_section_energy") {
                 metricGrid(with: [.energy, .energyPerMinute])
-            }
-        }
-    }
-    
-    @ViewBuilder private var routeSection: some View {
-        if let sectionedRoute, !sectionedRoute.isEmpty {
-            section("workout_detail_section_route", contentPadding: .small) {
-                Button(action: openMap) {
-                    StaticWorkoutMap(
-                        identifier: workout.id,
-                        coordinates: sectionedRoute.flatMap({ $0.elements.map(\.coordinate) })
-                    )
-                    .frame(height: 300)
-                    .clipShape(.containerRelative)
-                }
             }
         }
     }

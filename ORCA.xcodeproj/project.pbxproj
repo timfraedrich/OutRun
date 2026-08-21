@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2211B403302C61C6001B6DFF /* Glur in Frameworks */ = {isa = PBXBuildFile; productRef = 2211B402302C61C6001B6DFF /* Glur */; };
 		225E0A0B2FC219AD0074232C /* Perception in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0A0A2FC219AD0074232C /* Perception */; };
 		225E0A102FC219B50074232C /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0A0F2FC219B50074232C /* ZIPFoundation */; };
 		225E0A162FC219D60074232C /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0A152FC219D60074232C /* CoreStore */; };
@@ -62,6 +63,7 @@
 			files = (
 				22645EE82FD1C39F0025F234 /* GPXKit in Frameworks */,
 				225E0A162FC219D60074232C /* CoreStore in Frameworks */,
+				2211B403302C61C6001B6DFF /* Glur in Frameworks */,
 				225E0B412FC21E370074232C /* OutRunCore in Frameworks */,
 				225E0A0B2FC219AD0074232C /* Perception in Frameworks */,
 				225E0A102FC219B50074232C /* ZIPFoundation in Frameworks */,
@@ -122,6 +124,7 @@
 				225E0A152FC219D60074232C /* CoreStore */,
 				225E0B402FC21E370074232C /* OutRunCore */,
 				22645EE72FD1C39F0025F234 /* GPXKit */,
+				2211B402302C61C6001B6DFF /* Glur */,
 			);
 			productName = outrun;
 			productReference = 225E08F72FC219050074232C /* orca-app.app */;
@@ -188,6 +191,7 @@
 				225E0B392FC21CDF0074232C /* XCRemoteSwiftPackageReference "LicensePlist" */,
 				225E0B3F2FC21E370074232C /* XCLocalSwiftPackageReference "OutRunCore" */,
 				22645EE62FD1C39F0025F234 /* XCRemoteSwiftPackageReference "GPXKit" */,
+				2211B401302C61C6001B6DFF /* XCRemoteSwiftPackageReference "Glur" */,
 			);
 			preferredProjectObjectVersion = 100;
 			productRefGroup = 225E08F82FC219050074232C /* Products */;
@@ -611,6 +615,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2211B401302C61C6001B6DFF /* XCRemoteSwiftPackageReference "Glur" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/joogps/Glur";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		225E0A092FC219AD0074232C /* XCRemoteSwiftPackageReference "swift-perception" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-perception";
@@ -654,6 +666,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2211B402302C61C6001B6DFF /* Glur */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2211B401302C61C6001B6DFF /* XCRemoteSwiftPackageReference "Glur" */;
+			productName = Glur;
+		};
 		225E0A0A2FC219AD0074232C /* Perception */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 225E0A092FC219AD0074232C /* XCRemoteSwiftPackageReference "swift-perception" */;

@@ -18,9 +18,9 @@ public struct WorkoutHeaderLabeledContent: View {
             }
         } else {
             LabeledContent {
-                dateView
-            } label: {
                 typeView
+            } label: {
+                dateView
             }
         }
     }

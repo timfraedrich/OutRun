@@ -36,7 +36,7 @@ struct MetricLabeledContentStyle: LabeledContentStyle {
         
         fileprivate var contentFont: Font {
             switch self {
-            case .large: .title.weight(.bold)
+            case .large: .largeTitle.weight(.bold)
             case .regular: .title2.weight(.bold)
             case .small: .headline.weight(.bold)
             }
