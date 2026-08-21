@@ -14,11 +14,17 @@ public struct StaticWorkoutMap: View {
     @State private var error: Error?
     @State private var animate: Bool = false
     @State private var showError: Bool = false
-    @State private var tintColor: CGColor?
+    @State private var resolvedTintColor: CGColor?
     // We set this explicitly rather than using the Environment property wrapper, as the wrapped colorScheme exposed the old value even
     // after the onChange notification was received.
     @State private var colorScheme: ColorScheme?
     private let identifier: UUID
+    private let providedTintColor: CGColor?
+    private let insets: EdgeInsets
+    
+    private var tintColor: CGColor? {
+        providedTintColor ?? resolvedTintColor
+    }
     
     public var body: some View {
         ZStack {
@@ -50,9 +56,11 @@ public struct StaticWorkoutMap: View {
         }
         .onChange(of: scenePhase, sceneChangeAction)
         .background {
-            ResolveTintColorView { color in
-                tintColor = color
-                reloadImage()
+            if providedTintColor == nil {
+                ResolveTintColorView { color in
+                    resolvedTintColor = color
+                    reloadImage()
+                }
             }
         }
         .background {
@@ -65,19 +73,24 @@ public struct StaticWorkoutMap: View {
                 return Color.clear
             }
         }
+        .onChange(of: insets) { reloadImage() }
     }
-    
-    /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route and general tint color for other components
-    /// must be provided through the ``accentColor`` parameter. The environment's tint color is not respected by this view.
-    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D]? = nil) {
+
+    /// - Parameters:
+    ///   - insets: Padding to keep the route away from the edges. The map itself still fills the full view; only the route is pushed inward.
+    /// - note: If the tint color is not provided it will be resolved through the environment.
+    public init(identifier: UUID, coordinates: [CLLocationCoordinate2D]? = nil, tintColor: CGColor? = nil, insets: EdgeInsets = EdgeInsets()) {
         self.identifier = identifier
-        self._insertedOrCachedCoordinates = .init(initialValue: coordinates)
+        _insertedOrCachedCoordinates = .init(initialValue: coordinates)
+        providedTintColor = tintColor
+        self.insets = insets
     }
-    
-    /// - note: Due to the way the tint of a view is resolved in SwiftUI the color for the route on map must be explicitly provided. The
-    /// environment's tint color is not respected by this view.
-    public init(workout: any WorkoutProtocol) {
-        self.init(identifier: workout.id, coordinates: workout.route.map(\.coordinate))
+
+    /// - Parameters:
+    ///   - insets: Padding to keep the route away from the edges. The map itself still fills the full view; only the route is pushed inward.
+    /// - note: If the tint color is not provided it will be resolved through the environment.
+    public init(workout: any WorkoutProtocol, tintColor: CGColor? = nil, insets: EdgeInsets = EdgeInsets()) {
+        self.init(identifier: workout.id, coordinates: workout.route.map(\.coordinate), tintColor: tintColor, insets: insets)
     }
     
     private func sceneChangeAction() {
@@ -92,12 +105,12 @@ public struct StaticWorkoutMap: View {
         guard let tintColor, let colorScheme, size.width != .zero, size.height != .zero else { return }
         let insertedOrCachedCoordinates = self.insertedOrCachedCoordinates
         task?.cancel()
-        if let cachedImage = StaticWorkoutMapService.getCachedImage(for: identifier, size: size, colorScheme: colorScheme, tintColor: tintColor) {
+        if let cachedImage = StaticWorkoutMapService.getCachedImage(for: identifier, size: size, insets: insets, colorScheme: colorScheme, tintColor: tintColor) {
             image = cachedImage
             return
         }
         let container = modelContext.container
-        task = Task { @BackgroundActor [insertedOrCachedCoordinates, colorScheme, container] in
+        task = Task { @BackgroundActor [insertedOrCachedCoordinates, colorScheme, container, insets] in
             do {
                 let coordinates: [CLLocationCoordinate2D]
                 if let insertedOrCachedCoordinates {
@@ -116,6 +129,7 @@ public struct StaticWorkoutMap: View {
                     for: identifier,
                     coordinates: coordinates,
                     size: size,
+                    insets: insets,
                     colorScheme: colorScheme,
                     tintColor: tintColor
                 )
@@ -134,12 +148,8 @@ public struct StaticWorkoutMap: View {
 }
 
 #Preview {
-    List {
-        LazyVStack {
-            StaticWorkoutMap(workout: PreviewConstants.runningWorkout)
-                .frame(height: 300)
-                .clipShape(.rect(cornerRadius: 32))
-                .padding()
-        }
-    }
+    StaticWorkoutMap(workout: PreviewConstants.runningWorkout)
+        .frame(height: 300)
+        .clipShape(.rect(cornerRadius: 32))
+        .padding()
 }
