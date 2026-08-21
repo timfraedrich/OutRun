@@ -26,7 +26,7 @@ struct BackupSettingsScene: View {
                 systemName: "arrow.down.document.fill",
                 explanation: "backup_import_description",
                 fileImporterIsPresented: $pickBackupToRestore,
-                fileImporterAllowedContentTypes: [.zip, .init(filenameExtension: "orbup")!],
+                fileImporterAllowedContentTypes: [.zip, .json, .init(filenameExtension: "gpx"), .init(filenameExtension: "orbup")].compactMap(\.self),
                 fileImporterOnCompletion: processImportResult
             )
         }
