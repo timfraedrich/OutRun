@@ -36,7 +36,7 @@ struct SettingsScene: View {
         }
         .safeAreaPadding(.top, .regular)
         .navigationTitle("settings")
-        .toolbar(content: toolbarContent)
+        .closeToolbarItem()
     }
     
     @ViewBuilder private var profileSection: some View {
@@ -149,15 +149,6 @@ struct SettingsScene: View {
                 }
                 .foregroundStyle(.tint)
                 .tint(.red)
-        }
-    }
-    
-    @ToolbarContentBuilder
-    private func toolbarContent() -> some ToolbarContent {
-        ToolbarItem(placement: .topBarTrailing) {
-            Button(action: dismiss.callAsFunction) {
-                Image(systemName: "xmark")
-            }
         }
     }
     

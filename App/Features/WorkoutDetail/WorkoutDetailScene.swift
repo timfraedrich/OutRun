@@ -103,6 +103,8 @@ struct WorkoutDetailScene: View {
         .backgroundStyle(Color(.systemGroupedBackground))
         .ignoresSafeArea(.all, edges: .top)
         .toolbar(content: toolbarContent)
+        .closeToolbarItem(active: addCloseButton)
+        .hiddenNavigationTitle("workout_detail_title")
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .compatibleScrollEffectHidden(for: .top)
         .backupExport([workout.id], of: $backupTypeToShare, process: $exportProcess)
@@ -295,12 +297,7 @@ struct WorkoutDetailScene: View {
     
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
-        if addCloseButton {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
-            }
-        }
-        ToolbarItem(placement: .topBarLeading) {
+        ToolbarItem(placement: .primaryAction) {
             Menu("share", systemImage: "square.and.arrow.up") {
                 ForEach(BackupType.exportableCases) { type in 
                     Button("\(Text(type.titleKey)) (.\(type.fileExtension))") {

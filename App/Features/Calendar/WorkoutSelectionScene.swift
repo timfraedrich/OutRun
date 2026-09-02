@@ -5,13 +5,16 @@ import TFRouting
 
 struct WorkoutSelectionScene: View {
     
+    @Environment(RouterNode.self) var node
     @Query private var workouts: [Workout]
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: .small) {
                 ForEach(workouts) { workout in
-                    RouteLink(route: WorkoutDetailRoute(id: workout.id)) {
+                    Button {
+                        node.route(WorkoutDetailRoute(id: workout.id))
+                    } label: {
                         WorkoutCard(workout: workout)
                     }
                     .buttonStyle(.plain)

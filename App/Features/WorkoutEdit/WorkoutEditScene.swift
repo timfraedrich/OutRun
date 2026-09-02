@@ -171,6 +171,7 @@ struct WorkoutEditScene: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(content: toolbarContent)
+        .closeToolbarItem(active: addCloseButton)
         .scrollDismissesKeyboard(.interactively)
         .errorAlert($error)
         .onAppear {
@@ -320,11 +321,6 @@ struct WorkoutEditScene: View {
 
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
-        if addCloseButton {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
-            }
-        }
         ToolbarItem(placement: .topBarTrailing) {
             Group {
                 let role: ButtonRole? = if #available(iOS 26.0, *) { .confirm } else { nil }

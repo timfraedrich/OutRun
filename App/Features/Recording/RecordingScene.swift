@@ -12,6 +12,7 @@ struct RecordingScene: View {
     @Environment(WorkoutRecorder.self) private var recorder
     
     @State private var keepUserCentered: Bool = true
+    @State private var confirmClose: Bool = false
     @State private var error: Error?
     
     private let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
@@ -47,18 +48,18 @@ struct RecordingScene: View {
     
     var body: some View {
         @Bindable var recorder = recorder
-        WorkoutMap(keepUserCentered: $keepUserCentered, padding: padding) {
+        WorkoutMap(keepUserCentered: $keepUserCentered) {
             UserAnnotation()
             if !recorder.route.isEmpty {
                 MapPolyline(coordinates: recorder.route, contourStyle: .geodesic)
                     .stroke(.accent.resolve(in: environment), style: .init(lineWidth: 6, lineCap: .round, lineJoin: .round))
             }
         }
-        .safeAreaInset(edge: .top, content: topBarContent)
+        .toolbar(content: toolbarContent)
         .safeAreaInset(edge: .bottom, content: informationCard)
         .ignoresBottomSafeAreaOnIOS26OrLater()
-        .toolbarVisibility(.hidden, for: .navigationBar)
         .interactiveDismissDisabled(recorder.status.isCollectingData)
+        .presentationDragIndicator(recorder.status.isCollectingData ? .hidden : .visible)
         .alert(error?.localizedDescription ?? .init(localized: "error"), isPresented: errorIsPresented) {
             Button("ok") {}
         }
@@ -142,57 +143,60 @@ struct RecordingScene: View {
         .background(content: MapOverlayBackground.init)
     }
     
-    @ViewBuilder
-    private func topBarContent() -> some View {
-        HStack {
-            if !keepUserCentered {
+    @ToolbarContentBuilder
+    private func toolbarContent() -> some ToolbarContent {
+        if !keepUserCentered {
+            ToolbarItem(placement: .primaryAction) {
                 keepUserCenteredButton
-            }
-            Spacer()
-            if recorder.status.isCollectingData {
-                Menu {
-                    Button("recording_minimize", systemImage: "arrow.down.right.and.arrow.up.left", action: dismiss.callAsFunction)
-                    Button("recording_end", systemImage: "stop.fill", role: .destructive) {
-                        errorHandledAsyncAction {
-                            _ = try await recorder.endRecording()
-                            dismiss()
-                        }
-                    }
-                } label: {
-                    closeButton
-                }
-            } else {
-                closeButton
+                    .labelStyle(.titleAndIcon)
             }
         }
-        .padding([.horizontal, .top], padding)
+        ToolbarItem(placement: .cancellationAction) {
+            closeButton.confirmationDialog(String(), isPresented: $confirmClose, titleVisibility: .hidden) {
+                Button("recording_minimize", systemImage: "arrow.down.right.and.arrow.up.left", action: dismiss.callAsFunction)
+                Button("recording_end", systemImage: "stop.fill", role: .destructive) {
+                    errorHandledAsyncAction {
+                        _ = try await recorder.endRecording()
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder private var keepUserCenteredButton: some View {
-        let button = Button("center", systemImage: "location.fill.viewfinder") {
+        let button = Button {
             withAnimation {
                 keepUserCentered = true
             }
+        } label: {
+            HStack {
+                Image(systemName: "location.fill.viewfinder")
+                Text("center")
+            }
         }
+        .font(.headline)
         .tint(.primary)
+        .padding(.horizontal, .extraSmall)
         if #available(iOS 26.0, *) {
             button
-                .font(.headline)
-                .frame(height: 44)
-                .padding(.horizontal, .regular)
-                .glassEffect(.regular.interactive(), in: .capsule)
         } else {
             button
                 .buttonStyle(.bordered)
-                .font(.headline)
                 .symbolRenderingMode(.hierarchical)
         }
     }
     
     @ViewBuilder private var closeButton: some View {
-        let button = Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
-            .labelStyle(.iconOnly)
-            .tint(.primary)
+        let button = Button("close", systemImage: "xmark") {
+            if recorder.status.isCollectingData {
+                confirmClose = true
+            } else {
+                dismiss()
+            }
+        }
+        .labelStyle(.iconOnly)
+        .tint(.primary)
         if #available(iOS 26.0, *) {
             button
                 .font(.title2)

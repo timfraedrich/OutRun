@@ -45,7 +45,8 @@ struct ProfileScene: View {
         .navigationTitle("user_profile")
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("save", action: save).errorPopover($error)
+                let role: ButtonRole? = if #available(iOS 26.0, *) { .confirm } else { nil }
+                Button("save", role: role, action: save).errorPopover($error)
             }
         }
         .onAppear {

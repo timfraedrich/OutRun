@@ -25,6 +25,7 @@ struct WorkoutMapScene: View {
     @State private var error: Error?
     
     private let id: Workout.ID
+    private let addCloseButton: Bool
     private let chartHeight: CGFloat = 130
     
     private var padding: Spacing = if #available(iOS 26, *) { .large } else { .regular }
@@ -53,15 +54,15 @@ struct WorkoutMapScene: View {
         return available
     }
     
-    init(id: Workout.ID) {
+    init(id: Workout.ID, addCloseButton: Bool) {
         self.id = id
+        self.addCloseButton = addCloseButton
     }
     
     var body: some View {
         WorkoutMap(
             keepUserCentered: .constant(false),
-            style: mapStyleSelection.style,
-            padding: padding
+            style: mapStyleSelection.style
         ) {
             ForEach(routeSections) { section in
                 let color: Color = section.active ? .accentColor : .gray.opacity(0.75)
@@ -75,10 +76,10 @@ struct WorkoutMapScene: View {
                 .annotationTitles(.hidden)
             }
         }
-        .safeAreaInset(edge: .top, content: topBarContent)
+        .toolbar(content: toolbarContent)
+        .closeToolbarItem(active: addCloseButton)
         .safeAreaInset(edge: .bottom, content: informationCard)
         .ignoresBottomSafeAreaOnIOS26OrLater()
-        .toolbarVisibility(.hidden, for: .navigationBar)
         .errorAlert($error)
         .task(loadWorkout)
         .onChange(of: availableChartTypes) { _, newTypes in
@@ -94,22 +95,6 @@ struct WorkoutMapScene: View {
             .frame(width: 16, height: 16)
             .overlay(Circle().stroke(.white, lineWidth: 3))
             .shadow(radius: 2)
-    }
-    
-    @ViewBuilder
-    private func topBarContent() -> some View {
-        HStack(spacing: padding) {
-            mapButton(closeButton)
-            Spacer()
-            mapButton(mapStyleMenu)
-        }
-        .padding([.top, .horizontal], padding)
-    }
-    
-    @ViewBuilder private var closeButton: some View {
-        Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
-            .labelStyle(.iconOnly)
-            .tint(.primary)
     }
     
     @ViewBuilder private var mapStyleMenu: some View {
@@ -187,6 +172,13 @@ struct WorkoutMapScene: View {
                     HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: dateRange)
                 }
             }
+        }
+    }
+    
+    @ToolbarContentBuilder
+    private func toolbarContent() -> some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            mapStyleMenu
         }
     }
     
