@@ -41,7 +41,7 @@ struct SettingsScene: View {
     
     @ViewBuilder private var profileSection: some View {
         Section {
-            NavigationLink(value: SettingsPageRoute.profile) {
+            RouteLink(route: SettingsPageRoute.profile) {
                 HStack(spacing: .regular) {
                     Image(systemName: "person.crop.circle.fill")
                         .resizable()
@@ -55,6 +55,7 @@ struct SettingsScene: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .buttonStyle(.plain)
         }
     }
     
