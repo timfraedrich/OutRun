@@ -83,7 +83,7 @@ struct DemoRootScope: RoutingScope {
     func decide(_ route: any RouteProtocol, in node: RouterNodeSnapshot) -> RoutingDecision {
         switch route {
         case is DemoTabRoute: .present(.selection)
-        case is DemoSettingsRoute: .present(.sheet(.full))
+        case is DemoSettingsRoute: .present(.sheet)
         default: .pass
         }
     }
@@ -106,7 +106,7 @@ struct DemoProfileScope: RoutingScope {
     
     func decide(_ route: any RouteProtocol, in node: RouterNodeSnapshot) -> RoutingDecision {
         switch route {
-        case is DemoItemRoute: .present(.sheet(.full))
+        case is DemoItemRoute: .present(.sheet)
         case is DemoBlockedRoute: .reject(.noHandler(routeType: String(describing: type(of: route))))
         default: .pass
         }
@@ -117,7 +117,7 @@ struct DemoItemScope: RoutingScope {
     
     func decide(_ route: any RouteProtocol, in node: RouterNodeSnapshot) -> RoutingDecision {
         switch route {
-        case is DemoEditRoute: .present(.sheet(.dynamic))
+        case is DemoEditRoute: .present(.sheet)
         default: .pass
         }
     }
@@ -483,8 +483,7 @@ struct DemoStateInspector: View {
     private static func describe(_ presentation: RoutePresentation) -> String {
         switch presentation {
         case .push: "[push]"
-        case .sheet(.full): "[sheet .full]"
-        case .sheet(.dynamic): "[sheet .dynamic]"
+        case .sheet: "[sheet]"
         case .fullScreenCover: "[cover]"
         case .selection: "[selection]"
         }
