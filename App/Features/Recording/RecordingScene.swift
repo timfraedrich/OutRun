@@ -174,10 +174,10 @@ struct RecordingScene: View {
                 Image(systemName: "location.fill.viewfinder")
                 Text("center")
             }
+            .font(.headline)
+            .padding(.horizontal, .extraSmall)
         }
-        .font(.headline)
         .tint(.primary)
-        .padding(.horizontal, .extraSmall)
         if #available(iOS 26.0, *) {
             button
         } else {
