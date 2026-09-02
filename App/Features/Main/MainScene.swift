@@ -1,21 +1,21 @@
 import OutRunCore
 import SwiftData
 import SwiftUI
+import TFRouting
 
 struct MainScene: View {
     
     @Environment(OutRunCore.self) private var core
     @Environment(WorkoutRecorder.self) private var recorder
     @Environment(UserPreferences.self) private var userPreferences
-    @Environment(MainRouter.self) private var mainRouter
+    @Environment(Router.self) private var router
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
     
     private var userName: String { core.user?.name ?? .init(localized: "user_name_fallback") }
     
     var body: some View {
-        @Bindable var mainRouter = mainRouter
-        NavigationStack {
+        RouterHost(node: router.root) {
             GeometryReader { proxy in
                 ScrollView {
                     container {
@@ -39,36 +39,10 @@ struct MainScene: View {
             .customBottomSafeAreaBar(content: bottomSafeAreaBarContent)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: toolbarContent)
-            .sheet(item: $mainRouter.currentSheet) { sheet in
-                switch sheet {
-                case .calendar:
-                    CalendarScene()
-                case .recording:
-                    if let recorder = core.recorder {
-                        RecordingScene(recorder: recorder)
-                    }
-                case .settings:
-                    SettingsScene()
-                case .workoutDetails(let workoutID):
-                    NavigationStack {
-                        QueriedWorkoutDetailScene(id: workoutID)
-                    }
-                case .workoutMap(let workoutID):
-                    WorkoutMapScene(id: workoutID)
-                case .workoutEdit(let workoutID):
-                    NavigationStack {
-                        if let workoutID {
-                            QueriedWorkoutEditScene(id: workoutID)
-                        } else {
-                            WorkoutEditScene(workout: nil)
-                        }
-                    }
-                }
+            .onAppear {
+                guard core.recorder?.status == .recording else { return }
+                showRecordingScene()
             }
-        }
-        .onAppear {
-            guard core.recorder?.status == .recording else { return }
-            showRecordingScene()
         }
     }
     
@@ -193,22 +167,22 @@ struct MainScene: View {
     }
     
     private func showRecordingScene() {
-        mainRouter.currentSheet = .recording
+        router.route(RecordingRoute())
     }
     
     private func showSettingsScene() {
-        mainRouter.currentSheet = .settings
+        router.route(SettingsRoute())
     }
     
     private func showCalendarScene() {
-        mainRouter.currentSheet = .calendar
+        router.route(CalendarRoute())
     }
     
     private func showWorkoutDetailScene(for workoutID: Workout.ID) {
-        mainRouter.currentSheet = .workoutDetails(id: workoutID)
+        router.route(WorkoutDetailRoute(id: workoutID))
     }
     
     private func showAddWorkoutScene() {
-        mainRouter.currentSheet = .workoutEdit(id: nil)
+        router.route(WorkoutEditRoute(id: nil))
     }
 }

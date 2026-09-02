@@ -3,12 +3,13 @@ import Glur
 import OutRunCore
 import SwiftUI
 import MapKit
+import TFRouting
 
 struct WorkoutDetailScene: View {
     
     @Environment(OutRunCore.self) private var core
     @Environment(UserPreferences.self) private var userPreferences
-    @Environment(MainRouter.self) private var mainRouter
+    @Environment(RouterNode.self) private var node
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @State private var error: Error?
@@ -316,11 +317,11 @@ struct WorkoutDetailScene: View {
     }
     
     private func edit() {
-        mainRouter.currentSheet = .workoutEdit(id: workout.id)
+        node.route(WorkoutEditRoute(id: workout.id))
     }
     
     private func openMap() {
-        mainRouter.currentSheet = .workoutMap(id: workout.id)
+        node.route(WorkoutMapRoute(id: workout.id))
     }
     
     private func delete() {

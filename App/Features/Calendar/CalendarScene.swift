@@ -1,12 +1,13 @@
 import OutRunCore
 import SwiftData
 import SwiftUI
+import TFRouting
 
 struct CalendarScene: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.calendar) private var calendar
-    @Environment(CalendarRouter.self) private var calendarRouter
+    @Environment(RouterNode.self) private var node
     @Query private var workouts: [Workout]
     
     private var toolbarBackgroundVisibility: Visibility { if #available(iOS 26, *) { .automatic } else { .visible } }
@@ -27,47 +28,35 @@ struct CalendarScene: View {
     }
 
     var body: some View {
-        @Bindable var calendarRouter = calendarRouter
-        NavigationStack(path: $calendarRouter.path) {
-            ScrollView {
-                LazyVStack(spacing: .zero, pinnedViews: .sectionHeaders) {
-                    ForEach(months) { month in
-                        CalendarMonthView(for: month, calendar: calendar) { day, entries in
-                            guard !entries.isEmpty else { return }
-                            if entries.count == 1, let entry = entries.first {
-                                calendarRouter.path.append(CalendarNavigationDestination.workoutDetails(id: entry.id))
-                            } else if let dayStartDate = calendar.date(bySetting: .day, value: day, of: month.range.lowerBound),
-                                      let nextDayStartDate = calendar.date(byAdding: .day, value: 1, to: dayStartDate) {
-                                calendarRouter.path.append(CalendarNavigationDestination.workoutSelection(between: dayStartDate, and: nextDayStartDate))
-                            }
+        ScrollView {
+            LazyVStack(spacing: .zero, pinnedViews: .sectionHeaders) {
+                ForEach(months) { month in
+                    CalendarMonthView(for: month, calendar: calendar) { day, entries in
+                        guard !entries.isEmpty else { return }
+                        if entries.count == 1, let entry = entries.first {
+                            node.route(WorkoutDetailRoute(id: entry.id))
+                        } else if let dayStartDate = calendar.date(bySetting: .day, value: day, of: month.range.lowerBound),
+                                  let nextDayStartDate = calendar.date(byAdding: .day, value: 1, to: dayStartDate) {
+                            node.route(WorkoutSelectionRoute(between: dayStartDate, and: nextDayStartDate))
                         }
                     }
                 }
             }
-            .background()
-            .defaultScrollAnchor(.bottom)
-            .safeAreaPadding(.top, .regular)
-            .compatibleSafeAreaBar(edge: .top) {
-                if #available(iOS 26, *) {
-                    weekdayHeaderBar
-                } else {
-                    weekdayHeaderBar.background()
-                }
-            }
-            .toolbar(content: toolbarContent)
-            .toolbarBackground(toolbarBackgroundVisibility, for: .navigationBar)
-            .navigationTitle("calendar")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: CalendarNavigationDestination.self) { destination in
-                switch destination {
-                case let .workoutDetails(id):
-                    QueriedWorkoutDetailScene(id: id, addCloseButton: false)
-                case let .workoutSelection(start, end):
-                    WorkoutSelectionScene(between: start, and: end)
-                }
+        }
+        .background()
+        .defaultScrollAnchor(.bottom)
+        .safeAreaPadding(.top, .regular)
+        .compatibleSafeAreaBar(edge: .top) {
+            if #available(iOS 26, *) {
+                weekdayHeaderBar
+            } else {
+                weekdayHeaderBar.background()
             }
         }
-        .onDisappear(perform: calendarRouter.reset)
+        .toolbar(content: toolbarContent)
+        .toolbarBackground(toolbarBackgroundVisibility, for: .navigationBar)
+        .navigationTitle("calendar")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     @ViewBuilder private var weekdayHeaderBar: some View {

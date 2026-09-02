@@ -1,15 +1,14 @@
 import OutRunCore
 import SwiftData
 import SwiftUI
+import TFRouting
 
 @main
 struct ORCA: App {
     
     @State private var core: OutRunCore
     @State private var backupService: BackupService
-    @State private var mainRouter: MainRouter
-    @State private var settingsRouter: SettingsRouter
-    @State private var calendarRouter: CalendarRouter
+    @State private var mainRouter: Router
     @State private var showLegacyMigrationView: Bool
     
     var body: some Scene {
@@ -29,6 +28,7 @@ struct ORCA: App {
                             SetupScene()
                         case .initialized:
                             MainScene()
+                                .environment(mainRouter)
                         case .failed(let error):
                             Text(error.localizedDescription)
                                 .font(.subheadline)
@@ -40,9 +40,6 @@ struct ORCA: App {
             .environment(core)
             .environment(core.recorder)
             .environment(core.userPreferences)
-            .environment(mainRouter)
-            .environment(settingsRouter)
-            .environment(calendarRouter)
             .environment(backupService)
             .workoutCardStyle(.list)
         }
@@ -59,9 +56,7 @@ struct ORCA: App {
         let core = OutRunCore(config: config, syncServices: [HealthSyncService()])
         self.core = core
         backupService = .init(core: core)
-        mainRouter = .init()
-        settingsRouter = .init()
-        calendarRouter = .init()
+        mainRouter = .init(scope: MainRoutingScope())
         showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
     }
 }

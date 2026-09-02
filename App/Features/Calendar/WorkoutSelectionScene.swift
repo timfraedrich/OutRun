@@ -1,17 +1,17 @@
 import OutRunCore
 import SwiftData
 import SwiftUI
+import TFRouting
 
 struct WorkoutSelectionScene: View {
     
-    @Environment(MainRouter.self) private var mainRouter
     @Query private var workouts: [Workout]
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: .small) {
                 ForEach(workouts) { workout in
-                    NavigationLink(value: CalendarNavigationDestination.workoutDetails(id: workout.id)) {
+                    RouteLink(route: WorkoutDetailRoute(id: workout.id)) {
                         WorkoutCard(workout: workout)
                     }
                     .buttonStyle(.plain)

@@ -13,6 +13,7 @@
 		225E0A162FC219D60074232C /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0A152FC219D60074232C /* CoreStore */; };
 		225E0B412FC21E370074232C /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0B402FC21E370074232C /* OutRunCore */; };
 		22645EE82FD1C39F0025F234 /* GPXKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22645EE72FD1C39F0025F234 /* GPXKit */; };
+		22A6679B3048828900581894 /* TFRouting in Frameworks */ = {isa = PBXBuildFile; productRef = 22A6679A3048828900581894 /* TFRouting */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,8 +29,8 @@
 /* Begin PBXFileReference section */
 		221CDCD33041BC5800EB9B50 /* TFRouting */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = TFRouting; sourceTree = "<group>"; };
 		225E0B3E2FC21E210074232C /* OutRunCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OutRunCore; sourceTree = "<group>"; };
-		22A66541304865AB00581894 /* orca-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "orca-app.app"; path = "/Users/tim/Coding/orca-ios/build/Debug-iphoneos/orca-app.app"; sourceTree = "<absolute>"; };
-		22A66542304865AB00581894 /* orca-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "orca-tests.xctest"; path = "/Users/tim/Coding/orca-ios/build/Debug-iphoneos/orca-app.app/PlugIns/orca-tests.xctest"; sourceTree = "<absolute>"; };
+		22A6666230486C6C00581894 /* orca-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "orca-app.app"; path = "/Users/tim/Coding/orca-ios/build/Debug-iphoneos/orca-app.app"; sourceTree = "<absolute>"; };
+		22A6666330486C6C00581894 /* orca-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "orca-tests.xctest"; path = "/Users/tim/Coding/orca-ios/build/Debug-iphoneos/orca-app.app/PlugIns/orca-tests.xctest"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -64,6 +65,7 @@
 			files = (
 				22645EE82FD1C39F0025F234 /* GPXKit in Frameworks */,
 				225E0A162FC219D60074232C /* CoreStore in Frameworks */,
+				22A6679B3048828900581894 /* TFRouting in Frameworks */,
 				2211B403302C61C6001B6DFF /* Glur in Frameworks */,
 				225E0B412FC21E370074232C /* OutRunCore in Frameworks */,
 				225E0A0B2FC219AD0074232C /* Perception in Frameworks */,
@@ -117,9 +119,10 @@
 				225E0B402FC21E370074232C /* OutRunCore */,
 				22645EE72FD1C39F0025F234 /* GPXKit */,
 				2211B402302C61C6001B6DFF /* Glur */,
+				22A6679A3048828900581894 /* TFRouting */,
 			);
 			productName = outrun;
-			productReference = 22A66541304865AB00581894 /* orca-app.app */;
+			productReference = 22A6666230486C6C00581894 /* orca-app.app */;
 			productType = "com.apple.product-type.application";
 		};
 		225E0B232FC21B2A0074232C /* orca-tests */ = {
@@ -140,7 +143,7 @@
 			);
 			name = "orca-tests";
 			productName = "orca-tests";
-			productReference = 22A66542304865AB00581894 /* orca-tests.xctest */;
+			productReference = 22A6666330486C6C00581894 /* orca-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -184,6 +187,7 @@
 				225E0B3F2FC21E370074232C /* XCLocalSwiftPackageReference "OutRunCore" */,
 				22645EE62FD1C39F0025F234 /* XCRemoteSwiftPackageReference "GPXKit" */,
 				2211B401302C61C6001B6DFF /* XCRemoteSwiftPackageReference "Glur" */,
+				22A667993048828900581894 /* XCLocalSwiftPackageReference "TFRouting" */,
 			);
 			preferredProjectObjectVersion = 100;
 			productRefGroup = 225E08EE2FC219050074232C;
@@ -604,6 +608,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = OutRunCore;
 		};
+		22A667993048828900581894 /* XCLocalSwiftPackageReference "TFRouting" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = TFRouting;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -691,6 +699,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 22645EE62FD1C39F0025F234 /* XCRemoteSwiftPackageReference "GPXKit" */;
 			productName = GPXKit;
+		};
+		22A6679A3048828900581894 /* TFRouting */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TFRouting;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

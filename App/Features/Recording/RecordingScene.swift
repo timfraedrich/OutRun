@@ -7,9 +7,10 @@ import SwiftUI
 struct RecordingScene: View {
     
     @Environment(\.self) private var environment
-    @Environment(OutRunCore.self) private var core: OutRunCore
     @Environment(\.dismiss) private var dismiss
-    @Bindable private var recorder: WorkoutRecorder
+    @Environment(OutRunCore.self) private var core
+    @Environment(WorkoutRecorder.self) private var recorder
+    
     @State private var keepUserCentered: Bool = true
     @State private var error: Error?
     
@@ -45,6 +46,7 @@ struct RecordingScene: View {
     // MARK: Views
     
     var body: some View {
+        @Bindable var recorder = recorder
         WorkoutMap(keepUserCentered: $keepUserCentered, padding: padding) {
             UserAnnotation()
             if !recorder.route.isEmpty {
@@ -202,12 +204,6 @@ struct RecordingScene: View {
                 .symbolVariant(.circle.fill)
                 .symbolRenderingMode(.hierarchical)
         }
-    }
-    
-    // MARK: Init
-    
-    init(recorder: WorkoutRecorder) {
-        self.recorder = recorder
     }
     
     // MARK: Actions

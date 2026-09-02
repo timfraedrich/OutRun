@@ -1,13 +1,13 @@
 import OutRunCore
 import SwiftData
 import SwiftUI
+import TFRouting
 import WebKit
 
 struct SettingsScene: View {
     
     @Environment(OutRunCore.self) private var core
     @Environment(UserPreferences.self) private var userPreferences
-    @Environment(SettingsRouter.self) private var settingsRouter
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @Query private var workouts: [Workout]
@@ -28,40 +28,20 @@ struct SettingsScene: View {
     }
     
     var body: some View {
-        @Bindable var settingsRouter = settingsRouter
-        NavigationStack(path: $settingsRouter.path) {
-            List {
-                profileSection
-                subpageSection
-                legalSection
-                infoSection
-            }
-            .safeAreaPadding(.top, .regular)
-            .navigationTitle("settings")
-            .toolbar(content: toolbarContent)
-            .navigationDestination(for: SettingsDestination.self) { destination in
-                switch destination {
-                case .appleHealth:
-                    HealthSettingsScene()
-                case .backup:
-                    BackupSettingsScene()
-                case .cache:
-                    CacheSettingsScene()
-                case .profile:
-                    ProfileScene()
-                case .recording:
-                    RecordingSettingsScene()
-                case .units:
-                    UnitSettingsScene()
-                }
-            }
+        List {
+            profileSection
+            subpageSection
+            legalSection
+            infoSection
         }
-        .onDisappear(perform: settingsRouter.reset)
+        .safeAreaPadding(.top, .regular)
+        .navigationTitle("settings")
+        .toolbar(content: toolbarContent)
     }
     
     @ViewBuilder private var profileSection: some View {
         Section {
-            NavigationLink(value: SettingsDestination.profile) {
+            NavigationLink(value: SettingsPageRoute.profile) {
                 HStack(spacing: .regular) {
                     Image(systemName: "person.crop.circle.fill")
                         .resizable()
@@ -80,7 +60,7 @@ struct SettingsScene: View {
     
     @ViewBuilder private var subpageSection: some View {
         Section {
-            NavigationLink(value: SettingsDestination.units) {
+            RouteLink(route: SettingsPageRoute.units) {
                 SettingsRowLabel {
                     Text("unit_settings")
                 } icon: {
@@ -89,7 +69,7 @@ struct SettingsScene: View {
                         .aspectRatio(contentMode: .fit)
                 }
             }
-            NavigationLink(value: SettingsDestination.recording) {
+            RouteLink(route: SettingsPageRoute.recording) {
                 SettingsRowLabel {
                     Text("recording_settings")
                 } icon: {
@@ -99,7 +79,7 @@ struct SettingsScene: View {
                         .padding(.extraSmall)
                 }
             }
-            NavigationLink(value: SettingsDestination.appleHealth) {
+            RouteLink(route: SettingsPageRoute.appleHealth) {
                 SettingsRowLabel {
                     Text("apple_health")
                 } icon: {
@@ -110,7 +90,7 @@ struct SettingsScene: View {
                         .offset(x: 3, y: -3)
                 }
             }
-            NavigationLink(value: SettingsDestination.backup) {
+            RouteLink(route: SettingsPageRoute.backup) {
                 SettingsRowLabel {
                     Text("backup")
                 } icon: {
@@ -120,7 +100,7 @@ struct SettingsScene: View {
                         .padding(.extraSmall)
                 }
             }
-            NavigationLink(value: SettingsDestination.cache) {
+            RouteLink(route: SettingsPageRoute.cache) {
                 SettingsRowLabel {
                     Text("cache")
                 } icon: {
@@ -131,6 +111,7 @@ struct SettingsScene: View {
                 }
             }
         }
+        .buttonStyle(.plain)
     }
     
     @ViewBuilder private var legalSection: some View {
