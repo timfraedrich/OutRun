@@ -175,7 +175,8 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
     }
     
     private func elevation(for workout: any WorkoutProtocol) -> Calculation.ElevationTouple? {
-        Calculation.calculateElevationData(from: workout.route)
+        let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp))
+        return Calculation.calculateElevationData(from: sortedRoute)
     }
     
     public enum ValueRepresentation: Sendable {
