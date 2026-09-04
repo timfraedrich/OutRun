@@ -23,6 +23,8 @@ struct WorkoutDetailScene: View {
     private let addCloseButton: Bool
     private let chartHeight: CGFloat = 125
     
+    private var showMap: Bool { !workout.route.isEmpty }
+    
     private var sectionedAltitudes: Calculation.SectionedValues<Float>? {
         Calculation.calculateSectionedValues(
             from: sectionedRoute,
@@ -49,31 +51,33 @@ struct WorkoutDetailScene: View {
                 VStack(spacing: .zero) {
                     let mapHeight = proxy.size.height * 0.6
                     let overlapHeight = mapHeight / 3
-                    GeometryReader { mapProxy in
-                        let yOffset = mapProxy.frame(in: .scrollView).minY
-                        if let resolvedTintColor {
-                            StaticWorkoutMap(
-                                identifier: workout.id,
-                                coordinates: sectionedRoute?.flatMap(\.elements).map(\.coordinate) ?? [],
-                                tintColor: resolvedTintColor,
-                                insets: .init(top: proxy.safeAreaInsets.top, leading: .zero, bottom: overlapHeight, trailing: .zero)
-                            )
-                            .ignoresSafeArea()
-                            .glur(radius: 24, offset: 2 / 3, interpolation: 1 / 2, noise: 0.0)
-                            .mask {
-                                VStack(spacing: .zero) {
-                                    Rectangle()
-                                    BackgroundBlackoutGradient(startPoint: .bottom, endPoint: .top).frame(height: overlapHeight)
+                    if showMap {
+                        GeometryReader { mapProxy in
+                            let yOffset = mapProxy.frame(in: .scrollView).minY
+                            if let resolvedTintColor {
+                                StaticWorkoutMap(
+                                    identifier: workout.id,
+                                    coordinates: sectionedRoute?.flatMap(\.elements).map(\.coordinate) ?? [],
+                                    tintColor: resolvedTintColor,
+                                    insets: .init(top: proxy.safeAreaInsets.top, leading: .zero, bottom: overlapHeight, trailing: .zero)
+                                )
+                                .ignoresSafeArea()
+                                .glur(radius: 24, offset: 2 / 3, interpolation: 1 / 2, noise: 0.0)
+                                .mask {
+                                    VStack(spacing: .zero) {
+                                        Rectangle()
+                                        BackgroundBlackoutGradient(startPoint: .bottom, endPoint: .top).frame(height: overlapHeight)
+                                    }
                                 }
+                                .scaleEffect(1 + max(0, yOffset / mapHeight), anchor: .bottom)
+                                .offset(y: -min(0, yOffset))
+                                .opacity(1 + min(0, yOffset / mapHeight))
+                                .blur(radius: 10 * -min(0, yOffset / mapHeight))
                             }
-                            .scaleEffect(1 + max(0, yOffset / mapHeight), anchor: .bottom)
-                            .offset(y: -min(0, yOffset))
-                            .opacity(1 + min(0, yOffset / mapHeight))
-                            .blur(radius: 10 * -min(0, yOffset / mapHeight))
                         }
+                        .frame(height: mapHeight)
+                        .onTapGesture(perform: openMap)
                     }
-                    .frame(height: mapHeight)
-                    .onTapGesture(perform: openMap)
                     VStack(alignment: .leading, spacing: .large) {
                         Group {
                             header
@@ -90,7 +94,7 @@ struct WorkoutDetailScene: View {
                     }
                     .backgroundStyle(Color(.secondarySystemGroupedBackground))
                     .padding(.horizontal, .regular)
-                    .padding(.top, -overlapHeight)
+                    .padding(.top, showMap ? -overlapHeight : nil)
                 }
             }
         }
@@ -101,7 +105,7 @@ struct WorkoutDetailScene: View {
         }
         .background()
         .backgroundStyle(Color(.systemGroupedBackground))
-        .ignoresSafeArea(.all, edges: .top)
+        .ignoresSafeArea(.all, edges: showMap ? .top : [])
         .toolbar(content: toolbarContent)
         .closeToolbarItem(active: addCloseButton)
         .hiddenNavigationTitle("workout_detail_title")
