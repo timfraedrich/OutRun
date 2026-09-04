@@ -16,6 +16,10 @@ struct WorkoutDetailScene: View {
     @State private var confirmDelete: Bool = false
     @State private var sectionedRoute: CategorizedArray<Bool, any WorkoutRouteDataSampleProtocol>?
     @State private var sectionedHeartRates: CategorizedArray<Bool, any WorkoutHeartRateDataSampleProtocol>?
+    @State private var sectionedAltitudes: Calculation.SectionedValues<Float>?
+    @State private var sectionedSpeeds: Calculation.SectionedValues<Float>?
+    @State private var routeCoordinates: [CLLocationCoordinate2D] = []
+    @State private var metrics: SceneMetrics = SceneMetrics()
     @State private var resolvedTintColor: CGColor?
     @State private var backupTypeToShare: BackupType?
     @State private var exportProcess: BackupProcess?
@@ -24,79 +28,42 @@ struct WorkoutDetailScene: View {
     private let chartHeight: CGFloat = 125
     
     private var showMap: Bool { !workout.route.isEmpty }
-    
-    private var sectionedAltitudes: Calculation.SectionedValues<Float>? {
-        Calculation.calculateSectionedValues(
-            from: sectionedRoute,
-            for: \.validatedAltitude,
-            and: \.timestamp,
-            sourceUnit: .meters,
-            destinationUnit: userPreferences.safeAltitudeUnit()
-        )
-    }
-    
-    private var sectionedSpeeds: Calculation.SectionedValues<Float>? {
-        Calculation.calculateSectionedValues(
-            from: sectionedRoute,
-            for: \.validatedSpeed,
-            and: \.timestamp,
-            sourceUnit: .metersPerSecond,
-            destinationUnit: userPreferences.safeSpeedUnit()
-        )
+    private var mapHeight: CGFloat { metrics.size.height * 0.6 }
+    private var overlapHeight: CGFloat { mapHeight / 3 }
+    /// Identifies the unit preferences the derived chart values were calculated for, so they can be recalculated when they change.
+    private var unitSignature: String {
+        "\(userPreferences.safeAltitudeUnit().symbol)|\(userPreferences.safeSpeedUnit().symbol)"
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
-                VStack(spacing: .zero) {
-                    let mapHeight = proxy.size.height * 0.6
-                    let overlapHeight = mapHeight / 3
-                    if showMap {
-                        GeometryReader { mapProxy in
-                            let yOffset = mapProxy.frame(in: .scrollView).minY
-                            if let resolvedTintColor {
-                                StaticWorkoutMap(
-                                    identifier: workout.id,
-                                    coordinates: sectionedRoute?.flatMap(\.elements).map(\.coordinate) ?? [],
-                                    tintColor: resolvedTintColor,
-                                    insets: .init(top: proxy.safeAreaInsets.top, leading: .zero, bottom: overlapHeight, trailing: .zero)
-                                )
-                                .ignoresSafeArea()
-                                .glur(radius: 24, offset: 2 / 3, interpolation: 1 / 2, noise: 0.0)
-                                .mask {
-                                    VStack(spacing: .zero) {
-                                        Rectangle()
-                                        BackgroundBlackoutGradient(startPoint: .bottom, endPoint: .top).frame(height: overlapHeight)
-                                    }
-                                }
-                                .scaleEffect(1 + max(0, yOffset / mapHeight), anchor: .bottom)
-                                .offset(y: -min(0, yOffset))
-                                .opacity(1 + min(0, yOffset / mapHeight))
-                                .blur(radius: 10 * -min(0, yOffset / mapHeight))
-                            }
-                        }
-                        .frame(height: mapHeight)
-                        .onTapGesture(perform: openMap)
-                    }
-                    VStack(alignment: .leading, spacing: .large) {
-                        Group {
-                            header
-                            distanceSection
-                            timeSection
-                            heartRateSection
-                            speedSection
-                            energySection
-                        }
-                        .labeledContentStyle(.metric)
-                        commentSection
-                        metadataSection
-                        actionSection
-                    }
-                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
-                    .padding(.horizontal, .regular)
-                    .padding(.top, showMap ? -overlapHeight : nil)
+        ScrollView {
+            VStack(spacing: .zero) {
+                if showMap, mapHeight > 0 {
+                    mapHeader
                 }
+                VStack(alignment: .leading, spacing: .large) {
+                    Group {
+                        header
+                        distanceSection
+                        timeSection
+                        heartRateSection
+                        speedSection
+                        energySection
+                    }
+                    .labeledContentStyle(.metric)
+                    commentSection
+                    metadataSection
+                    actionSection
+                }
+                .backgroundStyle(Color(.secondarySystemGroupedBackground))
+                .padding(.horizontal, .regular)
+                .padding(.top, showMap && mapHeight > 0 ? -overlapHeight : nil)
             }
+        }
+        .onGeometryChange(for: SceneMetrics.self) { proxy in
+            SceneMetrics(size: proxy.size, topSafeAreaInset: proxy.safeAreaInsets.top)
+        } action: { newMetrics in
+            metrics = newMetrics
         }
         .background {
             ResolveTintColorView { color in
@@ -113,21 +80,69 @@ struct WorkoutDetailScene: View {
         .compatibleScrollEffectHidden(for: .top)
         .backupExport([workout.id], of: $backupTypeToShare, process: $exportProcess)
         .backupProcessSheet(for: $exportProcess)
-        .task {
+        .task(id: unitSignature) {
             let sortedPauses = workout.pauses.sorted(using: KeyPathComparator(\.startDate, order: .forward))
             let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
-            self.sectionedRoute = Calculation.calculateSectionedSamples(
+            let sectionedRoute = Calculation.calculateSectionedSamples(
                 from: sortedRoute,
                 timestampKeyPath: \.timestamp,
                 pauses: sortedPauses
             )
+            self.sectionedRoute = sectionedRoute
             let sortedHeartRates = workout.heartRates.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
             self.sectionedHeartRates = Calculation.calculateSectionedSamples(
                 from: sortedHeartRates,
                 timestampKeyPath: \.timestamp,
                 pauses: sortedPauses
             )
+            self.routeCoordinates = sectionedRoute.flatMap(\.elements).map(\.coordinate)
+            self.sectionedAltitudes = Calculation.calculateSectionedValues(
+                from: sectionedRoute,
+                for: \.validatedAltitude,
+                and: \.timestamp,
+                sourceUnit: .meters,
+                destinationUnit: userPreferences.safeAltitudeUnit()
+            )
+            self.sectionedSpeeds = Calculation.calculateSectionedValues(
+                from: sectionedRoute,
+                for: \.validatedSpeed,
+                and: \.timestamp,
+                sourceUnit: .metersPerSecond,
+                destinationUnit: userPreferences.safeSpeedUnit()
+            )
         }
+    }
+    
+    @ViewBuilder private var mapHeader: some View {
+        Group {
+            if let resolvedTintColor {
+                StaticWorkoutMap(
+                    identifier: workout.id,
+                    coordinates: routeCoordinates,
+                    tintColor: resolvedTintColor,
+                    insets: .init(top: metrics.topSafeAreaInset, leading: .zero, bottom: overlapHeight, trailing: .zero)
+                )
+                .ignoresSafeArea()
+                .glur(radius: 24, offset: 2 / 3, interpolation: 1 / 2, noise: 0.0)
+                .mask {
+                    VStack(spacing: .zero) {
+                        Rectangle()
+                        BackgroundBlackoutGradient(startPoint: .bottom, endPoint: .top).frame(height: overlapHeight)
+                    }
+                }
+                .visualEffect { [mapHeight] content, proxy in
+                    let yOffset = proxy.frame(in: .scrollView).minY
+                    let progress = mapHeight > 0 ? yOffset / mapHeight : 0
+                    return content
+                        .scaleEffect(1 + max(0, progress), anchor: .bottom)
+                        .offset(y: -min(0, yOffset))
+                        .opacity(1 + min(0, progress))
+                        .blur(radius: 10 * -min(0, progress))
+                }
+            }
+        }
+        .frame(height: mapHeight)
+        .onTapGesture(perform: openMap)
     }
     
     @ViewBuilder private var header: some View {
@@ -334,6 +349,13 @@ struct WorkoutDetailScene: View {
                 self.error = error
             }
         }
+    }
+    
+    /// The container geometry the layout depends on. Kept in state so that geometry updates during the sheet's
+    /// presentation and dismissal transitions don't rebuild the scroll content on every frame.
+    private struct SceneMetrics: Equatable, Sendable {
+        var size: CGSize = .zero
+        var topSafeAreaInset: CGFloat = .zero
     }
 }
 

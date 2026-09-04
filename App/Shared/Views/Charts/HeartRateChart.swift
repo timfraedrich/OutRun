@@ -79,8 +79,8 @@ struct HeartRateChart: View {
                 inactiveGroups[binIndex, default: []].append(sample)
             }
         }
-        let activeItems = Self.itemize(groups: activeGroups, bins: bins).map { Item(active: true, type: $0) }
-        let inactiveItems = Self.itemize(groups: inactiveGroups, bins: bins).map { Item(active: false, type: $0) }
+        let activeItems = Self.itemize(groups: activeGroups, bins: bins).map { Item(id: "active-\($0.index)", active: true, type: $0.type) }
+        let inactiveItems = Self.itemize(groups: inactiveGroups, bins: bins).map { Item(id: "inactive-\($0.index)", active: false, type: $0.type) }
         minValue -= 10 + minValue % 10
         maxValue += 19 - maxValue % 10
         self.minValue = minValue
@@ -92,9 +92,11 @@ struct HeartRateChart: View {
         self.init(sectionedSamples: [(true, samples)], dateRange: dateRange)
     }
     
-    private static func itemize(groups: [Int: [any WorkoutHeartRateDataSampleProtocol]], bins: DateBins) -> [ItemType] {
-        var items: [ItemType] = []
-        for (index, groupSamples) in groups {
+    /// - note: The groups are iterated in bin order so that both the identifiers and the resulting mark order stay
+    ///   stable across reconstructions of the chart, which lets Charts diff the marks instead of rebuilding them.
+    private static func itemize(groups: [Int: [any WorkoutHeartRateDataSampleProtocol]], bins: DateBins) -> [(index: Int, type: ItemType)] {
+        var items: [(index: Int, type: ItemType)] = []
+        for (index, groupSamples) in groups.sorted(using: KeyPathComparator(\.key)) {
             var minGroupValue = UInt8.max, maxGroupValue = UInt8.min
             for groupSample in groupSamples {
                 minGroupValue = min(minGroupValue, groupSample.heartRate)
@@ -109,13 +111,13 @@ struct HeartRateChart: View {
                 let valueRange = minGroupValue...maxGroupValue
                 item = .range(.init(timestampRange: timestampRange, valueRange: valueRange))
             }
-            items.append(item)
+            items.append((index, item))
         }
         return items
     }
     
     private struct Item: Identifiable {
-        let id = UUID()
+        let id: String
         let active: Bool
         let type: ItemType
     }

@@ -70,7 +70,7 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
         ForEach(series) { series in
             ForEach(series.items) { item in
                 LineMark(x: .value("timestamp", item.timestamp), y: .value(valueLabelKey, item.value))
-                    .foregroundStyle(by: .value("series", series.id.uuidString))
+                    .foregroundStyle(by: .value("series", series.id))
                     .zIndex(series.active ? 1 : 0)
             }
         }
@@ -117,8 +117,8 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
         }
     }
     
-    private func seriesColor(_ plottable: String) -> AnyShapeStyle {
-        if let id = UUID(uuidString: plottable), series.first(where: { $0.id == id })?.active == true {
+    private func seriesColor(_ plottable: Int) -> AnyShapeStyle {
+        if series.first(where: { $0.id == plottable })?.active == true {
             AnyShapeStyle(.tint)
         } else {
             AnyShapeStyle(.gray.opacity(0.5))
@@ -217,22 +217,23 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
         selection: Binding<Date?> = .variable(nil)
     ) {
         self._selectedDate = selection
-        let activeSeries: [Series] = sectionedSamples.compactMap { active, samples in
-            guard active else { return nil }
-            return .init(active: active, items: samples.compactMap { sample in
-                let value = sample.value
-                guard value >= Value.zero else { return nil }
-                return .init(timestamp: sample.timestamp, value: value)
-            })
-        }
         // we add all samples to an inactive series to have a continuous line in the background
         let allSamples = sectionedSamples.flatMap { $0.elements }.sorted(using: KeyPathComparator(\.timestamp))
-        let validItems: [Item] = allSamples.compactMap { sample in
+        let validItems: [Item] = allSamples.enumerated().compactMap { index, sample in
             let value = sample.value
             guard value >= Value.zero else { return nil }
-            return .init(timestamp: sample.timestamp, value: value)
+            return .init(id: index, timestamp: sample.timestamp, value: value)
         }
-        let inactiveSeries: Series = .init(active: false, items: validItems)
+        let inactiveSeries: Series = .init(id: 0, active: false, items: validItems)
+        var activeSeries: [Series] = []
+        for (active, samples) in sectionedSamples where active {
+            let items: [Item] = samples.enumerated().compactMap { index, sample in
+                let value = sample.value
+                guard value >= Value.zero else { return nil }
+                return .init(id: index, timestamp: sample.timestamp, value: value)
+            }
+            activeSeries.append(.init(id: activeSeries.count + 1, active: true, items: items))
+        }
         self.series = [inactiveSeries] + activeSeries
         self.allItems = validItems
         self.dateRange = dateRange
@@ -288,19 +289,19 @@ struct SampleChart<Value: BinaryFloatingPoint & Plottable>: View {
     }
     
     private struct Series: Identifiable {
-        let id = UUID()
+        let id: Int
         let active: Bool
         let items: [Item]
     }
     
     private struct Item: Identifiable {
-        let id = UUID()
+        let id: Int
         let timestamp: Date
         let value: Value
     }
     
     private struct PauseIndicator: Identifiable {
-        let id = UUID()
+        var id: Int { number }
         let number: Int
         let startDate: Date
         let endDate: Date
