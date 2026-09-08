@@ -1,5 +1,5 @@
 {
-  "originHash" : "36f0a80b56554a5098eb3bd520db6d16e55c0a0f89bd0c065c0fa6132a29bb93",
+  "originHash" : "2995cff11d93fbc291618a862010f64f66b1ec7d3d5bc8a280c17606656419c5",
   "pins" : [
     {
       "identity" : "apikit",
@@ -188,6 +188,15 @@
       "state" : {
         "revision" : "7c6ad0fc39d0763e0b699210e4124afd5041c5df",
         "version" : "1.6.4"
+      }
+    },
+    {
+      "identity" : "tfrouting",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/timfraedrich/TFRouting",
+      "state" : {
+        "revision" : "8899e0768f931b2d767ccfe815aae9ca52729d13",
+        "version" : "1.0.0"
       }
     },
     {
