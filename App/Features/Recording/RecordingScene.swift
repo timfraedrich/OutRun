@@ -10,10 +10,11 @@ struct RecordingScene: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(OutRunCore.self) private var core
     @Environment(WorkoutRecorder.self) private var recorder
-    
+
     @State private var keepUserCentered: Bool = true
     @State private var confirmClose: Bool = false
     @State private var error: Error?
+    @State private var permissionNoticeIsPresented: Bool = false
     
     private let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
     
@@ -33,12 +34,20 @@ struct RecordingScene: View {
         }
     }
     
+    private var requiredPermissionsMissing: Bool {
+        recorder.missingPermissions.contains { $0.isRequired }
+    }
+
     private var workoutTypeBinding: Binding<WorkoutType> {
         .init(
             get: { recorder.workoutType },
             set: { type in
                 Task {
-                    try await recorder.changeWorkoutType(to: type)
+                    do {
+                        try await recorder.changeWorkoutType(to: type)
+                    } catch {
+                        self.error = error
+                    }
                 }
             }
         )
@@ -58,6 +67,16 @@ struct RecordingScene: View {
         .toolbar(content: toolbarContent)
         .safeAreaInset(edge: .bottom, content: informationCard)
         .ignoresBottomSafeAreaOnIOS26OrLater()
+        .overlay {
+            if permissionNoticeIsPresented {
+                RecordingPermissionNotice(dismiss: dismissPermissionNotice)
+                    .transition(.opacity)
+            }
+        }
+        .onChange(of: requiredPermissionsMissing, initial: true) { _, isMissing in
+            guard isMissing else { return }
+            permissionNoticeIsPresented = true
+        }
         .interactiveDismissDisabled(recorder.status.isCollectingData)
         .presentationDragIndicator(recorder.status.isCollectingData ? .hidden : .visible)
         .alert(error?.localizedDescription ?? .init(localized: "error"), isPresented: errorIsPresented) {
@@ -222,6 +241,12 @@ struct RecordingScene: View {
         }
     }
     
+    private func dismissPermissionNotice() {
+        withAnimation {
+            permissionNoticeIsPresented = false
+        }
+    }
+
     private func startAction() {
         errorHandledAsyncAction { try await recorder.startRecording() }
     }

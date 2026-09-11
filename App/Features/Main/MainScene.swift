@@ -20,7 +20,6 @@ struct MainScene: View {
                 ScrollView {
                     container {
                         listGreetingView
-                        grantPermissionViews
                         if finishedWorkouts.isEmpty {
                             emptyWorkoutsView.frame(maxHeight: .infinity)
                         } else {
@@ -60,19 +59,6 @@ struct MainScene: View {
                 guard largeTitleVisible != nil || isVisible else { return }
                 largeTitleVisible = isVisible
             }
-    }
-    
-    @ViewBuilder private var grantPermissionViews: some View {
-        if let recorder = core.recorder, !recorder.missingPermissions.isEmpty {
-            ForEach(Array(recorder.missingPermissions), id: \.hashValue) { permission in
-                Button("workout_recorder_grant_\(permission.description)_permission") {
-                    Task {
-                        try await recorder.requestAuthorization(for: permission)
-                    }
-                }
-                .tint(permission.isRequired ? .red : .yellow)
-            }
-        }
     }
     
     @ViewBuilder private var emptyWorkoutsView: some View {

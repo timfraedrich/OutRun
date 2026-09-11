@@ -15,6 +15,8 @@ public class HealthSyncService: SyncService {
     private var delegate: SyncDelegate?
     
     public let identifier: String = identifier
+    /// The authorization status for the data types supported by this service, as last determined by ``refreshAuthorizationStatus()``.
+    public private(set) var authorizationStatus: PermissionStatus = .undetermined
     public private(set) var inwardSyncMode: SyncMode = .disabled
     public private(set) var outwardSyncMode: SyncMode = .disabled
     public let relevantAttributes: Set<any PartialKeyPath<Workout> & Sendable> = [
@@ -165,13 +167,17 @@ public class HealthSyncService: SyncService {
     }
     
     /// Requests read and write authorization for the types supported by this sync service.
+    /// - throws: Throws ``HealthSyncServiceError/permissionPromptUnavailable`` if authorization was requested before. In this case the
+    /// user has to be instructed to adjust the permissions in the Health app manually.
     public func requestAuthorization() async throws {
         let types = Set(SupportedHealthKitType.allCases.map(\.sampleType))
         let status = try await healthStore.statusForAuthorizationRequest(toShare: types, read: types)
         switch status {
         case .shouldRequest:
             try await healthStore.requestAuthorization(toShare: types, read: types)
+            await refreshAuthorizationStatus()
         case .unnecessary:
+            await refreshAuthorizationStatus()
             throw HealthSyncServiceError.permissionPromptUnavailable
         case .unknown:
             fallthrough
@@ -179,7 +185,43 @@ public class HealthSyncService: SyncService {
             throw HealthSyncServiceError.unknown
         }
     }
-    
+
+    /// Re-evaluates the ``authorizationStatus``.
+    /// - note: HealthKit does not notify about authorization changes and does not expose read authorization at all. Call this method
+    /// whenever the status is about to be presented to the user or the app returns to the foreground.
+    public func refreshAuthorizationStatus() async {
+        authorizationStatus = await determineAuthorizationStatus()
+        logger.info("Refreshed authorization status to \(self.authorizationStatus.debugDescription).")
+    }
+
+    /// Derives the ``authorizationStatus`` from the share authorization of the supported types, as read authorization is deliberately
+    /// hidden from apps by HealthKit.
+    private func determineAuthorizationStatus() async -> PermissionStatus {
+        guard HKHealthStore.isHealthDataAvailable() else { return .unavailable }
+        let types = Set(SupportedHealthKitType.allCases.map(\.sampleType))
+        let requestStatus: HKAuthorizationRequestStatus
+        do {
+            requestStatus = try await healthStore.statusForAuthorizationRequest(toShare: types, read: types)
+        } catch {
+            logger.error("Failed to determine the authorization request status: \(error.localizedDescription)")
+            return .unavailable
+        }
+        switch requestStatus {
+        case .shouldRequest:
+            return .undetermined
+        case .unnecessary:
+            guard await isAuthorizedToWrite(.workout) else { return .denied }
+            for type in SupportedHealthKitType.allCases {
+                guard await isAuthorizedToWrite(type) else { return .limited }
+            }
+            return .granted
+        case .unknown:
+            fallthrough
+        @unknown default:
+            return .unavailable
+        }
+    }
+
     private func checkMissingAuthorization() async throws {
         let types = Set(SupportedHealthKitType.allCases.map(\.sampleType))
         let status = try await healthStore.statusForAuthorizationRequest(toShare: types, read: types)
@@ -599,6 +641,7 @@ public class HealthSyncService: SyncService {
         self.delegate = delegate
         inwardSyncMode = preference(for: Self.inwardSyncModePreferenceKey) ?? .disabled
         outwardSyncMode = preference(for: Self.outwardSyncModePreferenceKey) ?? .disabled
+        await refreshAuthorizationStatus()
         logger.info("Initialized.")
     }
     

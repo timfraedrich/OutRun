@@ -30,13 +30,18 @@ public class WorkoutRecorder {
     public private(set) var energy: Measurement<UnitEnergy>
     public private(set) var speed: Measurement<UnitSpeed>
     public private(set) var route: [CLLocationCoordinate2D]
-    /// The permissions missing for an ideal recording experience. Check each elements ``WorkoutRecorderPermissionRequirement/isRequired``
-    /// to determine which permissions must be aquired before a recording can be started.
-    public private(set) var missingPermissions: Set<WorkoutRecorderPermission>
+    /// The authorization status of every permission listed in ``neededPermissions``.
+    public private(set) var permissionStatuses: [WorkoutRecorderPermission: PermissionStatus]
     /// Indicates the data types that are currently not recorded due to an internal failure. This information should be communicated to the
     /// user together with the recommendation to restart the app.
     public private(set) var failedDataTypeCollection: [RecordableDataTypes:Error]
-    
+
+    /// The permissions missing for an ideal recording experience. Check each elements ``WorkoutRecorderPermission/isRequired``
+    /// to determine which permissions must be aquired before a recording can be started.
+    public var missingPermissions: Set<WorkoutRecorderPermission> {
+        neededPermissions.filter { !permissionStatuses[$0, default: .undetermined].isSufficient }
+    }
+
     init(
         database: Database,
         locationService: LocationService,
@@ -61,16 +66,18 @@ public class WorkoutRecorder {
         self.energy = await state.energyMeasurement
         self.speed = await state.speedMeasurement
         self.route = await state.route
-        let locationAuthorizationSufficient = locationService.status.authorizationSufficient
-        let altitudeAuthorizationSufficient = await altitudeService?.status.authorizationSufficient ?? true
-        let stepAuthorizationSufficient = await stepService?.status.authorizationSufficient ?? true
-        let motionAndFitnessAuthorizationSufficient = altitudeAuthorizationSufficient && stepAuthorizationSufficient
-        self.missingPermissions = Set(neededPermissions.compactMap { requirement in
-            switch requirement {
-            case .location: locationAuthorizationSufficient ? nil : requirement
-            case .motionAndFitness: motionAndFitnessAuthorizationSufficient ? nil : requirement
+        let locationPermissionStatus = locationService.status.permissionStatus
+        let altitudePermissionStatus = await altitudeService?.status.permissionStatus
+        let stepPermissionStatus = await stepService?.status.permissionStatus
+        let motionAndFitnessPermissionStatus = PermissionStatus.leastPermissive(
+            of: [altitudePermissionStatus, stepPermissionStatus].compactMap { $0 }
+        )
+        self.permissionStatuses = .init(uniqueKeysWithValues: neededPermissions.map { permission in
+            switch permission {
+            case .location: (permission, locationPermissionStatus)
+            case .motionAndFitness: (permission, motionAndFitnessPermissionStatus)
             }
-        }.compactMap { $0 })
+        })
         self.failedDataTypeCollection = [:]
         await startStreamingRecordingActorUpdates()
         startStreamingMainActorUpdates()
@@ -166,11 +173,7 @@ public class WorkoutRecorder {
         return Task { [weak self] in
             for await status in statusStream where !Task.isCancelled {
                 guard let self else { return }
-                if status.authorizationSufficient {
-                    await MainActor.run { _ = missingPermissions.remove(.location) }
-                } else {
-                    await MainActor.run { _ = missingPermissions.insert(.location) }
-                }
+                await MainActor.run { permissionStatuses[.location] = status.permissionStatus }
                 if case .failed(let error) = status {
                     await MainActor.run { failedDataTypeCollection[.location] = error }
                 }
@@ -187,11 +190,10 @@ public class WorkoutRecorder {
         return Task { [weak self] in
             for await (altitudeServiceStatus, stepServiceStatus) in statusStream where !Task.isCancelled {
                 guard let self else { return }
-                if altitudeServiceStatus?.authorizationSufficient ?? true && stepServiceStatus?.authorizationSufficient ?? true {
-                    await MainActor.run { _ = missingPermissions.remove(.motionAndFitness) }
-                } else {
-                    await MainActor.run { _ = missingPermissions.insert(.motionAndFitness) }
-                }
+                let permissionStatus = PermissionStatus.leastPermissive(
+                    of: [altitudeServiceStatus?.permissionStatus, stepServiceStatus?.permissionStatus].compactMap { $0 }
+                )
+                await MainActor.run { permissionStatuses[.motionAndFitness] = permissionStatus }
                 if let altitudeServiceStatus, case .failed(let error) = altitudeServiceStatus {
                     await MainActor.run { failedDataTypeCollection[.preciseAltitude] = error }
                 }
@@ -343,7 +345,17 @@ public class WorkoutRecorder {
         }
         logger.info("Requested authorization for \(permission.debugDescription).")
     }
-    
+
+    /// Re-evaluates the authorization of the underlying services and updates ``permissionStatuses`` accordingly.
+    /// - note: Changes made by the user in the Settings app are not observable for all permissions. Call this method whenever the
+    /// permission statuses are about to be presented to the user or the app returns to the foreground.
+    @BackgroundActor
+    public func refreshPermissionStatuses() async {
+        await MainActor.run { locationService.refreshStatus() }
+        altitudeService?.refreshStatus()
+        stepService?.refreshStatus()
+    }
+
     /// Changes the workout type recorded by this class.
     /// - throws: Throws if a workout is currently running and modifying it in the database fails.
     @BackgroundActor

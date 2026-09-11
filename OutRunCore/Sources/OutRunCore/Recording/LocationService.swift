@@ -54,6 +54,11 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
         logger.info("Location authorization was requested.")
     }
     
+    /// Re-evaluates the ``status`` based on the authorization currently granted to the app.
+    func refreshStatus() {
+        updateStatus(basedOn: locationManager.authorizationStatus)
+    }
+
     private func updateStatus(basedOn authStatus: CLAuthorizationStatus) {
         changeStatus(to: Self.status(for: authStatus, locationManager.accuracyAuthorization, and: mode))
     }
@@ -188,7 +193,19 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
             default: true
             }
         }
-        
+
+        /// The authorization status of the location permission as it should be presented to the user.
+        /// - note: A missing full accuracy authorization is reported as ``PermissionStatus/limited``.
+        var permissionStatus: PermissionStatus {
+            switch self {
+            case .initializing, .missingAuthorization: .undetermined
+            case .restrictedAuthorization: .limited
+            case .deniedAuthorization: .denied
+            case .idle, .recording: .granted
+            case .failed: .unavailable
+            }
+        }
+
         var debugDescription: String {
             switch self {
             case .initializing: ".initializing"

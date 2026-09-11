@@ -55,6 +55,11 @@ class AltitudeService {
         }
     }
     
+    /// Re-evaluates the ``status`` based on the authorization currently granted to the app.
+    func refreshStatus() {
+        updateStatus()
+    }
+
     /// Change whether the service should collect altitude data.
     func changeShouldRecord(_ shouldRecord: Bool) {
         if shouldRecord, !status.isCollectingData {
@@ -235,10 +240,20 @@ class AltitudeService {
             }
         }
         
+        /// The authorization status of the motion and fitness permission as it should be presented to the user.
+        var permissionStatus: PermissionStatus {
+            switch self {
+            case .initializing, .missingAuthorization: .undetermined
+            case .restrictedAuthorization, .deniedAuthorization: .denied
+            case .idle, .updatingSince: .granted
+            case .failed: .unavailable
+            }
+        }
+
         var isCollectingData: Bool {
             if case .updatingSince = self { true } else { false }
         }
-        
+
         var debugDescription: String {
             switch self {
             case .initializing: "AltitudeService.Status.initializing"

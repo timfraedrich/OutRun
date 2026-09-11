@@ -4,33 +4,40 @@ import SwiftUI
 struct HealthSettingsScene: View {
     
     @Environment(OutRunCore.self) private var core
-    @State private var grantPermissionError: Error?
+    @Environment(\.scenePhase) private var scenePhase
     @State private var outwardSyncDate: Date?
     @State private var inwardSyncDate: Date?
-    
+
     var body: some View {
         if let healthSyncService = core.syncService(HealthSyncService.self) {
             List {
-                // TODO: Implement proper permission management + warnings if insufficient permissions are given
-                Section {
-                    Button {
-                        grantPermissions(for: healthSyncService)
-                    } label: {
-                        Text(verbatim: "Grant Permissions")
-                    }
-                    .errorPopover($grantPermissionError)
-                }
+                permissionSection(for: healthSyncService)
                 exportSection(for: healthSyncService)
                 importSection(for: healthSyncService)
             }
             .safeAreaPadding(.top, .regular)
             .navigationTitle("apple_health")
             .pickerStyle(.inline)
+            .task(id: scenePhase) {
+                guard scenePhase == .active else { return }
+                await healthSyncService.refreshAuthorizationStatus()
+            }
         } else {
             Text("error_health_sync_service_not_available")
         }
     }
-    
+
+    @ViewBuilder
+    private func permissionSection(for healthSyncService: HealthSyncService) -> some View {
+        Section {
+            PermissionRow(item: .appleHealth(for: healthSyncService))
+        } header: {
+            Text("permissions")
+        } footer: {
+            Text("health_permissions_footer")
+        }
+    }
+
     @ViewBuilder
     private func exportSection(for healthSyncService: HealthSyncService) -> some View {
         Section("health_sync_export_mode") {
@@ -129,16 +136,6 @@ struct HealthSettingsScene: View {
                 .tag(SyncMode.enabled)
             } label: {
                 EmptyView()
-            }
-        }
-    }
-    
-    private func grantPermissions(for healthSyncService: HealthSyncService) {
-        Task {
-            do {
-                try await healthSyncService.requestAuthorization()
-            } catch {
-                print("HealthSyncService authorization failed: \(error)")
             }
         }
     }

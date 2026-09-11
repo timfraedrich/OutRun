@@ -1,4 +1,4 @@
-public enum WorkoutRecorderPermission: Equatable, CustomStringConvertible, CustomDebugStringConvertible, Sendable {
+public enum WorkoutRecorderPermission: CaseIterable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, Sendable {
     
     case location
     case motionAndFitness
