@@ -8,6 +8,7 @@ struct SettingsScene: View {
     
     @Environment(OutRunCore.self) private var core
     @Environment(UserPreferences.self) private var userPreferences
+    @Environment(RouterNode.self) private var node
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @Query private var workouts: [Workout]
@@ -41,7 +42,9 @@ struct SettingsScene: View {
     
     @ViewBuilder private var profileSection: some View {
         Section {
-            RouteLink(route: SettingsPageRoute.profile) {
+            NavigationLinkButton {
+                node.route(SettingsPageRoute.profile)
+            } label: {
                 HStack(spacing: .regular) {
                     Image(systemName: "person.crop.circle.fill")
                         .resizable()
@@ -58,59 +61,52 @@ struct SettingsScene: View {
             .buttonStyle(.plain)
         }
     }
-    
+
+    @ViewBuilder
+    private func subpageButton<Icon: View>(
+        _ titleKey: LocalizedStringKey,
+        route: any RouteProtocol,
+        @ViewBuilder icon: @escaping () -> Icon
+    ) -> some View {
+        NavigationLinkButton {
+            node.route(route)
+        } label: {
+            SettingsRowLabel {
+                Text(titleKey)
+            } icon: {
+                icon()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func subpageButton(
+        _ titleKey: LocalizedStringKey,
+        systemImage: String,
+        padding: Spacing? = .extraSmall,
+        route: SettingsPageRoute
+    ) -> some View {
+        subpageButton(titleKey, route: route) {
+            Image(systemName: systemImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(padding?.rawValue ?? .zero)
+        }
+    }
+
     @ViewBuilder private var subpageSection: some View {
         Section {
-            RouteLink(route: SettingsPageRoute.units) {
-                SettingsRowLabel {
-                    Text("unit_settings")
-                } icon: {
-                    Image(systemName: "ruler.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                }
+            subpageButton("unit_settings", systemImage: "ruler.fill", padding: nil, route: .units)
+            subpageButton("recording_settings", systemImage: "record.circle", route: .recording)
+            subpageButton("apple_health", route: SettingsPageRoute.appleHealth) {
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(6)
+                    .offset(x: 3, y: -3)
             }
-            RouteLink(route: SettingsPageRoute.recording) {
-                SettingsRowLabel {
-                    Text("recording_settings")
-                } icon: {
-                    Image(systemName: "record.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(.extraSmall)
-                }
-            }
-            RouteLink(route: SettingsPageRoute.appleHealth) {
-                SettingsRowLabel {
-                    Text("apple_health")
-                } icon: {
-                    Image(systemName: "heart.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(6)
-                        .offset(x: 3, y: -3)
-                }
-            }
-            RouteLink(route: SettingsPageRoute.backup) {
-                SettingsRowLabel {
-                    Text("backup")
-                } icon: {
-                    Image(systemName: "document.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(.extraSmall)
-                }
-            }
-            RouteLink(route: SettingsPageRoute.cache) {
-                SettingsRowLabel {
-                    Text("cache")
-                } icon: {
-                    Image(systemName: "internaldrive.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(.extraSmall)
-                }
-            }
+            subpageButton("backup", systemImage: "document.fill", route: SettingsPageRoute.backup)
+            subpageButton("cache", systemImage: "internaldrive.fill", route: SettingsPageRoute.cache)
         }
         .buttonStyle(.plain)
     }

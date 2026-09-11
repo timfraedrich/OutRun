@@ -8,6 +8,7 @@ struct NavigationLinkButton<Label: View>: View {
     var body: some View {
         Button(action: action) {
             NavigationLink(destination: EmptyView.init, label: label)
+                .contentShape(.rect)
         }
     }
     
