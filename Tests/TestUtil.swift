@@ -1,4 +1,4 @@
-@testable import OutRun
+@testable import orca_app
 @testable import OutRunCore
 import Foundation
 
@@ -16,7 +16,11 @@ class TestUtil {
     static func jsonFileURL(forResource filename: String) throws -> URL {
         try fileURL(forResource: filename, withExtension: "json")
     }
-    
+
+    static func orbupFileURL(forResource filename: String) throws -> URL {
+        try fileURL(forResource: filename, withExtension: "orbup")
+    }
+
     static func readJSON<C: Codable>(at url: URL) throws -> C {
         let data = try Data(contentsOf: url)
         return try JSONDecoder().decode(C.self, from: data)
@@ -24,6 +28,11 @@ class TestUtil {
     
     static func readJSON<C: Codable>(with filename: String) throws -> C {
         let url = try jsonFileURL(forResource: filename)
+        return try readJSON(at: url)
+    }
+
+    static func readORBUP<C: Codable>(with filename: String) throws -> C {
+        let url = try orbupFileURL(forResource: filename)
         return try readJSON(at: url)
     }
 }

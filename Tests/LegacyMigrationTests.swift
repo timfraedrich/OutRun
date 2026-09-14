@@ -1,5 +1,5 @@
 import Foundation
-@testable import OutRun
+@testable import orca_app
 @testable import OutRunCore
 import Testing
 import Combine
@@ -74,7 +74,7 @@ class LegacyMigrationTests {
         expectedWorkoutsName: String,
         insertImplementation: @escaping (LegacyDatabase<L>, [R]) async throws -> Void
     ) async throws {
-        let legacyBackup: LegacyBackup<R> = try TestUtil.readJSON(with: legacyBackupName)
+        let legacyBackup: LegacyBackup<R> = try TestUtil.readORBUP(with: legacyBackupName)
         let legacyWorkouts: [R] = legacyBackup.workoutData
         let legacyStorageFileName = legacyBackupName + "Migration"
         let manager: LegacyDatabase<L> = try await prepareLegacyDataManager(legacyStorageFileName: legacyStorageFileName)

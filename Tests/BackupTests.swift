@@ -1,5 +1,5 @@
 import Foundation
-@testable import OutRun
+@testable import orca_app
 @testable import OutRunCore
 import Testing
 
@@ -13,12 +13,12 @@ class BackupTests {
         try await core.insert(exampleWorkouts)
         let fileManager = FileManager.default
         let directory = fileManager.temporaryDirectory
-        let (backupTask, _) = backupService.backup(to: directory)
+        let (backupTask, _) = backupService.backup(to: directory, using: .model)
         let backupURL = try await backupTask.value
         guard let user = await core.user else { throw "Core is not set up with user." }
         try await core.reset()
         try await core.setup(for: user)
-        let (restoreTask, _) = backupService.restoreBackup(from: backupURL)
+        let (restoreTask, _) = backupService.restore(from: backupURL)
         _ = try await restoreTask.value
         let restoredWorkouts = try await core.fetchWorkouts()
         try fileManager.removeItem(at: backupURL)
@@ -52,11 +52,11 @@ class BackupTests {
     }
     
     private func restoreLegacyBackup(with legacyBackupName: String, andCompareWithWorkoutsWith expectedWorkoutsName: String) async throws {
-        let legacyBackupURL = try TestUtil.jsonFileURL(forResource: legacyBackupName)
+        let legacyBackupURL = try TestUtil.orbupFileURL(forResource: legacyBackupName)
         let expectedWorkoutsURL = try TestUtil.jsonFileURL(forResource: expectedWorkoutsName)
         let expectedWorkouts: [RawWorkout] = try TestUtil.readJSON(at: expectedWorkoutsURL)
         let (core, backupService) = try await initializeAndSetUpCoreAndBackupService()
-        let (restoreTask, _) = backupService.restoreBackup(from: legacyBackupURL)
+        let (restoreTask, _) = backupService.restore(from: legacyBackupURL)
         _ = try await restoreTask.value
         let restoredWorkouts = try await core.fetchWorkouts()
         #expect(Set(expectedWorkouts.map(\.id)) == Set(restoredWorkouts.map(\.id)))
