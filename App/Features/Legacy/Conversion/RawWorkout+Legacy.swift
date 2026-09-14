@@ -6,7 +6,7 @@ extension RawWorkout {
     init(from workout: LegacyRawDataModelV1.Workout) {
         self.init(
             id: workout.uuid ?? UUID(),
-            type: .init(rawValue: workout.workoutType),
+            type: .init(legacyRawValue: workout.workoutType),
             distance: workout.distance,
             startDate: workout.startDate,
             endDate: workout.endDate,
@@ -30,7 +30,7 @@ extension RawWorkout {
         let lastEditDate = workout.endDate.addingTimeInterval(workout.isUserModified ? 1 : 0)
         self.init(
             id: workout.uuid ?? UUID(),
-            type: .init(rawValue: workout.workoutType),
+            type: .init(legacyRawValue: workout.workoutType),
             distance: workout.distance,
             startDate: workout.startDate,
             endDate: workout.endDate,
@@ -59,7 +59,7 @@ extension RawWorkout {
         }
         self.init(
             id: workout.uuid ?? UUID(),
-            type: .init(rawValue: workout.workoutType),
+            type: .init(legacyRawValue: workout.workoutType),
             distance: workout.distance,
             startDate: workout.startDate,
             endDate: workout.endDate,

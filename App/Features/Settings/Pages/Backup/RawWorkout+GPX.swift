@@ -95,7 +95,7 @@ extension WorkoutType {
         case .cycling: "cycling"
         case .skating: "skating"
         case .hiking: "hiking"
-        case .unknown(let rawValue): "unknown_\(rawValue)"
+        case .unknown(let rawValue): rawValue
         }
     }
     

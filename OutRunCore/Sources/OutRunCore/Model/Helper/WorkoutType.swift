@@ -8,23 +8,31 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Cu
     case cycling
     case skating
     case hiking
-    case unknown(rawValue: Int)
+    case unknown(rawValue: String)
     
     public static var allCases: [WorkoutType] { [.running, .walking, .cycling, .skating, .hiking] }
     
-    public init(rawValue: Int) {
+    public init(rawValue: String) {
         self = switch rawValue {
+        case "running": .running
+        case "walking": .walking
+        case "cycling": .cycling
+        case "skating": .skating
+        case "hiking": .hiking
+        default: .unknown(rawValue: rawValue)
+        }
+    }
+    
+    /// Initializes from the integer raw values used by the legacy OutRun data models.
+    public init(legacyRawValue: Int) {
+        self = switch legacyRawValue {
         case 0: .running
         case 1: .walking
         case 2: .cycling
         case 3: .skating
         case 4: .hiking
-        default: .unknown(rawValue: rawValue)
+        default: .unknown(rawValue: "unknown_\(legacyRawValue)")
         }
-    }
-    
-    public init(rawValue: Int?) {
-        self.init(rawValue: rawValue ?? -1)
     }
     
     public init?(hkType: HKWorkoutActivityType) {
@@ -38,13 +46,13 @@ public enum WorkoutType: CaseIterable, Codable, CustomDebugStringConvertible, Cu
         }
     }
     
-    public var rawValue: Int {
+    public var rawValue: String {
         switch self {
-        case .running: 0
-        case .walking: 1
-        case .cycling: 2
-        case .skating: 3
-        case .hiking: 4
+        case .running: "running"
+        case .walking: "walking"
+        case .cycling: "cycling"
+        case .skating: "skating"
+        case .hiking: "hiking"
         case .unknown(let rawValue): rawValue
         }
     }
