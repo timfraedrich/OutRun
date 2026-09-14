@@ -3,9 +3,7 @@ import OutRunCore
 import SwiftUI
 
 struct LatestWorkoutCardStyle: WorkoutCardStyle {
-    
-    @State private var width: CGFloat?
-    
+
     func makeBody(configuration: Configuration) -> some View {
         VStack(spacing: .small) {
             VStack(alignment: .leading, spacing: .small) {
