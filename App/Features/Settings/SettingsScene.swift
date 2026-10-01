@@ -113,20 +113,20 @@ struct SettingsScene: View {
     
     @ViewBuilder private var legalSection: some View {
         Section {
-            SettingsOpenURLButton("https://tfr.software/terms") {
+            SettingsOpenURLButton(ExternalURL.termsOfService) {
                 Text("legal_terms_of_service")
             }
-            SettingsOpenURLButton("https://tfr.software/privacy") {
+            SettingsOpenURLButton(ExternalURL.privacyPolicy) {
                 Text("legal_privacy_policy")
             }
-            SettingsOpenURLButton("https://tfr.software/imprint") {
+            SettingsOpenURLButton(ExternalURL.imprint) {
                 Text("legal_imprint")
             }
             SettingsOpenURLButton(UIApplication.openSettingsURLString) {
                 Text("legal_acknowledgements")
             }
-            SettingsOpenURLButton("mailto:orca@tfr.software") {
-                LabeledContent("settings_support", value: "orca@tfr.software")
+            SettingsOpenURLButton(ExternalURL.support) {
+                LabeledContent("settings_support", value: ExternalURL.supportAddress)
             }
         }
     }

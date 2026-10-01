@@ -6,7 +6,7 @@ struct AxisGeometryReader<Content: View>: View {
     
     var axis: Axis = .horizontal
     var alignment: Alignment = .center
-    let content: (_ size: CGFloat) -> Content
+    @ViewBuilder let content: (_ size: CGFloat) -> Content
     
     var body: some View {
         content(size)

@@ -31,4 +31,9 @@ extension View {
     func safeAreaPadding(_ edges: Edge.Set, _ length: Spacing) -> some View {
         safeAreaPadding(edges, length.rawValue)
     }
+
+    @ViewBuilder
+    func contentMargins(_ length: Spacing, for placement: ContentMarginPlacement = .automatic) -> some View {
+        contentMargins(length.rawValue, for: placement)
+    }
 }

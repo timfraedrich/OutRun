@@ -5,117 +5,215 @@ struct SetupScene: View {
     
     @Environment(\.locale) private var locale
     @Environment(OutRunCore.self) private var core
+    @ScaledMetric(relativeTo: .largeTitle) private var logoHeight: CGFloat = 100
+    @State private var page: Page = .welcome
+    @State private var acceptedTermsOfService: Bool = false
+    @State private var acceptedPrivacyPolicy: Bool = false
+    @State private var legalAcceptanceDate: Date?
+    @State private var draft: SetupProfileDraft = .init()
+    @State private var unitSystem: UnitSystem = .system
+    @State private var importFromHealth: Bool = true
+    @State private var saveToHealth: Bool = true
+    @State private var connectedHealth: Bool = false
     @State private var loading: Bool = false
     @State private var error: Error?
-    @State private var name: String = ""
-    @State private var birthdate: Date?
-    @State private var unitSystem: UnitSystem = .system
-    @State private var weight: Measurement<UnitMass>?
-    @State private var sex: Sex?
     
-    private var weightUnit: UnitMass {
-        switch unitSystem {
-        case .system: .init(forLocale: locale, usage: .personWeight)
-        case .metric: .kilograms
-        case .imperial: .pounds
-        }
-    }
-    
-    private var weightValueBinding: Binding<Double?> {
-        .init {
-            weight?.converted(to: weightUnit).value
-        } set: { newValue in
-            weight = if let newValue {
-                .init(value: newValue, unit: weightUnit)
-            } else {
-                nil
-            }
-        }
-    }
-    
-    private var formattedWeightUnit: String {
-        let formatter = MeasurementFormatter()
-        formatter.unitStyle = .short
-        formatter.locale = locale
-        return formatter.string(from: weightUnit)
-    }
+    private var healthSyncService: HealthSyncService? { core.syncService(HealthSyncService.self) }
     
     var body: some View {
-        Form {
-            Section {
-                LabeledContent("user_name") {
-                    TextField("user_name_placeholder", text: $name).fixedSize()
-                }
-                LabeledContent("user_birthday") {
-                    OptionalDatePicker(
-                        selection: $birthdate,
-                        in: ...Date.now,
-                        defaultValue: Calendar.current.date(byAdding: .year, value: -25, to: .now) ?? .now,
-                        displayedComponents: .date,
-                        labelFormatStyle: .init(date: .abbreviated)
-                    )
-                    .buttonStyle(.plain)
-                    .symbolRenderingMode(.hierarchical)
-                }
-                Picker(selection: $unitSystem) {
-                    ForEach(UnitSystem.allCases, id: \.hashValue) { system in
-                        Text(system.description).tag(system)
-                    }
-                } label: {
-                    Text("setup_units")
-                }
-
-                LabeledContent("user_weight") {
-                    HStack(spacing: .small) {
-                        TextField("user_weight_placeholder", value: weightValueBinding, format: .number).fixedSize()
-                        Text(formattedWeightUnit)
-                    }
-                }
-                Picker(selection: $sex) {
-                    Text("user_sex_not_specified").tag(Sex?.none)
-                    ForEach(Sex.allCases, id: \.hashValue) { sex in
-                        Text(sex.description.capitalized).tag(sex)
-                    }
-                } label: {
-                    Text("user_sex")
-                }
-            }
-            .multilineTextAlignment(.trailing)
-        }
-        .overlay {
-            if loading {
-                ProgressView().progressViewStyle(.circular).controlSize(.large)
-            }
-        }
-        .safeAreaInset(edge: .bottom) {
-            VStack(spacing: .regular) {
-                if let error {
-                    Text(error.localizedDescription)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(.red)
-                        .font(.footnote)
-                }
-                ActionButton("setup_action", action: setup)
-            }
-            .padding([.horizontal, .bottom], .large)
-            .padding(.top, .regular)
-            .background { BackgroundBlackoutGradient(startPoint: .top, endPoint: .center) }
-            .ignoresSafeArea()
-            .animation(.default, value: error?.localizedDescription)
-        }
-        .disabled(loading)
+        content(for: page)
+            .id(page)
+            .transition(.push(from: .trailing))
+            .animation(.default, value: page)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemGroupedBackground))
+            .customBottomSafeAreaBar(content: barContent)
+            .disabled(loading)
     }
     
-    private func setup() {
+    // MARK: Pages
+    
+    @ViewBuilder
+    private func content(for page: Page) -> some View {
+        switch page {
+        case .welcome:
+            SetupPageView(title: "setup_welcome_title") {
+                Image(.oLogo)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundStyle(.tint)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: logoHeight)
+            } content: {
+                SetupPageDetailRow(
+                    "setup_welcome_privacy_title",
+                    message: "setup_welcome_privacy_message",
+                    systemImage: "lock.shield.fill"
+                )
+                SetupPageDetailRow(
+                    "setup_welcome_tracking_title",
+                    message: "setup_welcome_tracking_message",
+                    systemImage: "location.app.fill"
+                )
+                SetupPageDetailRow(
+                    "setup_welcome_design_title",
+                    message: "setup_welcome_design_message",
+                    systemImage: "iphone.sizes"
+                )
+            }
+        case .legal:
+            SetupPageView(systemImage: "hand.raised.fill", title: "setup_legal_title", message: "setup_legal_message") {
+                Section {
+                    legalToggle("legal_terms_of_service", urlString: ExternalURL.termsOfService, isOn: $acceptedTermsOfService)
+                    legalToggle("legal_privacy_policy", urlString: ExternalURL.privacyPolicy, isOn: $acceptedPrivacyPolicy)
+                }
+            }
+        case .profile:
+            SetupPageView(
+                systemImage: "person.crop.circle.fill",
+                title: "setup_profile_title",
+                message: "setup_profile_message"
+            ) {
+                SetupProfileForm(
+                    draft: $draft,
+                    unitSystem: $unitSystem,
+                    weightUnit: unitSystem.weightUnit(for: locale)
+                )
+            }
+        case .appleHealth:
+            SetupPageView(title: "setup_health_title", message: "setup_health_message") {
+                SetupPageSymbol("heart.fill").tint(.pink)
+            } content: {
+                Section {
+                    Toggle("setup_health_import_toggle", isOn: $importFromHealth)
+                        .tint(.accentColor)
+                } header: {
+                    Text("setup_health_import_header")
+                } footer: {
+                    Text("setup_health_import_footer")
+                }
+                Section {
+                    Toggle("setup_health_export_toggle", isOn: $saveToHealth)
+                        .tint(.accentColor)
+                } header: {
+                    Text("setup_health_export_header")
+                } footer: {
+                    Text("setup_health_export_footer")
+                }
+            }
+        case .ready:
+            SetupPageView(
+                systemImage: "checkmark.circle.fill",
+                title: "setup_ready_title_\(draft.trimmedName)",
+                message: "setup_ready_message"
+            )
+        }
+    }
+    
+    @ViewBuilder
+    private func legalToggle(_ titleKey: LocalizedStringKey, urlString: String, isOn: Binding<Bool>) -> some View {
+        Toggle(isOn: isOn) {
+            if let url = URL(string: urlString) {
+                Link(destination: url) {
+                    HStack(spacing: .extraSmall) {
+                        Text(titleKey)
+                        Image(systemName: "arrow.up.right")
+                    }
+                    .fontWeight(.semibold)
+                }
+            } else {
+                Text(titleKey)
+            }
+        }
+        .tint(.accentColor)
+    }
+    
+    // MARK: Bottom Bar
+    
+    @ViewBuilder
+    private func barContent() -> some View {
+        VStack(spacing: .regular) {
+            if let error {
+                Text(error.localizedDescription)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            pageAction()
+        }
+        .animation(.default, value: error?.localizedDescription)
+    }
+    
+    @ViewBuilder
+    private func pageAction() -> some View {
+        switch page {
+        case .welcome:
+            ActionButton("setup_welcome_action", action: advance)
+        case .legal:
+            ActionButton("continue_action", action: acceptLegalDocuments)
+                .disabled(!acceptedTermsOfService || !acceptedPrivacyPolicy)
+        case .profile:
+            ActionButton("continue_action", action: advance)
+                .disabled(!draft.isComplete)
+        case .appleHealth:
+            VStack(spacing: .small) {
+                ActionButton("skip_action", prominent: false, action: skipHealth)
+                ActionButton("setup_health_action", action: connectHealth)
+                    .disabled(!importFromHealth && !saveToHealth)
+            }
+        case .ready:
+            ActionButton("setup_ready_action", action: completeSetup)
+        }
+    }
+    
+    // MARK: Actions
+    
+    private func advance() {
+        guard let index = Page.allCases.firstIndex(of: page), let next = Page.allCases[safeIndex: index + 1] else { return }
+        page = next
+    }
+    
+    private func acceptLegalDocuments() {
+        legalAcceptanceDate = .now
+        advance()
+    }
+    
+    private func skipHealth() {
+        connectedHealth = false
+        advance()
+    }
+    
+    private func connectHealth() {
+        Task {
+            loading = true
+            if let healthSyncService, healthSyncService.authorizationStatus.isRequestable {
+                try? await healthSyncService.requestAuthorization()
+            }
+            connectedHealth = healthSyncService != nil
+            loading = false
+            advance()
+        }
+    }
+    
+    private func completeSetup() {
         Task {
             loading = true
             do {
-                // TODO: Implement validation
-                guard !name.isEmpty else { throw SetupSceneError.nameEmpty }
-                let birthday = birthdate.map(Day.init)
-                let weight = weight?.converted(to: .kilograms).value
-                let user = RawUser(name: name, birthday: birthday, weight: weight, sex: sex, creationDate: .now)
+                let preferences = UserPreferences(preferences: [:])
+                unitSystem.apply(to: preferences)
+                if let legalAcceptanceDate {
+                    preferences.recordLegalAcceptance(on: legalAcceptanceDate)
+                }
+                let user = RawUser(
+                    name: draft.trimmedName,
+                    birthday: draft.birthday,
+                    weight: draft.weightInKilograms,
+                    sex: draft.sex,
+                    preferences: preferences.preferences,
+                    creationDate: .now
+                )
                 try await core.setup(for: user)
+                applyHealthSyncModes()
             } catch {
                 self.error = error
             }
@@ -123,29 +221,23 @@ struct SetupScene: View {
         }
     }
     
-    private enum SetupSceneError: LocalizedError {
-        
-        /// The field "Name" must not be empty.
-        case nameEmpty
-        
-        var errorDescription: String? {
-            switch self {
-            case .nameEmpty: .init(localized: "setup_scene_error_name_empty")
-            }
+    /// Enables the Health sync directions chosen during setup.
+    /// - note: Must only be called once ``OutRunCore/setup(for:)`` has finished, since the sync service ignores changes until it is initialized.
+    private func applyHealthSyncModes() {
+        guard connectedHealth, let healthSyncService else { return }
+        if importFromHealth {
+            healthSyncService.setInwardSyncMode(.enabled)
+        }
+        if saveToHealth {
+            healthSyncService.setOutwardSyncMode(.enabledFrom(date: .now))
         }
     }
-}
-
-enum UnitSystem: CaseIterable, CustomStringConvertible, Hashable {
-    case system
-    case metric
-    case imperial
     
-    var description: String {
-        switch self {
-        case .system: .init(localized: "system")
-        case .metric: .init(localized: "unit_system_metric")
-        case .imperial: .init(localized: "unit_system_imperial")
-        }
+    private enum Page: Hashable, CaseIterable {
+        case welcome
+        case legal
+        case profile
+        case appleHealth
+        case ready
     }
 }

@@ -26,6 +26,7 @@ public struct MeasurementTextField<Label: View, U: Dimension, R: RangeExpression
     public var body: some View {
         HStack(spacing: 8) {
             TextField(value: valueBinding, format: .number.precision(.fractionLength(fractionLength)), label: label)
+                .keyboardType(.decimalPad)
             Text(formattedUnit)
         }
     }
