@@ -74,7 +74,7 @@ struct LegacyMigrationView: View {
                     Image(.oLogo)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 100)
+                        .frame(height: 120)
                         .foregroundStyle(.accent.gradient)
                 }
                 .padding(.horizontal, .extraLarge)

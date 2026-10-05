@@ -5,19 +5,20 @@ struct SetupScene: View {
     
     @Environment(\.locale) private var locale
     @Environment(OutRunCore.self) private var core
-    @ScaledMetric(relativeTo: .largeTitle) private var logoHeight: CGFloat = 100
+    @ScaledMetric(relativeTo: .largeTitle) private var logoHeight: CGFloat = 120
     @State private var page: Page = .welcome
     @State private var acceptedTermsOfService: Bool = false
     @State private var acceptedPrivacyPolicy: Bool = false
     @State private var legalAcceptanceDate: Date?
     @State private var draft: SetupProfileDraft = .init()
     @State private var unitSystem: UnitSystem = .system
-    @State private var importFromHealth: Bool = true
-    @State private var saveToHealth: Bool = true
-    @State private var connectedHealth: Bool = false
+    @State private var healthImportMode: SyncMode = .disabled
+    @State private var saveToHealth: Bool = false
     @State private var loading: Bool = false
     @State private var error: Error?
-    
+
+    private let initDate = Date.now
+
     private var healthSyncService: HealthSyncService? { core.syncService(HealthSyncService.self) }
     
     var body: some View {
@@ -41,8 +42,8 @@ struct SetupScene: View {
                 Image(.oLogo)
                     .resizable()
                     .renderingMode(.template)
-                    .foregroundStyle(.tint)
-                    .aspectRatio(contentMode: .fit)
+                    .foregroundStyle(.accent.gradient)
+                    .scaledToFit()
                     .frame(height: logoHeight)
             } content: {
                 SetupPageDetailRow(
@@ -85,20 +86,26 @@ struct SetupScene: View {
                 SetupPageSymbol("heart.fill").tint(.pink)
             } content: {
                 Section {
-                    Toggle("setup_health_import_toggle", isOn: $importFromHealth)
-                        .tint(.accentColor)
-                } header: {
-                    Text("setup_health_import_header")
-                } footer: {
-                    Text("setup_health_import_footer")
-                }
-                Section {
                     Toggle("setup_health_export_toggle", isOn: $saveToHealth)
                         .tint(.accentColor)
                 } header: {
                     Text("setup_health_export_header")
                 } footer: {
                     Text("setup_health_export_footer")
+                }
+                Section {
+                    Picker(selection: $healthImportMode) {
+                        Text("setup_health_import_none").tag(SyncMode.disabled)
+                        Text("setup_health_import_new").tag(SyncMode.enabledFrom(date: initDate))
+                        Text("setup_health_import_all").tag(SyncMode.enabled)
+                    } label: {
+                        EmptyView()
+                    }
+                    .pickerStyle(.inline)
+                } header: {
+                    Text("setup_health_import_header")
+                } footer: {
+                    Text("setup_health_import_footer")
                 }
             }
         case .ready:
@@ -158,8 +165,14 @@ struct SetupScene: View {
         case .appleHealth:
             VStack(spacing: .small) {
                 ActionButton("skip_action", prominent: false, action: skipHealth)
-                ActionButton("setup_health_action", action: connectHealth)
-                    .disabled(!importFromHealth && !saveToHealth)
+                ActionButton(action: connectHealth) {
+                    if healthImportMode != .disabled {
+                        Text("setup_health_start_import_action")
+                    } else {
+                        Text("setup_health_grant_permission_action")
+                    }
+                }
+                .disabled(healthImportMode == .disabled && !saveToHealth)
             }
         case .ready:
             ActionButton("setup_ready_action", action: completeSetup)
@@ -177,21 +190,51 @@ struct SetupScene: View {
         legalAcceptanceDate = .now
         advance()
     }
-    
+
+    private func saveProfile() {
+        Task {
+            loading = true
+            do {
+                let preferences = UserPreferences(preferences: [:])
+                unitSystem.apply(to: preferences)
+                if let legalAcceptanceDate {
+                    preferences.recordLegalAcceptance(on: legalAcceptanceDate)
+                }
+                let user = RawUser(
+                    name: draft.trimmedName,
+                    birthday: draft.birthday,
+                    weight: draft.weightInKilograms,
+                    sex: draft.sex,
+                    preferences: preferences.preferences,
+                    creationDate: .now
+                )
+                try await core.setup(for: user)
+            } catch {
+                self.error = error
+            }
+            loading = false
+        }
+    }
+
     private func skipHealth() {
-        connectedHealth = false
+        healthImportMode = .disabled
+        saveToHealth = false
         advance()
     }
     
     private func connectHealth() {
         Task {
             loading = true
-            if let healthSyncService, healthSyncService.authorizationStatus.isRequestable {
-                try? await healthSyncService.requestAuthorization()
+            do {
+                await healthSyncService?.refreshAuthorizationStatus()
+                if let healthSyncService, healthSyncService.authorizationStatus.isRequestable {
+                    try await healthSyncService.requestAuthorization()
+                }
+                advance()
+            } catch {
+                self.error = error
             }
-            connectedHealth = healthSyncService != nil
             loading = false
-            advance()
         }
     }
     
@@ -222,14 +265,16 @@ struct SetupScene: View {
     }
     
     /// Enables the Health sync directions chosen during setup.
-    /// - note: Must only be called once ``OutRunCore/setup(for:)`` has finished, since the sync service ignores changes until it is initialized.
+    /// - note: Must only be called once ``OutRunCore/setup(for:)`` has finished, since the sync service ignores changes until it is
+    /// initialized.
     private func applyHealthSyncModes() {
-        guard connectedHealth, let healthSyncService else { return }
-        if importFromHealth {
-            healthSyncService.setInwardSyncMode(.enabled)
+        guard let healthSyncService else { return }
+        if case .enabledFrom = healthImportMode {
+            healthImportMode = .enabledFrom(date: .now)
         }
+        healthSyncService.setInwardSyncMode(healthImportMode)
         if saveToHealth {
-            healthSyncService.setOutwardSyncMode(.enabledFrom(date: .now))
+            healthSyncService.setOutwardSyncMode(.enabled)
         }
     }
     

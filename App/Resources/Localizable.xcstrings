@@ -6869,46 +6869,6 @@
         }
       }
     },
-    "setup_health_action" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Import starten"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start Import"
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start Import"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iniciar importación"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lancer l’importation"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Import starten"
-          }
-        }
-      }
-    },
     "setup_health_export_footer" : {
       "localizations" : {
         "de" : {
@@ -7029,42 +6989,122 @@
         }
       }
     },
-    "setup_health_import_footer" : {
+    "setup_health_grant_permission_action" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sobald du ORCA Zugriff auf Health gewährst, beginnt der Import. Das kann einige Minuten dauern."
+            "state" : "machine_translated",
+            "value" : "Berechtigung erteilen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Once you give ORCA access to Health, the import will start. This may take a couple of minutes."
+            "value" : "Grant Permission"
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Once you give ORCA access to Health, the import will start. This may take a couple of minutes."
+            "state" : "machine_translated",
+            "value" : "Grant Permission"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "En cuanto des a ORCA acceso a Salud, comenzará la importación. Esto puede tardar unos minutos."
+            "state" : "machine_translated",
+            "value" : "Conceder permiso"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dès que vous autorisez ORCA à accéder à Santé, l’importation commence. Cela peut prendre quelques minutes."
+            "state" : "machine_translated",
+            "value" : "Accorder l’autorisation"
           }
         },
         "nl" : {
           "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Toestemming geven"
+          }
+        }
+      }
+    },
+    "setup_health_import_all" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Alle Trainings importieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
             "state" : "translated",
-            "value" : "Zodra je ORCA toegang geeft tot Gezondheid, begint de import. Dit kan een paar minuten duren."
+            "value" : "Import All Workouts"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Import All Workouts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Importar todos los entrenamientos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Importer tous les entraînements"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Alle trainingen importeren"
+          }
+        }
+      }
+    },
+    "setup_health_import_footer" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Wenn du deine bisherigen Trainings aus Apple Health importierst, startet der Import im Hintergrund, sobald du ORCA die Berechtigung erteilst. Der Import kann einige Minuten dauern."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you choose to import your existing workouts from Apple Health the process will start in the background once you grant ORCA permission. The import may take a couple of minutes."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "If you choose to import your existing workouts from Apple Health the process will start in the background once you grant ORCA permission. The import may take a couple of minutes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Si decides importar tus entrenamientos existentes de Apple Health, el proceso se iniciará en segundo plano en cuanto concedas permiso a ORCA. La importación puede tardar unos minutos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Si vous choisissez d’importer vos entraînements existants depuis Apple Health, le processus démarrera en arrière-plan dès que vous aurez accordé l’autorisation à ORCA. L’importation peut prendre quelques minutes."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Als je ervoor kiest je bestaande trainingen uit Apple Health te importeren, begint dit op de achtergrond zodra je ORCA toestemming geeft. Het importeren kan een paar minuten duren."
           }
         }
       }
@@ -7109,42 +7149,82 @@
         }
       }
     },
-    "setup_health_import_toggle" : {
+    "setup_health_import_new" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "In ORCA importieren"
+            "state" : "machine_translated",
+            "value" : "Nur neue Trainings importieren"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import into ORCA"
+            "value" : "Only Import New Workouts"
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Import into ORCA"
+            "state" : "machine_translated",
+            "value" : "Only Import New Workouts"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Importar a ORCA"
+            "state" : "machine_translated",
+            "value" : "Importar solo entrenamientos nuevos"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Importer dans ORCA"
+            "state" : "machine_translated",
+            "value" : "Importer uniquement les nouveaux entraînements"
           }
         },
         "nl" : {
           "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Alleen nieuwe trainingen importeren"
+          }
+        }
+      }
+    },
+    "setup_health_import_none" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Nicht importieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
             "state" : "translated",
-            "value" : "Importeer in ORCA"
+            "value" : "Do Not Import"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Do Not Import"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "No importar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Ne pas importer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Niet importeren"
           }
         }
       }
@@ -7185,6 +7265,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Haal je bestaande trainingen naar ORCA en bewaar nieuwe automatisch in de Gezondheid-app."
+          }
+        }
+      }
+    },
+    "setup_health_start_import_action" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import starten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Import"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Import"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar importación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lancer l’importation"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import starten"
           }
         }
       }
@@ -10035,5 +10155,5 @@
       }
     }
   },
-  "version" : "1.2"
+  "version" : "1.3"
 }

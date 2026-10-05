@@ -75,6 +75,16 @@ enum LegacyMigrationHelper {
             try await group.waitForAll()
         }
         try await manager.deleteStorage()
+        let exportToHealth = legacyUserPreference(for: "savesToAppleHealth", defaultValue: false)
+        let importFromHealth = legacyUserPreference(for: "automaticallyImportNewHealthWorkouts", defaultValue: false)
+        if exportToHealth || importFromHealth, let healthSyncService = await core.syncService(HealthSyncService.self) {
+            if exportToHealth {
+                await healthSyncService.setOutwardSyncMode(.enabled)
+            }
+            if importFromHealth {
+                await healthSyncService.setInwardSyncMode(.enabled)
+            }
+        }
         continuation.yield(1)
     }
     
