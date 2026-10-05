@@ -4,7 +4,7 @@ import SwiftUI
 import TFRouting
 
 @main
-struct ORCA: App {
+struct OutRun: App {
     
     @State private var core: OutRunCore
     @State private var backupService: BackupService
@@ -48,7 +48,7 @@ struct ORCA: App {
     
     init() {
         let config: OutRunCoreConfiguration = .init(
-            containerName: "ORCA",
+            containerName: "OutRun",
             isStoredInMemoryOnly: false,
             appGroupIdentifier: nil,
             recordableDataTypes: [.location, .preciseAltitude]

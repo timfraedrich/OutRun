@@ -119,9 +119,6 @@ struct SettingsScene: View {
             SettingsOpenURLButton(ExternalURL.privacyPolicy) {
                 Text("legal_privacy_policy")
             }
-            SettingsOpenURLButton(ExternalURL.imprint) {
-                Text("legal_imprint")
-            }
             SettingsOpenURLButton(UIApplication.openSettingsURLString) {
                 Text("legal_acknowledgements")
             }

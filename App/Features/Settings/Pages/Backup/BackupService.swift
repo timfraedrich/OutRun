@@ -70,7 +70,7 @@ class BackupService {
     
     private static nonisolated func createGPXFile(for workout: RawWorkout, at url: URL) throws {
         let track = GPXTrack(from: workout)
-        let xml = GPXExporter(track: track, creatorName: "ORCA").xmlString
+        let xml = GPXExporter(track: track, creatorName: "OutRun").xmlString
         guard let data = xml.data(using: .utf8) else { throw BackupServiceError.couldNotEncodeData }
         try data.write(to: url)
     }
@@ -101,10 +101,10 @@ class BackupService {
                 let archive: Archive?
                 let targetURL: URL
                 if type.useZipCompression, workoutIds == .none || count > 1 {
-                    let archiveName = "orca_" + type.rawValue + "_" + BackupService.timestampFormatter.string(from: timestamp) + ".zip"
+                    let archiveName = "outrun_" + type.rawValue + "_" + BackupService.timestampFormatter.string(from: timestamp) + ".zip"
                     let archiveURL = url.appending(component: archiveName)
                     archive = try Archive(url: archiveURL, accessMode: .create, pathEncoding: .utf8)
-                    targetURL = try BackupService.makeTemporaryDirectory(named: "orca_backup")
+                    targetURL = try BackupService.makeTemporaryDirectory(named: "outrun_backup")
                 } else {
                     archive = .none
                     targetURL = url

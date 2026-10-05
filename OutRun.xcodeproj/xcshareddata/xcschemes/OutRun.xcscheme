@@ -8,7 +8,7 @@
       buildArchitectures = "Automatic">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
@@ -16,9 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "225E08F62FC219050074232C"
-               BuildableName = "orca-app.app"
-               BlueprintName = "orca-app"
-               ReferencedContainer = "container:ORCA.xcodeproj">
+               BuildableName = "OutRun.app"
+               ReferencedContainer = "container:OutRun.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,9 +35,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "225E0B232FC21B2A0074232C"
-               BuildableName = "orca-tests.xctest"
-               BlueprintName = "orca-tests"
-               ReferencedContainer = "container:ORCA.xcodeproj">
+               BuildableName = "OutRunTests.xctest"
+               ReferencedContainer = "container:OutRun.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,15 +51,14 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
-      queueDebuggingEnableBacktraceRecording = "Yes">
+      queueDebuggingEnabled = "No">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "225E08F62FC219050074232C"
-            BuildableName = "orca-app.app"
-            BlueprintName = "orca-app"
-            ReferencedContainer = "container:ORCA.xcodeproj">
+            BuildableName = "OutRun.app"
+            ReferencedContainer = "container:OutRun.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -76,9 +73,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "225E08F62FC219050074232C"
-            BuildableName = "orca-app.app"
-            BlueprintName = "orca-app"
-            ReferencedContainer = "container:ORCA.xcodeproj">
+            BuildableName = "OutRun.app"
+            ReferencedContainer = "container:OutRun.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -966,37 +966,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA-Model"
+            "value" : "OutRun-Model"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA-Model"
+            "value" : "OutRun-Model"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA-Model"
+            "value" : "OutRun-Model"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA-Model"
+            "value" : "OutRun-Model"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA-Model"
+            "value" : "OutRun-Model"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA-Model"
+            "value" : "OutRun-Model"
           }
         }
       }
@@ -3250,37 +3250,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Willkommen bei ORCA."
+            "value" : "Willkommen bei OutRun."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to ORCA."
+            "value" : "Welcome to OutRun."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to ORCA."
+            "value" : "Welcome to OutRun."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Te damos la bienvenida a ORCA."
+            "value" : "Te damos la bienvenida a OutRun."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenue dans ORCA."
+            "value" : "Bienvenue dans OutRun."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welkom bij ORCA."
+            "value" : "Welkom bij OutRun."
           }
         }
       }
@@ -3490,37 +3490,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auch wenn sich die App stark verändert hat, unser Einsatz für Datenschutz ist geblieben. Mit ORCA behältst du die Kontrolle über deine Daten."
+            "value" : "Auch wenn sich die App stark verändert hat, unser Einsatz für Datenschutz ist geblieben. Mit OutRun behältst du die Kontrolle über deine Daten."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Even though the app changed quite a bit, our commitment to privacy did not. With ORCA you stay in control of your data."
+            "value" : "Even though the app changed quite a bit, our commitment to privacy did not. With OutRun you stay in control of your data."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Even though the app changed quite a bit, our commitment to privacy did not. With ORCA you stay in control of your data."
+            "value" : "Even though the app changed quite a bit, our commitment to privacy did not. With OutRun you stay in control of your data."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aunque la app ha cambiado bastante, nuestro compromiso con la privacidad sigue intacto. Con ORCA, tú tienes el control de tus datos."
+            "value" : "Aunque la app ha cambiado bastante, nuestro compromiso con la privacidad sigue intacto. Con OutRun, tú tienes el control de tus datos."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Même si l’app a beaucoup changé, notre engagement envers la confidentialité reste le même. Avec ORCA, vous gardez le contrôle de vos données."
+            "value" : "Même si l’app a beaucoup changé, notre engagement envers la confidentialité reste le même. Avec OutRun, vous gardez le contrôle de vos données."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hoewel de app flink is veranderd, is onze inzet voor privacy gebleven. Met ORCA houd je zelf de controle over je gegevens."
+            "value" : "Hoewel de app flink is veranderd, is onze inzet voor privacy gebleven. Met OutRun houd je zelf de controle over je gegevens."
           }
         }
       }
@@ -3730,37 +3730,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA wurde von Grund auf neu entwickelt. Deine Trainings werden im Hintergrund in ein neues Format umgewandelt. Bitte schließe die App nicht."
+            "value" : "OutRun wurde von Grund auf neu entwickelt. Deine Trainings werden im Hintergrund in ein neues Format umgewandelt. Bitte schließe die App nicht."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA has been rebuilt from the ground up. Your workouts are being converted to a new format in the background. Please do not close the app."
+            "value" : "OutRun has been rebuilt from the ground up. Your workouts are being converted to a new format in the background. Please do not close the app."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA has been rebuilt from the ground up. Your workouts are being converted to a new format in the background. Please do not close the app."
+            "value" : "OutRun has been rebuilt from the ground up. Your workouts are being converted to a new format in the background. Please do not close the app."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA se ha reconstruido desde cero. Tus entrenamientos se están convirtiendo a un nuevo formato en segundo plano. No cierres la app."
+            "value" : "OutRun se ha reconstruido desde cero. Tus entrenamientos se están convirtiendo a un nuevo formato en segundo plano. No cierres la app."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA a été entièrement reconstruite. Vos entraînements sont convertis vers un nouveau format en arrière-plan. Veuillez ne pas fermer l’app."
+            "value" : "OutRun a été entièrement reconstruite. Vos entraînements sont convertis vers un nouveau format en arrière-plan. Veuillez ne pas fermer l’app."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ORCA is volledig opnieuw opgebouwd. Je trainingen worden op de achtergrond omgezet naar een nieuw formaat. Sluit de app niet af."
+            "value" : "OutRun is volledig opnieuw opgebouwd. Je trainingen worden op de achtergrond omgezet naar een nieuw formaat. Sluit de app niet af."
           }
         }
       }
@@ -4241,46 +4241,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vermeldingen"
-          }
-        }
-      }
-    },
-    "legal_imprint" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impressum"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imprint"
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imprint"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aviso legal"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mentions légales"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impressum"
           }
         }
       }
@@ -4814,37 +4774,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öffne die Health-App, tippe auf dein Profilbild und wähle dann „Apps und Dienste“ › ORCA, um die Daten zu erlauben, die du synchronisieren möchtest."
+            "value" : "Öffne die Health-App, tippe auf dein Profilbild und wähle dann „Apps und Dienste“ › OutRun, um die Daten zu erlauben, die du synchronisieren möchtest."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the Health app, tap your profile picture, then choose Apps & Services › ORCA and allow the data you want to sync."
+            "value" : "Open the Health app, tap your profile picture, then choose Apps & Services › OutRun and allow the data you want to sync."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the Health app, tap your profile picture, then choose Apps & Services › ORCA and allow the data you want to sync."
+            "value" : "Open the Health app, tap your profile picture, then choose Apps & Services › OutRun and allow the data you want to sync."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre la app Salud, toca tu foto de perfil y elige «Apps y servicios» › ORCA para permitir los datos que quieras sincronizar."
+            "value" : "Abre la app Salud, toca tu foto de perfil y elige «Apps y servicios» › OutRun para permitir los datos que quieras sincronizar."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ouvre l'app Santé, touche ta photo de profil, puis choisis « Apps et services » › ORCA et autorise les données que tu souhaites synchroniser."
+            "value" : "Ouvre l'app Santé, touche ta photo de profil, puis choisis « Apps et services » › OutRun et autorise les données que tu souhaites synchroniser."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open de Gezondheid-app, tik op je profielfoto en kies ‘Apps en diensten’ › ORCA om toegang te geven tot de gegevens die je wilt synchroniseren."
+            "value" : "Open de Gezondheid-app, tik op je profielfoto en kies ‘Apps en diensten’ › OutRun om toegang te geven tot de gegevens die je wilt synchroniseren."
           }
         }
       }
@@ -4855,37 +4815,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einige Datentypen werden nicht mit ORCA geteilt. Öffne die Health-App, tippe auf dein Profilbild und wähle „Apps und Dienste“ › ORCA, um deine Auswahl zu überprüfen."
+            "value" : "Einige Datentypen werden nicht mit OutRun geteilt. Öffne die Health-App, tippe auf dein Profilbild und wähle „Apps und Dienste“ › OutRun, um deine Auswahl zu überprüfen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Some data types are not shared with ORCA. Open the Health app, tap your profile picture, then choose Apps & Services › ORCA to review your selection."
+            "value" : "Some data types are not shared with OutRun. Open the Health app, tap your profile picture, then choose Apps & Services › OutRun to review your selection."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Some data types are not shared with ORCA. Open the Health app, tap your profile picture, then choose Apps & Services › ORCA to review your selection."
+            "value" : "Some data types are not shared with OutRun. Open the Health app, tap your profile picture, then choose Apps & Services › OutRun to review your selection."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algunos tipos de datos no se comparten con ORCA. Abre la app Salud, toca tu foto de perfil y elige «Apps y servicios» › ORCA para revisar tu selección."
+            "value" : "Algunos tipos de datos no se comparten con OutRun. Abre la app Salud, toca tu foto de perfil y elige «Apps y servicios» › OutRun para revisar tu selección."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Certains types de données ne sont pas partagés avec ORCA. Ouvre l'app Santé, touche ta photo de profil, puis choisis « Apps et services » › ORCA pour vérifier ta sélection."
+            "value" : "Certains types de données ne sont pas partagés avec OutRun. Ouvre l'app Santé, touche ta photo de profil, puis choisis « Apps et services » › OutRun pour vérifier ta sélection."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sommige gegevenstypen worden niet met ORCA gedeeld. Open de Gezondheid-app, tik op je profielfoto en kies ‘Apps en diensten’ › ORCA om je selectie te bekijken."
+            "value" : "Sommige gegevenstypen worden niet met OutRun gedeeld. Open de Gezondheid-app, tik op je profielfoto en kies ‘Apps en diensten’ › OutRun om je selectie te bekijken."
           }
         }
       }
@@ -4895,37 +4855,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mit Zugriff auf Apple Health kann ORCA deine aufgezeichneten Workouts exportieren und Workouts importieren, die von deiner Apple Watch oder anderen Apps aufgezeichnet wurden."
+            "value" : "Mit Zugriff auf Apple Health kann OutRun deine aufgezeichneten Workouts exportieren und Workouts importieren, die von deiner Apple Watch oder anderen Apps aufgezeichnet wurden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Access to Apple Health lets ORCA export your recorded workouts and import workouts recorded by your Apple Watch or other apps."
+            "value" : "Access to Apple Health lets OutRun export your recorded workouts and import workouts recorded by your Apple Watch or other apps."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Access to Apple Health lets ORCA export your recorded workouts and import workouts recorded by your Apple Watch or other apps."
+            "value" : "Access to Apple Health lets OutRun export your recorded workouts and import workouts recorded by your Apple Watch or other apps."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El acceso a Apple Health permite a ORCA exportar tus entrenamientos grabados e importar los que hayan registrado tu Apple Watch u otras apps."
+            "value" : "El acceso a Apple Health permite a OutRun exportar tus entrenamientos grabados e importar los que hayan registrado tu Apple Watch u otras apps."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'accès à Apple Santé permet à ORCA d'exporter tes entraînements enregistrés et d'importer ceux enregistrés par ton Apple Watch ou d'autres apps."
+            "value" : "L'accès à Apple Santé permet à OutRun d'exporter tes entraînements enregistrés et d'importer ceux enregistrés par ton Apple Watch ou d'autres apps."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Met toegang tot Apple Health kan ORCA je opgenomen trainingen exporteren en trainingen importeren die zijn vastgelegd door je Apple Watch of andere apps."
+            "value" : "Met toegang tot Apple Health kan OutRun je opgenomen trainingen exporteren en trainingen importeren die zijn vastgelegd door je Apple Watch of andere apps."
           }
         }
       }
@@ -5098,37 +5058,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mit Bewegungs- und Fitnessdaten kann ORCA das Barometer deines Geräts nutzen, um Höhenänderungen deutlich genauer aufzuzeichnen als mit GPS allein."
+            "value" : "Mit Bewegungs- und Fitnessdaten kann OutRun das Barometer deines Geräts nutzen, um Höhenänderungen deutlich genauer aufzuzeichnen als mit GPS allein."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Motion & fitness data lets ORCA use the barometer of your device to record elevation changes far more precisely than GPS alone."
+            "value" : "Motion & fitness data lets OutRun use the barometer of your device to record elevation changes far more precisely than GPS alone."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Motion & fitness data lets ORCA use the barometer of your device to record elevation changes far more precisely than GPS alone."
+            "value" : "Motion & fitness data lets OutRun use the barometer of your device to record elevation changes far more precisely than GPS alone."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los datos de movimiento y forma física permiten a ORCA usar el barómetro de tu dispositivo para registrar los cambios de altitud con mucha más precisión que solo con el GPS."
+            "value" : "Los datos de movimiento y forma física permiten a OutRun usar el barómetro de tu dispositivo para registrar los cambios de altitud con mucha más precisión que solo con el GPS."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les données de mouvement et de forme permettent à ORCA d'utiliser le baromètre de ton appareil pour enregistrer les variations d'altitude bien plus précisément qu'avec le GPS seul."
+            "value" : "Les données de mouvement et de forme permettent à OutRun d'utiliser le baromètre de ton appareil pour enregistrer les variations d'altitude bien plus précisément qu'avec le GPS seul."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Met beweging- en fitnessgegevens kan ORCA de barometer van je apparaat gebruiken om hoogteverschillen veel nauwkeuriger vast te leggen dan met gps alleen."
+            "value" : "Met beweging- en fitnessgegevens kan OutRun de barometer van je apparaat gebruiken om hoogteverschillen veel nauwkeuriger vast te leggen dan met gps alleen."
           }
         }
       }
@@ -6874,37 +6834,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In ORCA aufgezeichnete Trainings werden automatisch in der Health-App gespeichert."
+            "value" : "In OutRun aufgezeichnete Trainings werden automatisch in der Health-App gespeichert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Workouts recorded in ORCA will be saved to the Health app automatically."
+            "value" : "Workouts recorded in OutRun will be saved to the Health app automatically."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Workouts recorded in ORCA will be saved to the Health app automatically."
+            "value" : "Workouts recorded in OutRun will be saved to the Health app automatically."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los entrenamientos registrados en ORCA se guardarán automáticamente en la app Salud."
+            "value" : "Los entrenamientos registrados en OutRun se guardarán automáticamente en la app Salud."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les entraînements enregistrés dans ORCA seront automatiquement sauvegardés dans l’app Santé."
+            "value" : "Les entraînements enregistrés dans OutRun seront automatiquement sauvegardés dans l’app Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trainingen die in ORCA zijn vastgelegd, worden automatisch bewaard in de Gezondheid-app."
+            "value" : "Trainingen die in OutRun zijn vastgelegd, worden automatisch bewaard in de Gezondheid-app."
           }
         }
       }
@@ -6914,37 +6874,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In ORCA aufgezeichnete Daten"
+            "value" : "In OutRun aufgezeichnete Daten"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Data recorded in ORCA"
+            "value" : "Data recorded in OutRun"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Data recorded in ORCA"
+            "value" : "Data recorded in OutRun"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Datos registrados en ORCA"
+            "value" : "Datos registrados en OutRun"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Données enregistrées dans ORCA"
+            "value" : "Données enregistrées dans OutRun"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In ORCA vastgelegde gegevens"
+            "value" : "In OutRun vastgelegde gegevens"
           }
         }
       }
@@ -7074,37 +7034,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Wenn du deine bisherigen Trainings aus Apple Health importierst, startet der Import im Hintergrund, sobald du ORCA die Berechtigung erteilst. Der Import kann einige Minuten dauern."
+            "value" : "Wenn du deine bisherigen Trainings aus Apple Health importierst, startet der Import im Hintergrund, sobald du OutRun die Berechtigung erteilst. Der Import kann einige Minuten dauern."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "If you choose to import your existing workouts from Apple Health the process will start in the background once you grant ORCA permission. The import may take a couple of minutes."
+            "value" : "If you choose to import your existing workouts from Apple Health the process will start in the background once you grant OutRun permission. The import may take a couple of minutes."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "If you choose to import your existing workouts from Apple Health the process will start in the background once you grant ORCA permission. The import may take a couple of minutes."
+            "value" : "If you choose to import your existing workouts from Apple Health the process will start in the background once you grant OutRun permission. The import may take a couple of minutes."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Si decides importar tus entrenamientos existentes de Apple Health, el proceso se iniciará en segundo plano en cuanto concedas permiso a ORCA. La importación puede tardar unos minutos."
+            "value" : "Si decides importar tus entrenamientos existentes de Apple Health, el proceso se iniciará en segundo plano en cuanto concedas permiso a OutRun. La importación puede tardar unos minutos."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Si vous choisissez d’importer vos entraînements existants depuis Apple Health, le processus démarrera en arrière-plan dès que vous aurez accordé l’autorisation à ORCA. L’importation peut prendre quelques minutes."
+            "value" : "Si vous choisissez d’importer vos entraînements existants depuis Apple Health, le processus démarrera en arrière-plan dès que vous aurez accordé l’autorisation à OutRun. L’importation peut prendre quelques minutes."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Als je ervoor kiest je bestaande trainingen uit Apple Health te importeren, begint dit op de achtergrond zodra je ORCA toestemming geeft. Het importeren kan een paar minuten duren."
+            "value" : "Als je ervoor kiest je bestaande trainingen uit Apple Health te importeren, begint dit op de achtergrond zodra je OutRun toestemming geeft. Het importeren kan een paar minuten duren."
           }
         }
       }
@@ -7234,37 +7194,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Übernimm deine bisherigen Trainings in ORCA und speichere neue automatisch in der Health-App."
+            "value" : "Übernimm deine bisherigen Trainings in OutRun und speichere neue automatisch in der Health-App."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bring your existing workouts into ORCA, and save new ones to the Health app automatically."
+            "value" : "Bring your existing workouts into OutRun, and save new ones to the Health app automatically."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bring your existing workouts into ORCA, and save new ones to the Health app automatically."
+            "value" : "Bring your existing workouts into OutRun, and save new ones to the Health app automatically."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trae tus entrenamientos existentes a ORCA y guarda los nuevos en la app Salud automáticamente."
+            "value" : "Trae tus entrenamientos existentes a OutRun y guarda los nuevos en la app Salud automáticamente."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importez vos entraînements existants dans ORCA et enregistrez automatiquement les nouveaux dans l’app Santé."
+            "value" : "Importez vos entraînements existants dans OutRun et enregistrez automatiquement les nouveaux dans l’app Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haal je bestaande trainingen naar ORCA en bewaar nieuwe automatisch in de Gezondheid-app."
+            "value" : "Haal je bestaande trainingen naar OutRun en bewaar nieuwe automatisch in de Gezondheid-app."
           }
         }
       }
@@ -7354,37 +7314,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte lies und akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung, um ORCA zu verwenden."
+            "value" : "Bitte lies und akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung, um OutRun zu verwenden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please review and accept the Terms of Service and Privacy Policy to use ORCA."
+            "value" : "Please review and accept the Terms of Service and Privacy Policy to use OutRun."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please review and accept the Terms of Service and Privacy Policy to use ORCA."
+            "value" : "Please review and accept the Terms of Service and Privacy Policy to use OutRun."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Revisa y acepta los Términos de servicio y la Política de privacidad para usar ORCA."
+            "value" : "Revisa y acepta los Términos de servicio y la Política de privacidad para usar OutRun."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Veuillez lire et accepter les Conditions d’utilisation et la Politique de confidentialité pour utiliser ORCA."
+            "value" : "Veuillez lire et accepter les Conditions d’utilisation et la Politique de confidentialité pour utiliser OutRun."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lees en accepteer de Gebruiksvoorwaarden en het Privacybeleid om ORCA te gebruiken."
+            "value" : "Lees en accepteer de Gebruiksvoorwaarden en het Privacybeleid om OutRun te gebruiken."
           }
         }
       }
@@ -7594,37 +7554,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Du kannst ORCA jetzt verwenden. Wir fragen nach der Standortberechtigung, wenn du dein erstes Training aufzeichnest."
+            "value" : "Du kannst OutRun jetzt verwenden. Wir fragen nach der Standortberechtigung, wenn du dein erstes Training aufzeichnest."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can start using ORCA now. We will ask for location permission when you record your first workout."
+            "value" : "You can start using OutRun now. We will ask for location permission when you record your first workout."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can start using ORCA now. We will ask for location permission when you record your first workout."
+            "value" : "You can start using OutRun now. We will ask for location permission when you record your first workout."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ya puedes empezar a usar ORCA. Te pediremos permiso de ubicación cuando registres tu primer entrenamiento."
+            "value" : "Ya puedes empezar a usar OutRun. Te pediremos permiso de ubicación cuando registres tu primer entrenamiento."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous pouvez maintenant utiliser ORCA. Nous vous demanderons l’accès à votre position lorsque vous enregistrerez votre premier entraînement."
+            "value" : "Vous pouvez maintenant utiliser OutRun. Nous vous demanderons l’accès à votre position lorsque vous enregistrerez votre premier entraînement."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Je kunt ORCA nu gebruiken. We vragen om toegang tot je locatie wanneer je je eerste training vastlegt."
+            "value" : "Je kunt OutRun nu gebruiken. We vragen om toegang tot je locatie wanneer je je eerste training vastlegt."
           }
         }
       }
@@ -7915,37 +7875,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Willkommen bei ORCA"
+            "value" : "Willkommen bei OutRun"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to ORCA"
+            "value" : "Welcome to OutRun"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to ORCA"
+            "value" : "Welcome to OutRun"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Te damos la bienvenida a ORCA"
+            "value" : "Te damos la bienvenida a OutRun"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenue dans ORCA"
+            "value" : "Bienvenue dans OutRun"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welkom bij ORCA"
+            "value" : "Welkom bij OutRun"
           }
         }
       }
