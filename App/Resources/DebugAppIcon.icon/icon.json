@@ -48,8 +48,8 @@
               }
             }
           ],
-          "image-name" : "ORCA_O.svg",
-          "name" : "ORCA_O",
+          "image-name" : "O.svg",
+          "name" : "O",
           "position" : {
             "scale" : 2.5,
             "translation-in-points" : [
@@ -62,8 +62,8 @@
           "blend-mode" : "normal",
           "fill" : "none",
           "glass" : false,
-          "image-name" : "debug_grid.svg",
-          "name" : "debug_grid",
+          "image-name" : "grid.svg",
+          "name" : "grid",
           "opacity-specializations" : [
             {
               "value" : 0.5

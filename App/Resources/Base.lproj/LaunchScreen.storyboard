@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orca_logo" translatesAutoresizingMaskIntoConstraints="NO" id="meg-1D-pkk">
-                                <rect key="frame" x="96" y="353" width="248" height="250"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="outrun_logo" translatesAutoresizingMaskIntoConstraints="NO" id="meg-1D-pkk">
+                                <rect key="frame" x="80" y="353" width="280" height="250"/>
                                 <color key="tintColor" name="AccentColor"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
@@ -28,9 +28,9 @@
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="meg-1D-pkk" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="96" id="23Q-a5-b5Z"/>
+                            <constraint firstItem="meg-1D-pkk" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="80" id="23Q-a5-b5Z"/>
                             <constraint firstItem="meg-1D-pkk" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="7vc-wZ-KNo"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="meg-1D-pkk" secondAttribute="trailing" constant="96" id="mm5-VF-QIk"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="meg-1D-pkk" secondAttribute="trailing" constant="80" id="mm5-VF-QIk"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -41,7 +41,7 @@
     </scenes>
     <color key="tintColor" name="AccentColor"/>
     <resources>
-        <image name="orca_logo" width="951" height="250"/>
+        <image name="outrun_logo" width="1301" height="250"/>
         <namedColor name="AccentColor">
             <color red="0.12941176470588237" green="0.29803921568627451" blue="0.83529411764705885" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
