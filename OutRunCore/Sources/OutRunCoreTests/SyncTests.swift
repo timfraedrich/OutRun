@@ -63,7 +63,7 @@ struct SyncTests {
         let workouts = try await database.fetchWorkouts()
         guard var modifiedWorkout = workouts.first else { throw "No workout found after insert." }
         modifiedWorkout.name = "updated"
-        modifiedWorkout.lastEditDate = .now
+        modifiedWorkout.lastEditDate = workout.lastEditDate.addingTimeInterval(1)
         _ = try await database.upsert(modifiedWorkout)
 
         try await syncManager.performSync()
@@ -90,7 +90,7 @@ struct SyncTests {
         let workouts = try await database.fetchWorkouts()
         guard var modifiedWorkout = workouts.first else { throw "No workout found after insert." }
         modifiedWorkout.comment = "new comment"
-        modifiedWorkout.lastEditDate = .now
+        modifiedWorkout.lastEditDate = workout.lastEditDate.addingTimeInterval(1)
         _ = try await database.upsert(modifiedWorkout)
 
         try await syncManager.performSync()
@@ -217,7 +217,7 @@ struct SyncTests {
         // Now update the workout
         guard var modifiedWorkout = workouts.first else { throw "No workout found" }
         modifiedWorkout.name = "updated"
-        modifiedWorkout.lastEditDate = .now
+        modifiedWorkout.lastEditDate = workout.lastEditDate.addingTimeInterval(1)
         _ = try await database.upsert(modifiedWorkout)
 
         // Clear the mock's state
@@ -280,7 +280,7 @@ struct SyncTests {
 
         var modifiedWorkout = workout
         modifiedWorkout.name = "updated"
-        modifiedWorkout.lastEditDate = .now
+        modifiedWorkout.lastEditDate = workout.lastEditDate.addingTimeInterval(1)
         _ = try await delegate.upsert(modifiedWorkout)
 
         let workouts = try await database.fetchWorkouts()
@@ -305,7 +305,7 @@ struct SyncTests {
         let delegate = await MockSyncDelegate(database: database)
         _ = try await delegate.upsert(workout)
 
-        try await delegate.delete(workoutWithIdentifier: workout.id)
+        try await delegate.delete(workoutWithIdentifier: workout.id, forServiceWith: "mock")
 
         let workouts = try await database.fetchWorkouts()
         #expect(workouts.isEmpty)

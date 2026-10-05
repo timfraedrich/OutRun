@@ -17,8 +17,8 @@ class MockSyncDelegate: SyncDelegate {
         try await defaultSyncDelegate.upsert(workout)
     }
     
-    func delete(workoutWithIdentifier identifier: UUID) async throws {
-        try await defaultSyncDelegate.delete(workoutWithIdentifier: identifier)
+    func delete(workoutWithIdentifier identifier: UUID, forServiceWith serviceIdentifier: String) async throws {
+        try await defaultSyncDelegate.delete(workoutWithIdentifier: identifier, forServiceWith: serviceIdentifier)
     }
     
     func delete(workoutWithExternalIdentifier externalIdentifier: String, forServiceWith serviceIdentifier: String) async throws {
