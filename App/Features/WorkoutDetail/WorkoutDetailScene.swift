@@ -30,9 +30,9 @@ struct WorkoutDetailScene: View {
     private var showMap: Bool { !workout.route.isEmpty }
     private var mapHeight: CGFloat { metrics.size.height * 0.6 }
     private var overlapHeight: CGFloat { mapHeight / 3 }
-    /// Identifies the unit preferences the derived chart values were calculated for, so they can be recalculated when they change.
-    private var unitSignature: String {
-        "\(userPreferences.safeAltitudeUnit().symbol)|\(userPreferences.safeSpeedUnit().symbol)"
+    /// Identifies the workout revision and unit preferences the derived chart values were calculated for, so they can be recalculated when they change.
+    private var derivedValuesSignature: String {
+        "\(workout.lastEditDate.timeIntervalSinceReferenceDate)|\(userPreferences.safeAltitudeUnit().symbol)|\(userPreferences.safeSpeedUnit().symbol)"
     }
     
     var body: some View {
@@ -80,7 +80,7 @@ struct WorkoutDetailScene: View {
         .compatibleScrollEffectHidden(for: .top)
         .backupExport([workout.id], of: $backupTypeToShare, process: $exportProcess)
         .backupProcessSheet(for: $exportProcess)
-        .task(id: unitSignature) {
+        .task(id: derivedValuesSignature) {
             let sortedPauses = workout.pauses.sorted(using: KeyPathComparator(\.startDate, order: .forward))
             let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
             let sectionedRoute = Calculation.calculateSectionedSamples(

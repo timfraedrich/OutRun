@@ -33,30 +33,55 @@ struct QueriedWorkoutWrapper<Content: View>: View {
         }
         .transition(.blurReplace)
         .animation(.default, value: result != nil)
-        .task(loadWorkout)
+        .task(id: id) { await observeWorkout() }
     }
-    
-    @Sendable
-    private func loadWorkout() async {
-        do {
-            let workoutId = id
-            var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == workoutId })
-            descriptor.relationshipKeyPathsForPrefetching = [\.route, \.heartRates, \.pauses, \.serviceMappings]
-            descriptor.fetchLimit = 1
-            let container = modelContext.container
-            result = try await Task {
-                let context = ModelContext(container)
-                guard let workout = try context.fetch(descriptor).first else { return .failure(WorkoutNotFoundError()) }
-                return .success(RawWorkout(workout: workout))
-            }.value
-        } catch {
-            result = .failure(error)
+
+    private func observeWorkout() async {
+        let didSaveNotifications = NotificationCenter.default.notifications(named: ModelContext.didSave)
+        var persistentModelID = await loadWorkout()
+        for await notification in didSaveNotifications {
+            if let persistentModelID, !notification.containsChanges(to: persistentModelID) { continue }
+            persistentModelID = await loadWorkout()
         }
     }
-    
-    struct WorkoutNotFoundError: LocalizedError {
-        var errorDescription: String? {
-            .init(localized: "error_workout_not_found")
+
+    /// - Returns: The persistent identifier of the loaded workout, or `nil` if it could not be loaded.
+    private func loadWorkout() async -> PersistentIdentifier? {
+        let fetchResult = await modelContext.container.fetchRawWorkout(with: id)
+        result = fetchResult.map(\.workout)
+        return try? fetchResult.get().persistentModelID
+    }
+}
+
+private struct WorkoutNotFoundError: LocalizedError {
+    var errorDescription: String? {
+        .init(localized: "error_workout_not_found")
+    }
+}
+
+private extension ModelContainer {
+
+    @concurrent
+    func fetchRawWorkout(with id: Workout.ID) async -> Result<(workout: RawWorkout, persistentModelID: PersistentIdentifier), Error> {
+        do {
+            var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == id })
+            descriptor.relationshipKeyPathsForPrefetching = [\.route, \.heartRates, \.pauses, \.serviceMappings]
+            descriptor.fetchLimit = 1
+            let context = ModelContext(self)
+            guard let workout = try context.fetch(descriptor).first else { return .failure(WorkoutNotFoundError()) }
+            return .success((RawWorkout(workout: workout), workout.persistentModelID))
+        } catch {
+            return .failure(error)
+        }
+    }
+}
+
+private extension Notification {
+
+    func containsChanges(to persistentModelID: PersistentIdentifier) -> Bool {
+        let keys: [ModelContext.NotificationKey] = [.insertedIdentifiers, .updatedIdentifiers, .deletedIdentifiers]
+        return keys.contains { key in
+            (userInfo?[key.rawValue] as? [PersistentIdentifier])?.contains(persistentModelID) == true
         }
     }
 }
