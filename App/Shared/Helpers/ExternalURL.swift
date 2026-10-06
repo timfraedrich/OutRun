@@ -8,4 +8,5 @@ enum ExternalURL {
     static let privacyPolicy = ""
     static let supportAddress = "outrun@timfraedrich.me"
     static let support = "mailto:" + supportAddress
+    static let repository = "https://github.com/timfraedrich/OutRun"
 }

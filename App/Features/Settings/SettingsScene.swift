@@ -125,6 +125,9 @@ struct SettingsScene: View {
             SettingsOpenURLButton(ExternalURL.support) {
                 LabeledContent("settings_support", value: ExternalURL.supportAddress)
             }
+            SettingsOpenURLButton(ExternalURL.repository) {
+                LabeledContent("settings_source_code", value: "GitHub")
+            }
         }
     }
     
