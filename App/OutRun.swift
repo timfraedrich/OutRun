@@ -48,9 +48,8 @@ struct OutRun: App {
     
     init() {
         let config: OutRunCoreConfiguration = .init(
-            containerName: "OutRun",
             isStoredInMemoryOnly: false,
-            appGroupIdentifier: nil,
+            appGroupIdentifier: "group.me.timfraedrich.outrun",
             recordableDataTypes: [.location, .preciseAltitude]
         )
         let core = OutRunCore(config: config, syncServices: [HealthSyncService()])
