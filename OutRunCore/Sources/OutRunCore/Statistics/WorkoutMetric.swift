@@ -179,7 +179,7 @@ public enum WorkoutMetric: CaseIterable, CustomStringConvertible, Sendable {
         return Calculation.calculateElevationData(from: sortedRoute)
     }
     
-    public enum ValueRepresentation: Sendable {
+    public enum ValueRepresentation: Sendable, Hashable, Codable {
         /// Represents the workout type
         case type(WorkoutType)
         /// Represents long distances such as the distance covered during a workout.

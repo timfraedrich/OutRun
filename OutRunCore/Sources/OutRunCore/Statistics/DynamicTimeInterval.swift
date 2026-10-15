@@ -1,7 +1,7 @@
 import Foundation
 
-public enum DynamicTimeInterval: Equatable, Sendable {
-    
+public enum DynamicTimeInterval: Hashable, Sendable, Codable {
+
     case constant(TimeInterval)
     case increasing(since: Date, offset: TimeInterval)
     

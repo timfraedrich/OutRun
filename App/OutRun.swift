@@ -8,6 +8,7 @@ struct OutRun: App {
     
     @State private var core: OutRunCore
     @State private var backupService: BackupService
+    @State private var liveActivityService: WorkoutLiveActivityService
     @State private var mainRouter: Router
     @State private var showLegacyMigrationView: Bool
     
@@ -55,6 +56,7 @@ struct OutRun: App {
         let core = OutRunCore(config: config, syncServices: [HealthSyncService()])
         self.core = core
         backupService = .init(core: core)
+        liveActivityService = .init(core: core)
         mainRouter = .init(scope: MainRoutingScope())
         showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
     }
