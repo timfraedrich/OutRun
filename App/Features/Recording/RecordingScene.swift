@@ -12,7 +12,6 @@ struct RecordingScene: View {
     @Environment(WorkoutRecorder.self) private var recorder
 
     @State private var keepUserCentered: Bool = true
-    @State private var confirmClose: Bool = false
     @State private var error: Error?
     @State private var permissionNoticeIsPresented: Bool = false
     
@@ -171,14 +170,26 @@ struct RecordingScene: View {
             }
         }
         ToolbarItem(placement: .cancellationAction) {
-            closeButton.confirmationDialog(String(), isPresented: $confirmClose, titleVisibility: .hidden) {
-                Button("recording_minimize", systemImage: "arrow.down.right.and.arrow.up.left", action: dismiss.callAsFunction)
-                Button("recording_end", systemImage: "stop.fill", role: .destructive) {
-                    errorHandledAsyncAction {
-                        _ = try await recorder.endRecording()
-                        dismiss()
+            if recorder.status.isCollectingData {
+                Menu {
+                    Button("recording_minimize", systemImage: "arrow.down.right.and.arrow.up.left", action: dismiss.callAsFunction)
+                    Button("recording_end", systemImage: "stop.fill") {
+                        errorHandledAsyncAction {
+                            _ = try await recorder.endRecording()
+                            dismiss()
+                        }
                     }
+                    Button("discard", systemImage: "trash", role: .destructive) {
+                        errorHandledAsyncAction {
+                            _ = try await recorder.discardRecording()
+                            dismiss()
+                        }
+                    }
+                } label: {
+                    closeButton
                 }
+            } else {
+                closeButton
             }
         }
     }
@@ -207,15 +218,9 @@ struct RecordingScene: View {
     }
     
     @ViewBuilder private var closeButton: some View {
-        let button = Button("close", systemImage: "xmark") {
-            if recorder.status.isCollectingData {
-                confirmClose = true
-            } else {
-                dismiss()
-            }
-        }
-        .labelStyle(.iconOnly)
-        .tint(.primary)
+        let button = Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
+            .labelStyle(.iconOnly)
+            .tint(.primary)
         if #available(iOS 26.0, *) {
             button
                 .font(.title2)

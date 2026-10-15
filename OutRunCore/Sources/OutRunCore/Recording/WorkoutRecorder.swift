@@ -329,7 +329,23 @@ public class WorkoutRecorder {
             throw error
         }
     }
-    
+
+    /// Discards the workout currently being recorded by ending the recording process and reseting the workout recorder for the next
+    /// recording and deleting the workout from the database.
+    /// - throws: If this class is currently not recording a workout.
+    @BackgroundActor
+    public func discardRecording() async throws {
+        do {
+            guard let identifier = state.workoutIdentifier else { throw WorkoutRecorderError.notRecording }
+            _ = try state.end(on: .now)
+            try await database.delete(workoutWithIdentifier: identifier)
+            logger.info("Discarded workout with identifier \(identifier).")
+        } catch {
+            logger.error("Failed to discard workout recording: \((error as CustomDebugStringConvertible).debugDescription).")
+            throw error
+        }
+    }
+
     /// Requests the specified permission if not already sufficiently granted.
     /// - throws: Throws if the permission cannot be requested. The error thrown should be displayed to the user together with the option to
     /// open the iOS app settings at ``UIApplication.openSettingsURLString`` by using ``UIApplication/open()``.
