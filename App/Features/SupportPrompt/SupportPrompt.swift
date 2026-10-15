@@ -6,24 +6,36 @@ import SwiftUI
 /// after the previous prompt was dismissed, or, for the first prompt, after the baseline was established.
 enum SupportPrompt: CaseIterable, Identifiable {
     
+    case rating
+    
     var id: String {
-        switch self {}
+        switch self {
+        case .rating: "rating"
+        }
     }
     
-    var title: Text {
-        switch self {}
+    var title: LocalizedStringKey {
+        switch self {
+        case .rating: "support_prompt_rating_title"
+        }
     }
     
-    var message: Text {
-        switch self {}
+    var message: LocalizedStringKey {
+        switch self {
+        case .rating: "support_prompt_rating_message"
+        }
     }
     
     var systemImage: String {
-        switch self {}
+        switch self {
+        case .rating: "star.fill"
+        }
     }
     
-    var actionTitle: Text {
-        switch self {}
+    var actionTitle: LocalizedStringKey {
+        switch self {
+        case .rating: "support_prompt_rating_action"
+        }
     }
     
     /// Returns the first prompt that has not been dismissed yet, if a natively recorded workout was added since the preceding prompt was

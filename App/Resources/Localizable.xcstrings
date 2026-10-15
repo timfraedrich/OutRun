@@ -8191,6 +8191,126 @@
         }
       }
     },
+    "support_prompt_rating_action" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jetzt bewerten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a Rating"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a Rating"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valorar ahora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laisser une note"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu beoordelen"
+          }
+        }
+      }
+    },
+    "support_prompt_rating_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun ist kostenlos und Open Source. Eine Bewertung dauert nur einen Moment und ist eine großartige Möglichkeit, die App zu unterstützen und anderen zu helfen, sie zu entdecken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is free and open source. Leaving a review only takes a moment and is a great way to support the app and help others discover it."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is free and open source. Leaving a review only takes a moment and is a great way to support the app and help others discover it."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun es gratuito y de código abierto. Dejar una reseña solo te llevará un momento y es una gran forma de apoyar la app y ayudar a otros a descubrirla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun est gratuit et open source. Laisser un avis ne prend qu’un instant et c’est un excellent moyen de soutenir l’app et d’aider d’autres personnes à la découvrir."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is gratis en open source. Een beoordeling achterlaten kost maar even en is een geweldige manier om de app te steunen en anderen te helpen hem te ontdekken."
+          }
+        }
+      }
+    },
+    "support_prompt_rating_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefällt dir OutRun?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enjoying OutRun?"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enjoying OutRun?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Te gusta OutRun?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous aimez OutRun ?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vind je OutRun leuk?"
+          }
+        }
+      }
+    },
     "sync_service_open_externally" : {
       "localizations" : {
         "de" : {

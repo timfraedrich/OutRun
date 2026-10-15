@@ -10,6 +10,7 @@ struct MainScene: View {
     @Environment(UserPreferences.self) private var userPreferences
     @Environment(Router.self) private var router
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.openURL) private var openURL
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
     @State private var nativeWorkoutCount: Int?
@@ -90,10 +91,10 @@ struct MainScene: View {
     @ViewBuilder
     private func supportPromptCard(for prompt: SupportPrompt) -> some View {
         SupportPromptCard(
-            title: prompt.title,
-            message: prompt.message,
+            title: Text(prompt.title),
+            message: Text(prompt.message),
             systemImage: prompt.systemImage,
-            actionTitle: prompt.actionTitle,
+            actionTitle: Text(prompt.actionTitle),
             action: { performAction(of: prompt) },
             dismiss: { dismiss(prompt) }
         )
@@ -194,7 +195,11 @@ struct MainScene: View {
     
     private func performAction(of prompt: SupportPrompt) {
         dismiss(prompt)
-        switch prompt {}
+        switch prompt {
+        case .rating:
+            guard let url = URL(string: ExternalURL.appStoreReview) else { return }
+            openURL(url)
+        }
     }
     
     private func showRecordingScene() {
