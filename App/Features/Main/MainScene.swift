@@ -9,10 +9,16 @@ struct MainScene: View {
     @Environment(WorkoutRecorder.self) private var recorder
     @Environment(UserPreferences.self) private var userPreferences
     @Environment(Router.self) private var router
+    @Environment(\.modelContext) private var modelContext
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
+    @State private var nativeWorkoutCount: Int?
     
     private var userName: String { core.user?.name ?? .init(localized: "user_name_fallback") }
+    
+    private var supportPrompt: SupportPrompt? {
+        nativeWorkoutCount.flatMap(userPreferences.pendingSupportPrompt)
+    }
     
     var body: some View {
         RouterHost(node: router.root) {
@@ -23,6 +29,9 @@ struct MainScene: View {
                         if finishedWorkouts.isEmpty {
                             emptyWorkoutsView.frame(maxHeight: .infinity)
                         } else {
+                            if let supportPrompt {
+                                supportPromptCard(for: supportPrompt)
+                            }
                             workoutCards
                             if finishedWorkouts.count > 3 {
                                 calendarLink
@@ -42,6 +51,7 @@ struct MainScene: View {
                 guard core.recorder?.status == .recording else { return }
                 showRecordingScene()
             }
+            .task(id: finishedWorkouts.map(\.id), updateNativeWorkoutCount)
         }
     }
     
@@ -75,6 +85,19 @@ struct MainScene: View {
                 .workoutCardStyle(isFirstCard ? AnyWorkoutCardStyle(.latest) : AnyWorkoutCardStyle(.list))
                 .onTapGesture { showWorkoutDetailScene(for: workout.id) }
         }
+    }
+    
+    @ViewBuilder
+    private func supportPromptCard(for prompt: SupportPrompt) -> some View {
+        SupportPromptCard(
+            title: prompt.title,
+            message: prompt.message,
+            systemImage: prompt.systemImage,
+            actionTitle: prompt.actionTitle,
+            action: { performAction(of: prompt) },
+            dismiss: { dismiss(prompt) }
+        )
+        .transition(.opacity.combined(with: .scale(scale: 0.95)))
     }
     
     @ViewBuilder private var calendarLink: some View {
@@ -150,6 +173,28 @@ struct MainScene: View {
         descriptor.propertiesToFetch = [\.rawType, \.startDate, \.endDate, \.distance, \.energy]
         descriptor.relationshipKeyPathsForPrefetching = [\.pauses]
         self._finishedWorkouts = Query(descriptor)
+    }
+    
+    private func updateNativeWorkoutCount() {
+        let nativeSource = WorkoutSource.native.rawValue
+        let descriptor = FetchDescriptor<Workout>(
+            predicate: #Predicate<Workout> { $0.endDate != nil && $0.rawSource == nativeSource }
+        )
+        guard let count = try? modelContext.fetchCount(descriptor) else { return }
+        userPreferences.establishSupportPromptBaselineIfNeeded(nativeWorkoutCount: count)
+        nativeWorkoutCount = count
+    }
+    
+    private func dismiss(_ prompt: SupportPrompt) {
+        guard let nativeWorkoutCount else { return }
+        withAnimation {
+            userPreferences.dismissSupportPrompt(prompt, nativeWorkoutCount: nativeWorkoutCount)
+        }
+    }
+    
+    private func performAction(of prompt: SupportPrompt) {
+        dismiss(prompt)
+        switch prompt {}
     }
     
     private func showRecordingScene() {
