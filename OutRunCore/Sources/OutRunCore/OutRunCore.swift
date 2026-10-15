@@ -6,8 +6,8 @@ import Perception
 @MainActor
 public class OutRunCore {
     
-    public static nonisolated let moduleIdentifier = "software.tfr.outruncore"
-    
+    public static nonisolated let moduleIdentifier = "me.timfraedrich.outruncore"
+
     public typealias Status = OutRunCoreStatus
     
     private let logger = Logger(category: "OutRunCore")
