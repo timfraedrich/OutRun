@@ -3,6 +3,6 @@ import OutRunCore
 
 extension UserPreferenceKeys {
 
-    static let acceptedLegalVersion = "de.tadris.OutRun.acceptedLegalVersion"
-    static let legalAcceptanceDate = "de.tadris.OutRun.legalAcceptanceDate"
+    static let acceptedLegalVersion = preferenceKey(for: "acceptedLegalVersion")
+    static let legalAcceptanceDate = preferenceKey(for: "legalAcceptanceDate")
 }
