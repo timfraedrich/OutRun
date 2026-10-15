@@ -9,7 +9,7 @@ import AsyncAlgorithms
 enum LegacyMigrationHelper {
     
     private static var defaultLegacyStorageFileName: String { "OutRun.sqlite" }
-    private static let logger = Logger(subsystem: "de.tadris.OutRun", category: "LegacyMigrationHelper")
+    private static let logger = Logger(category: "LegacyMigrationHelper")
     
     static var isLegacyMigrationAppropriate: Bool {
         LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: defaultLegacyStorageFileName)

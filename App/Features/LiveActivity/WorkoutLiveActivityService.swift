@@ -10,7 +10,7 @@ final class WorkoutLiveActivityService {
     private typealias ContentState = WorkoutAttributes.ContentState
 
     private static let minimumUpdateInterval: Duration = .seconds(1)
-    private nonisolated static let logger = Logger(subsystem: "de.tadris.OutRun", category: "WorkoutLiveActivityService")
+    private nonisolated static let logger = Logger(category: "WorkoutLiveActivityService")
 
     private let core: OutRunCore
     private var activityID: Activity<WorkoutAttributes>.ID?

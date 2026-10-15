@@ -5,7 +5,9 @@ import TFRouting
 
 @main
 struct OutRun: App {
-    
+
+    static nonisolated let identifier = "de.tadris.OutRun"
+
     @State private var core: OutRunCore
     @State private var backupService: BackupService
     @State private var liveActivityService: WorkoutLiveActivityService
