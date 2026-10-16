@@ -8191,6 +8191,126 @@
         }
       }
     },
+    "support_prompt_donation_action" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trinkgeld geben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a Tip"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a Tip"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dejar una propina"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laisser un pourboire"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fooi geven"
+          }
+        }
+      }
+    },
+    "support_prompt_donation_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun ist kostenlos und werbefrei. Wenn du bei der Entwicklung helfen möchtest, wäre ein kleines Trinkgeld sehr willkommen. Aber ganz ohne Druck!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is free and has no ads. If you would like to help out with its development, a small tip would be greatly appreciated. No pressure though!"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is free and has no ads. If you would like to help out with its development, a small tip would be greatly appreciated. No pressure though!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun es gratuito y no tiene anuncios. Si quieres ayudar con su desarrollo, una pequeña propina sería muy apreciada. ¡Pero sin ninguna presión!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun est gratuit et sans publicité. Si vous souhaitez soutenir son développement, un petit pourboire serait très apprécié. Mais sans aucune obligation !"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is gratis en heeft geen advertenties. Als je wilt helpen met de ontwikkeling, wordt een kleine fooi enorm gewaardeerd. Maar geen druk!"
+          }
+        }
+      }
+    },
+    "support_prompt_donation_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun unterstützen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support OutRun"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support OutRun"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoya OutRun"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soutenir OutRun"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steun OutRun"
+          }
+        }
+      }
+    },
     "support_prompt_rating_action" : {
       "localizations" : {
         "de" : {
@@ -8469,6 +8589,326 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tijdstempel"
+          }
+        }
+      }
+    },
+    "tip_jar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trinkgeldglas"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tip Jar"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tip Jar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bote de propinas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pourboires"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fooienpot"
+          }
+        }
+      }
+    },
+    "tip_jar_leave_review" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung schreiben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a Review"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a Review"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escribir una reseña"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laisser un avis"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beoordeling schrijven"
+          }
+        }
+      }
+    },
+    "tip_jar_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun ist kostenlos, Open Source und werbefrei. Wenn dir die App gefällt und du ihre Entwicklung unterstützen möchtest, kannst du ein Trinkgeld geben. Trinkgelder sind völlig freiwillig und schalten keine zusätzlichen Funktionen frei."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is free, open source and has no ads. If you enjoy using it and would like to support its development, you can leave a tip. Tips are entirely optional and do not unlock any additional features."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is free, open source and has no ads. If you enjoy using it and would like to support its development, you can leave a tip. Tips are entirely optional and do not unlock any additional features."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun es gratuito, de código abierto y no tiene anuncios. Si te gusta usarlo y quieres apoyar su desarrollo, puedes dejar una propina. Las propinas son totalmente opcionales y no desbloquean funciones adicionales."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun est gratuit, open source et sans publicité. Si vous aimez l’utiliser et souhaitez soutenir son développement, vous pouvez laisser un pourboire. Les pourboires sont entièrement facultatifs et ne débloquent aucune fonctionnalité supplémentaire."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun is gratis, open source en heeft geen advertenties. Als je de app graag gebruikt en de ontwikkeling wilt steunen, kun je een fooi geven. Fooien zijn volledig vrijwillig en ontgrendelen geen extra functies."
+          }
+        }
+      }
+    },
+    "tip_jar_other_ways_footer" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Bewertung hilft anderen, OutRun zu entdecken, und über eine kurze Dankesnachricht freue ich mich immer."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A review helps others discover OutRun, and a short thank-you message always makes my day."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A review helps others discover OutRun, and a short thank-you message always makes my day."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una reseña ayuda a otros a descubrir OutRun, y un breve mensaje de agradecimiento siempre me alegra el día."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un avis aide d’autres personnes à découvrir OutRun, et un petit message de remerciement me fait toujours plaisir."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een beoordeling helpt anderen OutRun te ontdekken, en een kort bedankje maakt mijn dag altijd goed."
+          }
+        }
+      }
+    },
+    "tip_jar_other_ways_header" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andere Wege zu helfen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other Ways to Help"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other Ways to Help"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otras formas de ayudar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autres façons d’aider"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andere manieren om te helpen"
+          }
+        }
+      }
+    },
+    "tip_jar_say_thanks" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danke sagen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say Thanks"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say Thanks"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dar las gracias"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dire merci"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bedankt zeggen"
+          }
+        }
+      }
+    },
+    "tip_jar_thank_you_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Unterstützung bedeutet sehr viel und hilft, OutRun am Laufen zu halten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your support means a lot and helps keep OutRun going."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your support means a lot and helps keep OutRun going."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu apoyo significa mucho y ayuda a que OutRun siga adelante."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre soutien compte beaucoup et aide à faire vivre OutRun."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je steun betekent veel en helpt OutRun draaiende te houden."
+          }
+        }
+      }
+    },
+    "tip_jar_thank_you_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vielen Dank!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank You!"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank You!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Gracias!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merci !"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bedankt!"
           }
         }
       }

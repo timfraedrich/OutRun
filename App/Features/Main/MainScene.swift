@@ -199,6 +199,8 @@ struct MainScene: View {
         case .rating:
             guard let url = URL(string: ExternalURL.appStoreReview) else { return }
             openURL(url)
+        case .donation:
+            router.open([SettingsRoute(), SettingsPageRoute.tipJar])
         }
     }
     

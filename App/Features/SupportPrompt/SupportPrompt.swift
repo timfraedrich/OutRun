@@ -7,34 +7,40 @@ import SwiftUI
 enum SupportPrompt: CaseIterable, Identifiable {
     
     case rating
+    case donation
     
     var id: String {
         switch self {
         case .rating: "rating"
+        case .donation: "donation"
         }
     }
     
     var title: LocalizedStringKey {
         switch self {
         case .rating: "support_prompt_rating_title"
+        case .donation: "support_prompt_donation_title"
         }
     }
     
     var message: LocalizedStringKey {
         switch self {
         case .rating: "support_prompt_rating_message"
+        case .donation: "support_prompt_donation_message"
         }
     }
     
     var systemImage: String {
         switch self {
         case .rating: "star.fill"
+        case .donation: "heart.fill"
         }
     }
     
     var actionTitle: LocalizedStringKey {
         switch self {
         case .rating: "support_prompt_rating_action"
+        case .donation: "support_prompt_donation_action"
         }
     }
     

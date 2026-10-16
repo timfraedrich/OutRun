@@ -11,6 +11,7 @@ struct OutRun: App {
     @State private var core: OutRunCore
     @State private var backupService: BackupService
     @State private var liveActivityService: WorkoutLiveActivityService
+    @State private var tipJarService: TipJarService
     @State private var mainRouter: Router
     @State private var showLegacyMigrationView: Bool
     
@@ -59,6 +60,7 @@ struct OutRun: App {
         self.core = core
         backupService = .init(core: core)
         liveActivityService = .init(core: core)
+        tipJarService = .init()
         mainRouter = .init(scope: MainRoutingScope())
         showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
     }

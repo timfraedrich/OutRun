@@ -31,6 +31,7 @@ struct SettingsScene: View {
     var body: some View {
         List {
             profileSection
+            supportSection
             subpageSection
             legalSection
             infoSection
@@ -92,6 +93,13 @@ struct SettingsScene: View {
                 .aspectRatio(contentMode: .fit)
                 .padding(padding?.rawValue ?? .zero)
         }
+    }
+
+    @ViewBuilder private var supportSection: some View {
+        Section {
+            subpageButton("tip_jar", systemImage: "star.circle.fill", route: .tipJar)
+        }
+        .buttonStyle(.plain)
     }
 
     @ViewBuilder private var subpageSection: some View {
