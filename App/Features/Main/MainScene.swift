@@ -9,16 +9,10 @@ struct MainScene: View {
     @Environment(WorkoutRecorder.self) private var recorder
     @Environment(UserPreferences.self) private var userPreferences
     @Environment(Router.self) private var router
-    @Environment(\.modelContext) private var modelContext
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
-    @State private var nativeWorkoutCount: Int?
     
     private var userName: String { core.user?.name ?? .init(localized: "user_name_fallback") }
-    
-    private var showDonationPrompt: Bool {
-        nativeWorkoutCount.map(userPreferences.shouldShowDonationPrompt) ?? false
-    }
     
     var body: some View {
         RouterHost(node: router.root) {
@@ -29,7 +23,7 @@ struct MainScene: View {
                         if finishedWorkouts.isEmpty {
                             emptyWorkoutsView.frame(maxHeight: .infinity)
                         } else {
-                            if showDonationPrompt {
+                            if userPreferences.donationPromptDue {
                                 donationPromptCard
                             }
                             workoutCards
@@ -51,7 +45,6 @@ struct MainScene: View {
                 guard core.recorder?.status == .recording else { return }
                 showRecordingScene()
             }
-            .task(id: finishedWorkouts.map(\.id), updateNativeWorkoutCount)
         }
     }
     
@@ -167,13 +160,9 @@ struct MainScene: View {
         self._finishedWorkouts = Query(descriptor)
     }
     
-    private func updateNativeWorkoutCount() {
-        nativeWorkoutCount = try? modelContext.nativeWorkoutCount()
-    }
-    
     private func dismissDonationPrompt() {
         withAnimation {
-            userPreferences.donationPromptDismissed = true
+            userPreferences.dismissDonationPrompt()
         }
     }
     

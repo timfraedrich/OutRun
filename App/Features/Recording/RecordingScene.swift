@@ -13,6 +13,7 @@ struct RecordingScene: View {
     @Environment(\.requestReview) private var requestReview
     @Environment(OutRunCore.self) private var core
     @Environment(WorkoutRecorder.self) private var recorder
+    @Environment(UserPreferences.self) private var userPreferences
 
     @State private var keepUserCentered: Bool = true
     @State private var error: Error?
@@ -266,8 +267,9 @@ struct RecordingScene: View {
     }
     
     private func endRecording() async throws {
-        guard try await recorder.endRecording() != nil else { return }
-        guard let count = try? modelContext.nativeWorkoutCount(), count > Self.reviewRequestWorkoutThreshold else { return }
+        guard try await recorder.endRecording() != nil, let count = try? modelContext.nativeWorkoutCount() else { return }
+        userPreferences.registerCompletedWorkout(nativeWorkoutCount: count)
+        guard count > Self.reviewRequestWorkoutThreshold else { return }
         requestReview()
     }
     
