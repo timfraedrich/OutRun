@@ -1,6 +1,7 @@
 import CoreLocation
 import MapKit
 import OutRunCore
+import StoreKit
 import SwiftData
 import SwiftUI
 
@@ -8,12 +9,16 @@ struct RecordingScene: View {
     
     @Environment(\.self) private var environment
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.requestReview) private var requestReview
     @Environment(OutRunCore.self) private var core
     @Environment(WorkoutRecorder.self) private var recorder
 
     @State private var keepUserCentered: Bool = true
     @State private var error: Error?
     @State private var permissionNoticeIsPresented: Bool = false
+    
+    private static let reviewRequestWorkoutThreshold = 3
     
     private let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
     
@@ -175,7 +180,7 @@ struct RecordingScene: View {
                     Button("recording_minimize", systemImage: "arrow.down.right.and.arrow.up.left", action: dismiss.callAsFunction)
                     Button("recording_end", systemImage: "stop.fill") {
                         errorHandledAsyncAction {
-                            _ = try await recorder.endRecording()
+                            try await endRecording()
                             dismiss()
                         }
                     }
@@ -257,7 +262,13 @@ struct RecordingScene: View {
     }
     
     private func endAction() {
-        errorHandledAsyncAction { _ = try await recorder.endRecording() }
+        errorHandledAsyncAction(endRecording)
+    }
+    
+    private func endRecording() async throws {
+        guard try await recorder.endRecording() != nil else { return }
+        guard let count = try? modelContext.nativeWorkoutCount(), count > Self.reviewRequestWorkoutThreshold else { return }
+        requestReview()
     }
     
     private func pauseAction() {

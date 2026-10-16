@@ -1,11 +1,7 @@
 import SwiftUI
 
-struct SupportPromptCard: View {
+struct DonationPromptCard: View {
     
-    let title: Text
-    let message: Text
-    let systemImage: String
-    let actionTitle: Text
     let action: () -> Void
     let dismiss: () -> Void
 
@@ -22,9 +18,9 @@ struct SupportPromptCard: View {
     @ViewBuilder private var header: some View {
         VStack(alignment: .leading, spacing: .small) {
             HStack(spacing: .small) {
-                Image(systemName: systemImage)
+                Image(systemName: "heart.fill")
                     .foregroundStyle(.tint)
-                title
+                Text("donation_prompt_title")
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Button("dismiss", systemImage: "xmark", action: dismiss)
@@ -33,7 +29,7 @@ struct SupportPromptCard: View {
                     .buttonStyle(.plain)
             }
             .font(.headline)
-            message
+            Text("donation_prompt_message")
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.subheadline)
@@ -42,7 +38,7 @@ struct SupportPromptCard: View {
 
     @ViewBuilder private var button: some View {
         Button(action: action) {
-            actionTitle
+            Text("donation_prompt_action")
                 .bold()
                 .frame(maxWidth: .infinity)
         }
@@ -51,11 +47,7 @@ struct SupportPromptCard: View {
 }
 
 #Preview {
-    SupportPromptCard(
-        title: Text(verbatim: "Enjoying OutRun?"),
-        message: Text(verbatim: "Leaving a review is a great way to support the app."),
-        systemImage: "star.fill",
-        actionTitle: Text(verbatim: "Rate now"),
+    DonationPromptCard(
         action: {},
         dismiss: {}
     )

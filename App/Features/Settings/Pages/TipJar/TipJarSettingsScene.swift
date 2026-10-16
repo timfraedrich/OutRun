@@ -5,7 +5,9 @@ struct TipJarSettingsScene: View {
     
     @State private var showThankYou: Bool = false
     @State private var purchaseError: Error?
-    
+
+    @ScaledMetric private var tipImageSize: CGFloat = 70
+
     var body: some View {
         List {
             Section {
@@ -30,6 +32,7 @@ struct TipJarSettingsScene: View {
                             .scaledToFit()
                             .foregroundStyle(.tint)
                             .padding(.small)
+                            .frame(width: tipImageSize)
                     }
                 }
             }

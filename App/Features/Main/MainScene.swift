@@ -10,15 +10,14 @@ struct MainScene: View {
     @Environment(UserPreferences.self) private var userPreferences
     @Environment(Router.self) private var router
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.openURL) private var openURL
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
     @State private var nativeWorkoutCount: Int?
     
     private var userName: String { core.user?.name ?? .init(localized: "user_name_fallback") }
     
-    private var supportPrompt: SupportPrompt? {
-        nativeWorkoutCount.flatMap(userPreferences.pendingSupportPrompt)
+    private var showDonationPrompt: Bool {
+        nativeWorkoutCount.map(userPreferences.shouldShowDonationPrompt) ?? false
     }
     
     var body: some View {
@@ -30,8 +29,8 @@ struct MainScene: View {
                         if finishedWorkouts.isEmpty {
                             emptyWorkoutsView.frame(maxHeight: .infinity)
                         } else {
-                            if let supportPrompt {
-                                supportPromptCard(for: supportPrompt)
+                            if showDonationPrompt {
+                                donationPromptCard
                             }
                             workoutCards
                             if finishedWorkouts.count > 3 {
@@ -88,17 +87,9 @@ struct MainScene: View {
         }
     }
     
-    @ViewBuilder
-    private func supportPromptCard(for prompt: SupportPrompt) -> some View {
-        SupportPromptCard(
-            title: Text(prompt.title),
-            message: Text(prompt.message),
-            systemImage: prompt.systemImage,
-            actionTitle: Text(prompt.actionTitle),
-            action: { performAction(of: prompt) },
-            dismiss: { dismiss(prompt) }
-        )
-        .transition(.opacity.combined(with: .scale(scale: 0.95)))
+    @ViewBuilder private var donationPromptCard: some View {
+        DonationPromptCard(action: showTipJar, dismiss: dismissDonationPrompt)
+            .transition(.opacity.combined(with: .scale(scale: 0.95)))
     }
     
     @ViewBuilder private var calendarLink: some View {
@@ -177,31 +168,18 @@ struct MainScene: View {
     }
     
     private func updateNativeWorkoutCount() {
-        let nativeSource = WorkoutSource.native.rawValue
-        let descriptor = FetchDescriptor<Workout>(
-            predicate: #Predicate<Workout> { $0.endDate != nil && $0.rawSource == nativeSource }
-        )
-        guard let count = try? modelContext.fetchCount(descriptor) else { return }
-        userPreferences.establishSupportPromptBaselineIfNeeded(nativeWorkoutCount: count)
-        nativeWorkoutCount = count
+        nativeWorkoutCount = try? modelContext.nativeWorkoutCount()
     }
     
-    private func dismiss(_ prompt: SupportPrompt) {
-        guard let nativeWorkoutCount else { return }
+    private func dismissDonationPrompt() {
         withAnimation {
-            userPreferences.dismissSupportPrompt(prompt, nativeWorkoutCount: nativeWorkoutCount)
+            userPreferences.donationPromptDismissed = true
         }
     }
     
-    private func performAction(of prompt: SupportPrompt) {
-        dismiss(prompt)
-        switch prompt {
-        case .rating:
-            guard let url = URL(string: ExternalURL.appStoreReview) else { return }
-            openURL(url)
-        case .donation:
-            router.open([SettingsRoute(), SettingsPageRoute.tipJar])
-        }
+    private func showTipJar() {
+        dismissDonationPrompt()
+        router.open([SettingsRoute(), SettingsPageRoute.tipJar])
     }
     
     private func showRecordingScene() {
