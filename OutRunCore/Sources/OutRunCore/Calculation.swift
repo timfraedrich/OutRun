@@ -196,7 +196,9 @@ public enum Calculation {
         var pause: any WorkoutPauseProtocol { pauses[pauseIndex] }
         sampleIteration: for (sampleIndex, sample) in samples.enumerated() {
             let timestamp = sample[keyPath: timestampKeyPath]
+            var passedPause = false
             while pause.endDate < timestamp {
+                passedPause = true
                 let nextPauseIndex = pauses[pauseIndex...].index(after: pauseIndex)
                 if pauses.indices.contains(nextPauseIndex) {
                     pauseIndex = nextPauseIndex
@@ -209,7 +211,7 @@ public enum Calculation {
             }
             switch timestamp {
             case ...pause.startDate:
-                if sectionedSamples.last?.category == true {
+                if !passedPause, sectionedSamples.last?.category == true {
                     sectionedSamples[sectionedSamples.count - 1].elements.append(sample)
                 } else {
                     sectionedSamples.append((true, [sample]))
