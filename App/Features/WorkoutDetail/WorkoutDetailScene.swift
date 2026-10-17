@@ -163,8 +163,7 @@ struct WorkoutDetailScene: View {
                 .padding(.horizontal, .regular)
             VStack(spacing: .regular, content: content)
                 .padding(contentPadding)
-                .background()
-                .clipShape(.containerRelative)
+                .background(in: .containerRelative)
                 .containerShape(.rect(cornerRadius: .regular))
         }
     }
@@ -188,6 +187,26 @@ struct WorkoutDetailScene: View {
     }
     
     @ViewBuilder
+    private func chart(_ metric: WorkoutChartMetric, @ViewBuilder content: () -> some View) -> some View {
+        LabeledContent {
+            content()
+                .frame(height: chartHeight)
+                .padding(.top, .small)
+        } label: {
+            Button {
+                openMap(metric: metric)
+            } label: {
+                HStack(spacing: .extraSmall) {
+                    Text(metric.stringKey)
+                    Image(systemName: "chevron.forward")
+                        .imageScale(.small)
+                }
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    @ViewBuilder
     private func metricGrid(with metrics: [WorkoutMetric]) -> some View {
         LazyVGrid(columns: [.init(alignment: .leading), .init(alignment: .leading)], alignment: .leading, spacing: .regular) {
             ForEach(metrics, id: \.hashValue) { metric in
@@ -200,9 +219,14 @@ struct WorkoutDetailScene: View {
         section("workout_detail_section_distance") {
             metricGrid(with: [.distance, .repetitions, .ascent, .descent])
             if let endDate = workout.endDate, let sectionedAltitudes {
-                LabeledContent("altitude") {
-                    SampleChart("altitude", sectionedSamples: sectionedAltitudes, dateRange: workout.startDate...endDate)
-                        .frame(height: chartHeight)
+                chart(.altitude) {
+                    SampleChart(
+                        "altitude",
+                        unit: userPreferences.safeAltitudeUnit(),
+                        sectionedSamples: sectionedAltitudes,
+                        dateRange: workout.startDate...endDate,
+                        onTap: { openMap(metric: .altitude) }
+                    )
                 }
             }
         }
@@ -218,9 +242,12 @@ struct WorkoutDetailScene: View {
         if let endDate = workout.endDate, let sectionedHeartRates, !sectionedHeartRates.isEmpty {
             section("heart_rate") {
                 metricGrid(with: [.averageHeartRate, .maximumHeartRate])
-                LabeledContent("heart_rate") {
-                    HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: workout.startDate...endDate)
-                        .frame(height: chartHeight)
+                chart(.heartRate) {
+                    HeartRateChart(
+                        sectionedSamples: sectionedHeartRates,
+                        dateRange: workout.startDate...endDate,
+                        onTap: { openMap(metric: .heartRate) }
+                    )
                 }
             }
         }
@@ -230,9 +257,14 @@ struct WorkoutDetailScene: View {
         section("workout_detail_section_speed") {
             metricGrid(with: [.averageSpeed, .topSpeed])
             if let endDate = workout.endDate, let sectionedSpeeds {
-                LabeledContent("speed") {
-                    SampleChart("speed", sectionedSamples: sectionedSpeeds, dateRange: workout.startDate...endDate)
-                        .frame(height: chartHeight)
+                chart(.speed) {
+                    SampleChart(
+                        "speed",
+                        unit: userPreferences.safeSpeedUnit(),
+                        sectionedSamples: sectionedSpeeds,
+                        dateRange: workout.startDate...endDate,
+                        onTap: { openMap(metric: .speed) }
+                    )
                 }
             }
         }
@@ -338,6 +370,10 @@ struct WorkoutDetailScene: View {
     
     private func openMap() {
         node.route(WorkoutMapRoute(id: workout.id))
+    }
+    
+    private func openMap(metric: WorkoutChartMetric) {
+        node.route(WorkoutMapRoute(id: workout.id, metric: metric))
     }
     
     private func delete() {

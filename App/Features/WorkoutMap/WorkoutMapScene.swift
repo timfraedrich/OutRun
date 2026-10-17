@@ -20,13 +20,14 @@ struct WorkoutMapScene: View {
     @State private var sectionedSpeeds: Calculation.SectionedValues<Float>?
     @State private var dateRange: ClosedRange<Date>?
     @State private var selectedTimestamp: Date?
-    @State private var selectedChartType: ChartType = .speed
+    @State private var selectedChartType: WorkoutChartMetric
+    @State private var zoomLevel: ChartZoomLevel = .whole
     @State private var mapStyleSelection: MapStyleSelection = .standard
     @State private var error: Error?
     
     private let id: Workout.ID
     private let addCloseButton: Bool
-    private let chartHeight: CGFloat = 130
+    private let chartHeight: CGFloat = 180
     
     private var padding: Spacing = if #available(iOS 26, *) { .large } else { .regular }
     
@@ -45,18 +46,19 @@ struct WorkoutMapScene: View {
         return sortedRoute[safeIndex: index]?.coordinate ?? sortedRoute.last?.coordinate
     }
     
-    private var availableChartTypes: [ChartType] {
+    private var availableChartTypes: [WorkoutChartMetric] {
         guard let dateRange, dateRange.lowerBound < dateRange.upperBound else { return [] }
-        var available: [ChartType] = []
+        var available: [WorkoutChartMetric] = []
         if sectionedSpeeds != nil { available.append(.speed) }
         if sectionedAltitudes != nil { available.append(.altitude) }
         if let hr = sectionedHeartRates, !hr.flatMap(\.elements).isEmpty { available.append(.heartRate) }
         return available
     }
     
-    init(id: Workout.ID, addCloseButton: Bool) {
+    init(id: Workout.ID, metric: WorkoutChartMetric = .speed, addCloseButton: Bool) {
         self.id = id
         self.addCloseButton = addCloseButton
+        self._selectedChartType = State(initialValue: metric)
     }
     
     var body: some View {
@@ -130,13 +132,18 @@ struct WorkoutMapScene: View {
     private func informationCard() -> some View {
         if !availableChartTypes.isEmpty {
             VStack(spacing: .regular) {
-                Picker("metric", selection: $selectedChartType) {
-                    ForEach(availableChartTypes, id: \.self) { chartType in
-                        Text(chartType.stringKey).tag(chartType)
+                VStack(spacing: .small) {
+                    Picker("metric", selection: $selectedChartType) {
+                        ForEach(availableChartTypes, id: \.self) { chartType in
+                            Text(chartType.stringKey).tag(chartType)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                    if let dateRange {
+                        ChartZoomPicker(selection: $zoomLevel, duration: dateRange.lowerBound.distance(to: dateRange.upperBound))
                     }
                 }
-                .pickerStyle(.segmented)
-                .labelsHidden()
                 chartContent
                     .frame(height: chartHeight)
             }
@@ -153,8 +160,10 @@ struct WorkoutMapScene: View {
                 if let sectionedSpeeds {
                     SampleChart(
                         "speed",
+                        unit: userPreferences.safeSpeedUnit(),
                         sectionedSamples: sectionedSpeeds,
                         dateRange: dateRange,
+                        zoomLevel: zoomLevel,
                         selection: $selectedTimestamp
                     )
                 }
@@ -162,14 +171,16 @@ struct WorkoutMapScene: View {
                 if let sectionedAltitudes {
                     SampleChart(
                         "altitude",
+                        unit: userPreferences.safeAltitudeUnit(),
                         sectionedSamples: sectionedAltitudes,
                         dateRange: dateRange,
+                        zoomLevel: zoomLevel,
                         selection: $selectedTimestamp
                     )
                 }
             case .heartRate:
                 if let sectionedHeartRates {
-                    HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: dateRange)
+                    HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: dateRange, zoomLevel: zoomLevel, selection: $selectedTimestamp)
                 }
             }
         }
@@ -235,18 +246,6 @@ struct WorkoutMapScene: View {
         let id: Int
         let active: Bool
         let coordinates: [CLLocationCoordinate2D]
-    }
-    
-    private enum ChartType: CaseIterable, Hashable {
-        case speed, altitude, heartRate
-        
-        var stringKey: LocalizedStringKey {
-            switch self {
-            case .altitude: "altitude"
-            case .speed: "speed"
-            case .heartRate: "heart_rate"
-            }
-        }
     }
     
     private enum MapStyleSelection: String, CaseIterable, Identifiable, Hashable {

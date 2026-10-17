@@ -13,7 +13,8 @@ struct WorkoutEditScene: View {
     @Environment(UserPreferences.self) private var userPreferences
     @Query private var lastWorkout: [Workout]
     
-    @State private var selectedChartType: ChartType = .speed
+    @State private var selectedChartType: WorkoutChartMetric = .speed
+    @State private var zoomLevel: ChartZoomLevel = .whole
     @State private var expandedPauseIds: Set<UUID> = []
     @State private var confirmRouteTruncation: Bool = false
     @State private var error: Error?
@@ -35,7 +36,7 @@ struct WorkoutEditScene: View {
     private let sortedRoute: [any WorkoutRouteDataSampleProtocol]
     private let addCloseButton: Bool
     private let originalPauses: [EditablePause]
-    private let chartHeight: CGFloat = 150
+    private let chartHeight: CGFloat = 180
     
     private var defaultWorkoutType: WorkoutType { userPreferences.defaultWorkoutType ?? lastWorkout.last?.type ?? .running }
     private var disableSaveButton: Bool {
@@ -136,9 +137,9 @@ struct WorkoutEditScene: View {
         )
     }
 
-    private var availableChartTypes: [ChartType] {
+    private var availableChartTypes: [WorkoutChartMetric] {
         guard startDate < endDate else { return [] }
-        var available: [ChartType] = []
+        var available: [WorkoutChartMetric] = []
         if sectionedSpeeds != nil { available.append(.speed) }
         if sectionedAltitudes != nil { available.append(.altitude) }
         if let hr = sectionedHeartRates, !hr.flatMap(\.elements).isEmpty { available.append(.heartRate) }
@@ -234,30 +235,47 @@ struct WorkoutEditScene: View {
     @ViewBuilder private var pausesSection: some View {
         if startDate < endDate, !availableChartTypes.isEmpty {
             Section("workout_edit_pauses") {
-                Picker("metric", selection: $selectedChartType) {
-                    ForEach(availableChartTypes, id: \.self) { chartType in
-                        Text(chartType.stringKey).tag(chartType)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .labelsHidden()
-                Group {
-                    switch selectedChartType {
-                    case .altitude:
-                        if let sectionedAltitudes {
-                            SampleChart("altitude", sectionedSamples: sectionedAltitudes, dateRange: startDate...endDate, pauses: sortedValidPauses)
-                        }
-                    case .speed:
-                        if let sectionedSpeeds {
-                            SampleChart("speed", sectionedSamples: sectionedSpeeds, dateRange: startDate...endDate, pauses: sortedValidPauses)
-                        }
-                    case .heartRate:
-                        if let sectionedHeartRates {
-                            HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: startDate...endDate)
+                VStack(spacing: .regular) {
+                    Picker("metric", selection: $selectedChartType) {
+                        ForEach(availableChartTypes, id: \.self) { chartType in
+                            Text(chartType.stringKey).tag(chartType)
                         }
                     }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                    ChartZoomPicker(selection: $zoomLevel, duration: startDate.distance(to: endDate))
+                    Group {
+                        switch selectedChartType {
+                        case .altitude:
+                            if let sectionedAltitudes {
+                                SampleChart(
+                                    "altitude",
+                                    unit: userPreferences.safeAltitudeUnit(),
+                                    sectionedSamples: sectionedAltitudes,
+                                    dateRange: startDate...endDate,
+                                    pauses: sortedValidPauses,
+                                    zoomLevel: zoomLevel
+                                )
+                            }
+                        case .speed:
+                            if let sectionedSpeeds {
+                                SampleChart(
+                                    "speed",
+                                    unit: userPreferences.safeSpeedUnit(),
+                                    sectionedSamples: sectionedSpeeds,
+                                    dateRange: startDate...endDate,
+                                    pauses: sortedValidPauses,
+                                    zoomLevel: zoomLevel
+                                )
+                            }
+                        case .heartRate:
+                            if let sectionedHeartRates {
+                                HeartRateChart(sectionedSamples: sectionedHeartRates, dateRange: startDate...endDate, zoomLevel: zoomLevel)
+                            }
+                        }
+                    }
+                    .frame(height: chartHeight)
                 }
-                .frame(height: chartHeight)
                 ForEach(editablePausesBinding) { $pause in
                     pauseRow(for: $pause, workoutStart: startDate, workoutEnd: endDate)
                 }
@@ -490,18 +508,5 @@ struct WorkoutEditScene: View {
         var endDate: Date
         var userInitiated: Bool
         var duration: TimeInterval { startDate.distance(to: endDate) }
-    }
-
-    private enum ChartType: CaseIterable, Hashable {
-        
-        case speed, altitude, heartRate
-
-        var stringKey: LocalizedStringKey {
-            switch self {
-            case .altitude: "altitude"
-            case .speed: "speed"
-            case .heartRate: "heart_rate"
-            }
-        }
     }
 }
