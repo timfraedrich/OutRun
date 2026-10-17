@@ -60,11 +60,6 @@ struct WorkoutDetailScene: View {
                 .padding(.top, showMap && mapHeight > 0 ? -overlapHeight : nil)
             }
         }
-        .onGeometryChange(for: SceneMetrics.self) { proxy in
-            SceneMetrics(size: proxy.size, topSafeAreaInset: proxy.safeAreaInsets.top)
-        } action: { newMetrics in
-            metrics = newMetrics
-        }
         .background {
             ResolveTintColorView { color in
                 resolvedTintColor = color
@@ -73,6 +68,11 @@ struct WorkoutDetailScene: View {
         .background()
         .backgroundStyle(Color(.systemGroupedBackground))
         .ignoresSafeArea(.all, edges: showMap ? .top : [])
+        .onGeometryChange(for: SceneMetrics.self) { proxy in
+            SceneMetrics(size: proxy.size, topSafeAreaInset: proxy.safeAreaInsets.top)
+        } action: { newMetrics in
+            metrics = newMetrics
+        }
         .toolbar(content: toolbarContent)
         .closeToolbarItem(active: addCloseButton)
         .hiddenNavigationTitle("workout_detail_title")
