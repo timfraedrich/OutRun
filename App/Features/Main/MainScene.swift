@@ -82,7 +82,7 @@ struct MainScene: View {
     
     @ViewBuilder private var donationPromptCard: some View {
         DonationPromptCard(action: showTipJar, dismiss: dismissDonationPrompt)
-            .transition(.opacity.combined(with: .scale(scale: 0.95)))
+            .transition(unsafe .opacity.combined(with: .scale(scale: 0.95)))
     }
     
     @ViewBuilder private var calendarLink: some View {
