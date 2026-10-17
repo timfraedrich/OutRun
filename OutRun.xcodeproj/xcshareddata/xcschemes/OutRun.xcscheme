@@ -62,7 +62,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../OutRun.storekit">
+         identifier = "../../App/OutRun.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
