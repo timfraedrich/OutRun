@@ -4,61 +4,59 @@ OutRun is an iOS app for recording and viewing your outdoor workouts. Despite th
 
 This project is fully open-source and ad-free.
 
-<a href="https://apps.apple.com/us/app/OutRun/id1477511092">
-    <img src="https://outrun.tadris.de/src/download.svg">
+<a href="https://apps.apple.com/app/id1477511092">
+    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us" alt="Download on the App Store" height="40">
 </a>
 
 ## Features
 
 OutRun has a rich feature set centered around customisation and privacy. The list of features includes:
 
-- Keep full control over your data
+- Keep full control over your data: everything stays on your device, without accounts, ads or tracking
 - Record your outdoor workouts (Running, Walking, Hiking, Cycling and Skating)
-- View detailed statistics
-- Export your workouts as GPX or OutRun-Backup (.orbup)
-- Fully customise the recording process
-- Synchronise with Apple Health
+- Follow an active recording on the lock screen and in the Dynamic Island with Live Activities
+- View detailed statistics, charts and maps of your routes
+- Browse your workouts in a calendar and edit them afterwards
+- Synchronise with Apple Health in both directions
+- Export and import your workouts as GPX or JSON-backups
+- Customise the recording process and units
 
 ## Contribution
 
-You want to make this app even better? No problem! There are lots of ways you can contribute even if you cannot code yourself:
+OutRun is free, open source and has no ads. If you enjoy using it and would like to support it, there are lots of ways to help:
 
-* **Share this project.** The simplest way of contributing is by sharing this project with your friends and family. Once more people see that it exists, it is more likely to get support and people interested and capable of adding to it.
-* **Join the beta.** Sometimes features need to be tested before being rolled out to all users, that is where beta testers come in. They receive early and sometimes unstable versions of the app and test them thoroughly, to make sure that others get a more polished product. You can join [here](https://testflight.apple.com/join/kDqNWBAi).
-* **Report Issues.** If you see some parts of the app not working as expected, if you want to give any kind of feedback or if you just have a question you can submit an issue on the [issue page](https://github.com/timfraedrich/OutRun/issues) of this project.
-* **Write Code.** And then there is the standard way of contributing to an open-source project. You can always write code that advances the app. To see how to contribute look at the [Contribution Guidelines](https://github.com/timfraedrich/OutRun/blob/dev/CONTRIBUTING.md).
-* **Translate.** Last but definitely not least there is translation which is an integral part to make this project available to more people in more countries. For more information on contributing read the following section.
+1. **Share the app.** The simplest way of contributing is telling your friends and family about OutRun. A [review on the App Store](https://apps.apple.com/app/id1477511092?action=write-review) also helps others discover it.
+2. **Report issues.** If parts of the app are not working as expected, if you have feedback or just a question, you can submit an issue on the [issue page](https://github.com/timfraedrich/OutRun/issues) of this project.
+3. **Join the beta.** Beta testers receive early and sometimes unstable versions of the app and help to make sure that everyone else gets a more polished product. You can join [here](https://testflight.apple.com/join/kDqNWBAi).
+4. **Leave a tip.** If you would like to support the development, you can leave a tip through the Tip Jar in the app's settings. Tips are entirely optional and do not unlock any additional features. If you would like to support the project more substantially, please [get in touch](mailto:outrun@timfraedrich.me).
+5. **Say thank you.** A short [thank-you message](mailto:outrun@timfraedrich.me) always makes my day.
 
-## Translation
-
-OutRun uses [Weblate](https://weblate.org/) as a tool to make translation easier. Once languages are fully translated on said platform they will be added to the project and published to the AppStore.
-
-So far the following languages are supported:
-
-| Language | Translation Status |
-|----------|--------------------|
-| Catalan  | [![ca translation status](https://hosted.weblate.org/widgets/outrun/ca/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/ca/) |
-| Croatian | [![hr translation status](https://hosted.weblate.org/widgets/outrun/hr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/hr/) |
-| Czech    | [![cs translation status](https://hosted.weblate.org/widgets/outrun/cs/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/cs/) |
-| Danish   | [![da translation status](https://hosted.weblate.org/widgets/outrun/da/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/da/) |
-| Dutch    | [![nl translation status](https://hosted.weblate.org/widgets/outrun/nl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/nl/) |
-| English  | [![en translation status](https://hosted.weblate.org/widgets/outrun/en/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/en/) |
-| Finnish  | [![fi translation status](https://hosted.weblate.org/widgets/outrun/fi/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fi/) |
-| French   | [![fr translation status](https://hosted.weblate.org/widgets/outrun/fr/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/fr/) |
-| German   | [![de translation status](https://hosted.weblate.org/widgets/outrun/de/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/de/) |
-| Italian  | [![it translation status](https://hosted.weblate.org/widgets/outrun/it/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/it/) |
-| Polish   | [![pl translation status](https://hosted.weblate.org/widgets/outrun/pl/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/pl/) |
-| Spanish  | [![es translation status](https://hosted.weblate.org/widgets/outrun/es/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/es/) |
-| Swedish  | [![sv translation status](https://hosted.weblate.org/widgets/outrun/sv/svg-badge.svg)](https://hosted.weblate.org/engage/outrun/sv/) |
-
-If you want to add languages or improve already translated ones you can do this [here](https://hosted.weblate.org/engage/outrun/).
-
-## Donation
-
-This project currently does not accept any kinds of donation, neither in-app nor through external methods. For now the only ways to contribute can be found under **Contribution**.
-
-If you cannot contribute in any other way than financially or just feel really generous at the moment you could consider [supporting the folks at Weblate](https://weblate.org/donate/). They are providing their services to OutRun for free, because they are great believers in open-source development, it still costs them money to host the project on their website though, so supporting them also directly benefits OutRun.
+OutRun does not accept any other kind of contributions, such as code or translations, at the moment.
 
 ## License
 
-This project is currently not licensed.
+The source code of OutRun is published under the GNU General Public License, version 3 (GPL-3.0). The full license text can be found in [LICENSE.md](LICENSE.md).
+
+```
+OutRun
+Copyright (C) 2026 Tim Fraedrich
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see https://www.gnu.org/licenses/.
+```
+
+Third-party libraries used by OutRun are licensed under their own terms, which are listed in the acknowledgements in the app's settings.
+
+### Name and branding
+
+In accordance with section 7(e) of the GPL-3.0, the name "OutRun", the OutRun logo and the app icon are **not** licensed under the GPL-3.0. You may not use them for modified or redistributed versions of the app, or in any way that suggests endorsement by, or affiliation with, the author.
