@@ -17,7 +17,6 @@
 		225E0A162FC219D60074232C /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0A152FC219D60074232C /* CoreStore */; };
 		225E0B412FC21E370074232C /* OutRunCore in Frameworks */ = {isa = PBXBuildFile; productRef = 225E0B402FC21E370074232C /* OutRunCore */; };
 		22645EE82FD1C39F0025F234 /* GPXKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22645EE72FD1C39F0025F234 /* GPXKit */; };
-		22A6679B3048828900581894 /* TFRouting in Frameworks */ = {isa = PBXBuildFile; productRef = 22A6679A3048828900581894 /* TFRouting */; };
 		22C8C24B30504E9000ABEAF4 /* TFRouting in Frameworks */ = {isa = PBXBuildFile; productRef = 22C8C24A30504E9000ABEAF4 /* TFRouting */; };
 		22D1A0112FD0000000000001 /* TFMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 22D1A0122FD0000000000001 /* TFMarkdown */; };
 /* End PBXBuildFile section */
@@ -126,7 +125,6 @@
 			files = (
 				22645EE82FD1C39F0025F234 /* GPXKit in Frameworks */,
 				225E0A162FC219D60074232C /* CoreStore in Frameworks */,
-				22A6679B3048828900581894 /* TFRouting in Frameworks */,
 				22C8C24B30504E9000ABEAF4 /* TFRouting in Frameworks */,
 				22D1A0112FD0000000000001 /* TFMarkdown in Frameworks */,
 				2211B403302C61C6001B6DFF /* Glur in Frameworks */,
@@ -228,7 +226,6 @@
 				225E0B402FC21E370074232C /* OutRunCore */,
 				22645EE72FD1C39F0025F234 /* GPXKit */,
 				2211B402302C61C6001B6DFF /* Glur */,
-				22A6679A3048828900581894 /* TFRouting */,
 				22C8C24A30504E9000ABEAF4 /* TFRouting */,
 				22D1A0122FD0000000000001 /* TFMarkdown */,
 			);
@@ -932,10 +929,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 22645EE62FD1C39F0025F234 /* XCRemoteSwiftPackageReference "GPXKit" */;
 			productName = GPXKit;
-		};
-		22A6679A3048828900581894 /* TFRouting */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = TFRouting;
 		};
 		22C8C24A30504E9000ABEAF4 /* TFRouting */ = {
 			isa = XCSwiftPackageProductDependency;
