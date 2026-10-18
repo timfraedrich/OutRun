@@ -20,6 +20,7 @@ import AsyncAlgorithms
 import Combine
 import Foundation
 import OSLog
+import Perception
 import Semaphore
 import SwiftData
 
@@ -33,6 +34,9 @@ class SyncManager {
     private let syncDelegate: any SyncDelegate
     private let syncServices: [any SyncService]
     private var cancellables: Set<AnyCancellable> = []
+    private var recordingObservationTask: Task<Void, Never>?
+    private var isStreamingChanges = false
+    private var isRecording = false
 
     init(database: Database, syncDelegate: any SyncDelegate, syncServices: [any SyncService]) {
         self.database = database
@@ -75,6 +79,9 @@ class SyncManager {
     }
     
     func deinitialize() async {
+        recordingObservationTask?.cancel()
+        recordingObservationTask = nil
+        isRecording = false
         for service in syncServices {
             await service.deinitialize()
             logger.info("Deinitialized sync service with identifier \"\(service.identifier)\"")
@@ -107,15 +114,43 @@ class SyncManager {
         }
     }
 
+    /// Suspends automatic synchronisation while the provided recorder is collecting data and resumes it once the recording ends.
+    func observeRecording(of recorder: WorkoutRecorder) {
+        recordingObservationTask?.cancel()
+        isRecording = recorder.isCollectingData
+        let recordingSequence = Perceptions { [weak recorder] in recorder?.isCollectingData ?? false }.buffer(policy: .bufferingLatest(1))
+        recordingObservationTask = Task { [weak self] in
+            for await isRecording in recordingSequence where !Task.isCancelled {
+                guard let self else { return }
+                await updateRecordingStatus(isRecording)
+            }
+        }
+    }
+
+    private func updateRecordingStatus(_ isRecording: Bool) async {
+        guard self.isRecording != isRecording else { return }
+        self.isRecording = isRecording
+        guard !isRecording, isStreamingChanges else { return }
+        do {
+            try await performSync()
+        } catch {
+            logger.error("Failed to sync after recording ended: \(error)")
+        }
+    }
+
     private func startStreamingChanges() {
+        isStreamingChanges = true
         Task { [weak self, logger] in
             do {
                 logger.info("Started streaming workout changes")
-                try await self?.performSync()
+                if let self, !isRecording {
+                    try await performSync()
+                }
                 let didSaveSequence = NotificationCenter.default.notifications(named: ModelContext.didSave)
                     .buffer(policy: .bufferingLatest(1))
                 for await _ in didSaveSequence where !Task.isCancelled {
                     guard let self else { return }
+                    guard !isRecording else { continue }
                     try await performSync()
                 }
             } catch {

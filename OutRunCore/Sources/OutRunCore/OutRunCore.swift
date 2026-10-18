@@ -221,12 +221,14 @@ public class OutRunCore {
     private func initialize(with user: RawUser) async throws {
         guard let database else { throw OutRunCoreError.notInitialized }
         userPreferences = UserPreferences(preferences: user.preferences)
-        recorder = try await WorkoutRecorder(
+        let recorder = try await WorkoutRecorder(
             database: database,
             locationService: .init(),
             altitudeService: config.recordableDataTypes.contains(.preciseAltitude) ? .init() : nil,
             stepService: config.recordableDataTypes.contains(.steps) ? .init() : nil
         )
+        self.recorder = recorder
+        await syncManager?.observeRecording(of: recorder)
         await syncManager?.initialize()
         status = .initialized
     }

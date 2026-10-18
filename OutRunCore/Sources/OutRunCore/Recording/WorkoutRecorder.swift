@@ -253,6 +253,9 @@ public class WorkoutRecorder {
     }
     
     @BackgroundActor
+    var isCollectingData: Bool { state.status.isCollectingData }
+    
+    @BackgroundActor
     private func checkStartingConditions() async throws(WorkoutRecorderError) {
         let locationAuthorizationSufficient = await MainActor.run { locationService.status.authorizationSufficient }
         guard locationAuthorizationSufficient else { throw WorkoutRecorderError.locationAuthorizationInsufficient }
