@@ -33,9 +33,11 @@ enum LegacyMigrationHelper {
         LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: defaultLegacyStorageFileName)
     }
     
+    /// - parameter legalAcceptanceDate: The date the user accepted the current legal documents, recorded on the migrated user.
     static func performLegacyMigration(
         for legacyStorageFileName: String = defaultLegacyStorageFileName,
-        core: OutRunCore
+        core: OutRunCore,
+        legalAcceptanceDate: Date
     ) -> (task: Task<Void, Never>?, progressStream: AsyncThrowingStream<Float, Error>) {
         let (stream, continuation) = AsyncThrowingStream<Float, Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         continuation.yield(0)
@@ -44,18 +46,29 @@ enum LegacyMigrationHelper {
             continuation.finish()
             return (nil, stream)
         }
-        let task = startMigrationTask(for: legacyStorageFileName, core: core, continuation: continuation)
+        let task = startMigrationTask(
+            for: legacyStorageFileName,
+            core: core,
+            legalAcceptanceDate: legalAcceptanceDate,
+            continuation: continuation
+        )
         return (task, stream)
     }
     
     private static func startMigrationTask(
         for legacyStorageFileName: String,
         core: OutRunCore,
+        legalAcceptanceDate: Date,
         continuation: AsyncThrowingStream<Float, Error>.Continuation
     ) -> Task<Void, Never> {
         Task(priority: .userInitiated) {
             do {
-                try await migrationOperation(for: legacyStorageFileName, core: core, continuation: continuation)
+                try await migrationOperation(
+                    for: legacyStorageFileName,
+                    core: core,
+                    legalAcceptanceDate: legalAcceptanceDate,
+                    continuation: continuation
+                )
                 continuation.finish()
             } catch {
                 continuation.finish(throwing: error)
@@ -66,6 +79,7 @@ enum LegacyMigrationHelper {
     private static func migrationOperation(
         for legacyStorageFileName: String,
         core: OutRunCore,
+        legalAcceptanceDate: Date,
         continuation: AsyncThrowingStream<Float, Error>.Continuation
     ) async throws {
         let coreStatusSequence = await MainActor.run { Perceptions { core.status }.buffer(policy: .unbounded) }
@@ -73,8 +87,10 @@ enum LegacyMigrationHelper {
             break
         }
         if await core.status == .needsSetup {
-            let user = userFromLegacyUserPreferences()
+            let user = userFromLegacyUserPreferences(legalAcceptanceDate: legalAcceptanceDate)
             try await core.setup(for: user)
+        } else {
+            await MainActor.run { core.userPreferences?.recordLegalAcceptance(on: legalAcceptanceDate) }
         }
         let container = await core.modelContainer
         continuation.yield(0.05)
@@ -129,8 +145,9 @@ enum LegacyMigrationHelper {
         try context.save()
     }
     
-    private static func userFromLegacyUserPreferences() -> RawUser {
+    private static func userFromLegacyUserPreferences(legalAcceptanceDate: Date) -> RawUser {
         let userPreferences = UserPreferences(preferences: [:])
+        userPreferences.recordLegalAcceptance(on: legalAcceptanceDate)
         userPreferences.defaultWorkoutType = legacyUserPreference(for: "standardWorkoutType").map(WorkoutType.init(legacyRawValue:))
         userPreferences.requiredGPSAccuracy = legacyUserPreference(for: "gpsAccuracy") ?? UserPreferences.defaultGPSAccuracy
         userPreferences.calculateRollingSpeed = legacyUserPreference(for: "makeSpeedDisplayRolling") ?? false

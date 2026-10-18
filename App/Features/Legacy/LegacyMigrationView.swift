@@ -28,12 +28,17 @@ struct LegacyMigrationView: View {
     @State private var draft: SetupProfileDraft = .init()
     @State private var prefilledDraft: Bool = false
     @State private var savingProfile: Bool = false
+    @State private var acceptedTermsOfService: Bool = false
+    @State private var acceptedPrivacyPolicy: Bool = false
+    @State private var legalAcceptanceDate: Date?
+    @State private var presentedLegalDocument: LegalDocument?
     @State private var status: LegacyMigrationProgressView.Status = .running(progress: 0, estimatedEnd: nil)
     @State private var error: Error?
 
     private let dismissAction: () -> Void
 
     private var finishedMigration: Bool { status == .done }
+    private var acceptedLegalDocuments: Bool { legalAcceptanceDate != nil }
     private var weightUnit: UnitMass {
         core.userPreferences?.safeWeightUnit(for: locale) ?? UserPreferences.fallbackWeightUnit(for: locale)
     }
@@ -58,7 +63,8 @@ struct LegacyMigrationView: View {
             }
         }
         .disabled(savingProfile)
-        .task(migrationAction)
+        .task(id: legalAcceptanceDate, migrationAction)
+        .legalDocumentSheet($presentedLegalDocument)
         .onChange(of: core.user?.id, initial: true, prefillDraft)
     }
 
@@ -76,6 +82,7 @@ struct LegacyMigrationView: View {
                 .scrollTargetLayout()
             }
             .scrollPosition(id: $page)
+            .scrollDisabled(page == .legal && !acceptedLegalDocuments)
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
             .background(Color(.systemGroupedBackground))
@@ -98,6 +105,20 @@ struct LegacyMigrationView: View {
                 .padding(.horizontal, .extraLarge)
             }
             .defaultScrollAnchor(.center)
+        case .legal:
+            SetupPageView(
+                systemImage: "hand.raised.fill",
+                title: "legacy_migration_legal_title",
+                message: "legacy_migration_legal_message"
+            ) {
+                LegalAcceptanceSection(
+                    acceptedTermsOfService: $acceptedTermsOfService,
+                    acceptedPrivacyPolicy: $acceptedPrivacyPolicy,
+                    presentedDocument: $presentedLegalDocument
+                )
+                .disabled(acceptedLegalDocuments)
+            }
+            .scrollDisabled(false)
         case .profile:
             SetupPageView(
                 systemImage: "person.crop.circle.fill",
@@ -158,13 +179,17 @@ struct LegacyMigrationView: View {
             PageIndicator(items: Page.allCases, selection: page)
                 .foregroundStyle(.tint, .tertiary)
             VStack(spacing: .small) {
-                if page != .done && page != .profile {
+                if acceptedLegalDocuments && page != .done && page != .profile {
                     LegacyMigrationProgressView(status: status)
                         .animation(.default, value: status)
                         .transition(.scale.combined(with: .opacity))
                 }
                 ActionButton(primaryActionTitleKey, action: primaryAction)
-                    .disabled(page == .profile && !draft.isComplete || page == .done && !finishedMigration)
+                    .disabled(
+                        page == .legal && !(acceptedTermsOfService && acceptedPrivacyPolicy)
+                            || page == .profile && !draft.isComplete
+                            || page == .done && !finishedMigration
+                    )
                 if page == .profile {
                     ActionButton("skip_action", prominent: false, action: advance)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -206,6 +231,11 @@ struct LegacyMigrationView: View {
 
     private func primaryAction() {
         switch page {
+        case .legal:
+            if !acceptedLegalDocuments {
+                legalAcceptanceDate = .now
+            }
+            advance()
         case .profile:
             saveProfileAndAdvance()
         case .done:
@@ -258,9 +288,13 @@ struct LegacyMigrationView: View {
     
     @Sendable
     private func migrationAction() async {
+        guard let legalAcceptanceDate else { return }
         do {
             let start: Date = .now
-            let (_, progressStream) = LegacyMigrationHelper.performLegacyMigration(core: core)
+            let (_, progressStream) = LegacyMigrationHelper.performLegacyMigration(
+                core: core,
+                legalAcceptanceDate: legalAcceptanceDate
+            )
             for try await progress in progressStream {
                 try Task.checkCancellation()
                 let duration = start.distance(to: .now)
@@ -271,10 +305,7 @@ struct LegacyMigrationView: View {
                 }
                 await MainActor.run { status = .running(progress: progress, estimatedEnd: estimatedEnd) }
             }
-            await MainActor.run {
-                core.userPreferences?.recordLegalAcceptanceIfNeeded()
-                status = .done
-            }
+            await MainActor.run { status = .done }
         } catch {
             await MainActor.run { self.error = error }
         }
@@ -284,6 +315,7 @@ struct LegacyMigrationView: View {
 
     private enum Page: Hashable, CaseIterable {
         case update
+        case legal
         case newLook
         case performance
         case privacy

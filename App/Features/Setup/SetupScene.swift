@@ -49,12 +49,7 @@ struct SetupScene: View {
             .background(Color(.systemGroupedBackground))
             .customBottomSafeAreaBar(content: barContent)
             .disabled(loading)
-            .sheet(item: $presentedLegalDocument) { document in
-                NavigationStack {
-                    LegalDocumentScene(document: document)
-                        .closeToolbarItem()
-                }
-            }
+            .legalDocumentSheet($presentedLegalDocument)
     }
     
     // MARK: Pages
@@ -89,18 +84,11 @@ struct SetupScene: View {
             }
         case .legal:
             SetupPageView(systemImage: "hand.raised.fill", title: "setup_legal_title", message: "setup_legal_message") {
-                Section {
-                    legalToggle(
-                        for: .termsOfService,
-                        confirmation: "setup_legal_terms_of_service_confirmation",
-                        isOn: $acceptedTermsOfService
-                    )
-                    legalToggle(
-                        for: .privacyPolicy,
-                        confirmation: "setup_legal_privacy_policy_confirmation",
-                        isOn: $acceptedPrivacyPolicy
-                    )
-                }
+                LegalAcceptanceSection(
+                    acceptedTermsOfService: $acceptedTermsOfService,
+                    acceptedPrivacyPolicy: $acceptedPrivacyPolicy,
+                    presentedDocument: $presentedLegalDocument
+                )
             }
         case .profile:
             SetupPageView(
@@ -148,27 +136,6 @@ struct SetupScene: View {
                 message: "setup_ready_message"
             )
         }
-    }
-    
-    @ViewBuilder
-    private func legalToggle(for document: LegalDocument, confirmation: LocalizedStringKey, isOn: Binding<Bool>) -> some View {
-        Toggle(isOn: isOn) {
-            VStack(alignment: .leading, spacing: .extraSmall) {
-                Button {
-                    presentedLegalDocument = document
-                } label: {
-                    HStack(spacing: .extraSmall) {
-                        Text(document.title)
-                        Image(systemName: "arrow.up.right")
-                    }
-                    .fontWeight(.semibold)
-                }
-                Text(confirmation)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .tint(.accentColor)
     }
     
     // MARK: Bottom Bar

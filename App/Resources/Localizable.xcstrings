@@ -3567,6 +3567,86 @@
         }
       }
     },
+    "legacy_migration_legal_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit diesem Update gelten neue Nutzungsbedingungen und eine neue Datenschutzerklärung. Bitte lies sie, bevor du fortfährst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This update comes with new Terms of Service and a new Privacy Policy. Please review them to continue."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This update comes with new Terms of Service and a new Privacy Policy. Please review them to continue."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay nuevos Términos de servicio y una nueva Política de privacidad. Revísalos para continuar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les Conditions d’utilisation et la Politique de confidentialité ont changé. Veuillez les consulter pour continuer."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er zijn nieuwe Gebruiksvoorwaarden en een nieuw Privacybeleid. Lees ze door om verder te gaan."
+          }
+        }
+      }
+    },
+    "legacy_migration_legal_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Bedingungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updated Terms"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updated Terms"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevos términos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelles conditions"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieuwe voorwaarden"
+          }
+        }
+      }
+    },
     "legacy_migration_new_look_message" : {
       "localizations" : {
         "de" : {

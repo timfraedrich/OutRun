@@ -74,11 +74,20 @@ class LegacyMigrationTests {
         for await status in statusSequence where status != .initializing { break }
         #expect(await core.status == .needsSetup)
         guard let database = await core.database else { throw "Database was not initialized." }
-        let (task, progressStream) = LegacyMigrationHelper.performLegacyMigration(for: legacyStorageFileName, core: core)
+        let legalAcceptanceDate = Date.now
+        let (task, progressStream) = LegacyMigrationHelper.performLegacyMigration(
+            for: legacyStorageFileName,
+            core: core,
+            legalAcceptanceDate: legalAcceptanceDate
+        )
         guard let task else { throw "Migration task was not returned." }
         for try await _ in progressStream { }
         await task.value
         try checkMigratedData(actual: try await database.fetchWorkouts(), expected: expectedResults)
+        await MainActor.run {
+            #expect(core.userPreferences?.acceptedLegalVersion == LegalAcceptance.currentVersion)
+            #expect(core.userPreferences?.legalAcceptanceDate == legalAcceptanceDate)
+        }
     }
     
     private func checkMigratedData(actual actualWorkouts: [RawWorkout], expected expectedWorkouts: [RawWorkout]) throws {

@@ -36,13 +36,4 @@ extension UserPreferences {
         acceptedLegalVersion = LegalAcceptance.currentVersion
         legalAcceptanceDate = date
     }
-
-    /// Records acceptance of ``LegalAcceptance/currentVersion`` unless an acceptance is already on file.
-    ///
-    /// Used by the legacy migration, where consent was given in the previous version of the app and must not be requested again, but still
-    /// needs to be on file so a future revision of the documents can be detected.
-    func recordLegalAcceptanceIfNeeded(on date: Date = .now) {
-        guard acceptedLegalVersion == nil else { return }
-        recordLegalAcceptance(on: date)
-    }
 }
