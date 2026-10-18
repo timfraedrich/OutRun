@@ -7,37 +7,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht Zugriff auf deine Health-Daten, um die erstellten Workouts zu speichern"
+            "value" : "OutRun liest deine Workouts aus der Health-App, um Workouts anderer Apps und Geräte zu importieren und synchronisierte Workouts aktuell zu halten."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs access to your health data to save workouts constructed by this app"
+            "value" : "OutRun reads your workouts from the Health app to import workouts recorded with other apps and devices and to keep synced workouts up to date."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs access to your health data to save workouts constructed by this app"
+            "value" : "OutRun reads your workouts from the Health app to import workouts recorded with other apps and devices and to keep synced workouts up to date."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta aplicación necesita acceso a sus datos de salud para guardar los entrenamientos construidos por esta aplicación"
+            "value" : "OutRun lee tus entrenamientos de la app Salud para importar los registrados con otras apps y dispositivos y mantener actualizados los sincronizados."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette application a besoin d'accéder à vos données de santé pour enregistrer les entraînements créés par cette application"
+            "value" : "OutRun lit vos entraînements dans l’app Santé afin d’importer ceux enregistrés par d’autres apps et appareils et de maintenir à jour les entraînements synchronisés."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deze app heeft toegang nodig tot je gezondheidsgegevens om de gemaakte trainingen op te slaan"
+            "value" : "OutRun leest je trainingen uit de Gezondheid-app om trainingen van andere apps en apparaten te importeren en gesynchroniseerde trainingen actueel te houden."
           }
         }
       }
@@ -48,37 +48,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht Zugriff auf deine Health-Daten um gespeicherte Workouts auszulesen und gegebenenfalls zu korrigieren"
+            "value" : "OutRun speichert deine aufgezeichneten Workouts in der Health-App, damit sie dort und in anderen Apps verfügbar sind."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs access to your health data to read and possible correct workouts constructed by this app"
+            "value" : "OutRun saves your recorded workouts to the Health app so they are available there and in other apps."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs access to your health data to read and possible correct workouts constructed by this app"
+            "value" : "OutRun saves your recorded workouts to the Health app so they are available there and in other apps."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta aplicación necesita acceso a sus datos de salud para leer y corregir posibles entrenamientos construidos por esta aplicación"
+            "value" : "OutRun guarda tus entrenamientos registrados en la app Salud para que estén disponibles allí y en otras apps."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette application a besoin d'accéder à vos données de santé pour lire et éventuellement corriger les entraînements élaborés par cette application"
+            "value" : "OutRun enregistre vos entraînements dans l’app Santé afin qu’ils y soient disponibles ainsi que dans d’autres apps."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deze app heeft toegang nodig tot je gezondheidsgegevens om ze te kunnen lezen en eventueel gemaakte trainingen van deze app te corrigeren"
+            "value" : "OutRun bewaart je opgenomen trainingen in de Gezondheid-app, zodat ze daar en in andere apps beschikbaar zijn."
           }
         }
       }

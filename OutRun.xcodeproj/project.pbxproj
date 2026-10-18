@@ -617,8 +617,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = OutRun;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app needs access to your health data to save workouts constructed by this app";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs access to your health data to read and possible correct workouts constructed by this app";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "OutRun reads your workouts from the Health app to import workouts recorded with other apps and devices and to keep synced workouts up to date.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "OutRun saves your recorded workouts to the Health app so they are available there and in other apps.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to track workouts";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app needs your location to track workouts";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to track workouts";
@@ -677,8 +677,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = OutRun;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app needs access to your health data to save workouts constructed by this app";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app needs access to your health data to read and possible correct workouts constructed by this app";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "OutRun reads your workouts from the Health app to import workouts recorded with other apps and devices and to keep synced workouts up to date.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "OutRun saves your recorded workouts to the Health app so they are available there and in other apps.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to track workouts";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app needs your location to track workouts";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to track workouts";
