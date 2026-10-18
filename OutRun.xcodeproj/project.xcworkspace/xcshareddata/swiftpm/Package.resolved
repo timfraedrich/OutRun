@@ -1,5 +1,5 @@
 {
-  "originHash" : "5db4d1d756999ff592f5e55bc881b00320b8eab7b8849faeac58773361eef8f2",
+  "originHash" : "5b27ecd905c9e15ca1cf3a410820dad1a9d371dfea9d84829846b20e3f25980e",
   "pins" : [
     {
       "identity" : "apikit",
@@ -197,6 +197,15 @@
       "state" : {
         "revision" : "869129b7bf4ecc57b97d0193ad29690ca2134750",
         "version" : "1.8.1"
+      }
+    },
+    {
+      "identity" : "tfmarkdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/timfraedrich/TFMarkdown",
+      "state" : {
+        "revision" : "b2d5e4ce25d21187bacdbbb7d5a0497a39ae5720",
+        "version" : "1.0.0"
       }
     },
     {

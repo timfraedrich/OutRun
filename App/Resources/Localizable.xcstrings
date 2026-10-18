@@ -4487,6 +4487,86 @@
         }
       }
     },
+    "legal_document_unavailable" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokument nicht verfügbar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document Unavailable"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document Unavailable"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documento no disponible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document indisponible"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document niet beschikbaar"
+          }
+        }
+      }
+    },
+    "legal_imprint" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impressum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imprint"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imprint"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aviso legal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mentions légales"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colofon"
+          }
+        }
+      }
+    },
     "legal_privacy_policy" : {
       "localizations" : {
         "de" : {
@@ -7596,37 +7676,117 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte lies und akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung, um OutRun zu verwenden."
+            "value" : "Bitte akzeptiere die Nutzungsbedingungen und bestätige, dass du die Datenschutzerklärung gelesen hast, um OutRun zu verwenden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please review and accept the Terms of Service and Privacy Policy to use OutRun."
+            "value" : "Please accept the Terms of Service and confirm that you have read the Privacy Policy to use OutRun."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please review and accept the Terms of Service and Privacy Policy to use OutRun."
+            "value" : "Please accept the Terms of Service and confirm that you have read the Privacy Policy to use OutRun."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Revisa y acepta los Términos de servicio y la Política de privacidad para usar OutRun."
+            "value" : "Acepta los Términos de servicio y confirma que has leído la Política de privacidad para usar OutRun."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Veuillez lire et accepter les Conditions d’utilisation et la Politique de confidentialité pour utiliser OutRun."
+            "value" : "Veuillez accepter les Conditions d’utilisation et confirmer que vous avez lu la Politique de confidentialité pour utiliser OutRun."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lees en accepteer de Gebruiksvoorwaarden en het Privacybeleid om OutRun te gebruiken."
+            "value" : "Accepteer de Gebruiksvoorwaarden en bevestig dat je het Privacybeleid hebt gelezen om OutRun te gebruiken."
+          }
+        }
+      }
+    },
+    "setup_legal_privacy_policy_confirmation" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich habe die Erklärung gelesen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have read this policy"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have read this policy"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "He leído esta política"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J’ai lu cette politique"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ik heb dit beleid gelezen"
+          }
+        }
+      }
+    },
+    "setup_legal_terms_of_service_confirmation" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich stimme den Bedingungen zu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I agree to these terms"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I agree to these terms"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acepto estos términos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J’accepte ces conditions"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ik ga akkoord met de voorwaarden"
           }
         }
       }

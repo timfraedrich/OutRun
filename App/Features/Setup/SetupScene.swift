@@ -28,6 +28,7 @@ struct SetupScene: View {
     @State private var acceptedTermsOfService: Bool = false
     @State private var acceptedPrivacyPolicy: Bool = false
     @State private var legalAcceptanceDate: Date?
+    @State private var presentedLegalDocument: LegalDocument?
     @State private var draft: SetupProfileDraft = .init()
     @State private var unitSystem: UnitSystem = .system
     @State private var healthImportMode: SyncMode = .disabled
@@ -48,6 +49,12 @@ struct SetupScene: View {
             .background(Color(.systemGroupedBackground))
             .customBottomSafeAreaBar(content: barContent)
             .disabled(loading)
+            .sheet(item: $presentedLegalDocument) { document in
+                NavigationStack {
+                    LegalDocumentScene(document: document)
+                        .closeToolbarItem()
+                }
+            }
     }
     
     // MARK: Pages
@@ -83,8 +90,16 @@ struct SetupScene: View {
         case .legal:
             SetupPageView(systemImage: "hand.raised.fill", title: "setup_legal_title", message: "setup_legal_message") {
                 Section {
-                    legalToggle("legal_terms_of_service", urlString: ExternalURL.termsOfService, isOn: $acceptedTermsOfService)
-                    legalToggle("legal_privacy_policy", urlString: ExternalURL.privacyPolicy, isOn: $acceptedPrivacyPolicy)
+                    legalToggle(
+                        for: .termsOfService,
+                        confirmation: "setup_legal_terms_of_service_confirmation",
+                        isOn: $acceptedTermsOfService
+                    )
+                    legalToggle(
+                        for: .privacyPolicy,
+                        confirmation: "setup_legal_privacy_policy_confirmation",
+                        isOn: $acceptedPrivacyPolicy
+                    )
                 }
             }
         case .profile:
@@ -136,18 +151,21 @@ struct SetupScene: View {
     }
     
     @ViewBuilder
-    private func legalToggle(_ titleKey: LocalizedStringKey, urlString: String, isOn: Binding<Bool>) -> some View {
+    private func legalToggle(for document: LegalDocument, confirmation: LocalizedStringKey, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
-            if let url = URL(string: urlString) {
-                Link(destination: url) {
+            VStack(alignment: .leading, spacing: .extraSmall) {
+                Button {
+                    presentedLegalDocument = document
+                } label: {
                     HStack(spacing: .extraSmall) {
-                        Text(titleKey)
+                        Text(document.title)
                         Image(systemName: "arrow.up.right")
                     }
                     .fontWeight(.semibold)
                 }
-            } else {
-                Text(titleKey)
+                Text(confirmation)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
         }
         .tint(.accentColor)

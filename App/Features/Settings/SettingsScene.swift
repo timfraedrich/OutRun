@@ -139,12 +139,9 @@ struct SettingsScene: View {
     
     @ViewBuilder private var legalSection: some View {
         Section {
-            SettingsOpenURLButton(ExternalURL.termsOfService) {
-                Text("legal_terms_of_service")
-            }
-            SettingsOpenURLButton(ExternalURL.privacyPolicy) {
-                Text("legal_privacy_policy")
-            }
+            legalDocumentButton(for: .termsOfService)
+            legalDocumentButton(for: .privacyPolicy)
+            legalDocumentButton(for: .imprint)
             SettingsOpenURLButton(UIApplication.openSettingsURLString) {
                 Text("legal_acknowledgements")
             }
@@ -155,6 +152,16 @@ struct SettingsScene: View {
                 LabeledContent("settings_source_code", value: "GitHub")
             }
         }
+    }
+    
+    @ViewBuilder
+    private func legalDocumentButton(for document: LegalDocument) -> some View {
+        NavigationLinkButton {
+            node.route(LegalDocumentRoute(document: document))
+        } label: {
+            Text(document.title)
+        }
+        .tint(.primary)
     }
     
     @ViewBuilder private var infoSection: some View {
