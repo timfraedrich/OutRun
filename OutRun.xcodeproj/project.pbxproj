@@ -55,6 +55,8 @@
 		225C9DDA3077D8A400BB8942 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		225C9DDC3077D8A400BB8942 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		225E0B3E2FC21E210074232C /* OutRunCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OutRunCore; sourceTree = "<group>"; };
+		228049D63084D6BE003EDB7A /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		228049D73084D6D6003EDB7A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		22A6666330486C6C00581894 /* OutRunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutRunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E36E4C3073B6AF00A0C2CF /* OutRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -161,6 +163,8 @@
 		225E08EE2FC219050074232C = {
 			isa = PBXGroup;
 			children = (
+				228049D73084D6D6003EDB7A /* README.md */,
+				228049D63084D6BE003EDB7A /* LICENSE.md */,
 				225E098D2FC219630074232C /* App */,
 				225E099B2FC219630074232C /* Tests */,
 				225C9DDE3077D8A400BB8942 /* Widgets */,
