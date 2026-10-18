@@ -194,6 +194,20 @@ public enum Calculation {
         return pauses.filter { $0.duration >= safeMinimumDuration }
     }
     
+    /// Merges adjacent and overlapping pauses into continuous intervals, disregarding whether they were user initiated.
+    public static func calculateMergedPauseIntervals(from pauses: [any WorkoutPauseProtocol]) -> [DateInterval] {
+        let sortedPauses = pauses.sorted(using: KeyPathComparator(\.startDate))
+        var intervals = [DateInterval]()
+        for pause in sortedPauses {
+            if let last = intervals.last, pause.startDate <= last.end {
+                intervals[intervals.count - 1].end = max(last.end, pause.endDate)
+            } else {
+                intervals.append(.init(start: pause.startDate, end: pause.endDate))
+            }
+        }
+        return intervals
+    }
+    
     public typealias SectionedSamples<Sample> = CategorizedArray<Bool, Sample>
     
     /// Calculates the sections of samples defined by the provided pauses, where a section is a uninterrupted non-empty subsequence of

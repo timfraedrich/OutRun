@@ -586,9 +586,13 @@ public class HealthSyncService: SyncService {
         let workoutEvents = workout.events.compactMap { event -> HKWorkoutEvent? in
             event.type.healthKitType.map { .init(type: $0, dateInterval: .init(start: event.timestamp, duration: .zero), metadata: .none) }
         }
-        let workoutPauseEvents = workout.pauses.flatMap {[
-            HKWorkoutEvent(type: .pause, dateInterval: .init(start: $0.startDate, duration: .zero), metadata: .none),
-            HKWorkoutEvent(type: .resume, dateInterval: .init(start: $0.endDate, duration: .zero), metadata: .none)
+        // If there are adjacent pauses (e.g. an auto pause being ended by a manual pause; which then has the same start date as the auto
+        // pause end date) Health throws an error on workout insertion. It treats this scenario as if two pause events came right after
+        // another. Internally it probably messes up the order. To avoid this and since health does not distinguish between manual and
+        // automatic pauses we merge adjacent pauses into one interval and sync them together.
+        let workoutPauseEvents = Calculation.calculateMergedPauseIntervals(from: workout.pauses).flatMap {[
+            HKWorkoutEvent(type: .pause, dateInterval: .init(start: $0.start, duration: .zero), metadata: .none),
+            HKWorkoutEvent(type: .resume, dateInterval: .init(start: $0.end, duration: .zero), metadata: .none)
         ]}
         guard !workoutEvents.isEmpty || !workoutPauseEvents.isEmpty else { return }
         try await workoutBuilder.addWorkoutEvents(workoutEvents + workoutPauseEvents)
