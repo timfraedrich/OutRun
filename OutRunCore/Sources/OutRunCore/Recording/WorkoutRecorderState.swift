@@ -45,9 +45,11 @@ class WorkoutRecorderState {
     /// The date at which the current recording process was started (workout first started or continued).
     private(set) var lastStartDate: Date?
     private var lastLocation: CLLocation?
-    /// The last location added to the workout route.
-    /// - note: This value gets reset to `nil` if the workout gets paused to not falsify the distance.
+    /// The last location added to the workout route, including locations recorded during a pause.
     private var lastRecordedLocation: CLLocation?
+    /// The last location added to the workout route while not paused, used to calculate the live metrics.
+    /// - note: This value gets reset to `nil` if the workout gets paused to not falsify the distance.
+    private var lastActiveLocation: CLLocation?
     /// The absolute altitude of the first location for which relative altitude changes were used to refine the altitude measurement.
     private var baseAltitude: Double?
     private var manuallyPausedSince: Date?
@@ -159,6 +161,7 @@ class WorkoutRecorderState {
         workoutIdentifier = nil
         lastStartDate = nil
         lastRecordedLocation = nil
+        lastActiveLocation = nil
         baseAltitude = nil
         manuallyPausedSince = nil
         automaticallyPausedSince = nil
@@ -192,21 +195,21 @@ class WorkoutRecorderState {
                 pause = try resume(manual: false, on: location.timestamp)
             }
         }
-        let addedDistance: Double = if case .recording = status, let lastRecordedLocation {
-            location.distance(from: lastRecordedLocation)
-        } else {
-            .zero
+        if let lastRecordedLocation {
+            let distanceSinceLastSample = location.distance(from: lastRecordedLocation)
+            let durationSinceLastSample = lastRecordedLocation.timestamp.distance(to: location.timestamp)
+            guard durationSinceLastSample >= Self.minimumTimeDifference
+                    && (distanceSinceLastSample > Self.minimumDistance || durationSinceLastSample > Self.maximumTimeDifference)
+            else { return (nil, pause) }
         }
-        let addedDuration: TimeInterval = if case .recording = status, let lastRecordedLocation {
-            lastRecordedLocation.timestamp.distance(to: location.timestamp)
-        } else {
-            .zero
-        }
-        guard addedDuration >= Self.minimumTimeDifference
-                && (addedDistance > Self.minimumDistance || addedDuration > Self.maximumTimeDifference)
-                || lastRecordedLocation == nil
-        else { return (nil, nil) }
+        var sample = RawWorkoutRouteDataSample(from: location)
+        refineSample(&sample, with: altitude)
         route.append(location.coordinate)
+        lastRecordedLocation = location
+        guard case .recording = status else { return (sample, pause) }
+        let addedDistance = lastActiveLocation.map { location.distance(from: $0) } ?? .zero
+        let addedDuration = lastActiveLocation.map { $0.timestamp.distance(to: location.timestamp) } ?? .zero
+        lastActiveLocation = location
         rollingSpeedSamples.append((addedDistance, addedDuration))
         var newRollingDistance = rollingDistance + addedDistance
         var newRollingDuration = rollingDuration + addedDuration
@@ -222,9 +225,6 @@ class WorkoutRecorderState {
         rollingDuration = newRollingDuration
         let newDistance = distance + addedDistance
         distance = newDistance
-        var sample = RawWorkoutRouteDataSample(from: location)
-        refineSample(&sample, with: altitude)
-        lastRecordedLocation = location
         return (sample, pause)
     }
     
@@ -237,7 +237,7 @@ class WorkoutRecorderState {
         if manual {
             guard manuallyPausedSince == nil else { throw .alreadyPaused }
             manuallyPausedSince = date
-            lastRecordedLocation = nil
+            lastActiveLocation = nil
             try transition(to: .paused(manual: manual))
             logger.info("Paused recording manually.")
             if let automaticallyPausedSince {
@@ -249,7 +249,7 @@ class WorkoutRecorderState {
         } else {
             guard automaticallyPausedSince == nil else { throw .alreadyPaused }
             automaticallyPausedSince = date
-            lastRecordedLocation = nil
+            lastActiveLocation = nil
             if case .paused(manual: true) = status {
                 logger.info("Detected automatic pause during manual pause, will transition if manual pause ends.")
             } else {
