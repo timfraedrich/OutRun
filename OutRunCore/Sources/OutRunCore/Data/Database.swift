@@ -510,7 +510,7 @@ actor Database: ModelActor {
             var descriptor = FetchDescriptor<SyncServiceMapping>(predicate: #Predicate {
                 $0.serviceIdentifier == serviceIdentifier
                 && $0.workout != nil
-                && $0.externalId == externalIdentifier || $0.externalUrl == externalIdentifier
+                && ($0.externalId == externalIdentifier || $0.externalUrl == externalIdentifier)
             })
             descriptor.fetchLimit = 1
             guard let workout = try modelContext.fetch(descriptor).first?.workout else { throw DatabaseError.objectNotFound }

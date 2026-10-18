@@ -346,6 +346,22 @@ struct SyncTests {
         }
     }
 
+    @Test("SyncDelegate upsert does not match workouts of other services by external URL")
+    func syncDelegateUpsertDoesNotMatchOtherServicesByExternalURL() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        var otherWorkout = makeWorkout(source: .syncService(identifier: "other"))
+        otherWorkout.serviceMappings = [.init(serviceIdentifier: "other", externalUrl: "shared-id", syncStatus: .synced)]
+        try await database.insert(otherWorkout)
+
+        var workout = makeWorkout(source: .syncService(identifier: "mock"))
+        workout.serviceMappings = [.init(serviceIdentifier: "mock", externalId: "shared-id", syncStatus: .synced)]
+        let delegate = await MockSyncDelegate(database: database)
+        _ = try await delegate.upsert(workout)
+
+        let workouts = try await database.fetchWorkouts()
+        #expect(workouts.count == 2)
+    }
+
     @Test("SyncDelegate delete removes workout from database")
     func syncDelegateDeleteRemovesWorkoutFromDatabase() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
