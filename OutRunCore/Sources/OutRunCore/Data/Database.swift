@@ -445,14 +445,25 @@ actor Database: ModelActor {
         }
         return workout.id
     }
-    
-    func delete(workoutWithIdentifier identifier: UUID, forServiceWith serviceIdentifier: String) throws {
-        let databaseWorkout = try fetchWorkout(with: identifier)
-        guard databaseWorkout.source == .syncService(identifier: serviceIdentifier) else { throw SyncError.conflict }
-        modelContext.delete(databaseWorkout)
+
+    /// Deletes the workout if it was created by the service. Otherwise the workout is kept and its mapping for the service is marked as
+    /// conflicted, as the workout no longer exists on the service.
+    /// - throws: Throws `SyncError.conflict` if the workout was not created by the service.
+    private func delete(_ workout: Workout, forServiceWith serviceIdentifier: String) throws {
+        guard workout.source == .syncService(identifier: serviceIdentifier) else {
+            if let mapping = workout.serviceMappings.first(where: { $0.serviceIdentifier == serviceIdentifier }) {
+                mapping.externalId = nil
+                mapping.externalUrl = nil
+                mapping.lastEditDateSynced = nil
+                mapping.syncStatus = .conflict
+                try modelContext.save()
+            }
+            throw SyncError.conflict
+        }
+        modelContext.delete(workout)
         try modelContext.save()
     }
-    
+
     private func delete(workoutWithSyncServiceMatching predicate: Predicate<SyncServiceMapping>, and serviceIdentifier: String) throws {
         let fullPredicate = #Predicate<SyncServiceMapping> {
             predicate.evaluate($0) && $0.serviceIdentifier == serviceIdentifier && $0.workout != nil
@@ -460,9 +471,12 @@ actor Database: ModelActor {
         var descriptor = FetchDescriptor<SyncServiceMapping>(predicate: fullPredicate)
         descriptor.fetchLimit = 1
         guard let workout = try modelContext.fetch(descriptor).first?.workout else { throw DatabaseError.objectNotFound }
-        guard workout.source == .syncService(identifier: serviceIdentifier) else { throw SyncError.conflict }
-        modelContext.delete(workout)
-        try modelContext.save()
+        try delete(workout, forServiceWith: serviceIdentifier)
+    }
+
+    func delete(workoutWithIdentifier identifier: UUID, forServiceWith serviceIdentifier: String) throws {
+        let databaseWorkout = try fetchWorkout(with: identifier)
+        try delete(databaseWorkout, forServiceWith: serviceIdentifier)
     }
     
     func delete(workoutWithExternalIdentifier externalIdentifier: String, forServiceWith serviceIdentifier: String) throws {

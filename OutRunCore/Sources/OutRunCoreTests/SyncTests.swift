@@ -349,7 +349,7 @@ struct SyncTests {
     @Test("SyncDelegate delete removes workout from database")
     func syncDelegateDeleteRemovesWorkoutFromDatabase() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
-        let workout = makeWorkout()
+        let workout = makeWorkout(source: .syncService(identifier: "mock"))
         let delegate = await MockSyncDelegate(database: database)
         _ = try await delegate.upsert(workout)
 
@@ -357,6 +357,50 @@ struct SyncTests {
 
         let workouts = try await database.fetchWorkouts()
         #expect(workouts.isEmpty)
+    }
+
+    @Test("SyncDelegate delete by external identifier of a native workout marks it as conflicted")
+    func syncDelegateDeleteByExternalIdentifierOfNativeWorkoutMarksConflict() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        let workout = makeWorkout()
+        try await database.insert(workout)
+
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService()
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
+        try await syncManager.performSync()
+
+        await #expect(throws: SyncError.conflict) {
+            try await mockSyncDelegate.delete(workoutWithExternalIdentifier: "mock-external-id", forServiceWith: "mock")
+        }
+
+        let workouts = try await database.fetchWorkouts()
+        #expect(workouts.count == 1)
+        let mapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" })
+        #expect(mapping?.syncStatus == .conflict)
+        #expect(mapping?.externalId == nil)
+        #expect(mapping?.externalUrl == nil)
+    }
+
+    @Test("SyncDelegate delete by identifier of a native workout marks it as conflicted")
+    func syncDelegateDeleteByIdentifierOfNativeWorkoutMarksConflict() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        let workout = makeWorkout()
+        try await database.insert(workout)
+
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService()
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
+        try await syncManager.performSync()
+
+        await #expect(throws: SyncError.conflict) {
+            try await mockSyncDelegate.delete(workoutWithIdentifier: workout.id, forServiceWith: "mock")
+        }
+
+        let workouts = try await database.fetchWorkouts()
+        #expect(workouts.count == 1)
+        let mapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" })
+        #expect(mapping?.syncStatus == .conflict)
     }
 
     // MARK: - Initial Sync
