@@ -89,37 +89,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht deinen Standort, um deine Läufe aufzuzeichnen"
+            "value" : "OutRun verwendet deinen Standort, um deine Workouts samt Route aufzuzeichnen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs your location to track workouts"
+            "value" : "OutRun uses your location to record your workouts and their routes."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs your location to track workouts"
+            "value" : "OutRun uses your location to record your workouts and their routes."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta aplicación necesita tu ubicación para realizar un seguimiento de los entrenamientos"
+            "value" : "OutRun usa tu ubicación para registrar tus entrenamientos y sus rutas."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette application a besoin de votre emplacement pour suivre les entraînements"
+            "value" : "OutRun utilise votre position pour enregistrer vos entraînements et leurs itinéraires."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deze app heeft je locatie nodig om trainingen te volgen"
+            "value" : "OutRun gebruikt je locatie om je trainingen en hun routes op te nemen."
           }
         }
       }
@@ -130,37 +130,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht deinen Standort, um deine Workouts aufzuzeichnen"
+            "value" : "OutRun verwendet deinen Standort, um deine Workouts samt Route aufzuzeichnen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs your location to track workouts"
+            "value" : "OutRun uses your location to record your workouts and their routes."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs your location to track workouts"
+            "value" : "OutRun uses your location to record your workouts and their routes."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta aplicación necesita tu ubicación para realizar un seguimiento de los entrenamientos"
+            "value" : "OutRun usa tu ubicación para registrar tus entrenamientos y sus rutas."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette application a besoin de votre emplacement pour suivre les entraînements"
+            "value" : "OutRun utilise votre position pour enregistrer vos entraînements et leurs itinéraires."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deze app heeft je locatie nodig om trainingen te volgen"
+            "value" : "OutRun gebruikt je locatie om je trainingen en hun routes op te nemen."
           }
         }
       }
@@ -171,37 +171,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht deinen Standort, um deine Workouts aufzuzeichnen"
+            "value" : "OutRun verwendet deinen Standort, um deine Workouts samt Route aufzuzeichnen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs your location to track workouts"
+            "value" : "OutRun uses your location to record your workouts and their routes."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs your location to track workouts"
+            "value" : "OutRun uses your location to record your workouts and their routes."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta aplicación necesita tu ubicación para realizar un seguimiento de los entrenamientos"
+            "value" : "OutRun usa tu ubicación para registrar tus entrenamientos y sus rutas."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette application a besoin de votre emplacement pour suivre les entraînements"
+            "value" : "OutRun utilise votre position pour enregistrer vos entraînements et leurs itinéraires."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deze app heeft je locatie nodig om trainingen te volgen"
+            "value" : "OutRun gebruikt je locatie om je trainingen en hun routes op te nemen."
           }
         }
       }
@@ -212,37 +212,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App braucht bewegungsbezogene Trackingberechtigung, um Daten wie Schritte aufzuzeichnen"
+            "value" : "OutRun verwendet Bewegungsdaten, um deine aufgezeichneten Workouts genauer und detaillierter zu machen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs motion related tracking capabilities to record data like steps during a workout"
+            "value" : "OutRun uses motion data to make your recorded workouts more accurate and detailed."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This app needs motion related tracking capabilities to record data like steps during a workout"
+            "value" : "OutRun uses motion data to make your recorded workouts more accurate and detailed."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta aplicación necesita capacidades de seguimiento relacionadas con el movimiento para registrar datos como pasos durante un entrenamiento"
+            "value" : "OutRun usa datos de movimiento para que tus entrenamientos registrados sean más precisos y detallados."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette application a besoin de capacités de suivi liées au mouvement pour enregistrer des données telles que les étapes d'un entraînement"
+            "value" : "OutRun utilise les données de mouvement pour rendre vos entraînements enregistrés plus précis et détaillés."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deze app heeft bewegingsgerelateerde traceermogelijkheden nodig om bijvoorbeeld stappen tijdens een training vast te leggen"
+            "value" : "OutRun gebruikt bewegingsgegevens om je opgenomen trainingen nauwkeuriger en gedetailleerder te maken."
           }
         }
       }
