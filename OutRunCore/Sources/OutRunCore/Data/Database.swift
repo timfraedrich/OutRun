@@ -359,6 +359,8 @@ actor Database: ModelActor {
     func upsertSyncServiceMapping(_ mapping: RawSyncServiceMapping, forWorkoutWith workoutId: UUID) throws {
         let workout = try fetchWorkout(with: workoutId)
         if let existing = workout.serviceMappings.first(where: { $0.serviceIdentifier == mapping.serviceIdentifier }) {
+            // Saving triggers another sync, so an unchanged mapping must not be saved to avoid an endless sync loop.
+            guard RawSyncServiceMapping(from: existing) != mapping else { return }
             existing.externalId = mapping.externalId
             existing.externalUrl = mapping.externalUrl
             existing.lastEditDateSynced = mapping.lastEditDateSynced

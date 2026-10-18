@@ -18,7 +18,7 @@
 
 import Foundation
 
-public struct RawSyncServiceMapping: Codable, Sendable, SyncServiceMappingProtocol {
+public struct RawSyncServiceMapping: Codable, Equatable, Sendable, SyncServiceMappingProtocol {
     
     public var serviceIdentifier: String
     public var externalId: String?

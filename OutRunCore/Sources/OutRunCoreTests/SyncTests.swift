@@ -18,6 +18,8 @@
 
 import Foundation
 @testable import OutRunCore
+import SwiftData
+import Synchronization
 import Testing
 
 @Suite("Sync Tests")
@@ -272,6 +274,34 @@ struct SyncTests {
         workouts = try await database.fetchWorkouts()
         mapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" })
         #expect(mapping?.syncStatus == .synced)
+    }
+
+    @Test("Repeatedly failing retry does not save the database")
+    func repeatedlyFailingRetryDoesNotSaveTheDatabase() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        let workout = makeWorkout()
+        try await database.insert(workout)
+
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService(upsertError: NSError(domain: "test", code: 1))
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
+        try await syncManager.performSync()
+
+        let saveCount = Mutex(0)
+        let container = database.modelContainer
+        let observer = NotificationCenter.default.addObserver(forName: ModelContext.didSave, object: nil, queue: nil) { notification in
+            guard (notification.object as? ModelContext)?.container === container else { return }
+            saveCount.withLock { $0 += 1 }
+        }
+        defer { NotificationCenter.default.removeObserver(observer) }
+
+        // Every save triggers another sync, so saving an unchanged failed mapping would result in an endless sync loop.
+        try await syncManager.performSync()
+
+        #expect(saveCount.withLock { $0 } == 0)
+        let workouts = try await database.fetchWorkouts()
+        let mapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" })
+        #expect(mapping?.syncStatus == .failed)
     }
 
     // MARK: - Inbound Sync (Service → Core via SyncDelegate)
