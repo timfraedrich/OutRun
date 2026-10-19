@@ -150,7 +150,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les données d'altitude ne peuvent pas être reçues en raison des réglages système. Vous pouvez modifier cela dans l'app Réglages iOS sous « Confidentialité et sécurité > Activité physique »."
+            "value" : "Les données d’altitude ne peuvent pas être reçues en raison des réglages système. Tu peux modifier cela dans l’app Réglages iOS sous « Confidentialité et sécurité > Activité physique »."
           }
         },
         "nl" : {
@@ -664,19 +664,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La operación no se pudo completar porque se denegó el permiso de esta app para Apple Health."
+            "value" : "La operación no se pudo completar porque se denegó el permiso de esta app para Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'opération n'a pas pu être effectuée car l'autorisation pour Apple Health a été refusée à cette app."
+            "value" : "L’opération n’a pas pu être effectuée car l’autorisation pour Apple Santé a été refusée à cette app."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De bewerking kon niet worden voltooid omdat de toestemming voor Apple Health is geweigerd."
+            "value" : "De bewerking kon niet worden voltooid omdat de toestemming voor Apple Gezondheid is geweigerd."
           }
         }
       }
@@ -704,19 +704,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La operación no se pudo completar porque falta el permiso para Apple Health."
+            "value" : "La operación no se pudo completar porque falta el permiso para Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'opération n'a pas pu être effectuée car l'autorisation pour Apple Health est manquante."
+            "value" : "L’opération n’a pas pu être effectuée car l’autorisation pour Apple Santé est manquante."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De bewerking kon niet worden voltooid omdat de toestemming voor Apple Health ontbreekt."
+            "value" : "De bewerking kon niet worden voltooid omdat de toestemming voor Apple Gezondheid ontbreekt."
           }
         }
       }
@@ -744,19 +744,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El tipo de Apple Health no es válido."
+            "value" : "El tipo de Salud de Apple no es válido."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le type Apple Health n'est pas valide."
+            "value" : "Le type Apple Santé n’est pas valide."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Het Apple Health-type is niet geldig."
+            "value" : "Het Apple Gezondheid-type is niet geldig."
           }
         }
       }
@@ -784,19 +784,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El objeto de Apple Health no se pudo encontrar."
+            "value" : "El objeto de Salud de Apple no se pudo encontrar."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'objet Apple Health n'a pas pu être trouvé."
+            "value" : "L’objet Apple Santé n’a pas pu être trouvé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Het Apple Health-object kon niet worden gevonden."
+            "value" : "Het Apple Gezondheid-object kon niet worden gevonden."
           }
         }
       }
@@ -806,37 +806,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Berechtigungsdialog für Apple Health konnte nicht angezeigt werden. Die Berechtigungen müssen in der Einstellungen- oder Apple Health-App angepasst werden."
+            "value" : "Der Berechtigungsdialog für Apple Health konnte nicht angezeigt werden. Die Berechtigungen müssen in der Einstellungen- oder Health-App angepasst werden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The permission prompt for Apple Health could not be shown. The permissions must be adjusted in the Settings or Apple Health app."
+            "value" : "The permission prompt for Apple Health could not be shown. The permissions must be adjusted in the Settings or Health app."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The permission prompt for Apple Health could not be shown. The permissions must be adjusted in the Settings or Apple Health app."
+            "value" : "The permission prompt for Apple Health could not be shown. The permissions must be adjusted in the Settings or Health app."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se pudo mostrar el diálogo de permisos para Apple Health. Los permisos deben ajustarse en la app de Ajustes o en Apple Health."
+            "value" : "No se pudo mostrar el diálogo de permisos para Salud de Apple. Los permisos deben ajustarse en la app Ajustes o en la app Salud."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La demande d'autorisation pour Apple Health n'a pas pu être affichée. Les autorisations doivent être ajustées dans l'app Réglages ou Apple Health."
+            "value" : "La demande d’autorisation pour Apple Santé n’a pas pu être affichée. Les autorisations doivent être ajustées dans l’app Réglages ou l’app Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De toestemmingsprompt voor Apple Health kon niet worden weergegeven. De toestemmingen moeten worden aangepast in de Instellingen- of Apple Health-app."
+            "value" : "De toestemmingsprompt voor Apple Gezondheid kon niet worden weergegeven. De toestemmingen moeten worden aangepast in de Instellingen- of Gezondheid-app."
           }
         }
       }
@@ -864,19 +864,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se produjo un error desconocido al sincronizar con Apple Health."
+            "value" : "Se produjo un error desconocido al sincronizar con Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une erreur inconnue s'est produite lors de la synchronisation avec Apple Health."
+            "value" : "Une erreur inconnue s’est produite lors de la synchronisation avec Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er is een onbekende fout opgetreden tijdens het synchroniseren met Apple Health."
+            "value" : "Er is een onbekende fout opgetreden tijdens het synchroniseren met Apple Gezondheid."
           }
         }
       }
@@ -904,19 +904,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El tipo de actividad no es compatible con la sincronización con Apple Health."
+            "value" : "El tipo de actividad no es compatible con la sincronización con Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le type d'activité n'est pas pris en charge pour la synchronisation avec Apple Health."
+            "value" : "Le type d’activité n’est pas pris en charge pour la synchronisation avec Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Het activiteitstype wordt niet ondersteund voor synchronisatie met Apple Health."
+            "value" : "Het activiteitstype wordt niet ondersteund voor synchronisatie met Apple Gezondheid."
           }
         }
       }
@@ -1270,7 +1270,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les données de pas ne peuvent pas être reçues en raison des réglages système. Vous pouvez modifier cela dans l'app Réglages iOS sous « Confidentialité et sécurité > Activité physique »."
+            "value" : "Les données de pas ne peuvent pas être reçues en raison des réglages système. Tu peux modifier cela dans l’app Réglages iOS sous « Confidentialité et sécurité > Activité physique »."
           }
         },
         "nl" : {
@@ -1470,7 +1470,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La synchronisation a échoué en raison d'une erreur réseau. Veuillez vérifier votre connexion internet."
+            "value" : "La synchronisation a échoué en raison d’une erreur réseau. Vérifie ta connexion internet."
           }
         },
         "nl" : {
@@ -2590,7 +2590,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'app n'était pas encore prête pour l'enregistrement, veuillez réessayer."
+            "value" : "L’app n’était pas encore prête pour l’enregistrement, réessaie."
           }
         },
         "nl" : {

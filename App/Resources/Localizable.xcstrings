@@ -144,19 +144,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health"
+            "value" : "Salud de Apple"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health"
+            "value" : "Apple Santé"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health"
+            "value" : "Apple Gezondheid"
           }
         }
       }
@@ -270,7 +270,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportez vos données d'entraînement pour les conserver en sécurité et les restaurer ultérieurement. La sauvegarde sera enregistrée sous forme d'archive .zip avec des fichiers .json pour chaque entraînement."
+            "value" : "Exporte tes données d’entraînement pour les conserver en sécurité et les restaurer ultérieurement. La sauvegarde sera enregistrée sous forme d’archive .zip avec des fichiers .json pour chaque entraînement."
           }
         },
         "nl" : {
@@ -510,7 +510,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importez une sauvegarde créée par cette app. L'app accepte les archives .zip et les anciens fichiers .orbup. Les données déjà présentes dans l'app ne seront pas écrasées ni supprimées. Si vous importez un entraînement obsolète, il sera ignoré."
+            "value" : "Importe une sauvegarde créée par cette app. L’app accepte les archives .zip et les anciens fichiers .orbup. Les données déjà présentes dans l’app ne seront pas écrasées ni supprimées. Si tu importes un entraînement obsolète, il sera ignoré."
           }
         },
         "nl" : {
@@ -550,7 +550,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cela peut prendre quelques minutes. Veuillez ne pas fermer l'app."
+            "value" : "Cela peut prendre quelques minutes. Ne ferme pas l’app."
           }
         },
         "nl" : {
@@ -766,7 +766,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beim Kodieren der Trainingsdaten für das Backup ist ein Fehler aufgetreten."
+            "value" : "Beim Kodieren der Workoutdaten für das Backup ist ein Fehler aufgetreten."
           }
         },
         "en" : {
@@ -846,7 +846,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Trainingsdaten konnten nicht aus der bereitgestellten Datei wiederhergestellt werden, da sie nicht unterstützt wird."
+            "value" : "Die Workoutdaten konnten nicht aus der bereitgestellten Datei wiederhergestellt werden, da sie nicht unterstützt wird."
           }
         },
         "en" : {
@@ -1955,7 +1955,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun est gratuit et sans publicité. Si vous souhaitez soutenir son développement, un petit pourboire serait très apprécié. Mais sans aucune obligation !"
+            "value" : "OutRun est gratuit et sans publicité. Si tu souhaites soutenir son développement, un petit pourboire serait très apprécié. Mais sans aucune obligation !"
           }
         },
         "nl" : {
@@ -2150,19 +2150,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health no está disponible."
+            "value" : "Salud de Apple no está disponible."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health n'est pas disponible."
+            "value" : "Apple Santé n’est pas disponible."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health is niet beschikbaar."
+            "value" : "Apple Gezondheid is niet beschikbaar."
           }
         }
       }
@@ -2430,7 +2430,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health solo pide los permisos una vez. Después solo se pueden revisar y cambiar en la app Salud."
+            "value" : "Salud de Apple solo pide los permisos una vez. Después solo se pueden revisar y cambiar en la app Salud."
           }
         },
         "fr" : {
@@ -2442,7 +2442,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health vraagt toestemmingen maar één keer. Daarna kun je ze alleen in de Gezondheid-app bekijken en wijzigen."
+            "value" : "Apple Gezondheid vraagt toestemmingen maar één keer. Daarna kun je ze alleen in de Gezondheid-app bekijken en wijzigen."
           }
         }
       }
@@ -2452,37 +2452,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nicht exportieren"
+            "value" : "Nicht speichern"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Do not Export"
+            "value" : "Do Not Save"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Do not Export"
+            "value" : "Do Not Save"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No exportar"
+            "value" : "No guardar"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ne pas exporter"
+            "value" : "Ne pas enregistrer"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Niet exporteren"
+            "value" : "Niet bewaren"
           }
         }
       }
@@ -2492,37 +2492,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es werden keine Daten zu Apple Health exportiert."
+            "value" : "Es werden keine Workouts in Apple Health gespeichert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No data will be exported to Apple Health."
+            "value" : "No workouts will be saved to Apple Health."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No data will be exported to Apple Health."
+            "value" : "No workouts will be saved to Apple Health."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se exportarán datos a Apple Health."
+            "value" : "No se guardará ningún entrenamiento en Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aucune donnée ne sera exportée vers Apple Health."
+            "value" : "Aucun entraînement ne sera enregistré dans Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er worden geen gegevens naar Apple Health geëxporteerd."
+            "value" : "Er worden geen trainingen bewaard in Apple Gezondheid."
           }
         }
       }
@@ -2532,37 +2532,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alles exportieren"
+            "value" : "Alle Workouts speichern"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export Everything"
+            "value" : "Save All Workouts"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export Everything"
+            "value" : "Save All Workouts"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportar todo"
+            "value" : "Guardar todos los entrenamientos"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tout exporter"
+            "value" : "Enregistrer tous les entraînements"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alles exporteren"
+            "value" : "Alle trainingen bewaren"
           }
         }
       }
@@ -2572,37 +2572,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle vorhandenen und neuen Workouts in dieser App werden zu Apple Health exportiert."
+            "value" : "Alle vorhandenen und neuen Workouts in OutRun werden automatisch in Apple Health gespeichert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All existing and new workouts created in this app will be exported to Apple Health."
+            "value" : "All existing and new workouts created in OutRun will be saved to Apple Health automatically."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All existing and new workouts created in this app will be exported to Apple Health."
+            "value" : "All existing and new workouts created in OutRun will be saved to Apple Health automatically."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los entrenamientos existentes y nuevos creados en esta app se exportarán a Apple Health."
+            "value" : "Todos los entrenamientos existentes y nuevos creados en OutRun se guardarán automáticamente en Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les entraînements existants et nouveaux créés dans cette app seront exportés vers Apple Health."
+            "value" : "Tous les entraînements existants et nouveaux créés dans OutRun seront automatiquement enregistrés dans Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle bestaande en nieuwe trainingen in deze app worden geëxporteerd naar Apple Health."
+            "value" : "Alle bestaande en nieuwe trainingen in OutRun worden automatisch bewaard in Apple Gezondheid."
           }
         }
       }
@@ -2612,37 +2612,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportmodus"
+            "value" : "In OutRun aufgezeichnete Daten"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export Mode"
+            "value" : "Data recorded in OutRun"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export Mode"
+            "value" : "Data recorded in OutRun"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Modo de exportación"
+            "value" : "Datos registrados en OutRun"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mode d'exportation"
+            "value" : "Données enregistrées dans OutRun"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportmodus"
+            "value" : "In OutRun vastgelegde gegevens"
           }
         }
       }
@@ -2652,37 +2652,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle neuen Workouts, die nach dem %@ in dieser App erstellt wurden, werden zu Apple Health exportiert."
+            "value" : "Workouts, die nach dem %@ in OutRun erstellt wurden, werden automatisch in Apple Health gespeichert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All new workouts created in this app after %@ will be exported to Apple Health."
+            "value" : "Workouts created in OutRun after %@ will be saved to Apple Health automatically."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All new workouts created in this app after %@ will be exported to Apple Health."
+            "value" : "Workouts created in OutRun after %@ will be saved to Apple Health automatically."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los nuevos entrenamientos creados en esta app después del %@ se exportarán a Apple Health."
+            "value" : "Los entrenamientos creados en OutRun después del %@ se guardarán automáticamente en Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les nouveaux entraînements créés dans cette app après le %@ seront exportés vers Apple Health."
+            "value" : "Les entraînements créés dans OutRun après le %@ seront automatiquement enregistrés dans Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle nieuwe trainingen die na %@ in deze app zijn gemaakt, worden geëxporteerd naar Apple Health."
+            "value" : "Trainingen die na %@ in OutRun zijn gemaakt, worden automatisch bewaard in Apple Gezondheid."
           }
         }
       }
@@ -2692,37 +2692,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ab jetzt exportieren"
+            "value" : "Nur neue Workouts speichern"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export Starting Now"
+            "value" : "Only Save New Workouts"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export Starting Now"
+            "value" : "Only Save New Workouts"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportar desde ahora"
+            "value" : "Guardar solo entrenamientos nuevos"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporter à partir de maintenant"
+            "value" : "Enregistrer uniquement les nouveaux entraînements"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu beginnen met exporteren"
+            "value" : "Alleen nieuwe trainingen bewaren"
           }
         }
       }
@@ -2732,37 +2732,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle neuen Workouts, die nach dem Aktivieren dieser Option in dieser App erstellt werden, werden zu Apple Health exportiert."
+            "value" : "Workouts, die nach dem Aktivieren dieser Option in OutRun erstellt werden, werden automatisch in Apple Health gespeichert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All new workouts created in this app after turning this option on will be exported to Apple Health."
+            "value" : "Workouts created in OutRun after turning this option on will be saved to Apple Health automatically."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All new workouts created in this app after turning this option on will be exported to Apple Health."
+            "value" : "Workouts created in OutRun after turning this option on will be saved to Apple Health automatically."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los nuevos entrenamientos creados en esta app tras activar esta opción se exportarán a Apple Health."
+            "value" : "Los entrenamientos creados en OutRun después de activar esta opción se guardarán automáticamente en Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les nouveaux entraînements créés dans cette app après activation de cette option seront exportés vers Apple Health."
+            "value" : "Les entraînements créés dans OutRun après l’activation de cette option seront automatiquement enregistrés dans Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle nieuwe trainingen die na het inschakelen van deze optie in deze app worden gemaakt, worden geëxporteerd naar Apple Health."
+            "value" : "Trainingen die na het inschakelen van deze optie in OutRun worden gemaakt, worden automatisch bewaard in Apple Gezondheid."
           }
         }
       }
@@ -2772,37 +2772,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportieren seit %@"
+            "value" : "Neue Workouts speichern seit %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporting Since %@"
+            "value" : "Saving New Workouts Since %@"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporting Since %@"
+            "value" : "Saving New Workouts Since %@"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportando desde %@"
+            "value" : "Guardando entrenamientos nuevos desde %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportation depuis le %@"
+            "value" : "Enregistrement des nouveaux entraînements depuis le %@"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporteren sinds %@"
+            "value" : "Nieuwe trainingen bewaren sinds %@"
           }
         }
       }
@@ -2818,13 +2818,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Do not Import"
+            "value" : "Do Not Import"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Do not Import"
+            "value" : "Do Not Import"
           }
         },
         "es" : {
@@ -2852,37 +2852,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es werden keine Daten von Apple Health importiert."
+            "value" : "Es werden keine Workouts aus Apple Health importiert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No data will be imported from Apple Health."
+            "value" : "No workouts will be imported from Apple Health."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No data will be imported from Apple Health."
+            "value" : "No workouts will be imported from Apple Health."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se importarán datos de Apple Health."
+            "value" : "No se importará ningún entrenamiento de Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aucune donnée ne sera importée depuis Apple Health."
+            "value" : "Aucun entraînement ne sera importé depuis Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er worden geen gegevens van Apple Health geïmporteerd."
+            "value" : "Er worden geen trainingen geïmporteerd uit Apple Gezondheid."
           }
         }
       }
@@ -2892,37 +2892,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alles importieren"
+            "value" : "Alle Workouts importieren"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import Everything"
+            "value" : "Import All Workouts"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import Everything"
+            "value" : "Import All Workouts"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importar todo"
+            "value" : "Importar todos los entrenamientos"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tout importer"
+            "value" : "Importer tous les entraînements"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alles importeren"
+            "value" : "Alle trainingen importeren"
           }
         }
       }
@@ -2932,37 +2932,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle vorhandenen und neuen Apple Health Workouts werden in diese App importiert."
+            "value" : "Alle vorhandenen und neuen Apple Health Workouts werden in OutRun importiert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All existing and new Apple Health workouts will be imported into this app."
+            "value" : "All existing and new Apple Health workouts will be imported into OutRun."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All existing and new Apple Health workouts will be imported into this app."
+            "value" : "All existing and new Apple Health workouts will be imported into OutRun."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los entrenamientos de Apple Health existentes y nuevos se importarán en esta app."
+            "value" : "Todos los entrenamientos de Salud de Apple existentes y nuevos se importarán en OutRun."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les entraînements Apple Health existants et nouveaux seront importés dans cette app."
+            "value" : "Tous les entraînements Apple Santé existants et nouveaux seront importés dans OutRun."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle bestaande en nieuwe Apple Health-trainingen worden geïmporteerd in deze app."
+            "value" : "Alle bestaande en nieuwe Apple Gezondheid-trainingen worden geïmporteerd in OutRun."
           }
         }
       }
@@ -2972,37 +2972,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importmodus"
+            "value" : "In Health gespeicherte Daten"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import Mode"
+            "value" : "Data saved in Health"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import Mode"
+            "value" : "Data saved in Health"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Modo de importación"
+            "value" : "Datos guardados en Salud"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mode d'importation"
+            "value" : "Données enregistrées dans Santé"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importmodus"
+            "value" : "In Gezondheid bewaarde gegevens"
           }
         }
       }
@@ -3012,37 +3012,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle Apple Health Workouts, die nach dem %@ begonnen haben, werden in diese App importiert."
+            "value" : "Apple Health Workouts, die nach dem %@ begonnen haben, werden in OutRun importiert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All Apple Health workouts started after %@ will be imported into this app."
+            "value" : "Apple Health workouts started after %@ will be imported into OutRun."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All Apple Health workouts started after %@ will be imported into this app."
+            "value" : "Apple Health workouts started after %@ will be imported into OutRun."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los entrenamientos de Apple Health iniciados después del %@ se importarán en esta app."
+            "value" : "Los entrenamientos de Salud de Apple iniciados después del %@ se importarán en OutRun."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les entraînements Apple Health démarrés après le %@ seront importés dans cette app."
+            "value" : "Les entraînements Apple Santé démarrés après le %@ seront importés dans OutRun."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle Apple Health-trainingen die na %@ zijn gestart, worden geïmporteerd in deze app."
+            "value" : "Apple Gezondheid-trainingen die na %@ zijn gestart, worden geïmporteerd in OutRun."
           }
         }
       }
@@ -3052,37 +3052,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ab jetzt importieren"
+            "value" : "Nur neue Workouts importieren"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import Starting Now"
+            "value" : "Only Import New Workouts"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import Starting Now"
+            "value" : "Only Import New Workouts"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importar desde ahora"
+            "value" : "Importar solo entrenamientos nuevos"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importer à partir de maintenant"
+            "value" : "Importer uniquement les nouveaux entraînements"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu beginnen met importeren"
+            "value" : "Alleen nieuwe trainingen importeren"
           }
         }
       }
@@ -3092,37 +3092,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle Apple Health Workouts, die nach dem Aktivieren dieser Option begonnen haben, werden in diese App importiert."
+            "value" : "Apple Health Workouts, die nach dem Aktivieren dieser Option begonnen haben, werden in OutRun importiert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All Apple Health workouts started after turning this option on will be imported into this app."
+            "value" : "Apple Health workouts started after turning this option on will be imported into OutRun."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All Apple Health workouts started after turning this option on will be imported into this app."
+            "value" : "Apple Health workouts started after turning this option on will be imported into OutRun."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los entrenamientos de Apple Health iniciados después de activar esta opción se importarán en esta app."
+            "value" : "Los entrenamientos de Salud de Apple iniciados después de activar esta opción se importarán en OutRun."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les entraînements Apple Health démarrés après activation de cette option seront importés dans cette app."
+            "value" : "Les entraînements Apple Santé démarrés après l’activation de cette option seront importés dans OutRun."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle Apple Health-trainingen die na het inschakelen van deze optie zijn gestart, worden geïmporteerd in deze app."
+            "value" : "Apple Gezondheid-trainingen die na het inschakelen van deze optie zijn gestart, worden geïmporteerd in OutRun."
           }
         }
       }
@@ -3132,37 +3132,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importieren seit %@"
+            "value" : "Neue Workouts importieren seit %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importing Since %@"
+            "value" : "Importing New Workouts Since %@"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importing Since %@"
+            "value" : "Importing New Workouts Since %@"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importando desde %@"
+            "value" : "Importando entrenamientos nuevos desde %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importation depuis le %@"
+            "value" : "Importation des nouveaux entraînements depuis le %@"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importeren sinds %@"
+            "value" : "Nieuwe trainingen importeren sinds %@"
           }
         }
       }
@@ -3596,7 +3596,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les Conditions d’utilisation et la Politique de confidentialité ont changé. Veuillez les consulter pour continuer."
+            "value" : "Les Conditions d’utilisation et la Politique de confidentialité ont changé. Consulte-les pour continuer."
           }
         },
         "nl" : {
@@ -3732,7 +3732,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Da wir jede Funktion von Grund auf neu gedacht haben, stand Leistung für uns an erster Stelle. Das Ergebnis ist eine App, die sich selbst bei stundenlangen Trainings flott anfühlt."
+            "value" : "Da wir jede Funktion von Grund auf neu gedacht haben, stand Leistung für uns an erster Stelle. Das Ergebnis ist eine App, die sich selbst bei stundenlangen Workouts flott anfühlt."
           }
         },
         "en" : {
@@ -3836,7 +3836,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Même si l’app a beaucoup changé, notre engagement envers la confidentialité reste le même. Avec OutRun, vous gardez le contrôle de vos données."
+            "value" : "Même si l’app a beaucoup changé, notre engagement envers la confidentialité reste le même. Avec OutRun, tu gardes le contrôle de tes données."
           }
         },
         "nl" : {
@@ -3916,7 +3916,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nous avons repris tout ce que nous pouvions. Complétez le reste si vous le souhaitez, ou ignorez cette étape et faites-le plus tard dans les Réglages."
+            "value" : "Nous avons repris tout ce que nous pouvions. Complète le reste si tu le souhaites, ou ignore cette étape et fais-le plus tard dans les Réglages."
           }
         },
         "nl" : {
@@ -3956,7 +3956,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Complétez votre profil"
+            "value" : "Complète ton profil"
           }
         },
         "nl" : {
@@ -3996,7 +3996,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Patientez, cela n’arrive qu’une seule fois."
+            "value" : "Patiente, cela n’arrive qu’une seule fois."
           }
         },
         "nl" : {
@@ -4012,7 +4012,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deine Trainings werden migriert…"
+            "value" : "Deine Workouts werden migriert…"
           }
         },
         "en" : {
@@ -4036,7 +4036,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Migration de vos entraînements…"
+            "value" : "Migration de tes entraînements…"
           }
         },
         "nl" : {
@@ -4052,7 +4052,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun wurde von Grund auf neu entwickelt. Deine Trainings werden im Hintergrund in ein neues Format umgewandelt. Bitte schließe die App nicht."
+            "value" : "OutRun wurde von Grund auf neu entwickelt. Deine Workouts werden im Hintergrund in ein neues Format umgewandelt. Bitte schließe die App nicht."
           }
         },
         "en" : {
@@ -4076,7 +4076,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun a été entièrement reconstruite. Vos entraînements sont convertis vers un nouveau format en arrière-plan. Veuillez ne pas fermer l’app."
+            "value" : "OutRun a été entièrement reconstruite. Tes entraînements sont convertis vers un nouveau format en arrière-plan. Ne ferme pas l’app."
           }
         },
         "nl" : {
@@ -5038,7 +5038,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Veuillez sélectionner une date."
+            "value" : "Sélectionne une date."
           }
         },
         "nl" : {
@@ -5257,37 +5257,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mit Zugriff auf Apple Health kann OutRun deine aufgezeichneten Workouts exportieren und Workouts importieren, die von deiner Apple Watch oder anderen Apps aufgezeichnet wurden."
+            "value" : "Mit Zugriff auf Apple Health kann OutRun deine aufgezeichneten Workouts dort speichern und Workouts importieren, die von deiner Apple Watch oder anderen Apps aufgezeichnet wurden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Access to Apple Health lets OutRun export your recorded workouts and import workouts recorded by your Apple Watch or other apps."
+            "value" : "Access to Apple Health lets OutRun save your recorded workouts there and import workouts recorded by your Apple Watch or other apps."
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Access to Apple Health lets OutRun export your recorded workouts and import workouts recorded by your Apple Watch or other apps."
+            "value" : "Access to Apple Health lets OutRun save your recorded workouts there and import workouts recorded by your Apple Watch or other apps."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El acceso a Apple Health permite a OutRun exportar tus entrenamientos grabados e importar los que hayan registrado tu Apple Watch u otras apps."
+            "value" : "El acceso a Salud de Apple permite a OutRun guardar ahí tus entrenamientos grabados e importar los que hayan registrado tu Apple Watch u otras apps."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'accès à Apple Santé permet à OutRun d'exporter tes entraînements enregistrés et d'importer ceux enregistrés par ton Apple Watch ou d'autres apps."
+            "value" : "L’accès à Apple Santé permet à OutRun d’y enregistrer tes entraînements et d’importer ceux enregistrés par ton Apple Watch ou d’autres apps."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Met toegang tot Apple Health kan OutRun je opgenomen trainingen exporteren en trainingen importeren die zijn vastgelegd door je Apple Watch of andere apps."
+            "value" : "Met toegang tot Apple Gezondheid kan OutRun je opgenomen trainingen daar bewaren en trainingen importeren die zijn vastgelegd door je Apple Watch of andere apps."
           }
         }
       }
@@ -6819,7 +6819,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Êtes-vous sûr de vouloir réinitialiser l'app ? Toutes les données enregistrées localement, y compris vos entraînements et vos informations personnelles, seront supprimées. Cette action est irréversible."
+            "value" : "Es-tu sûr de vouloir réinitialiser l’app ? Toutes les données enregistrées localement, y compris tes entraînements et tes informations personnelles, seront supprimées. Cette action est irréversible."
           }
         },
         "nl" : {
@@ -7276,7 +7276,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In OutRun aufgezeichnete Trainings werden automatisch in der Health-App gespeichert."
+            "value" : "In OutRun aufgezeichnete Workouts werden automatisch in der Health-App gespeichert."
           }
         },
         "en" : {
@@ -7436,7 +7436,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Alle Trainings importieren"
+            "value" : "Alle Workouts importieren"
           }
         },
         "en" : {
@@ -7476,7 +7476,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Wenn du deine bisherigen Trainings aus Apple Health importierst, startet der Import im Hintergrund, sobald du OutRun die Berechtigung erteilst. Der Import kann einige Minuten dauern."
+            "value" : "Wenn du deine bisherigen Workouts aus Apple Health importierst, startet der Import im Hintergrund, sobald du OutRun die Berechtigung erteilst. Der Import kann einige Minuten dauern."
           }
         },
         "en" : {
@@ -7494,19 +7494,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Si decides importar tus entrenamientos existentes de Apple Health, el proceso se iniciará en segundo plano en cuanto concedas permiso a OutRun. La importación puede tardar unos minutos."
+            "value" : "Si decides importar tus entrenamientos existentes de Salud de Apple, el proceso se iniciará en segundo plano en cuanto concedas permiso a OutRun. La importación puede tardar unos minutos."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Si vous choisissez d’importer vos entraînements existants depuis Apple Health, le processus démarrera en arrière-plan dès que vous aurez accordé l’autorisation à OutRun. L’importation peut prendre quelques minutes."
+            "value" : "Si tu choisis d’importer tes entraînements existants depuis Apple Santé, le processus démarrera en arrière-plan dès que tu auras accordé l’autorisation à OutRun. L’importation peut prendre quelques minutes."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Als je ervoor kiest je bestaande trainingen uit Apple Health te importeren, begint dit op de achtergrond zodra je OutRun toestemming geeft. Het importeren kan een paar minuten duren."
+            "value" : "Als je ervoor kiest je bestaande trainingen uit Apple Gezondheid te importeren, begint dit op de achtergrond zodra je OutRun toestemming geeft. Het importeren kan een paar minuten duren."
           }
         }
       }
@@ -7556,7 +7556,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Nur neue Trainings importieren"
+            "value" : "Nur neue Workouts importieren"
           }
         },
         "en" : {
@@ -7636,7 +7636,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Übernimm deine bisherigen Trainings in OutRun und speichere neue automatisch in der Health-App."
+            "value" : "Übernimm deine bisherigen Workouts in OutRun und speichere neue automatisch in der Health-App."
           }
         },
         "en" : {
@@ -7660,7 +7660,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importez vos entraînements existants dans OutRun et enregistrez automatiquement les nouveaux dans l’app Santé."
+            "value" : "Importe tes entraînements existants dans OutRun et enregistre automatiquement les nouveaux dans l’app Santé."
           }
         },
         "nl" : {
@@ -7780,7 +7780,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Veuillez accepter les Conditions d’utilisation et confirmer que vous avez lu la Politique de confidentialité pour utiliser OutRun."
+            "value" : "Accepte les Conditions d’utilisation et confirme que tu as lu la Politique de confidentialité pour utiliser OutRun."
           }
         },
         "nl" : {
@@ -7940,7 +7940,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pour l’instant, nous avons seulement besoin de votre nom. Le reste peut être modifié plus tard dans les Réglages."
+            "value" : "Pour l’instant, nous avons seulement besoin de ton nom. Le reste peut être modifié plus tard dans les Réglages."
           }
         },
         "nl" : {
@@ -7980,7 +7980,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "À propos de vous"
+            "value" : "À propos de toi"
           }
         },
         "nl" : {
@@ -8076,7 +8076,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Du kannst OutRun jetzt verwenden. Wir fragen nach der Standortberechtigung, wenn du dein erstes Training aufzeichnest."
+            "value" : "Du kannst OutRun jetzt verwenden. Wir fragen nach der Standortberechtigung, wenn du dein erstes Workout aufzeichnest."
           }
         },
         "en" : {
@@ -8100,7 +8100,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous pouvez maintenant utiliser OutRun. Nous vous demanderons l’accès à votre position lorsque vous enregistrerez votre premier entraînement."
+            "value" : "Tu peux maintenant utiliser OutRun. Nous te demanderons l’accès à ta position lorsque tu enregistreras ton premier entraînement."
           }
         },
         "nl" : {
@@ -8341,7 +8341,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous gardez le contrôle de vos données. Rien ne quitte votre appareil sans votre accord."
+            "value" : "Tu gardes le contrôle de tes données. Rien ne quitte ton appareil sans ton accord."
           }
         },
         "nl" : {
@@ -8461,7 +8461,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enregistrez des itinéraires GPS précis en course, à vélo, à pied, en randonnée ou en patins."
+            "value" : "Enregistre des itinéraires GPS précis en course, à vélo, à pied, en randonnée ou en patins."
           }
         },
         "nl" : {
@@ -8904,7 +8904,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun est gratuit, open source et sans publicité. Si vous aimez l’utiliser et souhaitez soutenir son développement, vous pouvez laisser un pourboire. Les pourboires sont entièrement facultatifs et ne débloquent aucune fonctionnalité supplémentaire."
+            "value" : "OutRun est gratuit, open source et sans publicité. Si tu aimes l’utiliser et souhaites soutenir son développement, tu peux laisser un pourboire. Les pourboires sont entièrement facultatifs et ne débloquent aucune fonctionnalité supplémentaire."
           }
         },
         "nl" : {
@@ -9819,19 +9819,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Seguro que quieres eliminar este entrenamiento? Si se grabó con esta aplicación, también se eliminará de los servicios sincronizados, como Apple Health."
+            "value" : "¿Seguro que quieres eliminar este entrenamiento? Si se grabó con esta aplicación, también se eliminará de los servicios sincronizados, como Salud de Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es-tu sûr de vouloir supprimer cet entraînement ? S'il a été enregistré avec cette application, il sera également supprimé des services synchronisés, tels qu'Apple Health."
+            "value" : "Es-tu sûr de vouloir supprimer cet entraînement ? S’il a été enregistré avec cette application, il sera également supprimé des services synchronisés, tels qu’Apple Santé."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Weet je zeker dat je deze training wilt verwijderen? Als deze met deze app is opgenomen, wordt hij ook verwijderd van gesynchroniseerde diensten, zoals Apple Health."
+            "value" : "Weet je zeker dat je deze training wilt verwijderen? Als deze met deze app is opgenomen, wordt hij ook verwijderd van gesynchroniseerde diensten, zoals Apple Gezondheid."
           }
         }
       }
@@ -10385,7 +10385,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous avez ajusté la date de début ou de fin de sorte que certaines parties du parcours se trouvent en dehors de la période de cet entraînement. Souhaitez-vous tronquer le parcours pour qu'il corresponde ou le conserver tel quel ?"
+            "value" : "Tu as ajusté la date de début ou de fin de sorte que certaines parties du parcours se trouvent en dehors de la période de cet entraînement. Souhaites-tu tronquer le parcours pour qu’il corresponde ou le conserver tel quel ?"
           }
         },
         "nl" : {
@@ -10425,7 +10425,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voulez-vous tronquer le parcours ?"
+            "value" : "Veux-tu tronquer le parcours ?"
           }
         },
         "nl" : {
@@ -10699,19 +10699,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health"
+            "value" : "Salud de Apple"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health"
+            "value" : "Apple Santé"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health"
+            "value" : "Apple Gezondheid"
           }
         }
       }

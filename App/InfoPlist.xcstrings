@@ -1,6 +1,172 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun"
+          }
+        }
+      }
+    },
+    "file_type_description_gpx" : {
+      "comment" : "Description of the GPX file type",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS-Austauschformat (GPX)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS Exchange Format (GPX)"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS Exchange Format (GPX)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato de intercambio GPS (GPX)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format d’échange GPS (GPX)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS-uitwisselingsformaat (GPX)"
+          }
+        }
+      }
+    },
+    "file_type_description_orbup" : {
+      "comment" : "Description of the legacy OutRun backup file type",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun-Backup"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun Backup"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun Backup"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia de seguridad de OutRun"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvegarde OutRun"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OutRun-back-up"
+          }
+        }
+      }
+    },
     "NSHealthShareUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -31,7 +197,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun lit vos entraînements dans l’app Santé afin d’importer ceux enregistrés par d’autres apps et appareils et de maintenir à jour les entraînements synchronisés."
+            "value" : "OutRun lit tes entraînements dans l’app Santé afin d’importer ceux enregistrés par d’autres apps et appareils et de maintenir à jour les entraînements synchronisés."
           }
         },
         "nl" : {
@@ -72,7 +238,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun enregistre vos entraînements dans l’app Santé afin qu’ils y soient disponibles ainsi que dans d’autres apps."
+            "value" : "OutRun enregistre tes entraînements dans l’app Santé afin qu’ils y soient disponibles ainsi que dans d’autres apps."
           }
         },
         "nl" : {
@@ -113,7 +279,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun utilise votre position pour enregistrer vos entraînements et leurs itinéraires."
+            "value" : "OutRun utilise ta position pour enregistrer tes entraînements et leurs itinéraires."
           }
         },
         "nl" : {
@@ -154,7 +320,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun utilise votre position pour enregistrer vos entraînements et leurs itinéraires."
+            "value" : "OutRun utilise ta position pour enregistrer tes entraînements et leurs itinéraires."
           }
         },
         "nl" : {
@@ -195,7 +361,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun utilise votre position pour enregistrer vos entraînements et leurs itinéraires."
+            "value" : "OutRun utilise ta position pour enregistrer tes entraînements et leurs itinéraires."
           }
         },
         "nl" : {
@@ -236,7 +402,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OutRun utilise les données de mouvement pour rendre vos entraînements enregistrés plus précis et détaillés."
+            "value" : "OutRun utilise les données de mouvement pour rendre tes entraînements enregistrés plus précis et détaillés."
           }
         },
         "nl" : {
