@@ -128,7 +128,7 @@ public class OutRunCore {
         guard case .initialized = status, let database else { throw OutRunCoreError.notInitialized }
         do {
             return try await database.upsert(workout)
-        } catch SyncError.conflict {
+        } catch SyncError.conflict, SyncError.alreadyUpToDate {
             throw OutRunCoreError.newerWorkoutVersionExists
         }
     }
@@ -184,6 +184,28 @@ public class OutRunCore {
     
     public func syncService<Service: SyncService>(_ type: Service.Type) -> Service? {
         syncServices.first(where: { $0 is Service }) as? Service
+    }
+    
+    /// Fetches the manual synchronisations that can be performed for the workout with the registered sync services.
+    /// - throws: Throws if the core is not yet initialized or the workout cannot be found.
+    public func syncOptions(forWorkoutWithIdentifier identifier: UUID) async throws -> [WorkoutSyncOption] {
+        guard case .initialized = status, let syncManager else { throw OutRunCoreError.notInitialized }
+        return try await syncManager.syncOptions(forWorkoutWith: identifier)
+    }
+    
+    /// Manually synchronises the workout with the sync service, as described by the options returned from
+    /// ``syncOptions(forWorkoutWithIdentifier:)``.
+    /// - parameter replacingNewerVersion: Whether a newer version of the workout should be replaced, on the service when syncing outward
+    /// or in the core when syncing inward.
+    /// - throws: Throws `SyncError.conflict` if a newer version exists and `replacingNewerVersion` is `false`. The user should confirm
+    /// replacing it before trying again with `replacingNewerVersion` set to `true`.
+    public func resync(
+        workoutWithIdentifier identifier: UUID,
+        withServiceWith serviceIdentifier: String,
+        replacingNewerVersion: Bool = false
+    ) async throws {
+        guard case .initialized = status, let syncManager else { throw OutRunCoreError.notInitialized }
+        try await syncManager.resync(workoutWith: identifier, withServiceWith: serviceIdentifier, replacingNewerVersion: replacingNewerVersion)
     }
     
     // MARK: Internal Workings

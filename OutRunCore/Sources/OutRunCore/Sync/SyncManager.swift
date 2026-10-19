@@ -430,6 +430,77 @@ class SyncManager {
         }
     }
 
+    // MARK: - Manual Sync
+
+    /// Returns the manual synchronisations that can be performed for the workout with the registered services.
+    func syncOptions(forWorkoutWith identifier: UUID) async throws -> [WorkoutSyncOption] {
+        let workout = try await database.fetchWorkout(for: identifier)
+        var options: [WorkoutSyncOption] = []
+        for service in syncServices {
+            guard let action = try? await syncAction(for: workout, with: service) else { continue }
+            options.append(.init(serviceIdentifier: service.identifier, action: action))
+        }
+        return options
+    }
+
+    /// Manually synchronises the workout with the service. Workouts originating from the service are synced inward, all others outward.
+    /// - parameter replacingNewerVersion: Whether a newer version of the workout should be replaced, on the service when syncing outward
+    /// or in the core when syncing inward.
+    /// - throws: Throws `SyncError.conflict` if a newer version exists and `replacingNewerVersion` is `false`. Throws
+    /// `SyncError.workoutNotFinished`, `SyncError.workoutNotSyncable` or
+    /// `SyncError.workoutNotFoundOnService` if the workout cannot be synchronised with the service.
+    func resync(workoutWith identifier: UUID, withServiceWith serviceIdentifier: String, replacingNewerVersion: Bool) async throws {
+        guard let service = syncServices.first(where: { $0.identifier == serviceIdentifier }) else { throw SyncError.serviceUnavailable }
+        try await semaphore.waitUnlessCancelled()
+        defer { semaphore.signal() }
+        let workout = try await database.fetchWorkout(for: identifier)
+        switch try await syncAction(for: workout, with: service) {
+        case .initialOutwardSync, .outwardResync:
+            try await resyncOutward(workout, to: service, replacingNewerVersion: replacingNewerVersion)
+        case .inwardResync:
+            try await resyncInward(workout, from: service, replacingNewerVersion: replacingNewerVersion)
+        }
+    }
+
+    private func syncAction(for workout: RawWorkout, with service: any SyncService) async throws -> WorkoutSyncOption.Action {
+        let mapping = workout.serviceMappings.first(where: { $0.serviceIdentifier == service.identifier })
+        if workout.source == .syncService(identifier: service.identifier) {
+            guard mapping?.externalId != nil || mapping?.externalUrl != nil else { throw SyncError.workoutNotFoundOnService }
+            return .inwardResync
+        }
+        guard workout.source.shouldSyncOutward else { throw SyncError.workoutNotSyncable }
+        guard workout.endDate != nil else { throw SyncError.workoutNotFinished }
+        return if let mapping, mapping.syncStatus != .pending { .outwardResync } else { .initialOutwardSync }
+    }
+
+    private func resyncOutward(_ workout: RawWorkout, to service: any SyncService, replacingNewerVersion: Bool) async throws {
+        var mapping = Self.serviceMapping(of: workout, for: service)
+        do {
+            (mapping.externalId, mapping.externalUrl) = try await service.upsert(workout, replacingNewerVersion: replacingNewerVersion)
+            mapping.syncStatus = .synced
+            mapping.lastEditDateSynced = workout.lastEditDate
+        } catch SyncError.serviceUnavailable {
+            throw SyncError.serviceUnavailable
+        } catch SyncError.conflict {
+            mapping.syncStatus = .conflict
+            try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+            throw SyncError.conflict
+        } catch {
+            mapping.syncStatus = .failed
+            try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+            throw error
+        }
+        try await database.upsertSyncServiceMapping(mapping, forWorkoutWith: workout.id)
+    }
+
+    private func resyncInward(_ workout: RawWorkout, from service: any SyncService, replacingNewerVersion: Bool) async throws {
+        guard let mapping = workout.serviceMappings.first(where: { $0.serviceIdentifier == service.identifier })
+        else { throw SyncError.workoutNotFoundOnService }
+        var serviceWorkout = try await service.fetchWorkout(for: mapping)
+        serviceWorkout.id = workout.id
+        try await database.upsert(serviceWorkout, replacing: replacingNewerVersion ? .allVersions : .olderAndEqualVersions)
+    }
+
     // MARK: - Helpers
 
     private static func serviceMapping(of workout: RawWorkout, for service: any SyncService) -> RawSyncServiceMapping {

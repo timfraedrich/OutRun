@@ -1361,6 +1361,46 @@
         }
       }
     },
+    "sync_error_already_up_to_date" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Workout ist bereits auf dem neuesten Stand."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout is already up to date."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout is already up to date."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El entrenamiento ya está actualizado."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’entraînement est déjà à jour."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training is al up-to-date."
+          }
+        }
+      }
+    },
     "sync_error_authentication_required" : {
       "localizations" : {
         "de" : {
@@ -1557,6 +1597,126 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er is een onbekende fout opgetreden tijdens het synchroniseren van gegevens."
+          }
+        }
+      }
+    },
+    "sync_error_workout_not_finished" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Workout kann nicht synchronisiert werden, während es aufgezeichnet wird."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout cannot be synchronized while it is being recorded."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout cannot be synchronised while it is being recorded."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El entrenamiento no se puede sincronizar mientras se está grabando."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’entraînement ne peut pas être synchronisé pendant son enregistrement."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training kan niet worden gesynchroniseerd terwijl deze wordt opgenomen."
+          }
+        }
+      }
+    },
+    "sync_error_workout_not_found_on_service" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Workout wurde auf dem Dienst nicht gefunden. Möglicherweise wurde es dort gelöscht."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout could not be found on the service. It may have been deleted there."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout could not be found on the service. It may have been deleted there."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontró el entrenamiento en el servicio. Es posible que se haya eliminado allí."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’entraînement est introuvable sur le service. Il a peut-être été supprimé."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training is niet gevonden bij de dienst. Mogelijk is deze daar verwijderd."
+          }
+        }
+      }
+    },
+    "sync_error_workout_not_syncable" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Workout kann nicht mit diesem Dienst synchronisiert werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout cannot be synchronized with this service."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The workout cannot be synchronised with this service."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El entrenamiento no se puede sincronizar con este servicio."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’entraînement ne peut pas être synchronisé avec ce service."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De training kan niet worden gesynchroniseerd met deze dienst."
           }
         }
       }

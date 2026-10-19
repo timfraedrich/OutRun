@@ -30,6 +30,14 @@ public enum SyncError: LocalizedError {
     case networkError
     /// An unknown error occurred during sync.
     case unknown
+    /// The exact version of the workout is already present, so it was skipped.
+    case alreadyUpToDate
+    /// The workout cannot be synced as it is still being recorded.
+    case workoutNotFinished
+    /// The workout cannot be synced to the service, for example because it originates from another service.
+    case workoutNotSyncable
+    /// The workout could not be found on the service, for example because it was deleted there.
+    case workoutNotFoundOnService
     
     public var errorDescription: String? {
         switch self {
@@ -38,6 +46,10 @@ public enum SyncError: LocalizedError {
         case .authenticationRequired: .init(localized: "sync_error_authentication_required", bundle: .module)
         case .networkError: .init(localized: "sync_error_network_error", bundle: .module)
         case .unknown: .init(localized: "sync_error_unknown", bundle: .module)
+        case .alreadyUpToDate: .init(localized: "sync_error_already_up_to_date", bundle: .module)
+        case .workoutNotFinished: .init(localized: "sync_error_workout_not_finished", bundle: .module)
+        case .workoutNotSyncable: .init(localized: "sync_error_workout_not_syncable", bundle: .module)
+        case .workoutNotFoundOnService: .init(localized: "sync_error_workout_not_found_on_service", bundle: .module)
         }
     }
 }

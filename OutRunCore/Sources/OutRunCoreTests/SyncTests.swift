@@ -335,14 +335,27 @@ struct SyncTests {
         #expect(workouts.first?.name == "updated")
     }
     
-    @Test("SyncDelegate update with outdated data throws")
-    func syncDelegateUpdateWithOutdatedDataThrows() async throws {
+    @Test("SyncDelegate update with the same version throws already up to date")
+    func syncDelegateUpdateWithSameVersionThrowsAlreadyUpToDate() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)
         let workout = makeWorkout()
         let delegate = await MockSyncDelegate(database: database)
         _ = try await delegate.upsert(workout)
-        await #expect(throws: SyncError.conflict) {
+        await #expect(throws: SyncError.alreadyUpToDate) {
             _ = try await delegate.upsert(workout)
+        }
+    }
+
+    @Test("SyncDelegate update with outdated data throws conflict")
+    func syncDelegateUpdateWithOutdatedDataThrowsConflict() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        let workout = makeWorkout()
+        let delegate = await MockSyncDelegate(database: database)
+        _ = try await delegate.upsert(workout)
+        var outdatedWorkout = workout
+        outdatedWorkout.lastEditDate = workout.lastEditDate.addingTimeInterval(-60)
+        await #expect(throws: SyncError.conflict) {
+            _ = try await delegate.upsert(outdatedWorkout)
         }
     }
 

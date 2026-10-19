@@ -286,6 +286,8 @@ public class HealthSyncService: SyncService {
             let workout = try await fetchFullWorkout(from: hkWorkout)
             try await delegate.upsert(workout)
             logger.info("Successfully upserted workout \(hkWorkout.uuid.uuidString) inward.")
+        } catch SyncError.alreadyUpToDate {
+            logger.debug("Skipped upsert of workout \(hkWorkout.uuid.uuidString) inward as it is already up to date.")
         } catch {
             logger.error("Failed to upsert workout \(hkWorkout.uuid.uuidString) inward: \(error.localizedDescription)")
         }
@@ -358,6 +360,8 @@ public class HealthSyncService: SyncService {
                             let workout = try await fetchFullWorkout(from: hkWorkout)
                             try await delegate.upsert(workout)
                             logger.info("Successfully upserted workout \(hkWorkout.uuid.uuidString) inward.")
+                        } catch SyncError.alreadyUpToDate {
+                            logger.debug("Skipped upsert of workout \(hkWorkout.uuid.uuidString) inward as it is already up to date.")
                         } catch {
                             logger.error("Failed to upsert workout \(hkWorkout.uuid.uuidString) inward: \(error.localizedDescription)")
                         }
@@ -411,6 +415,14 @@ public class HealthSyncService: SyncService {
         }
         let workoutPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sourcePredicate, idPredicate])
         let workoutSamplePredicate = HKSamplePredicate.workout(workoutPredicate)
+        let workoutSampleQueryDescriptor = HKSampleQueryDescriptor(predicates: [workoutSamplePredicate], sortDescriptors: [], limit: 1)
+        return try await workoutSampleQueryDescriptor.result(for: healthStore).first
+    }
+    
+    /// Queries the workout with the given HealthKit assigned id, regardless of the app it was created by.
+    private func queryHKWorkout(withHealthID healthID: String?) async throws -> HKWorkout? {
+        guard let healthUUID = healthID.flatMap(UUID.init(uuidString:)) else { return nil }
+        let workoutSamplePredicate = HKSamplePredicate.workout(HKQuery.predicateForObject(with: healthUUID))
         let workoutSampleQueryDescriptor = HKSampleQueryDescriptor(predicates: [workoutSamplePredicate], sortDescriptors: [], limit: 1)
         return try await workoutSampleQueryDescriptor.result(for: healthStore).first
     }
@@ -674,7 +686,7 @@ public class HealthSyncService: SyncService {
         logger.info("Deinitialized.")
     }
     
-    public func upsert(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {
+    public func upsert(_ workout: RawWorkout, replacingNewerVersion: Bool) async throws -> (id: String?, url: String?) {
         do {
             try await checkMissingAuthorization()
             let healthID = workout.serviceMappings.first(where: { $0.serviceIdentifier == identifier })?.externalId
@@ -684,7 +696,7 @@ public class HealthSyncService: SyncService {
                     if version == upsertVersion {
                         logger.warning("Attempted to upsert workout \(workout.id) again.")
                         return (hkWorkout.uuid.uuidString, nil)
-                    } else if version > upsertVersion {
+                    } else if version > upsertVersion, !replacingNewerVersion {
                         // A newer version of the workout is already synced to the service. The conflict should be resolved manually.
                         throw SyncError.conflict
                     }
@@ -701,6 +713,17 @@ public class HealthSyncService: SyncService {
         } catch {
             logger.error("Failed to insert workout \(workout.id): \(error)")
             throw error
+        }
+    }
+    
+    public func fetchWorkout(for mapping: RawSyncServiceMapping) async throws -> RawWorkout {
+        do {
+            try await checkMissingAuthorization()
+            guard let hkWorkout = try await queryHKWorkout(withHealthID: mapping.externalId) else { throw SyncError.workoutNotFoundOnService }
+            return try await fetchFullWorkout(from: hkWorkout)
+        } catch HealthSyncServiceError.authorizationMissing {
+            logger.error("The user has not granted access to HealthKit.")
+            throw SyncError.authenticationRequired
         }
     }
     

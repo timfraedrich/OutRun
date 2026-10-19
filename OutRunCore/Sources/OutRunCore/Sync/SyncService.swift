@@ -40,13 +40,28 @@ public protocol SyncService: AnyObject, Sendable {
     func deinitialize() async
     
     /// Called when a workout was created or updated and should be synced to the service.
+    /// - parameter replacingNewerVersion: Whether a newer version of the workout present on the service should be replaced.
     /// - returns: An identifier or URL to the workout for the external service.
+    /// - throws: Throws `SyncError.conflict` if a newer version of the workout is present on the service and `replacingNewerVersion` is
+    /// `false`.
     /// - note: This function may be called multiple times with the same workout data. If the exact workout data was previously synced, the
     /// request can just be ignored, but the correct id or url should still be returned.
-    func upsert(_ workout: RawWorkout) async throws -> (id: String?, url: String?)
-    
+    func upsert(_ workout: RawWorkout, replacingNewerVersion: Bool) async throws -> (id: String?, url: String?)
+
     /// Called when a workout was deleted and should be synced to the service.
     /// - note: This function may be called for identifiers whose corresponding workouts were never synced to the service or already
     /// deleted. This case should be treated as success with no error being thrown.
     func delete(workoutWith identifier: UUID) async throws
+
+    /// Fetches the current version of a workout that was synced from the service to the core.
+    /// - parameter mapping: The mapping of the workout for this service, containing its external id or url.
+    /// - throws: Throws `SyncError.workoutNotFoundOnService` if the workout does not exist on the service.
+    func fetchWorkout(for mapping: RawSyncServiceMapping) async throws -> RawWorkout
+}
+
+extension SyncService {
+    
+    func upsert(_ workout: RawWorkout) async throws -> (id: String?, url: String?) {
+        try await upsert(workout, replacingNewerVersion: false)
+    }
 }

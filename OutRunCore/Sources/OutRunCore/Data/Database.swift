@@ -332,6 +332,10 @@ actor Database: ModelActor {
         return stream
     }
     
+    func fetchWorkout(for identifier: UUID) throws -> RawWorkout {
+        RawWorkout(workout: try fetchWorkout(with: identifier))
+    }
+    
     func fetchWorkout(for identifier: PersistentIdentifier) throws -> RawWorkout {
         var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.persistentModelID == identifier })
         descriptor.fetchLimit = 1
@@ -404,8 +408,21 @@ actor Database: ModelActor {
     
     // MARK: Sync Delegate Implementation
     
+    enum VersionReplacementPolicy {
+        /// Only versions with an earlier last edit date are replaced.
+        case olderVersions
+        /// Versions with an earlier or the same last edit date are replaced.
+        case olderAndEqualVersions
+        /// Any version is replaced.
+        case allVersions
+    }
+    
+    /// Inserts the workout or updates the existing version of it.
+    /// - parameter versionPolicy: Determines which existing versions of the workout may be replaced.
+    /// - throws: Throws `SyncError.alreadyUpToDate` if the same version exists and `SyncError.conflict` if a newer version exists or the
+    /// existing workout has a different source.
     @discardableResult
-    func upsert(_ workout: RawWorkout) async throws -> UUID {
+    func upsert(_ workout: RawWorkout, replacing versionPolicy: VersionReplacementPolicy = .olderVersions) async throws -> UUID {
         do {
             let serviceInformation: (externalIdentifier: String, serviceIdentifier: String)?
             if case .syncService(let serviceIdentifier) = workout.source,
@@ -419,8 +436,15 @@ actor Database: ModelActor {
             // We need to check if the workout is equal up to the second
             // as the conversion into ISO format looses some fractional second precision
             let sameSecond = Calendar.current.isDate(databaseWorkout.lastEditDate, equalTo: workout.lastEditDate, toGranularity: .second)
-            if databaseWorkout.source != workout.source || databaseWorkout.lastEditDate >= workout.lastEditDate || sameSecond {
-                throw SyncError.conflict
+            guard databaseWorkout.source == workout.source else { throw SyncError.conflict }
+            switch versionPolicy {
+            case .olderVersions:
+                if sameSecond { throw SyncError.alreadyUpToDate }
+                if databaseWorkout.lastEditDate > workout.lastEditDate { throw SyncError.conflict }
+            case .olderAndEqualVersions:
+                if !sameSecond, databaseWorkout.lastEditDate > workout.lastEditDate { throw SyncError.conflict }
+            case .allVersions:
+                break
             }
             databaseWorkout.type = workout.type
             databaseWorkout.distance = workout.distance
