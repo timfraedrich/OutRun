@@ -41,6 +41,7 @@ struct WorkoutDetailScene: View {
     @State private var resolvedTintColor: CGColor?
     @State private var backupTypeToShare: BackupType?
     @State private var exportProcess: BackupProcess?
+    @State private var syncOptions: [WorkoutSyncOption] = []
     private let workout: any WorkoutProtocol
     private let addCloseButton: Bool
     private let chartHeight: CGFloat = 125
@@ -51,6 +52,24 @@ struct WorkoutDetailScene: View {
     /// Identifies the workout revision and unit preferences the derived chart values were calculated for, so they can be recalculated when they change.
     private var derivedValuesSignature: String {
         "\(workout.lastEditDate.timeIntervalSinceReferenceDate)|\(userPreferences.safeAltitudeUnit().symbol)|\(userPreferences.safeSpeedUnit().symbol)"
+    }
+    /// Identifies the workout state the sync options were determined for, so they can be determined again when it changes.
+    private var syncOptionsSignature: String {
+        let mappings = workout.serviceMappings.map { "\($0.serviceIdentifier):\($0.syncStatus)" }.sorted()
+        return "\(workout.lastEditDate.timeIntervalSinceReferenceDate)|\(workout.endDate != nil)|\(mappings.joined(separator: ","))"
+    }
+    /// Identifies the displayed state of the sync service mappings, so changes to it can be animated.
+    private var serviceMappingsSignature: [String] {
+        workout.serviceMappings.map { mapping in
+            let lastEditDateSynced = mapping.lastEditDateSynced?.timeIntervalSinceReferenceDate
+            return "\(mapping.serviceIdentifier)|\(mapping.syncStatus)|\(mapping.externalId ?? "")|\(mapping.externalUrl ?? "")|\(lastEditDateSynced ?? 0)"
+        }
+        .sorted()
+    }
+    private var syncServiceIdentifiers: [String] {
+        let mappedIdentifiers = Set(workout.serviceMappings.map(\.serviceIdentifier))
+        let optionsIdentifiers = Set(syncOptions.map(\.serviceIdentifier))
+        return mappedIdentifiers.union(optionsIdentifiers).sorted()
     }
     
     var body: some View {
@@ -73,6 +92,8 @@ struct WorkoutDetailScene: View {
                     metadataSection
                     actionSection
                 }
+                .animation(.default, value: serviceMappingsSignature)
+                .animation(.default, value: syncOptions)
                 .backgroundStyle(Color(.secondarySystemGroupedBackground))
                 .padding(.horizontal, .regular)
                 .padding(.top, showMap && mapHeight > 0 ? -overlapHeight : nil)
@@ -98,6 +119,9 @@ struct WorkoutDetailScene: View {
         .compatibleScrollEffectHidden(for: .top)
         .backupExport([workout.id], of: $backupTypeToShare, process: $exportProcess)
         .backupProcessSheet(for: $exportProcess)
+        .task(id: syncOptionsSignature) {
+            await loadSyncOptions()
+        }
         .task(id: derivedValuesSignature) {
             let sortedPauses = workout.pauses.sorted(using: KeyPathComparator(\.startDate, order: .forward))
             let sortedRoute = workout.route.sorted(using: KeyPathComparator(\.timestamp, order: .forward))
@@ -317,28 +341,41 @@ struct WorkoutDetailScene: View {
                     LabeledContent("workout_source", value: workout.source.localized)
                 }
             }
-            ForEach(workout.serviceMappings, id: \.serviceIdentifier) { mapping in
-                section(verbatim: WorkoutSource.syncService(identifier: mapping.serviceIdentifier).localized) {
-                    if let id = mapping.externalId {
-                        LabeledContent("id", value: id)
-                        Divider()
-                    }
-                    LabeledContent("sync_status") {
-                        Label {
-                            Text(mapping.syncStatus.localized)
-                        } icon: {
-                            Image(systemName: mapping.syncStatus.systemImage)
+            ForEach(syncServiceIdentifiers, id: \.self) { serviceIdentifier in
+                let mapping = workout.serviceMappings.first { $0.serviceIdentifier == serviceIdentifier }
+                let option = syncOptions.first { $0.serviceIdentifier == serviceIdentifier }
+                section(verbatim: WorkoutSource.syncService(identifier: serviceIdentifier).localized) {
+                    if let mapping {
+                        if let id = mapping.externalId {
+                            LabeledContent("id", value: id)
+                            Divider()
                         }
-                        .foregroundStyle(mapping.syncStatus.color)
+                        LabeledContent("sync_status") {
+                            Label {
+                                Text(mapping.syncStatus.localized)
+                            } icon: {
+                                Image(systemName: mapping.syncStatus.systemImage)
+                                    .contentTransition(.symbolEffect(.replace))
+                            }
+                            .foregroundStyle(mapping.syncStatus.color)
+                        }
+                        if let lastEditDateSynced = mapping.lastEditDateSynced {
+                            Divider()
+                            LabeledContent("synced_version", value: lastEditDateSynced.formatted())
+                        }
+                        if let urlString = mapping.externalUrl, let url = URL(string: urlString) {
+                            Divider()
+                            Button("sync_service_open_externally", systemImage: "link") {
+                                openURL(url)
+                            }
+                        }
                     }
-                    if let lastEditDateSynced = mapping.lastEditDateSynced {
-                        Divider()
-                        LabeledContent("last_synced", value: lastEditDateSynced.formatted())
-                    }
-                    if let urlString = mapping.externalUrl, let url = URL(string: urlString) {
-                        Divider()
-                        Button("sync_service_open_externally", systemImage: "link") {
-                            openURL(url)
+                    if let option {
+                        if mapping != nil {
+                            Divider()
+                        }
+                        WorkoutSyncButton(option: option, workoutIdentifier: workout.id) {
+                            Task { await loadSyncOptions() }
                         }
                     }
                 }
@@ -392,6 +429,10 @@ struct WorkoutDetailScene: View {
     
     private func openMap(metric: WorkoutChartMetric) {
         node.route(WorkoutMapRoute(id: workout.id, metric: metric))
+    }
+    
+    private func loadSyncOptions() async {
+        syncOptions = (try? await core.syncOptions(forWorkoutWithIdentifier: workout.id)) ?? []
     }
     
     private func delete() {

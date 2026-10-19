@@ -56,18 +56,18 @@ struct QueriedWorkoutWrapper<Content: View>: View {
 
     private func observeWorkout() async {
         let didSaveNotifications = NotificationCenter.default.notifications(named: ModelContext.didSave)
-        var persistentModelID = await loadWorkout()
+        var persistentModelIDs = await loadWorkout()
         for await notification in didSaveNotifications {
-            if let persistentModelID, !notification.containsChanges(to: persistentModelID) { continue }
-            persistentModelID = await loadWorkout()
+            if let persistentModelIDs, !notification.containsChanges(to: persistentModelIDs) { continue }
+            persistentModelIDs = await loadWorkout()
         }
     }
 
-    /// - Returns: The persistent identifier of the loaded workout, or `nil` if it could not be loaded.
-    private func loadWorkout() async -> PersistentIdentifier? {
+    /// - Returns: The persistent identifiers of the loaded workout and its sync service mappings, or `nil` if it could not be loaded.
+    private func loadWorkout() async -> Set<PersistentIdentifier>? {
         let fetchResult = await modelContext.container.fetchRawWorkout(with: id)
         result = fetchResult.map(\.workout)
-        return try? fetchResult.get().persistentModelID
+        return try? fetchResult.get().persistentModelIDs
     }
 }
 
@@ -80,14 +80,15 @@ private struct WorkoutNotFoundError: LocalizedError {
 private extension ModelContainer {
 
     @concurrent
-    func fetchRawWorkout(with id: Workout.ID) async -> Result<(workout: RawWorkout, persistentModelID: PersistentIdentifier), Error> {
+    func fetchRawWorkout(with id: Workout.ID) async -> Result<(workout: RawWorkout, persistentModelIDs: Set<PersistentIdentifier>), Error> {
         do {
             var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == id })
             descriptor.relationshipKeyPathsForPrefetching = [\.route, \.heartRates, \.pauses, \.serviceMappings]
             descriptor.fetchLimit = 1
             let context = ModelContext(self)
             guard let workout = try context.fetch(descriptor).first else { return .failure(WorkoutNotFoundError()) }
-            return .success((RawWorkout(workout: workout), workout.persistentModelID))
+            let persistentModelIDs = Set([workout.persistentModelID] + workout.serviceMappings.map(\.persistentModelID))
+            return .success((RawWorkout(workout: workout), persistentModelIDs))
         } catch {
             return .failure(error)
         }
@@ -96,10 +97,10 @@ private extension ModelContainer {
 
 private extension Notification {
 
-    func containsChanges(to persistentModelID: PersistentIdentifier) -> Bool {
+    func containsChanges(to persistentModelIDs: Set<PersistentIdentifier>) -> Bool {
         let keys: [ModelContext.NotificationKey] = [.insertedIdentifiers, .updatedIdentifiers, .deletedIdentifiers]
         return keys.contains { key in
-            (userInfo?[key.rawValue] as? [PersistentIdentifier])?.contains(persistentModelID) == true
+            (userInfo?[key.rawValue] as? [PersistentIdentifier])?.contains(where: persistentModelIDs.contains) == true
         }
     }
 }

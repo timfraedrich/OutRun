@@ -29,4 +29,13 @@ extension WorkoutSource {
             description
         }
     }
+
+    var localizedShortName: String {
+        switch self {
+        case .syncService(HealthSyncService.identifier):
+            .init(localized: "workout_source_apple_health_short")
+        default:
+            localized
+        }
+    }
 }
