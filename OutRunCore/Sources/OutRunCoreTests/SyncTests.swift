@@ -420,6 +420,25 @@ struct SyncTests {
         #expect(workouts.count == 2)
     }
 
+    @Test("SyncDelegate upsert matches native workouts with a different ID by external identifier")
+    func syncDelegateUpsertMatchesNativeWorkoutsByExternalIdentifier() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        var existingWorkout = makeWorkout(name: "original")
+        existingWorkout.serviceMappings = [.init(serviceIdentifier: "mock", externalId: "external-id", syncStatus: .synced)]
+        try await database.insert(existingWorkout)
+
+        var workout = makeWorkout(name: "updated")
+        workout.lastEditDate = existingWorkout.lastEditDate.addingTimeInterval(1)
+        workout.serviceMappings = existingWorkout.serviceMappings
+        let delegate = await MockSyncDelegate(database: database)
+        let returnedId = try await delegate.upsert(workout)
+
+        #expect(returnedId == existingWorkout.id)
+        let workouts = try await database.fetchWorkouts()
+        #expect(workouts.count == 1)
+        #expect(workouts.first?.name == "updated")
+    }
+
     @Test("SyncDelegate delete removes workout from database")
     func syncDelegateDeleteRemovesWorkoutFromDatabase() async throws {
         let database = try await Database(isStoredInMemoryOnly: true)

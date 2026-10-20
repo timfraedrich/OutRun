@@ -424,15 +424,10 @@ actor Database: ModelActor {
     @discardableResult
     func upsert(_ workout: RawWorkout, replacing versionPolicy: VersionReplacementPolicy = .olderVersions) async throws -> UUID {
         do {
-            let serviceInformation: (externalIdentifier: String, serviceIdentifier: String)?
-            if case .syncService(let serviceIdentifier) = workout.source,
-               let serviceMapping = workout.serviceMappings.first(where: { $0.serviceIdentifier == serviceIdentifier }),
-               let externalIdentifier = serviceMapping.externalId ?? serviceMapping.externalUrl {
-                serviceInformation = (externalIdentifier, serviceIdentifier)
-            } else {
-                serviceInformation = nil
+            let serviceInformation = workout.serviceMappings.compactMap { mapping in
+                (mapping.externalId ?? mapping.externalUrl).map { (externalIdentifier: $0, serviceIdentifier: mapping.serviceIdentifier) }
             }
-            let databaseWorkout = try fetchWorkout(with: workout.id, or: serviceInformation)
+            let databaseWorkout = try fetchWorkout(with: workout.id, orAnyOf: serviceInformation)
             // We need to check if the workout is equal up to the second
             // as the conversion into ISO format looses some fractional second precision
             let sameSecond = Calendar.current.isDate(databaseWorkout.lastEditDate, equalTo: workout.lastEditDate, toGranularity: .second)
@@ -464,10 +459,11 @@ actor Database: ModelActor {
             databaseWorkout.events = workout.events.map { WorkoutEvent(from: $0) }
             databaseWorkout.serviceMappings = workout.serviceMappings.map { SyncServiceMapping(from: $0) }
             try modelContext.save()
+            return databaseWorkout.id
         } catch DatabaseError.objectNotFound {
             try insert([workout])
+            return workout.id
         }
-        return workout.id
     }
 
     /// Deletes the workout if it was created by the service. Otherwise the workout is kept and its mapping for the service is marked as
@@ -522,26 +518,21 @@ actor Database: ModelActor {
     
     private func fetchWorkout(
         with identifier: UUID,
-        or serviceInformation: (externalIdentifier: String, serviceIdentifier: String)? = nil
+        orAnyOf serviceInformation: [(externalIdentifier: String, serviceIdentifier: String)] = []
     ) throws -> Workout {
-        do {
-            var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
-            descriptor.fetchLimit = 1
-            guard let workout = try modelContext.fetch(descriptor).first else { throw DatabaseError.objectNotFound }
-            return workout
-        } catch DatabaseError.objectNotFound {
-            guard let (externalIdentifier, serviceIdentifier) = serviceInformation else { throw DatabaseError.objectNotFound }
+        var descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.id == identifier })
+        descriptor.fetchLimit = 1
+        if let workout = try modelContext.fetch(descriptor).first { return workout }
+        for (externalIdentifier, serviceIdentifier) in serviceInformation {
             var descriptor = FetchDescriptor<SyncServiceMapping>(predicate: #Predicate {
                 $0.serviceIdentifier == serviceIdentifier
                 && $0.workout != nil
                 && ($0.externalId == externalIdentifier || $0.externalUrl == externalIdentifier)
             })
             descriptor.fetchLimit = 1
-            guard let workout = try modelContext.fetch(descriptor).first?.workout else { throw DatabaseError.objectNotFound }
-            return workout
-        } catch {
-            throw error
+            if let workout = try modelContext.fetch(descriptor).first?.workout { return workout }
         }
+        throw DatabaseError.objectNotFound
     }
     
     // MARK: - Internal
