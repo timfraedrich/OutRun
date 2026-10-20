@@ -27,10 +27,12 @@ struct MainScene: View {
     @Environment(WorkoutRecorder.self) private var recorder
     @Environment(UserPreferences.self) private var userPreferences
     @Environment(Router.self) private var router
+    @Environment(\.scenePhase) private var scenePhase
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
-    
+
     private var userName: String { core.user?.name ?? .init(localized: "user_name_fallback") }
+    private var healthSyncService: HealthSyncService? { core.syncService(HealthSyncService.self) }
     
     var body: some View {
         RouterHost(node: router.root) {
@@ -62,6 +64,10 @@ struct MainScene: View {
             .onAppear {
                 guard core.recorder?.status == .recording else { return }
                 showRecordingScene()
+            }
+            .task(id: scenePhase) {
+                guard scenePhase == .active else { return }
+                await healthSyncService?.refreshAuthorizationStatus()
             }
         }
     }
@@ -130,7 +136,15 @@ struct MainScene: View {
             Button("calendar", systemImage: "calendar", action: showCalendarScene)
         }
         ToolbarItem(placement: .topBarTrailing) {
-            Button("settings", systemImage: "gear", action: showSettingsScene)
+            if healthSyncService?.authorizationStatus.isRequestable == true {
+                Button(action: showSettingsScene) {
+                    Label("Settings", systemImage: "gear.badge")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.red, .primary)
+                }
+            } else {
+                Button("settings", systemImage: "gear", action: showSettingsScene)
+            }
         }
         ToolbarItem(placement: .principal) {
             greetingView

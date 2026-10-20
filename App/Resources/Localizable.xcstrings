@@ -2447,6 +2447,46 @@
         }
       }
     },
+    "health_permissions_pending_footer" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Synchronisierung mit Apple Health ist pausiert, bis du entschieden hast, auf welche Daten OutRun zugreifen darf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syncing with Apple Health is paused until you decide which data OutRun may access."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syncing with Apple Health is paused until you decide which data OutRun may access."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sincronización con Salud de Apple está en pausa hasta que decidas a qué datos puede acceder OutRun."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La synchronisation avec Apple Santé est suspendue jusqu'à ce que tu choisisses les données auxquelles OutRun peut accéder."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchroniseren met Apple Gezondheid is gepauzeerd totdat je beslist tot welke gegevens OutRun toegang heeft."
+          }
+        }
+      }
+    },
     "health_sync_export_disabled" : {
       "localizations" : {
         "de" : {
@@ -7030,6 +7070,9 @@
           }
         }
       }
+    },
+    "Settings" : {
+
     },
     "settings_info_database_size" : {
       "localizations" : {

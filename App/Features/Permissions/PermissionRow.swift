@@ -26,6 +26,7 @@ struct PermissionRow: View {
     @State private var showInfo: Bool = false
 
     let item: PermissionItem
+    var highlightsRequest: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: .small) {
@@ -40,6 +41,9 @@ struct PermissionRow: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer(minLength: Spacing.small.rawValue)
+                if highlightsRequest, item.status.isRequestable {
+                    AttentionBadge()
+                }
                 PermissionStatusIndicator(status: item.status, requestAction: requestAction, infoAction: infoAction)
                     .errorPopover($requestError)
                     .popover(isPresented: $showInfo, content: resolutionContent)

@@ -48,11 +48,16 @@ struct HealthSettingsScene: View {
     @ViewBuilder
     private func permissionSection(for healthSyncService: HealthSyncService) -> some View {
         Section {
-            PermissionRow(item: .appleHealth(for: healthSyncService))
+            PermissionRow(item: .appleHealth(for: healthSyncService), highlightsRequest: true)
         } header: {
             Text("permissions")
         } footer: {
-            Text("health_permissions_footer")
+            VStack(alignment: .leading, spacing: .small) {
+                if healthSyncService.authorizationStatus.isRequestable {
+                    Text("health_permissions_pending_footer")
+                }
+                Text("health_permissions_footer")
+            }
         }
     }
 

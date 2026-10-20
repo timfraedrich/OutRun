@@ -29,6 +29,7 @@ struct SettingsScene: View {
     @Environment(RouterNode.self) private var node
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
     @Query private var workouts: [Workout]
     @State private var confirmReset: Bool = false
     @State private var resetError: Error?
@@ -46,6 +47,10 @@ struct SettingsScene: View {
         (try? core.modelContainer.configurations.first?.url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? .zero
     }
     
+    private var healthSyncService: HealthSyncService? {
+        core.syncService(HealthSyncService.self)
+    }
+
     var body: some View {
         List {
             profileSection
@@ -57,6 +62,10 @@ struct SettingsScene: View {
         .safeAreaPadding(.top, .regular)
         .navigationTitle("settings")
         .closeToolbarItem()
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            await healthSyncService?.refreshAuthorizationStatus()
+        }
     }
     
     @ViewBuilder private var profileSection: some View {
@@ -85,15 +94,22 @@ struct SettingsScene: View {
     private func subpageButton<Icon: View>(
         _ titleKey: LocalizedStringKey,
         route: any RouteProtocol,
+        showsBadge: Bool = false,
         @ViewBuilder icon: @escaping () -> Icon
     ) -> some View {
         NavigationLinkButton {
             node.route(route)
         } label: {
-            SettingsRowLabel {
-                Text(titleKey)
-            } icon: {
-                icon()
+            HStack {
+                SettingsRowLabel {
+                    Text(titleKey)
+                } icon: {
+                    icon()
+                }
+                Spacer()
+                if showsBadge {
+                    AttentionBadge()
+                }
             }
         }
     }
@@ -124,7 +140,11 @@ struct SettingsScene: View {
         Section {
             subpageButton("unit_settings", systemImage: "ruler.fill", padding: nil, route: .units)
             subpageButton("recording_settings", systemImage: "record.circle", route: .recording)
-            subpageButton("apple_health", route: SettingsPageRoute.appleHealth) {
+            subpageButton(
+                "apple_health",
+                route: SettingsPageRoute.appleHealth,
+                showsBadge: healthSyncService?.authorizationStatus.isRequestable == true
+            ) {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
