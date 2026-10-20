@@ -37,7 +37,9 @@ class LegacyDatabase<DataModel: LegacyDataModel> {
     /// The primary `DataStack` used by the `DataManager`.
     /// - warning: make sure `dataStack` is initialised by calling `DataManager.setup(dataModel:completion:migration:)` accessing the
     /// property will lead to a fatal error otherwise.
-    private var dataStack: DataStack
+    /// - note: Only fetch from it directly on the main actor. Nonisolated reads have to go through their own `beginUnsafe()`
+    /// transaction, confined to a single synchronous scope.
+    nonisolated private let dataStack: DataStack
     /// static optional instance of the local storage holding the workout data
     private var storage: SQLiteStore
     
@@ -220,17 +222,16 @@ extension LegacyDatabase where DataModel == LegacyDataModelV3 {
         }
     }
     
-    @MainActor
-    func fetchWorkoutCount() throws -> Int {
-        try dataStack.fetchCount(From<LegacyDataModelV3.Workout>())
+    nonisolated func fetchWorkoutIDs() throws -> [NSManagedObjectID] {
+        try withExtendedLifetime(dataStack.beginUnsafe()) { transaction in
+            try transaction.fetchObjectIDs(From<DataModel.Workout>())
+        }
     }
     
-    @MainActor
-    func extractWorkout(at offset: Int) throws -> LegacyRawDataModelV3.Workout? {
-        let fetchClause = From<DataModel.Workout>().tweak { query in
-            query.fetchLimit = 1
-            query.fetchOffset = offset
+    nonisolated func extractWorkout(with id: NSManagedObjectID) -> LegacyRawDataModelV3.Workout? {
+        withExtendedLifetime(dataStack.beginUnsafe()) { transaction in
+            let workout: DataModel.Workout? = transaction.fetchExisting(id)
+            return workout.map(LegacyRawDataModelV3.Workout.init)
         }
-        return try dataStack.fetchAll(fetchClause).first.map(LegacyRawDataModelV3.Workout.init)
     }
 }

@@ -95,12 +95,17 @@ enum LegacyMigrationHelper {
         let container = await core.modelContainer
         continuation.yield(0.05)
         let manager = try await LegacyDatabase<LegacyDataModelV3>(fileName: legacyStorageFileName)
-        let totalCount = try await manager.fetchWorkoutCount()
+        let workoutIDs = try manager.fetchWorkoutIDs()
+        let totalCount = workoutIDs.count
+        let maxConcurrentTasks = ProcessInfo.processInfo.activeProcessorCount
         let counter = AsyncCounter(value: 0)
-        try await withThrowingTaskGroup { group in
-            for offset in 0..<totalCount {
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for (index, workoutID) in workoutIDs.enumerated() {
+                if index >= maxConcurrentTasks {
+                    try await group.next()
+                }
                 group.addTask {
-                    guard let workout = try await manager.extractWorkout(at: offset) else { return }
+                    guard let workout = manager.extractWorkout(with: workoutID) else { return }
                     try await migrateWorkout(.init(from: workout), into: container)
                     let count = await counter.increase()
                     continuation.yield(0.05 + 0.9 * Float(count) / Float(totalCount))
