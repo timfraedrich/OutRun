@@ -37,6 +37,10 @@ public class HealthSyncService: SyncService {
     public private(set) var authorizationStatus: PermissionStatus = .undetermined
     public private(set) var inwardSyncMode: SyncMode = .disabled
     public private(set) var outwardSyncMode: SyncMode = .disabled
+    /// Indicates whether this service should sync in or outward.
+    public var shouldSync: Bool { inwardSyncMode.isEnabled || outwardSyncMode.isEnabled }
+    /// Indicates whether the user should be prompted for authentication
+    public var userShouldBePromptedForAuth: Bool { shouldSync && authorizationStatus.isRequestable }
     public var isAuthorizedToSyncOutward: Bool {
         get async {
             do {

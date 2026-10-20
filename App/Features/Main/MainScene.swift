@@ -136,7 +136,7 @@ struct MainScene: View {
             Button("calendar", systemImage: "calendar", action: showCalendarScene)
         }
         ToolbarItem(placement: .topBarTrailing) {
-            if healthSyncService?.authorizationStatus.isRequestable == true {
+            if healthSyncService?.userShouldBePromptedForAuth == true {
                 Button(action: showSettingsScene) {
                     Label("Settings", systemImage: "gear.badge")
                         .symbolRenderingMode(.palette)

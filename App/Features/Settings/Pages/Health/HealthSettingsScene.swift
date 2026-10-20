@@ -48,7 +48,7 @@ struct HealthSettingsScene: View {
     @ViewBuilder
     private func permissionSection(for healthSyncService: HealthSyncService) -> some View {
         Section {
-            PermissionRow(item: .appleHealth(for: healthSyncService), highlightsRequest: true)
+            PermissionRow(item: .appleHealth(for: healthSyncService), highlightsRequest: healthSyncService.shouldSync)
         } header: {
             Text("permissions")
         } footer: {

@@ -143,7 +143,7 @@ struct SettingsScene: View {
             subpageButton(
                 "apple_health",
                 route: SettingsPageRoute.appleHealth,
-                showsBadge: healthSyncService?.authorizationStatus.isRequestable == true
+                showsBadge: healthSyncService?.userShouldBePromptedForAuth == true
             ) {
                 Image(systemName: "heart.fill")
                     .resizable()
