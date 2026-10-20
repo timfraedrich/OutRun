@@ -140,9 +140,11 @@ struct LegacyMigrationView: View {
                             doneSymbol
                         }
                     }
-                    EstimatedTimeRemainingText(estimatedEnd: status.estimatedEnd)
-                        .foregroundStyle(.secondary)
-                        .font(.footnote)
+                    if !finishedMigration {
+                        EstimatedTimeRemainingText(estimatedEnd: status.estimatedEnd)
+                            .foregroundStyle(.secondary)
+                            .font(.footnote)
+                    }
                 }
                 .padding(.horizontal, .extraLarge)
             }
