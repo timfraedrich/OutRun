@@ -64,7 +64,8 @@ class SyncManager {
                 // Only call initiallySync when an existing disabled service is being re-enabled.
                 // For brand-new services (no prior state), processChanges handles the initial sync
                 // via history from .distantPast, avoiding a race with concurrent performSync() calls.
-                if existingState != nil, state.lastSyncMode == .disabled, let syncStartDate = state.lastSyncDate {
+                if existingState != nil, state.lastSyncMode == .disabled, let syncStartDate = state.lastSyncDate,
+                   await service.isAuthorizedToSyncOutward {
                     try await initiallySync(service, from: syncStartDate, upTo: syncDate)
                     state.lastSyncDate = syncDate
                     state.lastSyncMode = syncMode
@@ -170,6 +171,10 @@ class SyncManager {
 
     private func sync(_ service: any SyncService, upTo syncDate: Date) async throws {
         let syncMode = await service.outwardSyncMode
+        if syncMode.isEnabled, !(await service.isAuthorizedToSyncOutward) {
+            logger.info("Skipping sync for service \"\(service.identifier)\" as it is not authorized.")
+            return
+        }
         do {
             let state = try await database.fetchSyncServiceState(for: service.identifier)
             switch syncMode {

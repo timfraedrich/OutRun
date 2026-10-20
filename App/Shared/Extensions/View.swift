@@ -65,7 +65,11 @@ extension View {
     func errorPopover<E: Error>(_ errorBinding: Binding<E?>) -> some View {
         popover(isPresented: errorBinding.existenceBinding()) {
             if let error = errorBinding.wrappedValue {
-                Text(error.localizedDescription).frame(idealWidth: 240).padding(.regular).presentationCompactAdaptation(.popover)
+                Text(error.localizedDescription)
+                    .frame(idealWidth: 240)
+                    .padding(.regular)
+                    .multilineTextAlignment(.center)
+                    .presentationCompactAdaptation(.popover)
             }
         }
     }

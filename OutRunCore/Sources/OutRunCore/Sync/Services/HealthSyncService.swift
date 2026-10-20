@@ -37,6 +37,16 @@ public class HealthSyncService: SyncService {
     public private(set) var authorizationStatus: PermissionStatus = .undetermined
     public private(set) var inwardSyncMode: SyncMode = .disabled
     public private(set) var outwardSyncMode: SyncMode = .disabled
+    public var isAuthorizedToSyncOutward: Bool {
+        get async {
+            do {
+                try await checkMissingAuthorization()
+                return true
+            } catch {
+                return false
+            }
+        }
+    }
     public let relevantAttributes: Set<any PartialKeyPath<Workout> & Sendable> = [
         \.rawType,
          \.distance,

@@ -304,6 +304,51 @@ struct SyncTests {
         #expect(mapping?.syncStatus == .failed)
     }
 
+    @Test("Unauthorized service is not attempted and syncs once authorized")
+    func unauthorizedServiceIsNotAttemptedAndSyncsOnceAuthorized() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        let workout = makeWorkout()
+        try await database.insert(workout)
+
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService(isAuthorizedToSyncOutward: false)
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
+        try await syncManager.performSync()
+
+        #expect(await mockService.upsertedWorkouts.isEmpty)
+        var workouts = try await database.fetchWorkouts()
+        #expect(workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" }) == nil)
+
+        await mockService.setAuthorizedToSyncOutward(true)
+        try await syncManager.performSync()
+
+        #expect(await mockService.upsertedWorkouts.keys.contains(workout.id))
+        workouts = try await database.fetchWorkouts()
+        let mapping = workouts.first?.serviceMappings.first(where: { $0.serviceIdentifier == "mock" })
+        #expect(mapping?.syncStatus == .synced)
+    }
+
+    @Test("Delete while unauthorized is synced once authorized")
+    func deleteWhileUnauthorizedIsSyncedOnceAuthorized() async throws {
+        let database = try await Database(isStoredInMemoryOnly: true)
+        let workout = makeWorkout()
+        try await database.insert(workout)
+
+        let mockSyncDelegate = await MockSyncDelegate(database: database)
+        let mockService = MockSyncService()
+        let syncManager = await SyncManager(database: database, syncDelegate: mockSyncDelegate, syncServices: [mockService])
+        try await syncManager.performSync()
+
+        await mockService.setAuthorizedToSyncOutward(false)
+        try await database.delete(workoutWithIdentifier: workout.id)
+        try await syncManager.performSync()
+        #expect(await mockService.deletedWorkoutIds.isEmpty)
+
+        await mockService.setAuthorizedToSyncOutward(true)
+        try await syncManager.performSync()
+        #expect(await mockService.deletedWorkoutIds.contains(workout.id))
+    }
+
     // MARK: - Inbound Sync (Service → Core via SyncDelegate)
 
     @Test("SyncDelegate insert persists workout and returns its ID")

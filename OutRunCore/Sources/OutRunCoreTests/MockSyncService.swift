@@ -24,6 +24,7 @@ actor MockSyncService: SyncService {
     let identifier: String
     let outwardSyncMode: SyncMode
     let relevantAttributes: Set<PartialKeyPath<Workout> & Sendable>
+    private(set) var isAuthorizedToSyncOutward: Bool
 
     private var upsertResult: (id: String?, url: String?)
     private var upsertError: Error?
@@ -40,6 +41,7 @@ actor MockSyncService: SyncService {
         identifier: String = "mock",
         mode: SyncMode = .enabled,
         relevantAttributes: Set<PartialKeyPath<Workout> & Sendable> = [],
+        isAuthorizedToSyncOutward: Bool = true,
         upsertResult: (id: String?, url: String?) = ("mock-external-id", "https://mock.example"),
         upsertError: Error? = nil,
         deleteError: Error? = nil,
@@ -49,6 +51,7 @@ actor MockSyncService: SyncService {
         self.identifier = identifier
         self.outwardSyncMode = mode
         self.relevantAttributes = relevantAttributes
+        self.isAuthorizedToSyncOutward = isAuthorizedToSyncOutward
         self.upsertResult = upsertResult
         self.upsertError = upsertError
         self.deleteError = deleteError
@@ -85,6 +88,10 @@ actor MockSyncService: SyncService {
     func reset() {
         upsertedWorkouts = [:]
         deletedWorkoutIds = []
+    }
+
+    func setAuthorizedToSyncOutward(_ isAuthorized: Bool) {
+        isAuthorizedToSyncOutward = isAuthorized
     }
 
     func clearError() {

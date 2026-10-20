@@ -32,7 +32,11 @@ public protocol SyncService: AnyObject, Sendable {
     /// The SyncMode to be used for changes syncing outward (from the core to the external service, implementing the protocol).
     /// - note: This variable should only be assumed valid, while the service is initialized.
     var outwardSyncMode: SyncMode { get async }
-    
+
+    /// Indicates whether the service is currently authorized to receive workouts. While `false` automatic outward synchronisation is
+    /// skipped, so changes are synced once authorization was granted instead of failing for every workout.
+    var isAuthorizedToSyncOutward: Bool { get async }
+
     /// Initializes the service with a sync delegate.
     func initialize(with delegate: any SyncDelegate) async throws
     
