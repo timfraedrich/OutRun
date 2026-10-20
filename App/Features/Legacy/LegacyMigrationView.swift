@@ -34,9 +34,15 @@ struct LegacyMigrationView: View {
     @State private var presentedLegalDocument: LegalDocument?
     @State private var status: LegacyMigrationProgressView.Status = .running(progress: 0, estimatedEnd: nil)
     @State private var error: Error?
+    @State private var showsHealthPage: Bool = false
+    /// `nil` until the user decided whether to continue syncing with Apple Health.
+    @State private var continueHealthSync: Bool?
+    @State private var healthRequestError: Error?
 
     private let dismissAction: () -> Void
 
+    private var pages: [Page] { Page.allCases.filter { $0 != .appleHealth || showsHealthPage } }
+    private var healthSyncService: HealthSyncService? { core.syncService(HealthSyncService.self) }
     private var finishedMigration: Bool { status == .done }
     private var acceptedLegalDocuments: Bool { legalAcceptanceDate != nil }
     private var weightUnit: UnitMass {
@@ -45,6 +51,7 @@ struct LegacyMigrationView: View {
     private var primaryActionTitleKey: LocalizedStringKey {
         switch page {
         case .profile: "save"
+        case .appleHealth: "setup_health_grant_permission_action"
         case .done: "legacy_migration_view_success_action"
         default: "continue_action"
         }
@@ -64,6 +71,7 @@ struct LegacyMigrationView: View {
         }
         .disabled(savingProfile)
         .task(id: legalAcceptanceDate, migrationAction)
+        .task(determineHealthPageVisibility)
         .legalDocumentSheet($presentedLegalDocument)
         .onChange(of: core.user?.id, initial: true, prefillDraft)
     }
@@ -74,7 +82,7 @@ struct LegacyMigrationView: View {
         GeometryReader { proxy in
             ScrollView(.horizontal) {
                 LazyHStack(spacing: .zero) {
-                    ForEach(Page.allCases, id: \.self) { page in
+                    ForEach(pages, id: \.self) { page in
                         content(for: page)
                             .frame(width: proxy.size.width, height: proxy.size.height)
                     }
@@ -82,7 +90,7 @@ struct LegacyMigrationView: View {
                 .scrollTargetLayout()
             }
             .scrollPosition(id: $page)
-            .scrollDisabled(page == .legal && !acceptedLegalDocuments)
+            .scrollDisabled(page == .legal && !acceptedLegalDocuments || page == .appleHealth && continueHealthSync == nil)
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
             .background(Color(.systemGroupedBackground))
@@ -126,6 +134,10 @@ struct LegacyMigrationView: View {
                 message: "legacy_migration_profile_message"
             ) {
                 SetupProfileForm(draft: $draft, weightUnit: weightUnit)
+            }
+        case .appleHealth:
+            SetupPageView(title: "legacy_migration_health_title", message: "legacy_migration_health_message") {
+                SetupPageSymbol("heart.fill").tint(.pink)
             }
         case .done:
             ScrollView {
@@ -178,10 +190,10 @@ struct LegacyMigrationView: View {
     @ViewBuilder
     private func barContent() -> some View {
         VStack(spacing: .regular) {
-            PageIndicator(items: Page.allCases, selection: page)
+            PageIndicator(items: pages, selection: page)
                 .foregroundStyle(.tint, .tertiary)
             VStack(spacing: .small) {
-                if acceptedLegalDocuments && page != .done && page != .profile {
+                if acceptedLegalDocuments && page != .done && page != .profile && page != .appleHealth {
                     LegacyMigrationProgressView(status: status)
                         .animation(.default, value: status)
                         .transition(.scale.combined(with: .opacity))
@@ -192,8 +204,13 @@ struct LegacyMigrationView: View {
                             || page == .profile && !draft.isComplete
                             || page == .done && !finishedMigration
                     )
+                    .errorPopover($healthRequestError)
                 if page == .profile {
                     ActionButton("skip_action", prominent: false, action: advance)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+                if page == .appleHealth {
+                    ActionButton("legacy_migration_health_disable_action", prominent: false, action: declineHealthSync)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
@@ -240,6 +257,8 @@ struct LegacyMigrationView: View {
             advance()
         case .profile:
             saveProfileAndAdvance()
+        case .appleHealth:
+            grantHealthPermissionAndAdvance()
         case .done:
             dismissAction()
         default:
@@ -253,10 +272,54 @@ struct LegacyMigrationView: View {
 
     private func advance() {
         guard let page,
-              let index = Page.allCases.firstIndex(of: page),
-              let next = Page.allCases[safeIndex: index + 1]
+              let index = pages.firstIndex(of: page),
+              let next = pages[safeIndex: index + 1]
         else { return }
         self.page = next
+    }
+
+    /// Determined once, so the page does not disappear while it is presented once the permission was granted.
+    @Sendable
+    private func determineHealthPageVisibility() async {
+        guard LegacyMigrationHelper.legacyHealthSyncEnabled, let healthSyncService else {
+            continueHealthSync = false
+            return
+        }
+        await healthSyncService.refreshAuthorizationStatus()
+        showsHealthPage = healthSyncService.authorizationStatus.isRequestable
+        if !showsHealthPage {
+            continueHealthSync = true
+            migrateHealthConfigurationIfReady()
+        }
+    }
+
+    private func grantHealthPermissionAndAdvance() {
+        Task {
+            do {
+                if let healthSyncService, healthSyncService.authorizationStatus.isRequestable {
+                    try await healthSyncService.requestAuthorization()
+                }
+                continueHealthSync = true
+                migrateHealthConfigurationIfReady()
+                advance()
+            } catch {
+                healthRequestError = error
+            }
+        }
+    }
+
+    private func declineHealthSync() {
+        continueHealthSync = false
+        advance()
+    }
+
+    /// Restores the legacy Health sync configuration once the migration finished and the user decided to continue syncing, whichever
+    /// happens last.
+    private func migrateHealthConfigurationIfReady() {
+        guard finishedMigration, let continueHealthSync else { return }
+        Task {
+            await LegacyMigrationHelper.migrateHealthConfiguration(in: core, continueHealthSync: continueHealthSync)
+        }
     }
     
     private func prefillDraft() {
@@ -307,7 +370,10 @@ struct LegacyMigrationView: View {
                 }
                 await MainActor.run { status = .running(progress: progress, estimatedEnd: estimatedEnd) }
             }
-            await MainActor.run { status = .done }
+            await MainActor.run {
+                status = .done
+                migrateHealthConfigurationIfReady()
+            }
         } catch {
             await MainActor.run { self.error = error }
         }
@@ -322,6 +388,7 @@ struct LegacyMigrationView: View {
         case performance
         case privacy
         case profile
+        case appleHealth
         case done
 
         var titleKey: LocalizedStringKey {

@@ -28,10 +28,18 @@ enum LegacyMigrationHelper {
     
     private static var defaultLegacyStorageFileName: String { "OutRun.sqlite" }
     private static let logger = Logger(category: "LegacyMigrationHelper")
-    
+
+    private static var legacyExportsToHealth: Bool { legacyUserPreference(for: "savesToAppleHealth", defaultValue: false) }
+    private static var legacyImportsFromHealth: Bool {
+        legacyUserPreference(for: "automaticallyImportNewHealthWorkouts", defaultValue: false)
+    }
+
     static var isLegacyMigrationAppropriate: Bool {
         LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: defaultLegacyStorageFileName)
     }
+
+    /// Indicates whether the user synced workouts with Apple Health in either direction before the migration.
+    static var legacyHealthSyncEnabled: Bool { legacyExportsToHealth || legacyImportsFromHealth }
     
     /// - parameter legalAcceptanceDate: The date the user accepted the current legal documents, recorded on the migrated user.
     static func performLegacyMigration(
@@ -54,7 +62,16 @@ enum LegacyMigrationHelper {
         )
         return (task, stream)
     }
-    
+
+    /// - warning: This function should only be called after the legacy migration was finished successfully and the user was asked to
+    /// provide renewed authorisation to health types. If the user chose to not sync with health anymore, this function can also be skipped.
+    /// - parameter continueHealthSync: Indicates whether the sync configuration active before the legacy migration should be kept.
+    static func migrateHealthConfiguration(in core: OutRunCore, continueHealthSync: Bool) async {
+        guard continueHealthSync, let healthSyncService = await core.syncService(HealthSyncService.self) else { return }
+        if legacyExportsToHealth { await healthSyncService.setOutwardSyncMode(.enabled) }
+        if legacyImportsFromHealth { await healthSyncService.setInwardSyncMode(.enabled) }
+    }
+
     private static func startMigrationTask(
         for legacyStorageFileName: String,
         core: OutRunCore,
@@ -114,16 +131,6 @@ enum LegacyMigrationHelper {
             try await group.waitForAll()
         }
         try await manager.deleteStorage()
-        let exportToHealth = legacyUserPreference(for: "savesToAppleHealth", defaultValue: false)
-        let importFromHealth = legacyUserPreference(for: "automaticallyImportNewHealthWorkouts", defaultValue: false)
-        if exportToHealth || importFromHealth, let healthSyncService = await core.syncService(HealthSyncService.self) {
-            if exportToHealth {
-                await healthSyncService.setOutwardSyncMode(.enabled)
-            }
-            if importFromHealth {
-                await healthSyncService.setInwardSyncMode(.enabled)
-            }
-        }
         continuation.yield(1)
     }
     
@@ -131,8 +138,8 @@ enum LegacyMigrationHelper {
         let context = ModelContext(container)
         var rawWorkout = rawWorkout
         // Check if source is App or Apple Health
-        // -> YES (or UNKNOWN): Keep source as .native
-        // -> NO: Set source as .syncService(HealthSyncService.identifier)
+        // -> YES: Keep source as .native
+        // -> NO (or UNKNOWN): Set source as .syncService(HealthSyncService.identifier)
         let mappingIndex = rawWorkout.serviceMappings.firstIndex { $0.serviceIdentifier == HealthSyncService.identifier }
         if let mappingIndex,
            let healthWorkoutID = rawWorkout.serviceMappings[safeIndex: mappingIndex]?.externalId,

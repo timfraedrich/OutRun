@@ -3567,6 +3567,126 @@
         }
       }
     },
+    "legacy_migration_health_disable_action" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Health-Synchronisierung ausschalten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn Off Health Sync"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn Off Health Sync"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivar la sincronización con Salud"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactiver la synchronisation avec Santé"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronisatie met Gezondheid uitschakelen"
+          }
+        }
+      }
+    },
+    "legacy_migration_health_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast deine Workouts bisher mit der Health-App synchronisiert. Damit das weiterhin klappt, braucht OutRun erneut deine Berechtigung. Bis du entschieden hast, wird nichts synchronisiert."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You synced your workouts with the Health app before. To continue, OutRun needs your permission again. Until you decide, nothing is synced."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You synced your workouts with the Health app before. To continue, OutRun needs your permission again. Until you decide, nothing is synced."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hasta ahora sincronizabas tus entrenamientos con la app Salud. Para continuar, OutRun necesita de nuevo tu permiso. Hasta que decidas, no se sincroniza nada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu synchronisais jusqu’ici tes entraînements avec l’app Santé. Pour continuer, OutRun a de nouveau besoin de ton autorisation. Tant que tu n’as pas décidé, rien n’est synchronisé."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je synchroniseerde je trainingen tot nu toe met de Gezondheid-app. Om verder te gaan heeft OutRun opnieuw je toestemming nodig. Totdat je beslist, wordt er niets gesynchroniseerd."
+          }
+        }
+      }
+    },
+    "legacy_migration_health_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut mit Health verbinden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconnect to Health"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconnect to Health"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a conectar con Salud"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se reconnecter à Santé"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw verbinden met Gezondheid"
+          }
+        }
+      }
+    },
     "legacy_migration_legal_message" : {
       "localizations" : {
         "de" : {

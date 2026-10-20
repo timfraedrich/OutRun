@@ -54,7 +54,20 @@ struct SetupPageView<Symbol: View, Content: View>: View {
         self.symbol = symbol
         self.content = content
     }
-    
+
+    init(
+        title titleKey: LocalizedStringKey,
+        message messageKey: LocalizedStringKey? = nil,
+        @ViewBuilder symbol: @escaping () -> Symbol
+    ) where Content == EmptyView {
+        self.init(
+            title: titleKey,
+            message: messageKey,
+            symbol: symbol,
+            content: EmptyView.init
+        )
+    }
+
     init(
         systemImage: String,
         title titleKey: LocalizedStringKey,
