@@ -199,8 +199,25 @@ enum LegacyMigrationHelper {
         ]
     }
 
-    /// Fetches the HKHealthStore for the provided HKWorkout UUID and returns whether it is native. The default return value, if the health
-    /// workout cannot be found is `true`.
+    /// Fetches the HKHealthStore for the provided HKWorkout UUID and returns whether the workout source is OutRun.
+    ///
+    /// - note: The default return value, if the health workout cannot be found is `false`.
+    ///
+    /// The default values was chosen as `false`. We therefore assume a workout to be imported from Health if we cannot find it. We applied
+    /// the following reasoning to come to the decision:
+    ///
+    /// The event that a workout cannot be found in Health can
+    /// only happen in two cases:
+    ///   - **The workout was deleted** - Here we can distinguish into two further cases:
+    ///     - **The workout was created in OutRun** - The assumption is false. We prevent the user from exporting this natively recorded
+    ///     workout to Health in the future. This compromise was accepted since the user decided to delete the workout in Health on their
+    ///     own accord and assuming a native workout would lead to more significant problems in the other cases.
+    ///     - **The workout was imported from Health** - In this case the assumption was correct. If the user attempts to import the workout
+    ///     again it will yield and error (which is correct behaviour). If we were to assume it is native instead, the workout will still
+    ///     not be found on the next sync run and therefore saved to Health again, even though the user deleted it already.
+    ///   - **Access to the workout was revoked** - Since an app always retains access to it's own workouts, the workout must be from
+    ///   another app. The same logic as for deleted workouts from other apps applies: In this case we get duplicate of the workout in
+    ///   Health. The user may decide to give access to the workout back to this app, restoring the health functionality fully.
     private static func isHealthWorkoutNative(_ healthWorkoutUUID: UUID) async -> Bool {
         do {
             let store = HKHealthStore()
@@ -212,6 +229,6 @@ enum LegacyMigrationHelper {
         } catch {
             logger.error("Failed to fetch workout with health store id \(healthWorkoutUUID): \(error.localizedDescription)")
         }
-        return true
+        return false
     }
 }
