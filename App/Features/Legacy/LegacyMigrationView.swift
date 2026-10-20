@@ -84,13 +84,14 @@ struct LegacyMigrationView: View {
                 LazyHStack(spacing: .zero) {
                     ForEach(pages, id: \.self) { page in
                         content(for: page)
+                            .scrollDisabled(false)
                             .frame(width: proxy.size.width, height: proxy.size.height)
                     }
                 }
                 .scrollTargetLayout()
             }
             .scrollPosition(id: $page)
-            .scrollDisabled(page == .legal && !acceptedLegalDocuments || page == .appleHealth && continueHealthSync == nil)
+            .scrollDisabled(true)
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
             .background(Color(.systemGroupedBackground))
@@ -126,7 +127,6 @@ struct LegacyMigrationView: View {
                 )
                 .disabled(acceptedLegalDocuments)
             }
-            .scrollDisabled(false)
         case .profile:
             SetupPageView(
                 systemImage: "person.crop.circle.fill",
