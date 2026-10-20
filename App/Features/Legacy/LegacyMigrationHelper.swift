@@ -213,18 +213,21 @@ enum LegacyMigrationHelper {
     /// The default values was chosen as `false`. We therefore assume a workout to be imported from Health if we cannot find it. We applied
     /// the following reasoning to come to the decision:
     ///
-    /// The event that a workout cannot be found in Health can
-    /// only happen in two cases:
+    /// The event that a workout cannot be found in Health can only happen in two cases:
     ///   - **The workout was deleted** - Here we can distinguish into two further cases:
     ///     - **The workout was created in OutRun** - The assumption is false. We prevent the user from exporting this natively recorded
     ///     workout to Health in the future. This compromise was accepted since the user decided to delete the workout in Health on their
     ///     own accord and assuming a native workout would lead to more significant problems in the other cases.
     ///     - **The workout was imported from Health** - In this case the assumption was correct. If the user attempts to import the workout
-    ///     again it will yield and error (which is correct behaviour). If we were to assume it is native instead, the workout will still
+    ///     again it will yield an error (which is correct behaviour). If we were to assume it is native instead, the workout will still
     ///     not be found on the next sync run and therefore saved to Health again, even though the user deleted it already.
-    ///   - **Access to the workout was revoked** - Since an app always retains access to it's own workouts, the workout must be from
-    ///   another app. The same logic as for deleted workouts from other apps applies: In this case we get duplicate of the workout in
-    ///   Health. The user may decide to give access to the workout back to this app, restoring the health functionality fully.
+    ///   - **Access to the workout was revoked** - We can apply the same logic as for deleted workout.
+    ///     - If the workout was native the user looses the ability to save it again in the future and the record is falsified. This case
+    ///     can only occur if the user revoked write permission as well as read permission from this app as an app is able to read the
+    ///     written workouts while it still has write permission.
+    ///     - If the workout was recorded within another app and we were to falsely classify it as native, we would save a duplicate on the
+    ///     next sync run. The user may decide to give access to the workout back to this app, restoring the health functionality fully if
+    ///     the workout was saved by another app.
     private static func isHealthWorkoutNative(_ healthWorkoutUUID: UUID) async -> Bool {
         do {
             let store = HKHealthStore()
