@@ -73,7 +73,7 @@ struct LegacyMigrationView: View {
         .task(id: legalAcceptanceDate, migrationAction)
         .task(determineHealthPageVisibility)
         .legalDocumentSheet($presentedLegalDocument)
-        .onChange(of: core.user?.id, initial: true, prefillDraft)
+        .onChange(of: core.user == nil, initial: true, prefillDraft)
     }
 
     // MARK: Pages
