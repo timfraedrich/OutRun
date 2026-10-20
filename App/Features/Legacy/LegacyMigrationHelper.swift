@@ -68,8 +68,9 @@ enum LegacyMigrationHelper {
     /// - parameter continueHealthSync: Indicates whether the sync configuration active before the legacy migration should be kept.
     static func migrateHealthConfiguration(in core: OutRunCore, continueHealthSync: Bool) async {
         guard continueHealthSync, let healthSyncService = await core.syncService(HealthSyncService.self) else { return }
-        if legacyExportsToHealth { await healthSyncService.setOutwardSyncMode(.enabled) }
-        if legacyImportsFromHealth { await healthSyncService.setInwardSyncMode(.enabled) }
+        let syncMode = SyncMode.enabledFrom(date: .now)
+        if legacyExportsToHealth { await healthSyncService.setOutwardSyncMode(syncMode) }
+        if legacyImportsFromHealth { await healthSyncService.setInwardSyncMode(syncMode) }
     }
 
     private static func startMigrationTask(
