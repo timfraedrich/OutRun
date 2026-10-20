@@ -52,6 +52,7 @@ struct TipJarSettingsScene: View {
                             .padding(.small)
                             .frame(width: tipImageSize)
                     }
+                    .backgroundStyle(Color(.tertiarySystemGroupedBackground))
                 }
             }
             .productViewStyle(.compact)
