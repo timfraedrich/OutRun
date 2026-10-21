@@ -40,7 +40,7 @@ struct CalendarMonthView: View {
         .task {
             let range = month.range
             var descriptor = FetchDescriptor<Workout>(
-                predicate: #Predicate { $0.startDate >= range.lowerBound && $0.startDate < range.upperBound },
+                predicate: #Predicate { $0.endDate != nil && $0.startDate >= range.lowerBound && $0.startDate < range.upperBound },
                 sortBy: [SortDescriptor(\.startDate, order: .forward)]
             )
             descriptor.propertiesToFetch = [\.id, \.startDate, \.rawType]
