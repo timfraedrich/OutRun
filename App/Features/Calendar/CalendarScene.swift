@@ -71,6 +71,7 @@ struct CalendarScene: View {
                 weekdayHeaderBar.background()
             }
         }
+        .customBottomSafeAreaBar(content: CalendarLegend.init)
         .toolbar(content: toolbarContent)
         .toolbarBackground(toolbarBackgroundVisibility, for: .navigationBar)
         .navigationTitle("calendar")
