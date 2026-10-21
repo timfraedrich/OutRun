@@ -499,9 +499,10 @@ public class HealthSyncService: SyncService {
         } else {
             .init()
         }
-        let now = Date.now
         let startDate = hkWorkout.startDate
         let endDate = hkWorkout.endDate
+        let creationDate = startDate
+        let lastEditDate = endDate
         let pauseEvents = hkWorkout.workoutEvents?.compactMap { event -> Calculation.PauseEvent? in
             let timestamp = event.dateInterval.start
             return switch event.type {
@@ -526,8 +527,8 @@ public class HealthSyncService: SyncService {
             isRace: false,
             name: hkWorkout.metadata?[HKMetadataKeyWorkoutBrandName] as? String,
             comment: .none,
-            creationDate: startDate,
-            lastEditDate: startDate,
+            creationDate: creationDate,
+            lastEditDate: lastEditDate,
             source: hkWorkout.sourceRevision.source == .default() ? .native : .syncService(identifier: identifier),
             heartRates: try await fetchHeartRates(for: hkWorkout),
             route: try await fetchRoute(for: hkWorkout),
@@ -538,7 +539,7 @@ public class HealthSyncService: SyncService {
                     serviceIdentifier: identifier,
                     externalId: hkWorkout.uuid.uuidString,
                     externalUrl: .none,
-                    lastEditDateSynced: now,
+                    lastEditDateSynced: lastEditDate,
                     syncStatus: .synced
                 )
             ]
