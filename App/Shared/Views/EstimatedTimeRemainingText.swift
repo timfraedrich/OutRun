@@ -37,6 +37,7 @@ struct EstimatedTimeRemainingText: View {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.minute]
         formatter.unitsStyle = .full
-        return formatter.string(from: date, to: estimatedEnd) ?? ""
+        // we add one minute to never see 0 minutes remaining.
+        return formatter.string(from: date, to: estimatedEnd.addingTimeInterval(60)) ?? ""
     }
 }
