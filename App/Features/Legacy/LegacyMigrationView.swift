@@ -96,7 +96,11 @@ struct LegacyMigrationView: View {
             .scrollIndicators(.hidden)
             .background(Color(.systemGroupedBackground))
         }
-        .customBottomSafeAreaBar(ignoredSafeAreaRegions: page == .profile ? .all : .container, content: barContent)
+        .customBottomSafeAreaBar(
+            ignoredSafeAreaRegions: page == .profile ? .all : .container,
+            blackoutBackground: true,
+            content: barContent
+        )
     }
 
     @ViewBuilder
@@ -240,7 +244,7 @@ struct LegacyMigrationView: View {
         .padding(.extraLarge)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemGroupedBackground))
-        .customBottomSafeAreaBar {
+        .customBottomSafeAreaBar(blackoutBackground: true) {
             ActionButton("legacy_migration_view_failed_action", action: openSupportMail)
         }
         .tint(.red)

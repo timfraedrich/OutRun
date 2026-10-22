@@ -18,10 +18,11 @@
 
 import SwiftUI
 
-struct CustomBottomSafeAreaBarViewModifier<SafeAreaBarContent: View>: ViewModifier {
+private struct CustomBottomSafeAreaBarViewModifier<SafeAreaBarContent: View>: ViewModifier {
 
-    private let ignoredSafeAreaRegions: SafeAreaRegions
-    private let safeAreaBarContent: () -> SafeAreaBarContent
+    let ignoredSafeAreaRegions: SafeAreaRegions
+    let blackoutBackground: Bool
+    @ViewBuilder let safeAreaBarContent: () -> SafeAreaBarContent
 
     func body(content: Content) -> some View {
         let horizontalPadding: Spacing = if #available(iOS 26, *) { .extraLarge } else { .large }
@@ -33,28 +34,32 @@ struct CustomBottomSafeAreaBarViewModifier<SafeAreaBarContent: View>: ViewModifi
                 .padding(.top, topPadding)
                 .padding(.bottom, bottomPadding)
                 .background {
-                    if #available(iOS 27.0, *) {
+                    if #available(iOS 27.0, *), blackoutBackground {
                         BackgroundBlackoutGradient(startPoint: .top, endPoint: .center)
                     }
                 }
         }
         .ignoresBottomSafeAreaOnIOS26OrLater(regions: ignoredSafeAreaRegions)
     }
-
-    init(ignoredSafeAreaRegions: SafeAreaRegions, @ViewBuilder safeAreaBarContent: @escaping () -> SafeAreaBarContent) {
-        self.ignoredSafeAreaRegions = ignoredSafeAreaRegions
-        self.safeAreaBarContent = safeAreaBarContent
-    }
 }
 
 extension View {
 
     /// - note: ignoredSafeAreaRegions is only respected for iOS 26 and later.
+    /// - note: blackoutBackground is only respected for iOS 27 and later. On iOS 18 the background always gets a blackout gradient and on
+    /// iOS 26 a system variable blur is applied.
     @ViewBuilder
     func customBottomSafeAreaBar<Content: View>(
         ignoredSafeAreaRegions: SafeAreaRegions = .container,
+        blackoutBackground: Bool = false,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
-        modifier(CustomBottomSafeAreaBarViewModifier(ignoredSafeAreaRegions: ignoredSafeAreaRegions, safeAreaBarContent: content))
+        modifier(
+            CustomBottomSafeAreaBarViewModifier(
+                ignoredSafeAreaRegions: ignoredSafeAreaRegions,
+                blackoutBackground: blackoutBackground,
+                safeAreaBarContent: content
+            )
+        )
     }
 }

@@ -58,7 +58,7 @@ struct MainScene: View {
             }
             .backgroundStyle(Color(.secondarySystemGroupedBackground))
             .background(Color(.systemGroupedBackground))
-            .customBottomSafeAreaBar(content: bottomSafeAreaBarContent)
+            .customBottomSafeAreaBar(blackoutBackground: true, content: bottomSafeAreaBarContent)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: toolbarContent)
             .onAppear {
