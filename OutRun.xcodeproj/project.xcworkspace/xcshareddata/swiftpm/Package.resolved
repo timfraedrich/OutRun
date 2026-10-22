@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://codeberg.org/mmllr/GPXKit",
       "state" : {
-        "revision" : "3b750cb7f1e4c740e5ad0b18fa6a570382fb0ea0",
-        "version" : "2.4.0"
+        "revision" : "00835b7599ae1e891fb8d98015d62ddf5b1e86a9",
+        "version" : "2.4.1"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mono0926/LicensePlist",
       "state" : {
-        "revision" : "7038fc5ca062c1b7189b1ff4e1b18f0c8767ee7e",
-        "version" : "3.28.2"
+        "revision" : "abd22190bcfd3bc99431b926bbd6d11b07071a92",
+        "version" : "3.28.3"
       }
     },
     {
@@ -123,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "98ef3c98609a1e31b7e157b5b619579001a789d6",
-        "version" : "1.7.1"
+        "revision" : "35a1edcb8ebd2bfe251d587f0b69e62af28f508c",
+        "version" : "1.7.3"
       }
     },
     {
@@ -141,8 +141,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-issue-reporting",
       "state" : {
-        "revision" : "75b000cea2ca6d7527a57e1b9cc0bdf21a9abe9f",
-        "version" : "2.1.1"
+        "revision" : "b23bb4493c439d3e05152bc167014235ba3d47fc",
+        "version" : "2.1.2"
       }
     },
     {
@@ -150,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "9c6fb14227f55d8f711ce3847dc2f419fb0ecacb",
-        "version" : "1.15.1"
+        "revision" : "c9c6bb9d275ec0d95c3ad16391f3f045dc623104",
+        "version" : "1.16.2"
       }
     },
     {
