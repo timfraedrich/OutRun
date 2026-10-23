@@ -18,17 +18,27 @@
 
 import SwiftUI
 
-struct MapOverlayBackground: View {
-    
+struct MapOverlayBackground<S: Shape>: View {
+
+    private let shape: S
+
+    init(shape: S) {
+        self.shape = shape
+    }
+
+    init(shape: S = .rect(topLeadingRadius: .large, topTrailingRadius: .large)) where S == UnevenRoundedRectangle {
+        self.shape = shape
+    }
+
     var body: some View {
         if #available(iOS 26, *) {
             Color.clear
-                .glassEffect(.regular, in: .rect(topLeadingRadius: .large, topTrailingRadius: .large))
+                .glassEffect(.regular, in: shape)
                 .ignoresSafeArea()
         } else {
             Rectangle()
                 .fill(.background)
-                .clipShape(.rect(topLeadingRadius: .large, topTrailingRadius: .large))
+                .clipShape(shape)
                 .ignoresSafeArea()
         }
     }

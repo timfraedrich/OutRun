@@ -182,7 +182,7 @@ struct RecordingScene: View {
         }
         .padding(.horizontal, .large)
         .padding(.vertical, verticalPadding)
-        .background(content: MapOverlayBackground.init)
+        .background { MapOverlayBackground() }
     }
     
     @ToolbarContentBuilder

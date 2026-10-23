@@ -167,7 +167,7 @@ struct WorkoutMapScene: View {
             }
             .padding(.horizontal, .large)
             .padding(.vertical, padding)
-            .background(content: MapOverlayBackground.init)
+            .background { MapOverlayBackground() }
         }
     }
     
