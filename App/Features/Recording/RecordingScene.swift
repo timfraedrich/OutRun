@@ -22,6 +22,7 @@ import OutRunCore
 import StoreKit
 import SwiftData
 import SwiftUI
+import TFRouting
 
 struct RecordingScene: View {
     
@@ -32,11 +33,13 @@ struct RecordingScene: View {
     @Environment(OutRunCore.self) private var core
     @Environment(WorkoutRecorder.self) private var recorder
     @Environment(UserPreferences.self) private var userPreferences
+    @Environment(Router.self) private var router
 
     @State private var keepUserCentered: Bool = true
     @State private var error: Error?
     @State private var permissionNoticeIsPresented: Bool = false
-    
+    @State private var finishedWorkoutID: Workout.ID?
+
     private static let reviewRequestWorkoutThreshold = 3
     
     private let padding: Spacing = if #available(iOS 26.0, *) { .large } else { .regular }
@@ -88,6 +91,7 @@ struct RecordingScene: View {
             }
         }
         .toolbar(content: toolbarContent)
+        .overlay(alignment: .top, content: finishedWorkoutCard)
         .safeAreaInset(edge: .bottom, content: informationCard)
         .ignoresBottomSafeAreaOnIOS26OrLater()
         .overlay {
@@ -106,7 +110,31 @@ struct RecordingScene: View {
             Button("ok") {}
         }
     }
-    
+
+    @ViewBuilder
+    private func finishedWorkoutCard() -> some View {
+        ZStack {
+            if finishedWorkoutID != nil {
+                SavedWorkoutNotice(
+                    open: openFinishedWorkout,
+                    delete: deleteFinishedWorkout,
+                    dismiss: dismissFinishedWorkoutNotice
+                )
+                .padding(.regular)
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .animation(.default, value: finishedWorkoutID)
+        .task(id: finishedWorkoutID) {
+            guard finishedWorkoutID != nil else { return }
+            do {
+                try await Task.sleep(for: .seconds(10))
+                dismissFinishedWorkoutNotice()
+            } catch {}
+        }
+
+    }
+
     @ViewBuilder
     private func informationCard() -> some View {
         let verticalPadding: Spacing = if #available(iOS 26, *) { .large } else { .regular }
@@ -285,7 +313,9 @@ struct RecordingScene: View {
     }
     
     private func endRecording() async throws {
-        guard try await recorder.endRecording() != nil, let count = try? modelContext.nativeWorkoutCount() else { return }
+        guard let workoutID = try await recorder.endRecording()?.id else { return }
+        finishedWorkoutID = workoutID
+        guard let count = try? modelContext.nativeWorkoutCount() else { return }
         userPreferences.registerCompletedWorkout(nativeWorkoutCount: count)
         guard count > Self.reviewRequestWorkoutThreshold else { return }
         requestReview()
@@ -297,5 +327,23 @@ struct RecordingScene: View {
     
     private func resumeAction() {
         errorHandledAsyncAction { try await recorder.resumeRecording() }
+    }
+
+    private func openFinishedWorkout() {
+        guard let finishedWorkoutID else { return }
+        dismissFinishedWorkoutNotice()
+        router.open([WorkoutDetailRoute(id: finishedWorkoutID)])
+    }
+
+    private func deleteFinishedWorkout() {
+        guard let finishedWorkoutID else { return }
+        dismissFinishedWorkoutNotice()
+        errorHandledAsyncAction {
+            try await core.delete(workoutWithIdentifier: finishedWorkoutID)
+        }
+    }
+
+    private func dismissFinishedWorkoutNotice() {
+        finishedWorkoutID = nil
     }
 }
