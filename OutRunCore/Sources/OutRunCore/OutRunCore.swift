@@ -37,7 +37,7 @@ public class OutRunCore {
     public let userDefaults: UserDefaults
     public let modelContainer: ModelContainer
     @ObservationIgnored public private(set) var recorder: WorkoutRecorder?
-    @ObservationIgnored public private(set) var userPreferences: UserPreferences?
+    public private(set) var userPreferences: UserPreferences?
     public private(set) var status: Status = .initializing
     public private(set) var user: RawUser?
     
