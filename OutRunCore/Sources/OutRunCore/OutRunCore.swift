@@ -132,7 +132,25 @@ public class OutRunCore {
             throw OutRunCoreError.newerWorkoutVersionExists
         }
     }
-    
+
+    /// Upserts the provided workouts into the database like ``upsert(_:)``, but saves all of them at once.
+    /// - returns: The result of each upsert in the order of the provided workouts. A workout that was not upserted as a newer version
+    /// already exists fails with `OutRunCoreError.newerWorkoutVersionExists`.
+    /// - throws: Throws if the core is not yet initialized.
+    /// - warning: Upserting a large amount of workouts at the same time might result in a long wait time or a crash, it is advised to
+    /// upsert in batches of appropriate size.
+    public nonisolated func upsert(_ workouts: [RawWorkout]) async throws -> [Result<UUID, any Error>] {
+        guard case .initialized = await status, let database = await database else { throw OutRunCoreError.notInitialized }
+        return await database.upsert(workouts).map { result in
+            result.mapError { error in
+                switch error {
+                case SyncError.conflict, SyncError.alreadyUpToDate: OutRunCoreError.newerWorkoutVersionExists
+                default: error
+                }
+            }
+        }
+    }
+
     /// Deletes the workout with the provided identifier, if present.
     /// - throws: Throws if the core is not yet initialized or deleting the workout fails.
     public func delete(workoutWithIdentifier identifier: UUID) async throws {

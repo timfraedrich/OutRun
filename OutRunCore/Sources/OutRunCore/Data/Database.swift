@@ -167,16 +167,18 @@ actor Database: ModelActor {
     }
     
     func insert(_ rawWorkouts: [RawWorkout]) throws {
-        for rawWorkout in rawWorkouts {
-            let workout = Workout(from: rawWorkout)
-            workout.route = rawWorkout.route.map { WorkoutRouteDataSample.init(from: $0) }
-            workout.heartRates = rawWorkout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
-            workout.pauses = rawWorkout.pauses.map { WorkoutPause(from: $0) }
-            workout.events = rawWorkout.events.map { WorkoutEvent(from: $0) }
-            workout.serviceMappings = rawWorkout.serviceMappings.map { SyncServiceMapping(from: $0) }
-            modelContext.insert(workout)
-        }
+        rawWorkouts.forEach(stageInsert)
         try modelContext.save()
+    }
+    
+    private func stageInsert(of rawWorkout: RawWorkout) {
+        let workout = Workout(from: rawWorkout)
+        workout.route = rawWorkout.route.map { WorkoutRouteDataSample.init(from: $0) }
+        workout.heartRates = rawWorkout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
+        workout.pauses = rawWorkout.pauses.map { WorkoutPause(from: $0) }
+        workout.events = rawWorkout.events.map { WorkoutEvent(from: $0) }
+        workout.serviceMappings = rawWorkout.serviceMappings.map { SyncServiceMapping(from: $0) }
+        modelContext.insert(workout)
     }
     
     func queryWorkoutRoute(for identifier: UUID) async throws -> [RawWorkoutRouteDataSample] {
@@ -423,6 +425,26 @@ actor Database: ModelActor {
     /// existing workout has a different source.
     @discardableResult
     func upsert(_ workout: RawWorkout, replacing versionPolicy: VersionReplacementPolicy = .olderVersions) async throws -> UUID {
+        let identifier = try stageUpsert(of: workout, replacing: versionPolicy)
+        try modelContext.save()
+        return identifier
+    }
+    
+    /// Upserts the workouts like ``upsert(_:replacing:)``, but saves all of them at once.
+    /// - returns: The result of each upsert in the order of the provided workouts. If saving fails, all changes are rolled back and every
+    /// result is a failure with the save error.
+    func upsert(_ workouts: [RawWorkout], replacing versionPolicy: VersionReplacementPolicy = .olderVersions) -> [Result<UUID, any Error>] {
+        let results = workouts.map { workout in Result { try stageUpsert(of: workout, replacing: versionPolicy) } }
+        do {
+            try modelContext.save()
+            return results
+        } catch {
+            modelContext.rollback()
+            return workouts.map { _ in .failure(error) }
+        }
+    }
+    
+    private func stageUpsert(of workout: RawWorkout, replacing versionPolicy: VersionReplacementPolicy) throws -> UUID {
         do {
             let serviceInformation = workout.serviceMappings.compactMap { mapping in
                 (mapping.externalId ?? mapping.externalUrl).map { (externalIdentifier: $0, serviceIdentifier: mapping.serviceIdentifier) }
@@ -458,10 +480,9 @@ actor Database: ModelActor {
             databaseWorkout.pauses = workout.pauses.map { WorkoutPause(from: $0) }
             databaseWorkout.events = workout.events.map { WorkoutEvent(from: $0) }
             databaseWorkout.serviceMappings = workout.serviceMappings.map { SyncServiceMapping(from: $0) }
-            try modelContext.save()
             return databaseWorkout.id
         } catch DatabaseError.objectNotFound {
-            try insert([workout])
+            stageInsert(of: workout)
             return workout.id
         }
     }

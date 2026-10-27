@@ -20,6 +20,7 @@ import Foundation
 @testable import OutRun
 @testable import OutRunCore
 import Testing
+import ZIPFoundation
 
 @Suite("Backup Tests")
 class BackupTests {
@@ -56,6 +57,49 @@ class BackupTests {
     @Test("V3 Legacy Backup Restore")
     func restoreV3LegacyBackup() async throws {
         try await restoreLegacyBackup(with: "OutRunV3", andCompareWithWorkoutsWith: "ExpectationOutRunV3")
+    }
+    
+    @Test("Restore Zip With Mixed File Types")
+    func restoreZipWithMixedFileTypes() async throws {
+        let legacyBackupURL = try TestUtil.orbupFileURL(forResource: "OutRunV3")
+        let expectedLegacyWorkouts: [RawWorkout] = try TestUtil.readJSON(with: "ExpectationOutRunV3")
+        guard let gpxWorkout = expectedLegacyWorkouts.first else { throw "No example workout available." }
+        let (core, backupService) = try await initializeAndSetUpCoreAndBackupService()
+        try await core.insert([gpxWorkout])
+        let fileManager = FileManager.default
+        let directory = fileManager.temporaryDirectory.appending(component: UUID().uuidString)
+        try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? fileManager.removeItem(at: directory) }
+        _ = try await backupService.backup([gpxWorkout.id], to: directory, using: .gpx).task.value
+        let gpxURL = directory.appending(component: gpxWorkout.id.uuidString + ".gpx")
+        guard let user = await core.user else { throw "Core is not set up with user." }
+        try await core.reset()
+        try await core.setup(for: user)
+
+        let archiveURL = directory.appending(component: "mixed.zip")
+        let archive = try Archive(url: archiveURL, accessMode: .create)
+        try archive.addEntry(with: "legacy.orbup", fileURL: legacyBackupURL)
+        try archive.addEntry(with: "workout.gpx", fileURL: gpxURL)
+        let notesURL = directory.appending(component: "notes.txt")
+        try Data("notes".utf8).write(to: notesURL)
+        try archive.addEntry(with: "notes.txt", fileURL: notesURL)
+        #expect(try backupService.checkRestoreURL(archiveURL) == [.gpxWillAlwaysAddNewWorkouts, .notAllFilesAreImportable])
+        let result = try await backupService.restore(from: archiveURL).task.value
+
+        let restoredWorkouts = try await core.fetchWorkouts()
+        #expect(result.failed == 0)
+        #expect(result.upserted == expectedLegacyWorkouts.count + 1)
+        #expect(restoredWorkouts.count == expectedLegacyWorkouts.count + 1)
+        #expect(Set(expectedLegacyWorkouts.map(\.id)).isSubset(of: restoredWorkouts.map(\.id)))
+    }
+
+    @Test("Backup Warnings")
+    func backupWarnings() async throws {
+        let (_, backupService) = try await initializeAndSetUpCoreAndBackupService()
+        #expect(backupService.checkBackup(using: .model).isEmpty)
+        #expect(backupService.checkBackup([UUID()], using: .gpx).isEmpty)
+        #expect(backupService.checkBackup([UUID(), UUID()], using: .gpx) == [.individualFilesWillBeWritten])
+        #expect(backupService.checkBackup(using: .gpx) == [.individualFilesWillBeWritten])
     }
     
     // MARK: Helper

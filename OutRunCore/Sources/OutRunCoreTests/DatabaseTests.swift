@@ -76,6 +76,24 @@ struct DatabaseTests {
         #expect(resultWorkout == exampleWorkout)
     }
     
+    @Test("Batch Upsert")
+    func batchUpsert() async throws {
+        let exampleWorkout = try readExampleWorkout()
+        let database = try await Database(isStoredInMemoryOnly: true)
+        try await database.insert(exampleWorkout)
+        var updatedWorkout = exampleWorkout
+        updatedWorkout.lastEditDate = exampleWorkout.lastEditDate.addingTimeInterval(60)
+        updatedWorkout.name = "Updated"
+        var newWorkout = exampleWorkout
+        newWorkout.id = UUID()
+        newWorkout.serviceMappings = []
+        let results = await database.upsert([exampleWorkout, updatedWorkout, newWorkout, newWorkout])
+        #expect(results.map { (try? $0.get()) != nil } == [false, true, true, false])
+        let workouts = try await database.fetchWorkouts()
+        #expect(Set(workouts.map(\.id)) == [exampleWorkout.id, newWorkout.id])
+        #expect(workouts.first { $0.id == exampleWorkout.id }?.name == "Updated")
+    }
+
     private static let exampleWorkoutFileName = "ExampleWorkout"
     
     private func readExampleWorkout() throws -> RawWorkout {
