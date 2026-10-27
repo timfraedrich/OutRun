@@ -441,6 +441,46 @@
         }
       }
     },
+    "backup_export_warning_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup erstellen?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Backup?"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Backup?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Crear copia de seguridad?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer la sauvegarde ?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up maken?"
+          }
+        }
+      }
+    },
     "backup_import_action" : {
       "localizations" : {
         "de" : {
@@ -717,6 +757,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Back-up geïmporteerd"
+          }
+        }
+      }
+    },
+    "backup_import_warning_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup wiederherstellen?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Backup?"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Backup?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Restaurar copia de seguridad?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurer la sauvegarde ?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back-up herstellen?"
           }
         }
       }
@@ -1001,6 +1081,126 @@
         }
       }
     },
+    "backup_warning_gpx_will_always_add_new_workouts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPX-Dateien werden immer als neue Workouts hinzugefügt, auch wenn diese bereits in der App vorhanden sind."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPX files will always be added as new workouts, even if they already exist in the app."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPX files will always be added as new workouts, even if they already exist in the app."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los archivos GPX siempre se añadirán como entrenamientos nuevos, aunque ya existan en la app."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les fichiers GPX seront toujours ajoutés comme nouveaux entraînements, même s’ils existent déjà dans l’app."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPX-bestanden worden altijd als nieuwe trainingen toegevoegd, ook als ze al in de app staan."
+          }
+        }
+      }
+    },
+    "backup_warning_individual_files_will_be_written" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jedes Workout wird als einzelne Datei im ausgewählten Ordner gespeichert."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every workout will be saved as an individual file in the selected folder."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every workout will be saved as an individual file in the selected folder."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada entrenamiento se guardará como un archivo individual en la carpeta seleccionada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque entraînement sera enregistré dans un fichier distinct dans le dossier sélectionné."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elke training wordt als afzonderlijk bestand in de geselecteerde map opgeslagen."
+          }
+        }
+      }
+    },
+    "backup_warning_not_all_files_are_importable" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einige Dateien werden nicht unterstützt und übersprungen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some files are not supported and will be skipped."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some files are not supported and will be skipped."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algunos archivos no son compatibles y se omitirán."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certains fichiers ne sont pas pris en charge et seront ignorés."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sommige bestanden worden niet ondersteund en worden overgeslagen."
+          }
+        }
+      }
+    },
     "beats_per_minute_unit" : {
       "comment" : "Abbreviation for beats per minute, used as a unit label for heart rate.",
       "localizations" : {
@@ -1238,6 +1438,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Agenda"
+          }
+        }
+      }
+    },
+    "cancel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleren"
           }
         }
       }

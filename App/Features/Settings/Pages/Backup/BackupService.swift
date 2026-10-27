@@ -69,6 +69,12 @@ class BackupService {
         /// Individual files will be written to the provided directory. The user might not expect a large number of files to be saved and
         /// should be made aware before continuing.
         case individualFilesWillBeWritten
+        
+        var message: String {
+            switch self {
+            case .individualFilesWillBeWritten: .init(localized: "backup_warning_individual_files_will_be_written")
+            }
+        }
     }
     
     func checkBackup(_ workoutIds: Set<Workout.ID>? = .none, using type: BackupType) -> Set<BackupWarning> {
@@ -180,6 +186,13 @@ class BackupService {
     enum RestoreWarning: Hashable, Sendable, CaseIterable {
         case gpxWillAlwaysAddNewWorkouts
         case notAllFilesAreImportable
+        
+        var message: String {
+            switch self {
+            case .gpxWillAlwaysAddNewWorkouts: .init(localized: "backup_warning_gpx_will_always_add_new_workouts")
+            case .notAllFilesAreImportable: .init(localized: "backup_warning_not_all_files_are_importable")
+            }
+        }
     }
     
     func checkRestoreURL(_ url: URL) throws -> Set<RestoreWarning> {

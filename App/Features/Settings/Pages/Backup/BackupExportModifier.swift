@@ -25,6 +25,7 @@ private struct BackupExportModifier: ViewModifier {
     @Environment(BackupService.self) private var backupService
     @Binding private var process: BackupProcess?
     @Binding private var isPresented: Bool
+    @State private var pendingBackup: (url: URL, message: String)?
     private let workoutIds: Set<Workout.ID>?
     private let type: BackupType
     
@@ -42,15 +43,48 @@ private struct BackupExportModifier: ViewModifier {
             allowsMultipleSelection: false,
             onCompletion: processResult
         )
+        .alert("backup_export_warning_title", isPresented: pendingBackupIsPresented, presenting: pendingBackup) { pendingBackup in
+            Button("cancel", role: .cancel) {}
+            Button("continue_action") { backup(to: pendingBackup.url) }
+        } message: { pendingBackup in
+            Text(verbatim: pendingBackup.message)
+        }
+    }
+    
+    private var pendingBackupIsPresented: Binding<Bool> {
+        .init {
+            pendingBackup != nil
+        } set: { newValue in
+            guard !newValue else { return }
+            pendingBackup = nil
+        }
     }
     
     private func processResult(_ result: Result<[URL], Error>) {
+        do {
+            guard let url = try result.get().first else { return }
+            let warnings = backupService.checkBackup(workoutIds, using: type)
+            if let firstWarning = warnings.first {
+                let message = if warnings.count > 1 {
+                    warnings.map { "• " + $0.message }.joined(separator: "\n")
+                } else {
+                    firstWarning.message
+                }
+                pendingBackup = (url, message)
+            } else {
+                backup(to: url)
+            }
+        } catch {
+            process = .exportFailed(error: error)
+        }
+    }
+    
+    private func backup(to url: URL) {
         Task {
+            guard url.startAccessingSecurityScopedResource() else { return }
+            defer { url.stopAccessingSecurityScopedResource() }
             process = .export(progress: .zero)
             do {
-                let urls = try result.get()
-                guard let url = urls.first, url.startAccessingSecurityScopedResource() else { return }
-                defer { url.stopAccessingSecurityScopedResource() }
                 let (task, progressSequence) = backupService.backup(workoutIds, to: url, using: type)
                 for try await progress in progressSequence {
                     process = .export(progress: progress)
