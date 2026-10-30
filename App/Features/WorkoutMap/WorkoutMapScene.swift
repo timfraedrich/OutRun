@@ -95,6 +95,9 @@ struct WorkoutMapScene: View {
                 }
                 .annotationTitles(.hidden)
             }
+#if DEBUG
+            WorkoutMapRouteUncertaintyOverlay(samples: sortedRoute, fill: .tint.opacity(0.2), stroke: .tint, lineWidth: 1)
+#endif
         }
         .toolbar(content: toolbarContent)
         .closeToolbarItem(active: addCloseButton)
