@@ -316,7 +316,9 @@ struct RecordingScene: View {
         guard let workoutID = try await recorder.endRecording()?.id else { return }
         finishedWorkoutID = workoutID
         guard let count = try? modelContext.nativeWorkoutCount() else { return }
+#if !RELEASE
         userPreferences.registerCompletedWorkout(nativeWorkoutCount: count)
+#endif
         guard count > Self.reviewRequestWorkoutThreshold else { return }
         requestReview()
     }

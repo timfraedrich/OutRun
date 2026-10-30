@@ -19,6 +19,7 @@
 import Foundation
 import OutRunCore
 
+#if !RELEASE
 extension UserPreferences {
 
     /// The number of natively recorded workouts required before completing a workout makes the donation prompt due.
@@ -46,3 +47,4 @@ extension UserPreferences {
         donationPromptDismissed = true
     }
 }
+#endif

@@ -43,9 +43,11 @@ struct MainScene: View {
                         if finishedWorkouts.isEmpty {
                             emptyWorkoutsView.frame(maxHeight: .infinity)
                         } else {
+#if !RELEASE
                             if userPreferences.donationPromptDue {
                                 donationPromptCard
                             }
+#endif
                             workoutCards
                             if finishedWorkouts.count > 3 {
                                 calendarLink
@@ -103,12 +105,14 @@ struct MainScene: View {
                 .onTapGesture { showWorkoutDetailScene(for: workout.id) }
         }
     }
-    
+
+#if !RELEASE
     @ViewBuilder private var donationPromptCard: some View {
         DonationPromptCard(action: showTipJar, dismiss: dismissDonationPrompt)
             .transition(unsafe .opacity.combined(with: .scale(scale: 0.95)))
     }
-    
+#endif
+
     @ViewBuilder private var calendarLink: some View {
         Button(action: showCalendarScene) {
             HStack(spacing: .small) {
@@ -191,18 +195,20 @@ struct MainScene: View {
         descriptor.relationshipKeyPathsForPrefetching = [\.pauses]
         self._finishedWorkouts = Query(descriptor)
     }
-    
+
+#if !RELEASE
     private func dismissDonationPrompt() {
         withAnimation {
             userPreferences.dismissDonationPrompt()
         }
     }
-    
+
     private func showTipJar() {
         dismissDonationPrompt()
         router.open([SettingsRoute(), SettingsPageRoute.tipJar])
     }
-    
+#endif
+
     private func showRecordingScene() {
         router.route(RecordingRoute())
     }

@@ -54,7 +54,9 @@ struct SettingsScene: View {
     var body: some View {
         List {
             profileSection
+#if !RELEASE
             supportSection
+#endif
             subpageSection
             legalSection
             infoSection
@@ -129,12 +131,14 @@ struct SettingsScene: View {
         }
     }
 
+#if !RELEASE
     @ViewBuilder private var supportSection: some View {
         Section {
             subpageButton("tip_jar", systemImage: "star.circle.fill", route: .tipJar)
         }
         .buttonStyle(.plain)
     }
+#endif
 
     @ViewBuilder private var subpageSection: some View {
         Section {

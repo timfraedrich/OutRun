@@ -26,7 +26,9 @@ enum SettingsPageRoute: RouteProtocol {
     case cache
     case profile
     case recording
+#if !RELEASE
     case tipJar
+#endif
     case units
     
     func content(in context: RouteContext) -> some View {
@@ -36,7 +38,9 @@ enum SettingsPageRoute: RouteProtocol {
         case .cache: CacheSettingsScene()
         case .profile: ProfileScene()
         case .recording: RecordingSettingsScene()
+#if !RELEASE
         case .tipJar: TipJarSettingsScene()
+#endif
         case .units: UnitSettingsScene()
         }
     }
