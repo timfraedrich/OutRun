@@ -91,6 +91,7 @@ struct RecordingScene: View {
             }
         }
         .toolbar(content: toolbarContent)
+        .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .overlay(alignment: .top, content: finishedWorkoutCard)
         .safeAreaInset(edge: .bottom, content: informationCard)
         .ignoresBottomSafeAreaOnIOS26OrLater()
@@ -259,9 +260,8 @@ struct RecordingScene: View {
             .font(.headline)
             .padding(.horizontal, .extraSmall)
         }
-        .tint(.primary)
         if #available(iOS 26.0, *) {
-            button
+            button.tint(.primary)
         } else {
             button
                 .buttonStyle(.bordered)
@@ -272,17 +272,10 @@ struct RecordingScene: View {
     @ViewBuilder private var closeButton: some View {
         let button = Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
             .labelStyle(.iconOnly)
-            .tint(.primary)
         if #available(iOS 26.0, *) {
-            button
-                .font(.title2)
-                .frame(width: 44, height: 44)
-                .glassEffect(.regular.interactive(), in: .circle)
+            button.tint(.primary)
         } else {
             button
-                .font(.title)
-                .symbolVariant(.circle.fill)
-                .symbolRenderingMode(.hierarchical)
         }
     }
     
@@ -347,5 +340,6 @@ struct RecordingScene: View {
 
     private func dismissFinishedWorkoutNotice() {
         finishedWorkoutID = nil
+        // SHOW RATING HERE?
     }
 }
