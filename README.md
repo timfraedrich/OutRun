@@ -28,8 +28,7 @@ OutRun is free, open source and has no ads. If you enjoy using it and would like
 1. **Share the app.** The simplest way of contributing is telling your friends and family about OutRun. A [review on the App Store](https://apps.apple.com/app/id1477511092?action=write-review) also helps others discover it.
 2. **Report issues.** If parts of the app are not working as expected, if you have feedback or just a question, you can submit an issue on the [issue page](https://github.com/timfraedrich/OutRun/issues) of this project.
 3. **Join the beta.** Beta testers receive early and sometimes unstable versions of the app and help to make sure that everyone else gets a more polished product. You can join [here](https://testflight.apple.com/join/kDqNWBAi).
-4. **Leave a tip.** If you would like to support the development, you can leave a tip through the Tip Jar in the app's settings. Tips are entirely optional and do not unlock any additional features. If you would like to support the project more substantially, please [get in touch](mailto:outrun@timfraedrich.me).
-5. **Say thank you.** A short [thank-you message](mailto:outrun@timfraedrich.me) always makes my day.
+4. **Say thank you.** A short [thank-you message](mailto:outrun@timfraedrich.me) always makes my day.
 
 OutRun does not accept any other kind of contributions, such as code or translations, at the moment.
 

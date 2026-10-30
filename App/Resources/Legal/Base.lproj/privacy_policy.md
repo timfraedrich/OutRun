@@ -2,7 +2,9 @@
 
 For the iOS App **OutRun**, hereinafter referred to as the "App".
 
-Last updated: 18.10.2026 (DD.MM.YYYY)
+Last updated: 30.10.2026 (DD.MM.YYYY)
+
+**This English version is a translation provided for your convenience. Only the [German version](https://github.com/timfraedrich/OutRun/blob/main/App/Resources/Legal/de.lproj/privacy_policy.md) is authoritative and takes priority if the two differ. It is also shown in the App when you use the App in German.**
 
 ---
 
@@ -17,7 +19,7 @@ OutRun is built so that your workouts stay yours. The provider operates no serve
 > Phone: [+49 331 90060221](tel:+4933190060221)\
 > Email: [outrun@timfraedrich.me](mailto:outrun@timfraedrich.me)
 
-The provider is the controller within the meaning of the EU General Data Protection Regulation (GDPR) only for the data that actually reaches the provider, which is described in sections 9 and 10. The data you record in the App is processed exclusively on your device and is not accessible to the provider.
+The provider is the controller within the meaning of the EU General Data Protection Regulation (GDPR) only for the data that actually reaches the provider, which is described in sections 8 and 9. The data you record in the App is processed exclusively on your device and is not accessible to the provider.
 
 ## 2. Data stored on your device
 
@@ -60,35 +62,31 @@ The App lets you export your workouts as OutRun backup files or GPX files and im
 
 While you record a workout, the App can show its progress, such as duration and distance, as a Live Activity on your lock screen and in the Dynamic Island. This information is visible to anyone who can see your device. You can turn Live Activities off in your device's settings.
 
-## 8. Tip Jar
-
-The App offers optional in-app purchases to tip the provider. These purchases are processed entirely by Apple under the [Apple Media Services Terms and Conditions](https://www.apple.com/legal/internet-services/itunes/) and [Apple's Privacy Policy](https://www.apple.com/legal/privacy/). The provider does not receive your name, payment details, or any other information that identifies you, only the aggregated sales reports Apple provides to all developers.
-
-## 9. Contacting the provider
+## 8. Contacting the provider
 
 If you contact the provider by email, the provider processes your email address, your name if you provide it, the content of your message, and any attachments in order to answer your request. The legal basis is Art. 6(1)(b) GDPR where your request relates to your use of the App, and otherwise the provider's legitimate interest in answering inquiries and improving the App (Art. 6(1)(f) GDPR).
 
-Your emails are stored with the provider's email service provider, which processes them on the provider's behalf. The provider keeps your messages for as long as they are needed to handle your request and, where your feedback is relevant to the App's further development, for that purpose. They are deleted once they are no longer needed or upon request.
+Your emails are stored with iCloud Mail, Apple's email service (for the European Economic Area: Apple Distribution International Limited, Ireland). According to Apple, it generally stores personal data with Apple Inc. in the United States. For this transfer Apple refers to Standard Contractual Clauses (Art. 46(2)(c) GDPR), a copy of which you can request from [Apple](https://www.apple.com/legal/privacy/contact/). The provider keeps your messages for as long as they are needed to handle your request and, where your feedback is relevant to the App's further development, for that purpose. They are deleted once they are no longer needed or upon request.
 
-## 10. Beta testing via TestFlight
+## 9. Beta testing via TestFlight
 
 If you test pre-release versions of the App through Apple's TestFlight, Apple shares certain information with the provider. This includes crash logs and usage information of the beta builds (for example installations, sessions, and technical details such as your device model and operating system version), which Apple collects automatically, as well as the feedback, comments, and screenshots you choose to submit. If you were invited by email, this information is associated with your name and email address; if you joined through a public link, your name and email address are not visible to the provider. Details are described in [Apple's TestFlight privacy information](https://www.apple.com/legal/privacy/data/en/test-flight/).
 
 The provider uses this information solely to test, fix, and improve the App. The legal basis is the provider's legitimate interest in testing the App before release (Art. 6(1)(f) GDPR). The information is kept for as long as it is needed for the App's development and is deleted once it is no longer needed. You can stop testing at any time by leaving the beta in the TestFlight app.
 
-## 11. Analytics
+## 10. Analytics
 
 The App contains **no third-party analytics, advertising, or tracking**. The open-source libraries it includes do not transmit any data. The only usage information available to the provider is the **aggregated, anonymized analytics and crash information that Apple may make available to developers**, if you have agreed to share it. This data does not identify you individually. You can turn it off in your device's settings (Settings → Privacy & Security → Analytics & Improvements → Share With App Developers).
 
-## 12. Data the provider does *not* collect
+## 11. Data the provider does *not* collect
 
-Apart from what is described in sections 9 to 11, the provider does not collect your name, email address, location, health data, contacts, device identifiers, advertising identifiers, or any other personal data, and does not use cookies or similar technologies to track you.
+Apart from what is described in sections 8 to 10, the provider does not collect your name, email address, location, health data, contacts, device identifiers, advertising identifiers, or any other personal data, and does not use cookies or similar technologies to track you.
 
-## 13. Children
+## 12. Children
 
 The App does not collect personal data from anyone, including children. Any data a child records or enters stays on the device, and is only shared with Apple Health or exported if this is set up on that device.
 
-## 14. Your rights
+## 13. Your rights
 
 For the data you record in the App you remain in full control:
 
@@ -96,12 +94,14 @@ For the data you record in the App you remain in full control:
 - Data you saved to Apple Health can be managed and deleted in the Health app.
 - Files you exported are not affected by deleting data in the App and have to be deleted by you.
 
-For the data the provider processes as described in sections 9 and 10, you have the right to access (Art. 15 GDPR), rectification (Art. 16 GDPR), erasure (Art. 17 GDPR), restriction of processing (Art. 18 GDPR), and data portability (Art. 20 GDPR). Where processing is based on legitimate interests, you have the right to **object** to it at any time for reasons arising from your particular situation (Art. 21 GDPR). To exercise these rights, contact the provider at the email address in section 1.
+For the data the provider processes as described in sections 8 and 9, you have the right to access (Art. 15 GDPR), rectification (Art. 16 GDPR), erasure (Art. 17 GDPR), restriction of processing (Art. 18 GDPR), and data portability (Art. 20 GDPR). Where processing is based on legitimate interests, you have the right to **object** to it at any time for reasons arising from your particular situation (Art. 21 GDPR). To exercise these rights, contact the provider at the email address in section 1.
 
 You also have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR), in particular in the EU member state of your habitual residence or place of work.
 
-For requests concerning data held by Apple, for example in Apple Health, please contact Apple directly using the details in Apple's Privacy Policy.
+For requests concerning data held by Apple, for example in Apple Health, please contact Apple directly using the details in [Apple's Privacy Policy](https://www.apple.com/legal/privacy/).
 
-## 15. Changes to this policy
+## 14. Changes to this policy
 
-The provider may update this Privacy Policy from time to time, for example when features of the App change. The current version is available in the App and on [GitHub](https://github.com/timfraedrich/OutRun/blob/main/App/Resources/Legal/privacy_policy.md), and the date at the top reflects the latest revision.
+The provider may update this Privacy Policy from time to time, for example when features of the App change. The current version is available in the App and on [GitHub](https://github.com/timfraedrich/OutRun/blob/main/App/Resources/Legal/Base.lproj/privacy_policy.md), and the date at the top reflects the latest revision.
+
+The German version of this Privacy Policy is authoritative. Versions in other languages are translations provided for information only.
