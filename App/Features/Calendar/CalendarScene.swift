@@ -73,7 +73,7 @@ struct CalendarScene: View {
         }
         .customBottomSafeAreaBar(content: CalendarLegend.init)
         .toolbar(content: toolbarContent)
-        .toolbarBackground(toolbarBackgroundVisibility, for: .navigationBar)
+        .toolbarBackgroundVisibility(toolbarBackgroundVisibility, for: .navigationBar)
         .navigationTitle("calendar")
         .navigationBarTitleDisplayMode(.inline)
     }
