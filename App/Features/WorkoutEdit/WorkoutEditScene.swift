@@ -362,7 +362,6 @@ struct WorkoutEditScene: View {
                 let role: ButtonRole? = if #available(iOS 26.0, *) { .confirm } else { nil }
                 Button(role: role, action: confirmOrSave) {
                     Text("save")
-                        .foregroundStyle(.white)
                         .fontWeight(.semibold)
                 }
             }
