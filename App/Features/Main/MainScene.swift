@@ -28,6 +28,7 @@ struct MainScene: View {
     @Environment(UserPreferences.self) private var userPreferences
     @Environment(Router.self) private var router
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.self) private var environment
     @Query private var finishedWorkouts: [Workout]
     @State private var largeTitleVisible: Bool?
 
@@ -141,10 +142,14 @@ struct MainScene: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
             if healthSyncService?.userShouldBePromptedForAuth == true {
-                Button(action: showSettingsScene) {
+                let button = Button(action: showSettingsScene) {
                     Label("Settings", systemImage: "gear.badge")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.red, .primary)
+                }
+                if #available(iOS 26.0, *) {
+                    button.foregroundStyle(.red, Color.primary.resolve(in: environment))
+                } else {
+                    button.foregroundStyle(.red, .accent.resolve(in: environment))
                 }
             } else {
                 Button("settings", systemImage: "gear", action: showSettingsScene)
