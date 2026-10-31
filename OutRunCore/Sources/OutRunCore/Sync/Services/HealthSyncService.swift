@@ -361,7 +361,7 @@ public class HealthSyncService: SyncService {
         }
         let observationAnchor = self.observationAnchor
         // We exclude our own workouts here otherwise workouts we sync to health would be synced back.
-        let workoutPredicate = workoutPredicate(from: inwardSyncMode.startDate, to: .none, excludeDefaultSource: true)
+        let workoutPredicate = workoutPredicate(from: inwardSyncMode.syncStartDate, to: .none, excludeDefaultSource: true)
         let descriptor = HKAnchoredObjectQueryDescriptor(predicates: [workoutPredicate], anchor: observationAnchor)
         observationTask = Task { [weak delegate] in
             do {

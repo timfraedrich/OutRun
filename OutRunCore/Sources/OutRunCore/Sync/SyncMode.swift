@@ -27,7 +27,31 @@ public enum SyncMode: Codable, Hashable, Sendable {
     case enabled
     /// Workouts and their changes should be synced to the service if the workout was created after the specified date.
     case enabledFrom(date: Date)
-    
+
+    init?(identifier: String?, date: Date?) {
+        switch (identifier, date) {
+        case ("disabled", _): self = .disabled
+        case ("enabled", _): self = .enabled
+        case ("enabledFrom", .some(let date)): self = .enabledFrom(date: date)
+        default: return nil
+        }
+    }
+
+    var identifier: String {
+        switch self {
+        case .disabled: "disabled"
+        case .enabled: "enabled"
+        case .enabledFrom: "enabledFrom"
+        }
+    }
+
+    var date: Date? {
+        switch self {
+        case .enabledFrom(let date): date
+        default: nil
+        }
+    }
+
     var isEnabled: Bool {
         switch self {
         case .enabled, .enabledFrom: true
@@ -35,7 +59,7 @@ public enum SyncMode: Codable, Hashable, Sendable {
         }
     }
     
-    var startDate: Date? {
+    var syncStartDate: Date? {
         switch self {
         case .disabled: nil
         case .enabled: .distantPast

@@ -24,14 +24,20 @@ class SyncServiceState {
     
     @Attribute(.unique) var id: String
     var lastSyncDate: Date?
-    var lastSyncMode: SyncMode
+    private(set) var rawLastSyncMode: String?
+    private(set) var rawLastSyncModeDate: Date?
     var preferences: RawPreferences
+
+    var lastSyncMode: SyncMode {
+        get { Self.syncMode(from: rawLastSyncMode, and: rawLastSyncModeDate) }
+        set { (rawLastSyncMode, rawLastSyncModeDate) = Self.rawSyncMode(from: newValue) }
+    }
     
     init(id: String, lastSyncDate: Date? = nil, lastSyncMode: SyncMode = .disabled, preferences: RawPreferences = .init()) {
         self.id = id
         self.lastSyncDate = lastSyncDate
-        self.lastSyncMode = lastSyncMode
         self.preferences = preferences
+        (rawLastSyncMode, rawLastSyncModeDate) = Self.rawSyncMode(from: lastSyncMode)
     }
     
     convenience init(from rawState: RawSyncServiceState) {
@@ -41,5 +47,13 @@ class SyncServiceState {
             lastSyncMode: rawState.lastSyncMode,
             preferences: rawState.preferences
         )
+    }
+
+    static func rawSyncMode(from syncMode: SyncMode) -> (String, Date?) {
+        (syncMode.identifier, syncMode.date)
+    }
+
+    static func syncMode(from rawSyncMode: String?, and rawSyncModeDate: Date?) -> SyncMode {
+        .init(identifier: rawSyncMode, date: rawSyncModeDate) ?? .disabled
     }
 }

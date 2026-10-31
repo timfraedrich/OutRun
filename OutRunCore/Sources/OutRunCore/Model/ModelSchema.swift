@@ -1,6 +1,6 @@
 //
 // OutRun
-// Copyright (C) 2025 Tim Fraedrich
+// Copyright (C) 2026 Tim Fraedrich
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,20 +16,4 @@
 // along with this program. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
-@preconcurrency import SwiftData
-
-enum ModelSchema: VersionedSchema {
-    
-    static let models: [any PersistentModel.Type] = [
-        User.self,
-        Workout.self,
-        WorkoutRouteDataSample.self,
-        WorkoutHeartRateDataSample.self,
-        WorkoutPause.self,
-        WorkoutEvent.self,
-        SyncServiceMapping.self,
-        SyncServiceState.self,
-    ]
-    static let versionIdentifier = Schema.Version(2, 0, 0)
-}
+typealias ModelSchema = ModelSchemaV2_0_1

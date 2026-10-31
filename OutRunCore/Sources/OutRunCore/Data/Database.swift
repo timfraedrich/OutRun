@@ -605,6 +605,6 @@ actor Database: ModelActor {
             groupContainer: groupContainer,
             cloudKitDatabase: .none
         )
-        return try ModelContainer(for: schema, migrationPlan: nil, configurations: config)
+        return try ModelContainer(for: schema, migrationPlan: ModelMigrationPlan.self, configurations: config)
     }
 }
