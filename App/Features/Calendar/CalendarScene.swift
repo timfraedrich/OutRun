@@ -72,7 +72,7 @@ struct CalendarScene: View {
             }
         }
         .customBottomSafeAreaBar(content: CalendarLegend.init)
-        .toolbar(content: toolbarContent)
+        .closeToolbarItem()
         .toolbarBackgroundVisibility(toolbarBackgroundVisibility, for: .navigationBar)
         .navigationTitle("calendar")
         .navigationBarTitleDisplayMode(.inline)
@@ -92,13 +92,6 @@ struct CalendarScene: View {
         }
         .padding(.horizontal, .regular)
         .padding(.vertical, .extraSmall)
-    }
-
-    @ToolbarContentBuilder
-    private func toolbarContent() -> some ToolbarContent {
-        ToolbarItem(placement: .topBarTrailing) {
-            Button("close", systemImage: "xmark", action: dismiss.callAsFunction)
-        }
     }
     
     private var gridColumns: [GridItem] {
