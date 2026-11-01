@@ -41,7 +41,13 @@ public class OutRunCore {
     public private(set) var status: Status = .initializing
     public private(set) var user: RawUser?
     
-    public init(config: OutRunCoreConfiguration, syncServices: [any SyncService] = []) {
+    /// - note: In app extensions an outdated store is not migrated. The status will be `.failed` with `OutRunCoreError.migrationRequired`,
+    /// ``modelContainer`` is empty in this case.
+    public convenience init(config: OutRunCoreConfiguration, syncServices: [any SyncService] = []) {
+        self.init(config: config, syncServices: syncServices, allowsMigration: Bundle.main.bundleURL.pathExtension != "appex")
+    }
+    
+    init(config: OutRunCoreConfiguration, syncServices: [any SyncService], allowsMigration: Bool) {
         guard config.recordableDataTypes.contains(.location) else {
             fatalError("Invalid OutRunCore configuration. Must include .location as a recordable data type.")
         }
@@ -62,7 +68,8 @@ public class OutRunCore {
             modelContainer = try Database.modelContainer(
                 name: config.containerName,
                 isStoredInMemoryOnly: config.isStoredInMemoryOnly,
-                groupContainer: groupContainer
+                groupContainer: groupContainer,
+                allowsMigration: allowsMigration
             )
             Task(operation: asyncInit)
         } catch {

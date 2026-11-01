@@ -53,9 +53,11 @@ struct ModelHistoryTests {
             context.insert(ModelSchemaV2_0_0.SyncServiceState(id: "disabled", lastSyncMode: .disabled, preferences: [:]))
             try context.save()
         }
+        #expect(!Database.isStoreCompatible(at: url))
         let schema = Schema(versionedSchema: ModelSchema.self)
         let configuration = ModelConfiguration(schema: schema, url: url, cloudKitDatabase: .none)
         let container = try ModelContainer(for: schema, migrationPlan: ModelMigrationPlan.self, configurations: configuration)
+        #expect(Database.isStoreCompatible(at: url))
         let context = ModelContext(container)
         let user = try #require(try context.fetch(FetchDescriptor<User>()).first)
         #expect(user.sex == .female)

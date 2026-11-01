@@ -28,6 +28,8 @@ public enum OutRunCoreError: CustomDebugStringConvertible, LocalizedError {
     case setupNotRequired
     /// The workout could not be upserted as a newer version already exists in the database.
     case newerWorkoutVersionExists
+    /// The store has to be migrated, which only the main app does. The user should be asked to open it.
+    case migrationRequired
     
     public var debugDescription: String {
         switch self {
@@ -35,6 +37,7 @@ public enum OutRunCoreError: CustomDebugStringConvertible, LocalizedError {
         case .notInitialized: "OutRunCoreError.notInitialized"
         case .setupNotRequired: "OutRunCoreError.setupNotRequired"
         case .newerWorkoutVersionExists: "OutRunCoreError.newerWorkoutVersionExists"
+        case .migrationRequired: "OutRunCoreError.migrationRequired"
         }
     }
     
@@ -44,6 +47,7 @@ public enum OutRunCoreError: CustomDebugStringConvertible, LocalizedError {
         case .notInitialized: .init(localized: "core_error_not_initialized", bundle: .module)
         case .setupNotRequired: .init(localized: "core_error_setup_not_required", bundle: .module)
         case .newerWorkoutVersionExists: .init(localized: "core_error_newer_workout_version_exists", bundle: .module)
+        case .migrationRequired: .init(localized: "core_error_migration_required", bundle: .module)
         }
     }
 }

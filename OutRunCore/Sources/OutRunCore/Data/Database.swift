@@ -17,6 +17,7 @@
 //
 
 import Combine
+import CoreData
 import Foundation
 import Perception
 import SwiftData
@@ -589,13 +590,15 @@ actor Database: ModelActor {
     
     // MARK: - Static
     
+    /// - parameter allowsMigration: Whether an outdated store may be migrated. Must be `false` in app extensions, as they can be launched
+    /// at the same time as the main app and migrating concurrently can crash. See https://developer.apple.com/forums/thread/773637.
+    /// - throws: Throws `OutRunCoreError.migrationRequired` if the store would have to be migrated but `allowsMigration` is `false`.
     static func modelContainer(
         name: String?,
         isStoredInMemoryOnly: Bool = false,
-        groupContainer: ModelConfiguration.GroupContainer = .automatic
+        groupContainer: ModelConfiguration.GroupContainer = .automatic,
+        allowsMigration: Bool = true
     ) throws -> ModelContainer {
-        // If migrations get added, prevent extensions to automatically migrate to avoid crashes.
-        // See https://developer.apple.com/forums/thread/773637?answerId=824240022#824240022 to handle this properly.
         let schema = Schema(versionedSchema: ModelSchema.self)
         let config = ModelConfiguration(
             name,
@@ -605,6 +608,18 @@ actor Database: ModelActor {
             groupContainer: groupContainer,
             cloudKitDatabase: .none
         )
+        if !allowsMigration, !isStoredInMemoryOnly, !isStoreCompatible(at: config.url) {
+            throw OutRunCoreError.migrationRequired
+        }
         return try ModelContainer(for: schema, migrationPlan: ModelMigrationPlan.self, configurations: config)
+    }
+    
+    static func isStoreCompatible(at url: URL) -> Bool {
+        guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else { return true }
+        guard
+            let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(type: .sqlite, at: url),
+            let model = NSManagedObjectModel.makeManagedObjectModel(for: ModelSchema.models)
+        else { return false }
+        return model.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
     }
 }

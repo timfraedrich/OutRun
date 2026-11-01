@@ -241,6 +241,46 @@
         }
       }
     },
+    "core_error_migration_required" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Daten müssen aktualisiert werden. Öffne die App, um fortzufahren."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your data needs to be updated. Open the app to continue."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your data needs to be updated. Open the app to continue."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus datos deben actualizarse. Abre la app para continuar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos données doivent être mises à jour. Ouvrez l’app pour continuer."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je gegevens moeten worden bijgewerkt. Open de app om door te gaan."
+          }
+        }
+      }
+    },
     "core_error_newer_workout_version_exists" : {
       "localizations" : {
         "de" : {
