@@ -49,12 +49,9 @@ struct OutRun: App {
                         case .needsSetup:
                             SetupScene()
                         case .initialized:
-                            MainScene()
-                                .environment(mainRouter)
+                            MainScene().environment(mainRouter)
                         case .failed(let error):
-                            Text(error.localizedDescription)
-                                .font(.subheadline)
-                                .foregroundStyle(.red)
+                            ErrorNotice(error)
                         }
                     }
                 }
