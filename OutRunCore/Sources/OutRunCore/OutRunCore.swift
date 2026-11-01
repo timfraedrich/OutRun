@@ -64,13 +64,15 @@ public class OutRunCore {
                 isStoredInMemoryOnly: config.isStoredInMemoryOnly,
                 groupContainer: groupContainer
             )
+            Task(operation: asyncInit)
         } catch {
-            // the reason we allow the app to crash in this instance is that creating the ModelContainer instance should only fail under
-            // extreme circumstances (e.g. way too little disk space or concurrent migrations). For now there are no migrations and such
-            // little disk space to cause an issue will lead to much graver problems than an apps database not initializing correctly.
-            fatalError("Failed to initialize ModelContainer: \(error).")
+            guard let emptyContainer = try? Database.modelContainer(name: nil, isStoredInMemoryOnly: true, groupContainer: .none) else {
+                fatalError("Failed to initialize empty in-memory ModelContainer.")
+            }
+            modelContainer = emptyContainer
+            status = .failed(error)
+            logger.critical("Failed to initialize ModelContainer: \(error).")
         }
-        Task(operation: asyncInit)
     }
     
     // MARK: Public API
