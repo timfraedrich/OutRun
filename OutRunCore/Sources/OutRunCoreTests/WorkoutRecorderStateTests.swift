@@ -103,4 +103,14 @@ struct WorkoutRecorderStateTests {
         #expect(try state.processLocation(location(steps: 0, at: 1, accuracy: -1), with: nil).sample == nil)
         #expect(state.route.isEmpty)
     }
+
+    @Test("Relative altitude is applied on top of the altitude of the first sample")
+    func relativeAltitudeIsRefined() throws {
+        let state = try makeState()
+        let altitude = { (value: Double) in AltitudeService.AltitudeSample(isAbsolute: false, timestamp: .now, altitude: value) }
+        let first = try state.processLocation(location(steps: 0, at: 1), with: altitude(2)).sample
+        let second = try state.processLocation(location(steps: 1, at: 2), with: altitude(5)).sample
+        #expect(first?.altitude == 0)
+        #expect(second?.altitude == 3)
+    }
 }

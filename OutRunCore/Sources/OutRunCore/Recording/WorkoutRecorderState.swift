@@ -336,7 +336,7 @@ class WorkoutRecorderState {
         } else if let baseAltitude {
             sample.altitude = Float(baseAltitude + altitudeSample.altitude)
         } else {
-            baseAltitude = Double(sample.altitude) + altitudeSample.altitude
+            baseAltitude = Double(sample.altitude) - altitudeSample.altitude
         }
     }
 }
