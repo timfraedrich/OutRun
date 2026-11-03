@@ -135,16 +135,7 @@ class WorkoutRecorderState {
             activeDurationBeforeLastPause = lastActiveDuration
         }
         lastPauseStateChangeDate = date
-        if let thresholds = workoutType.automaticPauseThresholds,
-           let location = lastLocation,
-           location.speed >= .zero,
-           location.speed < thresholds.pauseThreshold
-        {
-            automaticallyPausedSince = date
-            try transition(to: .paused(manual: false))
-        } else {
-            try transition(to: .recording)
-        }
+        try transition(to: .recording)
     }
     
     func pause(on date: Date) throws(WorkoutRecorderError) -> RawWorkoutPause? {
@@ -195,15 +186,7 @@ class WorkoutRecorderState {
               location.horizontalAccuracy >= .zero,
               location.horizontalAccuracy < userPreferences.requiredGPSAccuracy
         else { return (nil, nil) }
-        var pause: RawWorkoutPause? = nil
-        // TODO: Improve auto pause functionality.
-        if userPreferences.pauseAutomatically, let thresholds = workoutType.automaticPauseThresholds, location.speed >= 0 {
-            if automaticallyPausedSince == nil, location.speed < thresholds.pauseThreshold {
-                pause = try self.pause(manual: false, on: location.timestamp)
-            } else if automaticallyPausedSince != nil, location.speed > thresholds.resumeThreshold {
-                pause = try resume(manual: false, on: location.timestamp)
-            }
-        }
+        let pause = try updateAutomaticPause(basedOn: location)
         if let lastRecordedLocation {
             let distanceSinceLastSample = location.distance(from: lastRecordedLocation)
             let durationSinceLastSample = lastRecordedLocation.timestamp.distance(to: location.timestamp)
@@ -238,6 +221,22 @@ class WorkoutRecorderState {
     }
     
     // MARK: Private
+    
+    /// - note: Ends a running automatic pause once automatic pauses no longer apply to the workout type or user preferences.
+    private func updateAutomaticPause(basedOn location: CLLocation) throws(WorkoutRecorderError) -> RawWorkoutPause? {
+        guard userPreferences.pauseAutomatically, let thresholds = workoutType.automaticPauseThresholds else {
+            guard automaticallyPausedSince != nil else { return nil }
+            logger.info("Ending automatic pause as it no longer applies.")
+            return try resume(manual: false, on: location.timestamp)
+        }
+        guard location.speed >= .zero else { return nil }
+        if automaticallyPausedSince == nil, location.speed < thresholds.pauseThreshold {
+            return try pause(manual: false, on: location.timestamp)
+        } else if automaticallyPausedSince != nil, location.speed > thresholds.resumeThreshold {
+            return try resume(manual: false, on: location.timestamp)
+        }
+        return nil
+    }
     
     /// - returns: The running automatic pause if it was superseded by a manual pause.
     private func pause(manual: Bool, on date: Date) throws(WorkoutRecorderError) -> RawWorkoutPause? {

@@ -29,15 +29,25 @@ struct WorkoutRecorderStateTests {
     /// Roughly 11 meters in latitude.
     private let step: CLLocationDegrees = 0.0001
 
-    private func makeState(pauseAutomatically: Bool = false) throws -> WorkoutRecorderState {
+    private func makeUser(pauseAutomatically: Bool) -> RawUser {
         let preferences = UserPreferences(preferences: [:])
         preferences.pauseAutomatically = pauseAutomatically
-        let user = RawUser(name: "Test", preferences: preferences.preferences, creationDate: startDate)
-        let state = WorkoutRecorderState(user: user, latestWorkoutType: .running)
+        return RawUser(name: "Test", preferences: preferences.preferences, creationDate: startDate)
+    }
+
+    private func makeState(
+        pauseAutomatically: Bool = false,
+        type: WorkoutType = .running,
+        locationBeforeStart: CLLocation? = nil
+    ) throws -> WorkoutRecorderState {
+        let state = WorkoutRecorderState(user: makeUser(pauseAutomatically: pauseAutomatically), latestWorkoutType: type)
         try state.signalSuccessfulInitialization()
+        if let locationBeforeStart {
+            _ = try state.processLocation(locationBeforeStart, with: nil)
+        }
         let workout = RawWorkout(
             id: .init(),
-            type: .running,
+            type: type,
             distance: .zero,
             startDate: startDate,
             endDate: nil,
@@ -202,5 +212,68 @@ struct WorkoutRecorderStateTests {
         #expect(state.activeDuration.timeInterval(for: date(20)) == 3)
         let pause = try state.end(on: date(20))
         #expect(pause?.startDate == date(10))
+    }
+
+    @Test("Recording continues after a GPS outage")
+    func recordingContinuesAfterGPSOutage() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 1, count: 5)
+        let distanceBeforeOutage = state.distance
+        for offset in stride(from: 6.0, to: 66, by: 1) {
+            #expect(try state.processLocation(location(steps: 4, at: offset, accuracy: 165), with: nil).sample == nil)
+        }
+        #expect(try state.processLocation(location(steps: 30, at: 66, speed: 3), with: nil).sample != nil)
+        #expect(state.status == .recording)
+        #expect(state.distance > distanceBeforeOutage + 250)
+    }
+
+    @Test("An automatic pause started before a GPS outage ends once a valid speed is reported again")
+    func automaticPauseEndsAfterGPSOutage() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 1, count: 3)
+        _ = try state.processLocation(location(steps: 3, at: 4, speed: 0.5), with: nil)
+        #expect(state.status == .paused(manual: false))
+        #expect(try state.processLocation(location(steps: 10, at: 60), with: nil).sample != nil)
+        #expect(state.status == .paused(manual: false))
+        let pause = try state.processLocation(location(steps: 11, at: 61, speed: 3), with: nil).pause
+        #expect(state.status == .recording)
+        #expect(pause?.startDate == date(4))
+        #expect(pause?.endDate == date(61))
+        let distanceAfterResume = state.distance
+        try run(state, from: 12, at: 62, count: 2)
+        #expect(state.distance > distanceAfterResume + 20)
+    }
+
+    @Test("Slow locations do not pause the workout when automatic pauses are disabled")
+    func noAutomaticPauseWhenDisabled() throws {
+        let state = try makeState(pauseAutomatically: false, locationBeforeStart: location(steps: 0, at: -1, speed: 0))
+        #expect(state.status == .recording)
+        _ = try state.processLocation(location(steps: 0, at: 1, speed: 0), with: nil)
+        #expect(state.status == .recording)
+    }
+
+    @Test("Disabling automatic pauses ends a running automatic pause")
+    func disablingAutomaticPausesEndsPause() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 1, count: 2)
+        _ = try state.processLocation(location(steps: 2, at: 3, speed: 0), with: nil)
+        #expect(state.status == .paused(manual: false))
+        state.update(basedOn: makeUser(pauseAutomatically: false))
+        let pause = try state.processLocation(location(steps: 3, at: 10, speed: 0), with: nil).pause
+        #expect(state.status == .recording)
+        #expect(pause?.startDate == date(3))
+        #expect(pause?.endDate == date(10))
+    }
+
+    @Test("Switching to a workout type without automatic pauses ends a running automatic pause")
+    func switchingToTypeWithoutAutomaticPausesEndsPause() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 1, count: 2)
+        _ = try state.processLocation(location(steps: 2, at: 3, speed: 0), with: nil)
+        #expect(state.status == .paused(manual: false))
+        state.changeWorkoutType(to: .hiking)
+        let pause = try state.processLocation(location(steps: 3, at: 10, speed: 0), with: nil).pause
+        #expect(state.status == .recording)
+        #expect(pause?.startDate == date(3))
     }
 }
