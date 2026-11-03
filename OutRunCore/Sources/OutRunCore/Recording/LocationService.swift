@@ -117,13 +117,13 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
             self.location = location
         }
     }
-        
+
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         switch (error as? CLError)?.code {
-        case .locationUnknown, .network, .denied:
-            logger.error("A temporary error was encountered: \(error.localizedDescription).")
+        case .locationUnknown, .network, .headingFailure, .denied, .promptDeclined:
+            logger.error("An error was encountered: \((error as CustomDebugStringConvertible).debugDescription).")
         default:
-            changeStatus(to: .failed(error))
+            logger.fault("An unexpected error was encountered: \((error as CustomDebugStringConvertible).debugDescription).")
         }
     }
     
