@@ -55,6 +55,7 @@ class WorkoutRecorderState {
     private var baseAltitude: Double?
     private var manuallyPausedSince: Date?
     private var automaticallyPausedSince: Date?
+    private var lastPauseStateChangeDate: Date?
     
     private(set) var route: [CLLocationCoordinate2D] = []
     
@@ -133,6 +134,7 @@ class WorkoutRecorderState {
             ) ?? .zero
             activeDurationBeforeLastPause = lastActiveDuration
         }
+        lastPauseStateChangeDate = date
         if let thresholds = workoutType.automaticPauseThresholds,
            let location = lastLocation,
            location.speed >= .zero,
@@ -173,6 +175,7 @@ class WorkoutRecorderState {
         baseAltitude = nil
         manuallyPausedSince = nil
         automaticallyPausedSince = nil
+        lastPauseStateChangeDate = nil
         route.removeAll()
         rollingDistance = .zero
         rollingDuration = .zero
@@ -236,71 +239,71 @@ class WorkoutRecorderState {
     
     // MARK: Private
     
-    private func pause(manual: Bool, on date: Date = .now) throws(WorkoutRecorderError) -> RawWorkoutPause? {
+    /// - returns: The running automatic pause if it was superseded by a manual pause.
+    private func pause(manual: Bool, on date: Date) throws(WorkoutRecorderError) -> RawWorkoutPause? {
         try checkStatus()
         guard status.isCollectingData else { throw .notRecording }
-        guard status != .paused(manual: true) else { throw .alreadyPaused }
+        let date = max(date, lastPauseStateChangeDate ?? date)
+        var supersededPause: RawWorkoutPause? = nil
         if manual {
             guard manuallyPausedSince == nil else { throw .alreadyPaused }
             manuallyPausedSince = date
-            lastActiveLocation = nil
-            try transition(to: .paused(manual: manual))
-            logger.info("Paused recording manually.")
             if let automaticallyPausedSince {
-                logger.info("Ended running automatic pause.")
-                return RawWorkoutPause(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
-            } else {
-                updateActiveDurationBeforeLastPause(for: date)
+                supersededPause = .init(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
             }
         } else {
             guard automaticallyPausedSince == nil else { throw .alreadyPaused }
             automaticallyPausedSince = date
-            lastActiveLocation = nil
-            if case .paused(manual: true) = status {
-                logger.info("Detected automatic pause during manual pause, will transition if manual pause ends.")
-            } else {
-                try transition(to: .paused(manual: manual))
-                updateActiveDurationBeforeLastPause(for: date)
-                logger.info("Paused recording automatically.")
-            }
         }
-        return nil
+        logger.info("Started \(manual ? "manual" : "automatic") pause.")
+        try applyPauseStateChange(on: date)
+        return supersededPause
     }
     
-    private func resume(manual: Bool, on date: Date = .now) throws(WorkoutRecorderError) -> RawWorkoutPause? {
+    /// - returns: The pause that ended, unless it was covered by a manual pause or too short to be kept.
+    private func resume(manual: Bool, on date: Date) throws(WorkoutRecorderError) -> RawWorkoutPause? {
         try checkStatus()
-        guard status.isCollectingData else { throw WorkoutRecorderError.notRecording }
-        guard case .paused = status else { throw WorkoutRecorderError.notRecording }
+        guard status.isCollectingData else { throw .notRecording }
+        var endedPause: RawWorkoutPause? = nil
         if manual {
-            guard let manuallyPausedSince else { throw WorkoutRecorderError.notPaused }
+            guard let manuallyPausedSince else { throw .notPaused }
             self.manuallyPausedSince = nil
-            if automaticallyPausedSince != nil {
-                self.automaticallyPausedSince = date
-                try transition(to: .paused(manual: false))
-                logger.info("Resumed manual pause and paused automatically.")
-            } else {
-                try transition(to: .recording)
-                lastResumeDate = date
-                logger.info("Resumed recording automatically.")
-            }
-            return RawWorkoutPause(startDate: manuallyPausedSince, endDate: date, userInitiated: true)
+            if automaticallyPausedSince != nil { automaticallyPausedSince = date }
+            endedPause = .init(startDate: manuallyPausedSince, endDate: date, userInitiated: true)
         } else {
-            guard let automaticallyPausedSince else { throw WorkoutRecorderError.notPaused }
+            guard let automaticallyPausedSince else { throw .notPaused }
             self.automaticallyPausedSince = nil
-            if case .paused(manual: true) = status {
-                logger.info("Detected automatic resume during manual pause.")
+            let pauseDuration = automaticallyPausedSince.distance(to: date)
+            if manuallyPausedSince != nil {
+                endedPause = nil
+            } else if pauseDuration >= Self.minimumAutomaticPauseDuration {
+                endedPause = .init(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
             } else {
-                try transition(to: .recording)
-                lastResumeDate = date
-                if automaticallyPausedSince.distance(to: date) >= Self.minimumAutomaticPauseDuration {
-                    logger.info("Resumed recording automatically.")
-                    return RawWorkoutPause(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
-                } else {
-                    logger.info("Resumed recording automatically and discarded pause due to low duration.")
-                }
+                activeDurationBeforeLastPause += pauseDuration
+                logger.info("Discarded automatic pause due to low duration.")
             }
         }
-        return nil
+        logger.info("Ended \(manual ? "manual" : "automatic") pause.")
+        try applyPauseStateChange(on: date)
+        return endedPause
+    }
+    
+    private func applyPauseStateChange(on date: Date) throws(WorkoutRecorderError) {
+        let newStatus: Status = if manuallyPausedSince != nil {
+            .paused(manual: true)
+        } else if automaticallyPausedSince != nil {
+            .paused(manual: false)
+        } else {
+            .recording
+        }
+        if status == .recording, newStatus != .recording {
+            updateActiveDurationBeforeLastPause(for: date)
+            lastActiveLocation = nil
+        } else if status != .recording, newStatus == .recording {
+            lastResumeDate = date
+        }
+        lastPauseStateChangeDate = date
+        try transition(to: newStatus)
     }
     
     private func updateActiveDurationBeforeLastPause(for pauseDate: Date) {

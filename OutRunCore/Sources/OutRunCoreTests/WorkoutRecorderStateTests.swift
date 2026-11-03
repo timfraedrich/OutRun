@@ -158,4 +158,49 @@ struct WorkoutRecorderStateTests {
         #expect(pause?.endDate == date(20))
         #expect(pause?.userInitiated == false)
     }
+
+    @Test("Slow locations are recorded during a manual pause and continue as an automatic pause after it")
+    func automaticPauseDuringManualPause() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 1, count: 2)
+        _ = try state.pause(on: date(3))
+        let result = try state.processLocation(location(steps: 3, at: 4, speed: 0), with: nil)
+        #expect(result.sample != nil)
+        #expect(result.pause == nil)
+        #expect(state.status == .paused(manual: true))
+
+        let manualPause = try state.resume(on: date(10))
+        #expect(manualPause?.startDate == date(3))
+        #expect(manualPause?.userInitiated == true)
+        #expect(state.status == .paused(manual: false))
+
+        let automaticPause = try state.processLocation(location(steps: 4, at: 20, speed: 3), with: nil).pause
+        #expect(state.status == .recording)
+        #expect(automaticPause?.startDate == date(10))
+        #expect(automaticPause?.endDate == date(20))
+        #expect(automaticPause?.userInitiated == false)
+    }
+
+    @Test("A discarded short automatic pause counts towards the active duration")
+    func shortAutomaticPauseCountsAsActive() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 0, count: 3)
+        _ = try state.processLocation(location(steps: 3, at: 3, speed: 0), with: nil)
+        let pause = try state.processLocation(location(steps: 4, at: 5, speed: 3), with: nil).pause
+        #expect(pause == nil)
+        #expect(state.activeDuration.timeInterval(for: date(10)) == 10)
+    }
+
+    @Test("An automatic pause detected from a delayed location does not start before a manual resume")
+    func delayedLocationDoesNotStartPauseBeforeResume() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 1, count: 2)
+        _ = try state.pause(on: date(3))
+        _ = try state.resume(on: date(10))
+        _ = try state.processLocation(location(steps: 2, at: 9.5, speed: 0), with: nil)
+        #expect(state.status == .paused(manual: false))
+        #expect(state.activeDuration.timeInterval(for: date(20)) == 3)
+        let pause = try state.end(on: date(20))
+        #expect(pause?.startDate == date(10))
+    }
 }
