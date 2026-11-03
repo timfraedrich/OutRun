@@ -31,6 +31,7 @@ class WorkoutRecorderState {
     private static let minimumDistance: CLLocationDistance = 5
     private static let minimumTimeDifference: TimeInterval = 0.5
     private static let maximumTimeDifference: TimeInterval = 10
+    private static let minimumAutomaticPauseDuration: TimeInterval = 5
     
     private let logger = Logger(category: "WorkoutRecorderState")
     @ObservationIgnored private let userPreferences: UserPreferences
@@ -155,6 +156,13 @@ class WorkoutRecorderState {
     func end(on date: Date) throws(WorkoutRecorderError) -> RawWorkoutPause? {
         try checkStatus()
         guard status.isCollectingData else { throw WorkoutRecorderError.notRecording }
+        let runningPause: RawWorkoutPause? = if let manuallyPausedSince {
+            .init(startDate: manuallyPausedSince, endDate: date, userInitiated: true)
+        } else if let automaticallyPausedSince, automaticallyPausedSince.distance(to: date) >= Self.minimumAutomaticPauseDuration {
+            .init(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
+        } else {
+            nil
+        }
         distance = .zero
         lastResumeDate = nil
         activeDurationBeforeLastPause = .zero
@@ -170,10 +178,7 @@ class WorkoutRecorderState {
         rollingDuration = .zero
         rollingSpeedSamples.removeAll()
         try transition(to: .idle)
-        if case .paused(let manual) = status, let pausedSince = manual ? manuallyPausedSince : automaticallyPausedSince {
-            return .init(startDate: pausedSince, endDate: date, userInitiated: manual)
-        }
-        return nil
+        return runningPause
     }
     
     func processLocation(
@@ -287,7 +292,7 @@ class WorkoutRecorderState {
             } else {
                 try transition(to: .recording)
                 lastResumeDate = date
-                if automaticallyPausedSince.distance(to: date) >= 5 {
+                if automaticallyPausedSince.distance(to: date) >= Self.minimumAutomaticPauseDuration {
                     logger.info("Resumed recording automatically.")
                     return RawWorkoutPause(startDate: automaticallyPausedSince, endDate: date, userInitiated: false)
                 } else {

@@ -29,9 +29,9 @@ struct WorkoutRecorderStateTests {
     /// Roughly 11 meters in latitude.
     private let step: CLLocationDegrees = 0.0001
 
-    private func makeState() throws -> WorkoutRecorderState {
+    private func makeState(pauseAutomatically: Bool = false) throws -> WorkoutRecorderState {
         let preferences = UserPreferences(preferences: [:])
-        preferences.pauseAutomatically = false
+        preferences.pauseAutomatically = pauseAutomatically
         let user = RawUser(name: "Test", preferences: preferences.preferences, creationDate: startDate)
         let state = WorkoutRecorderState(user: user, latestWorkoutType: .running)
         try state.signalSuccessfulInitialization()
@@ -54,16 +54,38 @@ struct WorkoutRecorderStateTests {
         return state
     }
 
-    private func location(steps: Int, at offset: TimeInterval, accuracy: CLLocationAccuracy = 5) -> CLLocation {
+    private func location(
+        steps: Int,
+        at offset: TimeInterval,
+        speed: CLLocationSpeed = -1,
+        accuracy: CLLocationAccuracy = 5
+    ) -> CLLocation {
         CLLocation(
             coordinate: .init(latitude: Double(steps) * step, longitude: 0),
             altitude: 0,
             horizontalAccuracy: accuracy,
             verticalAccuracy: 5,
             course: -1,
-            speed: -1,
+            speed: speed,
             timestamp: startDate.addingTimeInterval(offset)
         )
+    }
+
+    private func date(_ offset: TimeInterval) -> Date {
+        startDate.addingTimeInterval(offset)
+    }
+
+    /// Feeds one location per second at running speed, starting at the given step and offset.
+    @discardableResult
+    private func run(
+        _ state: WorkoutRecorderState,
+        from steps: Int,
+        at offset: TimeInterval,
+        count: Int
+    ) throws -> [RawWorkoutPause] {
+        try (0..<count).compactMap { index in
+            try state.processLocation(location(steps: steps + index, at: offset + Double(index), speed: 3), with: nil).pause
+        }
     }
 
     @Test("Locations are recorded during a pause without changing the live metrics")
@@ -112,5 +134,28 @@ struct WorkoutRecorderStateTests {
         let second = try state.processLocation(location(steps: 1, at: 2), with: altitude(5)).sample
         #expect(first?.altitude == 0)
         #expect(second?.altitude == 3)
+    }
+
+    @Test("Ending during a manual pause returns the running pause")
+    func endReturnsRunningManualPause() throws {
+        let state = try makeState()
+        try run(state, from: 0, at: 1, count: 2)
+        _ = try state.pause(on: date(3))
+        let pause = try state.end(on: date(20))
+        #expect(pause?.startDate == date(3))
+        #expect(pause?.endDate == date(20))
+        #expect(pause?.userInitiated == true)
+        #expect(state.status == .idle)
+    }
+
+    @Test("Ending during an automatic pause returns the running pause")
+    func endReturnsRunningAutomaticPause() throws {
+        let state = try makeState(pauseAutomatically: true)
+        try run(state, from: 0, at: 1, count: 2)
+        _ = try state.processLocation(location(steps: 2, at: 3, speed: 0), with: nil)
+        let pause = try state.end(on: date(20))
+        #expect(pause?.startDate == date(3))
+        #expect(pause?.endDate == date(20))
+        #expect(pause?.userInitiated == false)
     }
 }
