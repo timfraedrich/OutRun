@@ -126,10 +126,11 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
             logger.fault("An unexpected error was encountered: \((error as CustomDebugStringConvertible).debugDescription).")
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        logger.info("Location authorization status updated to \(status.debugDescription)")
-        updateStatus(basedOn: status)
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let authorizationStatus = manager.authorizationStatus
+        logger.info("Location authorization status updated to \(authorizationStatus.debugDescription)")
+        updateStatus(basedOn: authorizationStatus)
     }
     
     // MARK: - Mode
