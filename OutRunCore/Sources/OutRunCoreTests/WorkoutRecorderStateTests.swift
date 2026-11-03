@@ -54,11 +54,11 @@ struct WorkoutRecorderStateTests {
         return state
     }
 
-    private func location(steps: Int, at offset: TimeInterval) -> CLLocation {
+    private func location(steps: Int, at offset: TimeInterval, accuracy: CLLocationAccuracy = 5) -> CLLocation {
         CLLocation(
             coordinate: .init(latitude: Double(steps) * step, longitude: 0),
             altitude: 0,
-            horizontalAccuracy: 5,
+            horizontalAccuracy: accuracy,
             verticalAccuracy: 5,
             course: -1,
             speed: -1,
@@ -95,5 +95,12 @@ struct WorkoutRecorderStateTests {
         _ = try state.pause(on: startDate.addingTimeInterval(2))
         #expect(try state.processLocation(location(steps: 0, at: 5), with: nil).sample == nil)
         #expect(try state.processLocation(location(steps: 0, at: 12), with: nil).sample != nil)
+    }
+
+    @Test("Locations with invalid accuracy are rejected")
+    func invalidAccuracyIsRejected() throws {
+        let state = try makeState()
+        #expect(try state.processLocation(location(steps: 0, at: 1, accuracy: -1), with: nil).sample == nil)
+        #expect(state.route.isEmpty)
     }
 }

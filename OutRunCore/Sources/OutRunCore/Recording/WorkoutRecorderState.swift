@@ -184,6 +184,7 @@ class WorkoutRecorderState {
         guard status.isCollectingData,
               let location,
               location.timestamp > lastRecordedLocation?.timestamp ?? .distantPast,
+              location.horizontalAccuracy >= .zero,
               location.horizontalAccuracy < userPreferences.requiredGPSAccuracy
         else { return (nil, nil) }
         var pause: RawWorkoutPause? = nil
