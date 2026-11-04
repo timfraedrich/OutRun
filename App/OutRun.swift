@@ -16,6 +16,7 @@
 // along with this program. If not, see https://www.gnu.org/licenses/.
 //
 
+import OSLog
 import OutRunCore
 import SwiftData
 import SwiftUI
@@ -25,6 +26,7 @@ import TFRouting
 struct OutRun: App {
 
     static nonisolated let identifier = "de.tadris.OutRun"
+    private static let logger = Logger(category: "AppLifecycle")
 
     @State private var core: OutRunCore
     @State private var backupService: BackupService
@@ -61,11 +63,16 @@ struct OutRun: App {
             .environment(core.userPreferences)
             .environment(backupService)
             .workoutCardStyle(.list)
+            .lifecycleLogging()
         }
         .modelContainer(core.modelContainer)
     }
     
     init() {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "unknown"
+        let build = info?["CFBundleVersion"] as? String ?? "unknown"
+        Self.logger.notice("Launching version \(version, privacy: .public) (\(build, privacy: .public)).")
         let config: OutRunCoreConfiguration = .init(
             isStoredInMemoryOnly: false,
             appGroupIdentifier: "group.me.timfraedrich.outrun",
@@ -78,5 +85,8 @@ struct OutRun: App {
         tipJarService = .init()
         mainRouter = .init(scope: MainRoutingScope())
         showLegacyMigrationView = LegacyMigrationHelper.isLegacyMigrationAppropriate
+        if showLegacyMigrationView {
+            Self.logger.notice("Presenting legacy migration.")
+        }
     }
 }
