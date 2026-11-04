@@ -2,7 +2,7 @@
 
 Für die iOS-App **OutRun** (nachfolgend „App“).
 
-Stand: 30.10.2026
+Stand: 04.11.2026
 
 ---
 
@@ -23,7 +23,7 @@ Diese Nutzungsbedingungen („Bedingungen“) gelten für die Nutzung der App, d
 
 ## § 2 Leistungsbeschreibung
 
-Mit der App kannst du Outdoor-Workouts mithilfe der Standort- und Bewegungssensoren deines Geräts aufzeichnen, Statistiken dazu ansehen, sie mit Apple Health synchronisieren sowie als Dateien importieren und exportieren. Die App enthält keine sozialen Funktionen und keine Funktionen zum Veröffentlichen oder Teilen von Inhalten. Über die App lassen sich deine Daten weder anderen Nutzern noch dem Anbieter zugänglich machen.
+Mit der App kannst du Outdoor-Workouts mithilfe der Standort- und Bewegungssensoren deines Geräts aufzeichnen, Statistiken dazu ansehen, sie mit Apple Health synchronisieren sowie als Dateien importieren und exportieren. Außerdem kannst du die Diagnoseprotokolle der App exportieren. Die App enthält keine sozialen Funktionen und keine Funktionen zum Veröffentlichen oder Teilen von Inhalten. Über die App lassen sich deine Daten weder anderen Nutzern noch dem Anbieter zugänglich machen.
 
 ## § 3 Nutzungsrecht
 
@@ -47,7 +47,7 @@ Der Anbieter betreibt keine Server. Er erhebt, empfängt und speichert die Worko
 
 - **Speicherung auf dem Gerät.** Deine Daten werden lokal auf deinem Gerät gespeichert. Die App synchronisiert sie weder über iCloud noch über einen anderen Onlinedienst.
 - **Apple Health.** Wenn du die Verbindung zu Apple Health aktivierst, werden deine Workouts mit Apple Health ausgetauscht. Dafür ist Apple nach Maßgabe der [Datenschutzrichtlinie von Apple](https://www.apple.com/legal/privacy/de-ww/) verantwortlich; der Anbieter hat darauf keinen Einfluss.
-- **Exporte.** Aus der App exportierte Dateien sind nicht verschlüsselt. Sobald du sie gespeichert oder geteilt hast, bist du selbst für ihren Schutz verantwortlich.
+- **Exporte.** Aus der App exportierte Dateien, einschließlich Backups und Diagnoseprotokollen, sind nicht verschlüsselt und können sensible Informationen enthalten. Sobald du sie gespeichert oder geteilt hast, bist du selbst für ihren Schutz verantwortlich.
 - **Datensicherung.** Für die Sicherung deiner Daten bist du selbst verantwortlich, zum Beispiel über die Exportfunktion der App. Für Datenverlust, auch durch einen Defekt des Geräts, das Löschen oder das Zurücksetzen der App, haftet der Anbieter nur nach Maßgabe von § 9.
 
 ## § 6 Zulässige Nutzung

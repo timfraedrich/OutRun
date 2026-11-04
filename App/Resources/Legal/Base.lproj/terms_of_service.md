@@ -2,7 +2,7 @@
 
 For the iOS App **OutRun**, hereinafter referred to as the "App".
 
-Last updated: 30.10.2026 (DD.MM.YYYY)
+Last updated: 04.11.2026 (DD.MM.YYYY)
 
 **This English version is a translation provided for your convenience. Only the [German version](https://github.com/timfraedrich/OutRun/blob/main/App/Resources/Legal/de.lproj/terms_of_service.md) is legally binding and takes priority if the two differ. It is also shown in the App when you use the App in German.**
 
@@ -25,7 +25,7 @@ These Terms of Service ("Terms") govern your use of the App, which is distribute
 
 ## 2. What the App does
 
-The App lets you record outdoor workouts using your device's location and motion sensors, view statistics about them, synchronize them with Apple Health, and import and export them as files. The App does not provide any social, publishing, or content-sharing features, and there is no way to make your data visible to other users or to the provider within the App.
+The App lets you record outdoor workouts using your device's location and motion sensors, view statistics about them, synchronize them with Apple Health, and import and export them as files. You can also export the App's diagnostic logs. The App does not provide any social, publishing, or content-sharing features, and there is no way to make your data visible to other users or to the provider within the App.
 
 ## 3. License to use the App
 
@@ -49,7 +49,7 @@ The provider does not operate any server and does not collect, receive, store, o
 
 - **On-device storage.** Your data is stored locally on your device. The App does not synchronize it through iCloud or any other online service.
 - **Apple Health.** If you enable the integration with Apple Health, your workouts are exchanged with Apple Health, which is handled by Apple under [Apple's Privacy Policy](https://www.apple.com/legal/privacy/), over which the provider has no control.
-- **Exports.** Files you export from the App are not encrypted. Once saved or shared, keeping them safe is your responsibility.
+- **Exports.** Files you export from the App, including backups and diagnostic logs, are not encrypted and can contain sensitive information. Once saved or shared, keeping them safe is your responsibility.
 - **Backups.** You are responsible for backing up your data, for example using the App's export feature. The provider is not responsible for any loss of data, including loss resulting from device failure, deletion of the App, or resetting the App, except as provided in section 9.
 
 ## 6. Acceptable use

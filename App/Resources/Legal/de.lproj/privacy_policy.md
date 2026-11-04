@@ -2,7 +2,7 @@
 
 Für die iOS-App **OutRun** (nachfolgend „App“).
 
-Stand: 30.10.2026
+Stand: 04.11.2026
 
 ---
 
@@ -26,8 +26,9 @@ Für ihre Funktionen speichert die App die folgenden Daten **lokal auf deinem Ge
 - **Profil:** dein Name und optional dein Geburtsdatum, Gewicht und Geschlecht. Diese Angaben dienen dazu, die App zu personalisieren und Werte wie den Energieverbrauch während eines Workouts zu schätzen.
 - **Workouts:** Art, Start- und Endzeit, Pausen, Distanz, verbrauchte Energie, die Route als Abfolge von Standorten, Höhe und Herzfrequenzdaten.
 - **Einstellungen:** deine Einstellungen, etwa Einheiten und Aufzeichnungsoptionen.
+- **Diagnoseprotokolle:** technische Logeinträge, die die App während der Nutzung schreibt, zum Beispiel wenn eine Aufzeichnung startet, wenn Workouts mit Apple Health synchronisiert werden oder wenn Fehler auftreten. Sie können Angaben zu deinen Workouts und deinem Gerät enthalten. Diese Einträge werden im Systemprotokoll deines Geräts gespeichert, das von iOS verwaltet wird und ältere Einträge automatisch entfernt.
 
-Der Anbieter erhält diese Daten nicht, übermittelt sie nicht und hat keinen Zugriff auf sie. Die App synchronisiert deine Daten weder über iCloud noch über einen anderen Onlinedienst.
+Der Anbieter erhält diese Daten nicht, übermittelt sie nicht und hat keinen Zugriff auf sie, es sei denn, du sendest sie ihm selbst, etwa als exportierte Datei (siehe Abschnitte 6 und 8). Die App synchronisiert deine Daten weder über iCloud noch über einen anderen Onlinedienst.
 
 Backups deines Geräts, etwa ein iCloud-Backup oder ein Backup auf deinem Computer, können die Daten der App enthalten. Diese Backups werden von Apple und von dir erstellt und verwaltet, nicht von der App.
 
@@ -56,13 +57,15 @@ Vorschaubilder von Routen werden bis zu sieben Tage auf deinem Gerät zwischenge
 
 Mit der App kannst du deine Workouts als OutRun-Backup-Dateien oder GPX-Dateien exportieren und solche Dateien importieren. Exporte werden nur erstellt, wenn du sie ausdrücklich startest, und an dem von dir gewählten Ort gespeichert. Exportierte Dateien sind **nicht verschlüsselt** und enthalten deine Workouts einschließlich der Routen. Sobald du eine exportierte Datei gespeichert oder geteilt hast, hat die App keinen Einfluss mehr darauf, und du bist selbst für ihren Schutz verantwortlich.
 
+In den Einstellungen der App kannst du außerdem die Diagnoseprotokolle der App als CSV-Datei exportieren, zum Beispiel um sie einer Supportanfrage beizufügen. Die Datei enthält die Logeinträge, die die App seit ihrem letzten Start geschrieben hat, einschließlich Zeitpunkt, Schweregrad und technischem Kontext, und kann sensible Informationen enthalten, etwa Angaben zu deinen Workouts oder deinem Gerät. Bevor die App die Datei erstellt, bittet sie dich um Bestätigung. Wie andere Exporte ist die Datei **nicht verschlüsselt** und wird **nicht automatisch an den Anbieter übermittelt**. Sie gelangt nur zum Anbieter, wenn du sie selbst sendest. In diesem Fall gilt Abschnitt 8.
+
 ## 7. Live-Aktivitäten
 
 Während du ein Workout aufzeichnest, kann die App den Fortschritt, etwa Dauer und Distanz, als Live-Aktivität auf dem Sperrbildschirm und in der Dynamic Island anzeigen. Diese Informationen kann jeder sehen, der dein Gerät sehen kann. Du kannst Live-Aktivitäten in den Einstellungen deines Geräts deaktivieren.
 
 ## 8. Kontaktaufnahme
 
-Wenn du den Anbieter per E-Mail kontaktierst, verarbeitet er deine E-Mail-Adresse, deinen Namen, falls du ihn angibst, den Inhalt deiner Nachricht und etwaige Anhänge, um deine Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit sich deine Anfrage auf deine Nutzung der App bezieht, und im Übrigen das berechtigte Interesse des Anbieters, Anfragen zu beantworten und die App zu verbessern (Art. 6 Abs. 1 lit. f DSGVO).
+Wenn du den Anbieter per E-Mail kontaktierst, verarbeitet er deine E-Mail-Adresse, deinen Namen, falls du ihn angibst, den Inhalt deiner Nachricht und etwaige Anhänge, etwa eine exportierte Protokolldatei, um deine Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit sich deine Anfrage auf deine Nutzung der App bezieht, und im Übrigen das berechtigte Interesse des Anbieters, Anfragen zu beantworten und die App zu verbessern (Art. 6 Abs. 1 lit. f DSGVO).
 
 Deine E-Mails werden bei iCloud Mail gespeichert, dem E-Mail-Dienst von Apple (für den Europäischen Wirtschaftsraum: Apple Distribution International Limited, Irland). Nach eigenen Angaben speichert Apple personenbezogene Daten in der Regel bei Apple Inc. in den USA. Für diese Übermittlung nennt Apple Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO), von denen du über [Apple](https://www.apple.com/legal/privacy/contact/) eine Kopie anfordern kannst. Der Anbieter bewahrt deine Nachrichten auf, solange sie zur Bearbeitung deiner Anfrage und, soweit dein Feedback für die Weiterentwicklung der App von Bedeutung ist, für diesen Zweck erforderlich sind. Sie werden gelöscht, sobald sie nicht mehr erforderlich sind oder du die Löschung verlangst.
 
@@ -90,6 +93,7 @@ Die App erhebt von niemandem personenbezogene Daten, auch nicht von Kindern. Dat
 
 - Um dein Profil und alle Workouts zu löschen, nutze **App zurücksetzen** in den Einstellungen der App oder lösche die App von deinem Gerät. Kartenvorschauen bleiben im Cache, bis sie ablaufen oder du sie in den Einstellungen der App löschst.
 - In Apple Health gespeicherte Daten kannst du in der Health-App verwalten und löschen.
+- Diagnoseprotokolle werden weder durch **App zurücksetzen** noch durch das Löschen der App entfernt. iOS entfernt sie nach einiger Zeit automatisch aus dem Systemprotokoll deines Geräts.
 - Exportierte Dateien sind vom Löschen der Daten in der App nicht betroffen und müssen von dir selbst gelöscht werden.
 
 Für die vom Anbieter nach den Abschnitten 8 und 9 verarbeiteten Daten hast du das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16 DSGVO), Löschung (Art. 17 DSGVO), Einschränkung der Verarbeitung (Art. 18 DSGVO) und Datenübertragbarkeit (Art. 20 DSGVO). Soweit die Verarbeitung auf berechtigten Interessen beruht, hast du das Recht, aus Gründen, die sich aus deiner besonderen Situation ergeben, jederzeit **Widerspruch** einzulegen (Art. 21 DSGVO). Um diese Rechte auszuüben, wende dich an die in Abschnitt 1 genannte E-Mail-Adresse.

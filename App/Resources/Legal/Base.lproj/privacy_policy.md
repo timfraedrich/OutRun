@@ -2,7 +2,7 @@
 
 For the iOS App **OutRun**, hereinafter referred to as the "App".
 
-Last updated: 30.10.2026 (DD.MM.YYYY)
+Last updated: 04.11.2026 (DD.MM.YYYY)
 
 **This English version is a translation provided for your convenience. Only the [German version](https://github.com/timfraedrich/OutRun/blob/main/App/Resources/Legal/de.lproj/privacy_policy.md) is authoritative and takes priority if the two differ. It is also shown in the App when you use the App in German.**
 
@@ -28,8 +28,9 @@ To provide its features the App stores the following data **locally on your devi
 - **Profile:** your name, and optionally your date of birth, weight, and sex. These values are used to personalize the App and to estimate values such as the energy burned during a workout.
 - **Workouts:** the type, start and end time, pauses, distance, burned energy, the route as a sequence of locations, altitude, and heart rate data.
 - **Preferences:** your settings, such as units and recording options.
+- **Diagnostic logs:** technical log entries the App writes while it runs, for example when a recording starts, when workouts are synchronized with Apple Health, or when errors occur. They can contain details about your workouts and your device. These entries are kept in your device's system log, which is managed by iOS and removes older entries automatically.
 
-The provider never receives, transmits, or has access to this information. The App does not synchronize your data through iCloud or any other online service.
+The provider does not receive, transmit, or have access to this information unless you send it to the provider yourself, for example as an exported file (see sections 6 and 8). The App does not synchronize your data through iCloud or any other online service.
 
 Please note that your device's own backups, such as an iCloud Backup or a backup on your computer, may include the App's data. These backups are created and managed by Apple and by you, not by the App.
 
@@ -58,13 +59,15 @@ Route preview images are cached on your device for up to seven days. You can cle
 
 The App lets you export your workouts as OutRun backup files or GPX files and import such files. Exports are only created when you explicitly start them, and they are saved to the location you choose. Exported files are **not encrypted** and contain your workouts including their routes. Once you save or share an exported file, the App has no control over it, and keeping it safe is your responsibility.
 
+In the App's settings you can also export the App's diagnostic logs as a CSV file, for example to attach them to a support request. The file contains the log entries the App wrote since it was last launched, including their time, severity, and technical context, and may contain sensitive information such as details about your workouts or your device. The App asks you to confirm before it creates the file. Like other exports, the file is **not encrypted** and is **not transmitted to the provider automatically**. It only reaches the provider if you send it yourself, in which case section 8 applies.
+
 ## 7. Live Activities
 
 While you record a workout, the App can show its progress, such as duration and distance, as a Live Activity on your lock screen and in the Dynamic Island. This information is visible to anyone who can see your device. You can turn Live Activities off in your device's settings.
 
 ## 8. Contacting the provider
 
-If you contact the provider by email, the provider processes your email address, your name if you provide it, the content of your message, and any attachments in order to answer your request. The legal basis is Art. 6(1)(b) GDPR where your request relates to your use of the App, and otherwise the provider's legitimate interest in answering inquiries and improving the App (Art. 6(1)(f) GDPR).
+If you contact the provider by email, the provider processes your email address, your name if you provide it, the content of your message, and any attachments, such as an exported log file, in order to answer your request. The legal basis is Art. 6(1)(b) GDPR where your request relates to your use of the App, and otherwise the provider's legitimate interest in answering inquiries and improving the App (Art. 6(1)(f) GDPR).
 
 Your emails are stored with iCloud Mail, Apple's email service (for the European Economic Area: Apple Distribution International Limited, Ireland). According to Apple, it generally stores personal data with Apple Inc. in the United States. For this transfer Apple refers to Standard Contractual Clauses (Art. 46(2)(c) GDPR), a copy of which you can request from [Apple](https://www.apple.com/legal/privacy/contact/). The provider keeps your messages for as long as they are needed to handle your request and, where your feedback is relevant to the App's further development, for that purpose. They are deleted once they are no longer needed or upon request.
 
@@ -92,6 +95,7 @@ For the data you record in the App you remain in full control:
 
 - To delete your profile and all workouts, use **Reset** in the App's settings or delete the App from your device. Map previews remain in the cache until they expire or you clear them in the App's settings.
 - Data you saved to Apple Health can be managed and deleted in the Health app.
+- Diagnostic logs are not removed by **Reset** or by deleting the App. iOS removes them from your device's system log automatically after some time.
 - Files you exported are not affected by deleting data in the App and have to be deleted by you.
 
 For the data the provider processes as described in sections 8 and 9, you have the right to access (Art. 15 GDPR), rectification (Art. 16 GDPR), erasure (Art. 17 GDPR), restriction of processing (Art. 18 GDPR), and data portability (Art. 20 GDPR). Where processing is based on legitimate interests, you have the right to **object** to it at any time for reasons arising from your particular situation (Art. 21 GDPR). To exercise these rights, contact the provider at the email address in section 1.
