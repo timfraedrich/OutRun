@@ -42,6 +42,7 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.activityType = .fitness
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = mode.distanceFilter
         locationManager.allowsBackgroundLocationUpdates = mode.allowsBackgroundLocationUpdates
         locationManager.showsBackgroundLocationIndicator = true
         locationManager.pausesLocationUpdatesAutomatically = false
@@ -58,6 +59,7 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
         guard self.mode != newMode else { return }
         logger.info("Changing mode to \(newMode.debugDescription).")
         mode = newMode
+        locationManager.distanceFilter = mode.distanceFilter
         locationManager.allowsBackgroundLocationUpdates = mode.allowsBackgroundLocationUpdates
         changeStatus(to: mode.correspondingStatus)
     }
@@ -149,7 +151,15 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
             case .recording: true
             }
         }
-        
+
+        /// Provides an appropriate distance filter while in this mode.
+        fileprivate var distanceFilter: CLLocationDistance {
+            switch self {
+            case .idle: 25
+            case .recording: kCLDistanceFilterNone
+            }
+        }
+
         fileprivate var correspondingStatus: Status {
             switch self {
             case .idle: .idle
