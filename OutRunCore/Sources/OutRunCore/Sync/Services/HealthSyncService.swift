@@ -405,10 +405,7 @@ public class HealthSyncService: SyncService {
     }
     
     private func endObservation() {
-        guard let observationTask else {
-            logger.warning("Tried to cancel observation prior to starting one.")
-            return
-        }
+        guard let observationTask else { return }
         observationTask.cancel()
         self.observationTask = nil
         logger.info("Ended observation.")
