@@ -32,6 +32,7 @@ public class WorkoutRecorder {
     public typealias Status = WorkoutRecorderStatus
     
     private let logger = Logger(category: "WorkoutRecorder")
+    private let dateFormat = Date.ISO8601FormatStyle(includingFractionalSeconds: true, timeZone: Calendar.current.timeZone)
     @ObservationIgnored private var cancellables = Set<AnyCancellable>()
     private let state: WorkoutRecorderState
     private let database: Database
@@ -175,6 +176,8 @@ public class WorkoutRecorder {
                             updatedEnergy: state.energy,
                             updatedRepetitions: stepService?.stepCount
                         )
+                        let formattedTimestamp = sample.timestamp.formatted(dateFormat)
+                        logger.info("Added sample for \(formattedTimestamp) to route.")
                     }
                     if let pause {
                         try await database.addPause(pause, toWorkoutWith: identifier)
