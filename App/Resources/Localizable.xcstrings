@@ -5087,6 +5087,126 @@
         }
       }
     },
+    "log_export_action" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs exportieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export Logs"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export Logs"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar registros"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporter les journaux"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs exporteren"
+          }
+        }
+      }
+    },
+    "log_export_warning_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die exportierte Datei enthält die Logeinträge der App seit ihrem letzten Start. Sie können sensible Informationen enthalten, zum Beispiel über deine Workouts oder dein Gerät. Die Datei ist nicht verschlüsselt, teile sie daher nur mit Personen, denen du vertraust. Bist du sicher, dass du die Logs exportieren möchtest?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The exported file contains the app’s log entries since it was last launched. They can include sensitive information, for example about your workouts or your device. The file is not encrypted, so only share it with people you trust. Are you sure you want to export the logs?"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The exported file contains the app’s log entries since it was last launched. They can include sensitive information, for example about your workouts or your device. The file is not encrypted, so only share it with people you trust. Are you sure you want to export the logs?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo exportado contiene los registros de la app desde su último inicio. Pueden incluir información sensible, por ejemplo sobre tus entrenamientos o tu dispositivo. El archivo no está cifrado, así que compártelo solo con personas de confianza. ¿Estás seguro de que quieres exportar los registros?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fichier exporté contient les entrées du journal de l’app depuis son dernier lancement. Elles peuvent inclure des informations sensibles, par exemple sur tes entraînements ou ton appareil. Le fichier n’est pas chiffré, ne le partage donc qu’avec des personnes de confiance. Es-tu sûr de vouloir exporter les journaux ?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het geëxporteerde bestand bevat de logregels van de app sinds de laatste start. Deze kunnen gevoelige informatie bevatten, bijvoorbeeld over je trainingen of je apparaat. Het bestand is niet versleuteld, deel het dus alleen met mensen die je vertrouwt. Weet je zeker dat je de logs wilt exporteren?"
+          }
+        }
+      }
+    },
+    "log_export_warning_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs exportieren?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export Logs?"
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export Logs?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Exportar registros?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporter les journaux ?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs exporteren?"
+          }
+        }
+      }
+    },
     "maximum_beats_per_minute_short" : {
       "comment" : "Short label for the maximum heart rate metric displayed in the workout detail heart rate section.",
       "localizations" : {

@@ -32,6 +32,8 @@ struct SettingsScene: View {
     @Environment(\.scenePhase) private var scenePhase
     @Query private var workouts: [Workout]
     @State private var confirmReset: Bool = false
+    @State private var confirmLogExport: Bool = false
+    @State private var isPreparingLogExport: Bool = false
     @State private var resetError: Error?
     
     private var version: String {
@@ -55,10 +57,11 @@ struct SettingsScene: View {
         List {
             profileSection
 #if !RELEASE
-            supportSection
+            tipSection
 #endif
             subpageSection
             legalSection
+            supportSection
             infoSection
         }
         .safeAreaPadding(.top, .regular)
@@ -132,7 +135,7 @@ struct SettingsScene: View {
     }
 
 #if !RELEASE
-    @ViewBuilder private var supportSection: some View {
+    @ViewBuilder private var tipSection: some View {
         Section {
             subpageButton("tip_jar", systemImage: "star.circle.fill", route: .tipJar)
         }
@@ -169,15 +172,31 @@ struct SettingsScene: View {
             SettingsOpenURLButton(UIApplication.openSettingsURLString) {
                 Text("legal_acknowledgements")
             }
-            SettingsOpenURLButton(ExternalURL.support) {
-                LabeledContent("settings_support", value: ExternalURL.supportAddress)
-            }
             SettingsOpenURLButton(ExternalURL.repository) {
                 LabeledContent("settings_source_code", value: "GitHub")
             }
         }
     }
-    
+
+    @ViewBuilder private var supportSection: some View {
+        Section {
+            SettingsOpenURLButton(ExternalURL.support) {
+                LabeledContent("settings_support", value: ExternalURL.supportAddress)
+            }
+            NavigationLinkButton(action: askForLogExportConfirmation) {
+                HStack {
+                    Text("log_export_action")
+                    Spacer()
+                    if isPreparingLogExport {
+                        ProgressView()
+                    }
+                }
+            }
+            .tint(.primary)
+            .logExport(isPresented: $confirmLogExport, isPreparing: $isPreparingLogExport)
+        }
+    }
+
     @ViewBuilder
     private func legalDocumentButton(for document: LegalDocument) -> some View {
         NavigationLinkButton {
@@ -203,6 +222,10 @@ struct SettingsScene: View {
                 .foregroundStyle(.tint)
                 .tint(.red)
         }
+    }
+    
+    private func askForLogExportConfirmation() {
+        confirmLogExport = true
     }
     
     private func askForResetConfirmation() {
