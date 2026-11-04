@@ -114,6 +114,9 @@ class AltitudeService {
             let (streamingTask, stream) = startStreamingUpdates()
             do {
                 for try await sample in stream where !Task.isCancelled {
+                    if altitude == nil {
+                        logger.info("Received first altitude sample.")
+                    }
                     altitude = sample
                 }
             } catch {
