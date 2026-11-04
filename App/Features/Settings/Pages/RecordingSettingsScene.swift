@@ -78,6 +78,8 @@ struct RecordingSettingsScene: View {
                 Toggle("recording_settings_pause_automatically", isOn: $userPreferences.pauseAutomatically)
             }
 
+            Toggle("recording_settings_open_workout_after_recording", isOn: $userPreferences.openWorkoutAfterRecording)
+
         }
         .safeAreaPadding(.top, .regular)
         .navigationTitle("recording_settings")

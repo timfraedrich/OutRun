@@ -307,7 +307,11 @@ struct RecordingScene: View {
     
     private func endRecording() async throws {
         guard let workoutID = try await recorder.endRecording()?.id else { return }
-        finishedWorkoutID = workoutID
+        if userPreferences.openWorkoutAfterRecording {
+            router.open([WorkoutDetailRoute(id: workoutID)])
+        } else {
+            finishedWorkoutID = workoutID
+        }
         guard let count = try? modelContext.nativeWorkoutCount() else { return }
 #if !RELEASE
         userPreferences.registerCompletedWorkout(nativeWorkoutCount: count)
