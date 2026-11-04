@@ -19,6 +19,7 @@
 import Foundation
 import OSLog
 import OutRunCore
+import UniformTypeIdentifiers
 
 /// Reads the log entries the app and ``OutRunCore`` wrote since the app was launched and formats them as CSV.
 enum LogExporter {
@@ -45,6 +46,17 @@ enum LogExporter {
             ]))
         }
         return Data(lines.joined(separator: "\r\n").utf8)
+    }
+
+    /// Writes the CSV to a file with the given name inside a new temporary directory and returns the file's URL.
+    /// - bote: The caller is responsible for removing the directory containing the file once it is no longer needed.
+    @concurrent
+    static func temporaryFile(named filename: String) async throws -> URL {
+        let directory = URL.temporaryDirectory.appending(path: UUID().uuidString, directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let file = directory.appending(path: filename).appendingPathExtension(for: .commaSeparatedText)
+        try await csv().write(to: file, options: [.atomic, .completeFileProtection])
+        return file
     }
 
     private static func row(_ fields: [String]) -> String {

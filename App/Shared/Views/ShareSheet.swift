@@ -17,26 +17,20 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
+import UIKit
 
-struct LogExportDocument: FileDocument {
+struct ShareSheet: UIViewControllerRepresentable {
 
-    static let readableContentTypes: [UTType] = [.commaSeparatedText]
+    let items: [Any]
+    let onCompletion: () -> Void
 
-    let data: Data
-
-    init(data: Data) {
-        self.data = data
-    }
-
-    init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents else {
-            throw CocoaError(.fileReadCorruptFile)
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        controller.completionWithItemsHandler = { _, _, _, _ in
+            onCompletion()
         }
-        self.data = data
+        return controller
     }
 
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        FileWrapper(regularFileWithContents: data)
-    }
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

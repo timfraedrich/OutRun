@@ -17,16 +17,16 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
 
 private struct LogExportModifier: ViewModifier {
 
     @Binding var isPresented: Bool
     @Binding var isPreparing: Bool
-    @State private var document: LogExportDocument?
+    @State private var file: URL?
+    @State private var isSharing: Bool = false
     @State private var error: Error?
 
-    private var defaultFilename: String {
+    private var filename: String {
         "OutRun-Logs-" + Date.now.formatted(.iso8601.year().month().day())
     }
 
@@ -39,14 +39,13 @@ private struct LogExportModifier: ViewModifier {
             } message: {
                 Text("log_export_warning_message")
             }
-            .fileExporter(
-                isPresented: $document.existenceBinding(),
-                document: document,
-                contentType: .commaSeparatedText,
-                defaultFilename: defaultFilename
-            ) { result in
-                if case .failure(let failure) = result {
-                    error = failure
+            .sheet(isPresented: $isSharing, onDismiss: removeFile) {
+                if let file {
+                    ShareSheet(items: [file]) {
+                        isSharing = false
+                    }
+                    .presentationDetents([.medium, .large])
+                    .ignoresSafeArea()
                 }
             }
             .errorPopover($error)
@@ -57,18 +56,25 @@ private struct LogExportModifier: ViewModifier {
         Task {
             defer { isPreparing = false }
             do {
-                document = LogExportDocument(data: try await LogExporter.csv())
+                file = try await LogExporter.temporaryFile(named: filename)
+                isSharing = true
             } catch {
                 self.error = error
             }
         }
+    }
+
+    private func removeFile() {
+        guard let file else { return }
+        self.file = nil
+        try? FileManager.default.removeItem(at: file.deletingLastPathComponent())
     }
 }
 
 extension View {
 
     /// Asks the user to confirm the export of the app's log entries, warning that they may contain sensitive data, and then
-    /// lets them save the entries as a CSV file.
+    /// lets them share the entries as a CSV file.
     ///
     /// - Parameter isPreparing: Set while the entries are collected, which can take a few seconds.
     func logExport(isPresented: Binding<Bool>, isPreparing: Binding<Bool>) -> some View {
