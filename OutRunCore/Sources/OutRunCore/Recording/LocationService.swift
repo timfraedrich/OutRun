@@ -28,6 +28,7 @@ import OSLog
 class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
     
     private let logger = Logger(category: "LocationService")
+    private let dateFormat = Date.ISO8601FormatStyle(includingFractionalSeconds: true, timeZone: Calendar.current.timeZone)
     private let locationManager: CLLocationManager
     @ObservationIgnored private var cancellables: Set<AnyCancellable> = []
     
@@ -117,6 +118,8 @@ class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
             self.location = location
+            let formattedTimestamp = location.timestamp.formatted(dateFormat)
+            logger.info("Recieved new location for \(formattedTimestamp, privacy: .public).")
         }
     }
 
