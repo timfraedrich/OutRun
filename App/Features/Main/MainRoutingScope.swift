@@ -25,9 +25,8 @@ struct MainRoutingScope: RoutingScope {
             is WorkoutDetailRoute,
             is WorkoutEditRoute,
             is WorkoutMapRoute,
-            is SettingsRoute:
-                .present(.sheet)
-        case is RecordingRoute:
+            is SettingsRoute,
+            is RecordingRoute:
                 .present(.fullScreenCover)
         default:
                 .pass
