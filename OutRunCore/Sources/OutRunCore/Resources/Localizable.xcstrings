@@ -2110,7 +2110,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heure de fin"
+            "value" : "Fin"
           }
         },
         "nl" : {
@@ -2470,7 +2470,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heure de début"
+            "value" : "Début"
           }
         },
         "nl" : {
