@@ -22,10 +22,11 @@ struct MainRoutingScope: RoutingScope {
     func decide(_ route: any RouteProtocol, in node: RouterNodeSnapshot) -> RoutingDecision {
         switch route {
         case is CalendarRoute,
-            is WorkoutDetailRoute,
             is WorkoutEditRoute,
+            is SettingsRoute:
+                .present(.sheet)
+        case is WorkoutDetailRoute,
             is WorkoutMapRoute,
-            is SettingsRoute,
             is RecordingRoute:
                 .present(.fullScreenCover)
         default:
