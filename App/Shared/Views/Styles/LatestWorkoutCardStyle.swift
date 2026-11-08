@@ -49,7 +49,6 @@ struct LatestWorkoutCardStyle: WorkoutCardStyle {
     private func metrics(for workout: any WorkoutProtocol) -> some View {
         AxisGeometryReader(axis: .horizontal, alignment: .leading) { size in
             HFlowLayout(horizontalSpacing: .regular, verticalSpacing: .small) {
-                WorkoutMetricLabeledContent(.type, for: workout)
                 WorkoutMetricLabeledContent(.distance, for: workout)
                 WorkoutMetricLabeledContent(.activeDuration, for: workout)
                 WorkoutMetricLabeledContent(.pace, for: workout)
