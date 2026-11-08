@@ -154,6 +154,7 @@ struct RecordingScene: View {
                         Image(systemName: "chevron.down").font(.headline)
                     }
                 }
+                .layoutPriority(1)
                 .buttonStyle(.plain)
                 Spacer()
                 HStack(spacing: .extraSmall) {
@@ -169,6 +170,7 @@ struct RecordingScene: View {
                 .compatibleRegularGlassEffect(in: .capsule)
                 .backgroundStyle(.background.secondary)
             }
+            .lineLimit(1)
             .bold()
             
             LazyVGrid(columns: [.init(), .init()], alignment: .leading, spacing: .regular) {
