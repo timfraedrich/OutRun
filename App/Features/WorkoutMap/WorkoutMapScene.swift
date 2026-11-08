@@ -27,6 +27,7 @@ struct WorkoutMapScene: View {
     @Environment(\.self) private var environment
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(UserPreferences.self) private var userPreferences
     
     @Namespace var mapScope
@@ -110,6 +111,7 @@ struct WorkoutMapScene: View {
                 selectedChartType = newTypes[0]
             }
         }
+        .colorScheme(mapStyleSelection == .standard ? colorScheme : .dark)
     }
     
     @ViewBuilder private var selectedLocationMarker: some View {
@@ -293,7 +295,7 @@ struct WorkoutMapScene: View {
         var style: MapStyle {
             switch self {
             case .standard: .standard(elevation: .automatic)
-            case .hybrid: .hybrid(elevation: .flat)
+            case .hybrid: .hybrid(elevation: .realistic)
             case .imagery: .imagery(elevation: .realistic)
             }
         }
