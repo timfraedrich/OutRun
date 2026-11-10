@@ -476,6 +476,7 @@ actor Database: ModelActor {
             databaseWorkout.creationDate = workout.creationDate
             databaseWorkout.lastEditDate = workout.lastEditDate
             databaseWorkout.source = workout.source
+            deleteChildren(of: databaseWorkout)
             databaseWorkout.route = workout.route.map { WorkoutRouteDataSample.init(from: $0) }
             databaseWorkout.heartRates = workout.heartRates.map { WorkoutHeartRateDataSample(from: $0) }
             databaseWorkout.pauses = workout.pauses.map { WorkoutPause(from: $0) }
@@ -486,6 +487,14 @@ actor Database: ModelActor {
             stageInsert(of: workout)
             return workout.id
         }
+    }
+
+    private func deleteChildren(of workout: Workout) {
+        workout.route.forEach(modelContext.delete)
+        workout.heartRates.forEach(modelContext.delete)
+        workout.pauses.forEach(modelContext.delete)
+        workout.events.forEach(modelContext.delete)
+        workout.serviceMappings.forEach(modelContext.delete)
     }
 
     /// Deletes the workout if it was created by the service. Otherwise the workout is kept and its mapping for the service is marked as
