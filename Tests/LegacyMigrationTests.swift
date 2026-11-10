@@ -98,6 +98,17 @@ class LegacyMigrationTests {
         #expect(migratedUserPreferences(from: userDefaults).requiredGPSAccuracy == UserPreferences.defaultGPSAccuracy)
     }
 
+    @Test("Successful Legacy Migration Removes All Storage Files")
+    func legacyStorageFilesRemoved() async throws {
+        let (userDefaults, suiteName) = try makeUserDefaults()
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        let storageFileName = "StorageCleanupMigration"
+        _ = try await migrateLegacyV3Storage(named: storageFileName, userDefaults: userDefaults)
+        let storagePath = LegacyDatabase<LegacyDataModelV3>.legacyStorageURL(for: storageFileName).path(percentEncoded: false)
+        let remainingFiles = ["", "-wal", "-shm"].map { storagePath + $0 }.filter { FileManager.default.fileExists(atPath: $0) }
+        #expect(remainingFiles.isEmpty)
+    }
+
     @Test("Unreadable Legacy Workout Fails Migration And Keeps Storage")
     func unreadableLegacyWorkout() async throws {
         let (userDefaults, suiteName) = try makeUserDefaults()
