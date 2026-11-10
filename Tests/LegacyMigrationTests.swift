@@ -23,6 +23,7 @@ import Testing
 import Combine
 import Perception
 import AsyncAlgorithms
+import SwiftData
 
 @Suite("Legacy Database Migration Tests")
 class LegacyMigrationTests {
@@ -116,7 +117,34 @@ class LegacyMigrationTests {
         #expect(LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: storageFileName))
     }
 
+    @Test("Repeated Legacy Migration Does Not Duplicate Workout Data")
+    func repeatedLegacyMigration() async throws {
+        let (userDefaults, suiteName) = try makeUserDefaults()
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        let storageFileName = "RepeatedMigration"
+        let core = try await migrateLegacyV3Storage(named: storageFileName, userDefaults: userDefaults)
+        let container = await core.modelContainer
+        let firstCounts = try modelCounts(in: container)
+        try #require(["Workout", "WorkoutRouteDataSample", "WorkoutPause"].allSatisfy { firstCounts[$0, default: 0] > 0 })
+        try await prepareLegacyV3Storage(named: storageFileName)
+        try await runMigration(for: storageFileName, core: core, userDefaults: userDefaults)
+        let secondCounts = try modelCounts(in: container)
+        #expect(secondCounts == firstCounts)
+    }
+
     // MARK: Helper Methods
+
+    private func modelCounts(in container: ModelContainer) throws -> [String: Int] {
+        let context = ModelContext(container)
+        return [
+            "Workout": try context.fetchCount(FetchDescriptor<Workout>()),
+            "WorkoutRouteDataSample": try context.fetchCount(FetchDescriptor<WorkoutRouteDataSample>()),
+            "WorkoutHeartRateDataSample": try context.fetchCount(FetchDescriptor<WorkoutHeartRateDataSample>()),
+            "WorkoutPause": try context.fetchCount(FetchDescriptor<WorkoutPause>()),
+            "WorkoutEvent": try context.fetchCount(FetchDescriptor<WorkoutEvent>()),
+            "SyncServiceMapping": try context.fetchCount(FetchDescriptor<SyncServiceMapping>())
+        ]
+    }
 
     private func migratedUserPreferences(from userDefaults: UserDefaults) -> UserPreferences {
         let user = LegacyMigrationHelper.userFromLegacyUserPreferences(in: userDefaults, legalAcceptanceDate: .now)
