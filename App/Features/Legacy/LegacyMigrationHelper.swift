@@ -16,6 +16,7 @@
 // along with this program. If not, see https://www.gnu.org/licenses/.
 //
 
+import CoreData
 import CoreLocation
 import Foundation
 import HealthKit
@@ -26,6 +27,8 @@ import Perception
 import AsyncAlgorithms
 
 enum LegacyMigrationHelper {
+
+    typealias WorkoutExtraction = @Sendable (LegacyDatabase<LegacyDataModelV3>, NSManagedObjectID) -> LegacyRawDataModelV3.Workout?
     
     private static var defaultLegacyStorageFileName: String { "OutRun.sqlite" }
     private static let logger = Logger(category: "LegacyMigrationHelper")
@@ -47,7 +50,8 @@ enum LegacyMigrationHelper {
         for legacyStorageFileName: String = defaultLegacyStorageFileName,
         core: OutRunCore,
         legalAcceptanceDate: Date,
-        userDefaults: UserDefaults = .standard
+        userDefaults: UserDefaults = .standard,
+        extractWorkout: @escaping WorkoutExtraction = { $0.extractWorkout(with: $1) }
     ) -> (task: Task<Void, Never>?, progressStream: AsyncThrowingStream<Float, Error>) {
         let (stream, continuation) = AsyncThrowingStream<Float, Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         continuation.yield(0)
@@ -61,6 +65,7 @@ enum LegacyMigrationHelper {
             core: core,
             legalAcceptanceDate: legalAcceptanceDate,
             userDefaults: userDefaults,
+            extractWorkout: extractWorkout,
             continuation: continuation
         )
         return (task, stream)
@@ -81,6 +86,7 @@ enum LegacyMigrationHelper {
         core: OutRunCore,
         legalAcceptanceDate: Date,
         userDefaults: UserDefaults,
+        extractWorkout: @escaping WorkoutExtraction,
         continuation: AsyncThrowingStream<Float, Error>.Continuation
     ) -> Task<Void, Never> {
         Task(priority: .userInitiated) {
@@ -90,6 +96,7 @@ enum LegacyMigrationHelper {
                     core: core,
                     legalAcceptanceDate: legalAcceptanceDate,
                     userDefaults: userDefaults,
+                    extractWorkout: extractWorkout,
                     continuation: continuation
                 )
                 continuation.finish()
@@ -104,6 +111,7 @@ enum LegacyMigrationHelper {
         core: OutRunCore,
         legalAcceptanceDate: Date,
         userDefaults: UserDefaults,
+        extractWorkout: @escaping WorkoutExtraction,
         continuation: AsyncThrowingStream<Float, Error>.Continuation
     ) async throws {
         let coreStatusSequence = await MainActor.run { Perceptions { core.status }.buffer(policy: .unbounded) }
@@ -129,7 +137,7 @@ enum LegacyMigrationHelper {
                     try await group.next()
                 }
                 group.addTask {
-                    guard let workout = manager.extractWorkout(with: workoutID) else { return }
+                    guard let workout = extractWorkout(manager, workoutID) else { return }
                     try await migrateWorkout(.init(from: workout), into: container)
                     let count = await counter.increase()
                     continuation.yield(0.05 + 0.9 * Float(count) / Float(totalCount))

@@ -97,6 +97,25 @@ class LegacyMigrationTests {
         #expect(migratedUserPreferences(from: userDefaults).requiredGPSAccuracy == UserPreferences.defaultGPSAccuracy)
     }
 
+    @Test("Unreadable Legacy Workout Fails Migration And Keeps Storage")
+    func unreadableLegacyWorkout() async throws {
+        let (userDefaults, suiteName) = try makeUserDefaults()
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        let storageFileName = "UnreadableWorkoutMigration"
+        let legacyBackup: LegacyBackup<LegacyRawDataModelV3.Workout> = try TestUtil.readORBUP(with: "OutRunV3")
+        try #require(legacyBackup.workoutData.count > 1)
+        let unreadableWorkoutID = try #require(legacyBackup.workoutData.compactMap(\.uuid).first)
+        try await prepareLegacyV3Storage(named: storageFileName)
+        let core = try await makeCore()
+        await #expect(throws: (any Error).self) {
+            try await self.runMigration(for: storageFileName, core: core, userDefaults: userDefaults) { database, workoutID in
+                let workout = database.extractWorkout(with: workoutID)
+                return workout?.uuid == unreadableWorkoutID ? nil : workout
+            }
+        }
+        #expect(LegacyDatabase<LegacyDataModelV3>.legacyStorageExists(for: storageFileName))
+    }
+
     // MARK: Helper Methods
 
     private func migratedUserPreferences(from userDefaults: UserDefaults) -> UserPreferences {
@@ -132,12 +151,18 @@ class LegacyMigrationTests {
         return core
     }
 
-    private func runMigration(for storageFileName: String, core: OutRunCore, userDefaults: UserDefaults) async throws {
+    private func runMigration(
+        for storageFileName: String,
+        core: OutRunCore,
+        userDefaults: UserDefaults,
+        extractWorkout: @escaping LegacyMigrationHelper.WorkoutExtraction = { $0.extractWorkout(with: $1) }
+    ) async throws {
         let (task, progressStream) = LegacyMigrationHelper.performLegacyMigration(
             for: storageFileName,
             core: core,
             legalAcceptanceDate: .now,
-            userDefaults: userDefaults
+            userDefaults: userDefaults,
+            extractWorkout: extractWorkout
         )
         guard let task else { throw "Migration task was not returned." }
         for try await _ in progressStream { }
