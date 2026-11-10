@@ -151,6 +151,8 @@ enum LegacyMigrationHelper {
     
     private static func migrateWorkout(_ rawWorkout: RawWorkout, into container: ModelContainer) async throws {
         let context = ModelContext(container)
+        let workoutID = rawWorkout.id
+        guard try context.fetchCount(FetchDescriptor<Workout>(predicate: #Predicate { $0.id == workoutID })) == .zero else { return }
         var rawWorkout = rawWorkout
         // Check if source is App or Apple Health
         // -> YES: Keep source as .native
