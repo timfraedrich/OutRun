@@ -56,9 +56,71 @@ class LegacyMigrationTests {
             try await database.insert(legacyWorkouts)
         }
     }
-    
+
+    private static let blankNames = ["", "   ", " \n"]
+
+    @Test("Blank Legacy Name Falls Back To Default Name", arguments: blankNames)
+    func blankLegacyName(name: String) async throws {
+        let (userDefaults, suiteName) = try makeUserDefaults()
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        userDefaults.set(name, forKey: "name")
+        let core = try await migrateLegacyV3Storage(named: "BlankName\(name.count)Migration", userDefaults: userDefaults)
+        await MainActor.run {
+            #expect(core.user?.name == String(localized: "legacy_migration_user"))
+        }
+    }
+
+    @Test("Setup Rejects Whitespace Only Name", arguments: blankNames)
+    func setupRejectsWhitespaceOnlyName(name: String) async throws {
+        let core = try await makeCore()
+        let user = RawUser(name: name, birthday: nil, weight: nil, sex: nil, preferences: [:], creationDate: .now)
+        await #expect(throws: OutRunCoreError.invalidNameProvided) {
+            try await core.setup(for: user)
+        }
+    }
+
     // MARK: Helper Methods
-    
+
+    private func makeUserDefaults() throws -> (userDefaults: UserDefaults, suiteName: String) {
+        let suiteName = "LegacyMigrationTests.\(UUID().uuidString)"
+        guard let userDefaults = UserDefaults(suiteName: suiteName) else { throw "Failed to create user defaults." }
+        return (userDefaults, suiteName)
+    }
+
+    private func makeCore() async throws -> OutRunCore {
+        let core = await OutRunCore(config: .init(isStoredInMemoryOnly: true, recordableDataTypes: [.location]))
+        let statusSequence = await MainActor.run { Perceptions { core.status } }.buffer(policy: .unbounded)
+        for await status in statusSequence where status != .initializing { break }
+        #expect(await core.status == .needsSetup)
+        return core
+    }
+
+    private func prepareLegacyV3Storage(named storageFileName: String) async throws {
+        let legacyBackup: LegacyBackup<LegacyRawDataModelV3.Workout> = try TestUtil.readORBUP(with: "OutRunV3")
+        let manager: LegacyDatabase<LegacyDataModelV3> = try await prepareLegacyDataManager(legacyStorageFileName: storageFileName)
+        try await manager.insert(legacyBackup.workoutData)
+        await manager.close()
+    }
+
+    private func migrateLegacyV3Storage(named storageFileName: String, userDefaults: UserDefaults) async throws -> OutRunCore {
+        try await prepareLegacyV3Storage(named: storageFileName)
+        let core = try await makeCore()
+        try await runMigration(for: storageFileName, core: core, userDefaults: userDefaults)
+        return core
+    }
+
+    private func runMigration(for storageFileName: String, core: OutRunCore, userDefaults: UserDefaults) async throws {
+        let (task, progressStream) = LegacyMigrationHelper.performLegacyMigration(
+            for: storageFileName,
+            core: core,
+            legalAcceptanceDate: .now,
+            userDefaults: userDefaults
+        )
+        guard let task else { throw "Migration task was not returned." }
+        for try await _ in progressStream { }
+        await task.value
+    }
+
     private func prepareLegacyDataManager<DataModel: LegacyDataModel>(legacyStorageFileName: String) async throws -> LegacyDatabase<DataModel> {
         let legacyStorageURL = LegacyDatabase<DataModel>.legacyStorageURL(for: legacyStorageFileName)
         let fileManager = FileManager.default
