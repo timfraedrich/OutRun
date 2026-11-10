@@ -31,6 +31,7 @@ public class WorkoutRouteDataSample: WorkoutRouteDataSampleProtocol {
     public var verticalAccuracy: Float
     public var speed: Float
     
+    /// - warning: Must be set before saving. Persisted objects without a workout are deleted as orphans.
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public init(

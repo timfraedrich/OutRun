@@ -25,6 +25,7 @@ public class WorkoutEvent: WorkoutEventProtocol {
     public private(set) var rawType: WorkoutEventType.RawValue
     public var timestamp: Date
     
+    /// - warning: Must be set before saving. Persisted objects without a workout are deleted as orphans.
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public var type: WorkoutEventType {

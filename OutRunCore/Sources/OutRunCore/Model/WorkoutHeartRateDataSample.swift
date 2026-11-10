@@ -25,6 +25,7 @@ public class WorkoutHeartRateDataSample: WorkoutHeartRateDataSampleProtocol {
     public var heartRate: UInt8
     public var timestamp: Date
     
+    /// - warning: Must be set before saving. Persisted objects without a workout are deleted as orphans.
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public init(heartRate: UInt8, timestamp: Date, workout: Workout? = nil) {

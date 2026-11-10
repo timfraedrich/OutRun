@@ -124,6 +124,41 @@ struct DatabaseTests {
         #expect(counts == expectedCounts)
     }
 
+    @Test("Delete Orphaned Workout Children")
+    func deleteOrphanedWorkoutChildren() async throws {
+        let exampleWorkout = try readExampleWorkout()
+        let database = try await Database(isStoredInMemoryOnly: true)
+        try await database.insert(exampleWorkout)
+        var orphaningWorkout = exampleWorkout
+        orphaningWorkout.id = UUID()
+        try await database.insert(orphaningWorkout)
+        let context = ModelContext(database.modelContainer)
+        let orphaningWorkoutID = orphaningWorkout.id
+        let workout = try #require(try context.fetch(FetchDescriptor<Workout>(predicate: #Predicate { $0.id == orphaningWorkoutID })).first)
+        workout.route = []
+        workout.pauses = []
+        try context.save()
+        let recordingStart = Date.now
+        let recordingWorkout = try await database.initializeWorkout(with: .running, startDate: recordingStart)
+        let routeSample = try #require(exampleWorkout.route.first)
+        try await database.addRouteSample(
+            routeSample,
+            toWorkoutWith: recordingWorkout.id,
+            updatedDistance: 0,
+            updatedEnergy: nil,
+            updatedRepetitions: nil
+        )
+        let pause = RawWorkoutPause(startDate: recordingStart, endDate: recordingStart.addingTimeInterval(1), userInitiated: true)
+        try await database.addPause(pause, toWorkoutWith: recordingWorkout.id)
+        try await database.recoverUnfinishedWorkout(recoveryDate: .now.addingTimeInterval(5))
+        let deleted = try await database.deleteOrphanedWorkoutChildren()
+        #expect(deleted.map(\.deleted) == [exampleWorkout.route.count, 0, exampleWorkout.pauses.count, 0, 0])
+        let remaining = try await database.countOrphanedWorkoutChildren()
+        #expect(remaining.map(\.orphaned) == [0, 0, 0, 0, 0])
+        #expect(remaining.map(\.total) == [exampleWorkout.route.count + 1, 0, exampleWorkout.pauses.count + 2, 0, 0])
+        #expect(try await database.deleteOrphanedWorkoutChildren().map(\.deleted) == [0, 0, 0, 0, 0])
+    }
+
     private static let exampleWorkoutFileName = "ExampleWorkout"
     
     private func readExampleWorkout() throws -> RawWorkout {

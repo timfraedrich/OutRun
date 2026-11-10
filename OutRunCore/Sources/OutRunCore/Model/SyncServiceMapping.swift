@@ -28,6 +28,7 @@ public class SyncServiceMapping: SyncServiceMappingProtocol {
     public var lastEditDateSynced: Date?
     public private(set) var rawSyncStatus: WorkoutSyncStatus.RawValue
     
+    /// - warning: Must be set before saving. Persisted objects without a workout are deleted as orphans.
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public var syncStatus: WorkoutSyncStatus {

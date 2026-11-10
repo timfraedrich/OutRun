@@ -26,6 +26,7 @@ public class WorkoutPause: WorkoutPauseProtocol {
     public var endDate: Date
     public var userInitiated: Bool
     
+    /// - warning: Must be set before saving. Persisted objects without a workout are deleted as orphans.
     @Relationship(deleteRule: .nullify) public var workout: Workout?
     
     public init(startDate: Date, endDate: Date, userInitiated: Bool, workout: Workout?) {

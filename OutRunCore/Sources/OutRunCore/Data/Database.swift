@@ -579,6 +579,21 @@ actor Database: ModelActor {
         ]
     }
 
+    /// Deletes all workout children that are no longer attached to a workout.
+    /// - returns: The number of deleted objects per child model.
+    /// - warning: This relies on every persisted workout child belonging to a workout. A feature storing children without a workout on
+    /// purpose has to adapt this function first.
+    func deleteOrphanedWorkoutChildren() throws -> [(model: String, deleted: Int)] {
+        let counts = try countOrphanedWorkoutChildren()
+        try modelContext.delete(model: WorkoutRouteDataSample.self, where: #Predicate { $0.workout == nil })
+        try modelContext.delete(model: WorkoutHeartRateDataSample.self, where: #Predicate { $0.workout == nil })
+        try modelContext.delete(model: WorkoutPause.self, where: #Predicate { $0.workout == nil })
+        try modelContext.delete(model: WorkoutEvent.self, where: #Predicate { $0.workout == nil })
+        try modelContext.delete(model: SyncServiceMapping.self, where: #Predicate { $0.workout == nil })
+        try modelContext.save()
+        return counts.map { ($0.model, $0.orphaned) }
+    }
+
     private func countOrphans<Model: PersistentModel>(
         of model: Model.Type,
         matching predicate: Predicate<Model>

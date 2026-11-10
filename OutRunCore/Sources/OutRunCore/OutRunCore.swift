@@ -241,6 +241,7 @@ public class OutRunCore {
         do {
             let database = try await Database(modelContainer: modelContainer)
             self.database = database
+            await deleteOrphanedWorkoutChildrenOnce(in: database)
             await logOrphanedWorkoutChildren(in: database)
             try startStreamingUserUpdates()
             try startStreamingUserPreferenceUpdates()
@@ -259,6 +260,22 @@ public class OutRunCore {
         } catch {
             status = .failed(error)
             logger.critical("Failed initialization: \((error as CustomDebugStringConvertible).debugDescription).")
+        }
+    }
+
+    private static let orphanedWorkoutChildrenDeletedKey = "orphanedWorkoutChildrenDeleted"
+
+    private func deleteOrphanedWorkoutChildrenOnce(in database: Database) async {
+        guard !userDefaults.bool(forKey: Self.orphanedWorkoutChildrenDeletedKey) else { return }
+        logger.notice("Starting with deletion of orphaned workout children.")
+        do {
+            let summary = try await database.deleteOrphanedWorkoutChildren()
+                .map { "\($0.model) \($0.deleted)" }
+                .joined(separator: ", ")
+            userDefaults.set(true, forKey: Self.orphanedWorkoutChildrenDeletedKey)
+            logger.notice("Deleted orphaned workout children: \(summary, privacy: .public).")
+        } catch {
+            logger.error("Failed deleting orphaned workout children: \((error as CustomDebugStringConvertible).debugDescription).")
         }
     }
 
