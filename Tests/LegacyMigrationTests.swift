@@ -132,6 +132,39 @@ class LegacyMigrationTests {
         #expect(secondCounts == firstCounts)
     }
 
+    @Test("Invalid Legacy Heart Rates Are Dropped")
+    func invalidLegacyHeartRates() {
+        let startDate = Date(timeIntervalSince1970: 0)
+        let legacyHeartRates = [120.4, 300, -1, .nan, .infinity, 254.6].enumerated().map { index, heartRate in
+            LegacyRawDataModelV3.WorkoutHeartRateDataSample(
+                uuid: UUID(),
+                heartRate: heartRate,
+                timestamp: startDate.addingTimeInterval(Double(index))
+            )
+        }
+        let legacyWorkout = LegacyRawDataModelV3.Workout(
+            uuid: UUID(),
+            workoutType: 0,
+            startDate: startDate,
+            endDate: startDate.addingTimeInterval(60),
+            distance: 100,
+            steps: nil,
+            isRace: false,
+            isUserModified: false,
+            comment: nil,
+            burnedEnergy: nil,
+            healthKitUUID: nil,
+            workoutEvents: [],
+            locations: [],
+            heartRates: legacyHeartRates
+        )
+        let heartRates = RawWorkout(from: legacyWorkout).heartRates
+        #expect(heartRates == [
+            RawWorkoutHeartRateDataSample(heartRate: 120, timestamp: startDate),
+            RawWorkoutHeartRateDataSample(heartRate: 255, timestamp: startDate.addingTimeInterval(5))
+        ])
+    }
+
     // MARK: Helper Methods
 
     private func modelCounts(in container: ModelContainer) throws -> [String: Int] {
