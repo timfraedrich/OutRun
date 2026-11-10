@@ -27,7 +27,6 @@ struct RecordingSettingsScene: View {
     @Environment(\.locale) private var locale
     @Environment(\.scenePhase) private var scenePhase
 
-    private let availableGPSAccuracies: [CLLocationAccuracy] = [10, 20, 30, 40, 50]
     private var smallDistanceUnit: UnitLength { userPreferences.altitudeUnit ?? UserPreferences.fallbackAltitudeUnit(for: locale)}
 
     var body: some View {
@@ -53,7 +52,7 @@ struct RecordingSettingsScene: View {
             }
 
             Picker(selection: $userPreferences.requiredGPSAccuracy) {
-                ForEach(availableGPSAccuracies, id: \.self) { accuracy in
+                ForEach(UserPreferences.supportedGPSAccuracies, id: \.self) { accuracy in
                     let measurement = Measurement(value: accuracy, unit: UnitLength.meters)
                     let formattedMeasurement = measurement.formatted(.measurement(
                         width: .abbreviated,

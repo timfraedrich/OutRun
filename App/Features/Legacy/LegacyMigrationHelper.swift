@@ -16,6 +16,7 @@
 // along with this program. If not, see https://www.gnu.org/licenses/.
 //
 
+import CoreLocation
 import Foundation
 import HealthKit
 import OutRunCore
@@ -168,7 +169,7 @@ enum LegacyMigrationHelper {
         userPreferences.recordLegalAcceptance(on: legalAcceptanceDate)
         userPreferences.defaultWorkoutType = legacyUserPreference(for: "standardWorkoutType", in: userDefaults)
             .map(WorkoutType.init(legacyRawValue:))
-        userPreferences.requiredGPSAccuracy = legacyUserPreference(for: "gpsAccuracy", in: userDefaults) ?? UserPreferences.defaultGPSAccuracy
+        userPreferences.requiredGPSAccuracy = gpsAccuracy(fromLegacyValue: legacyUserPreference(for: "gpsAccuracy", in: userDefaults))
         userPreferences.calculateRollingSpeed = legacyUserPreference(for: "makeSpeedDisplayRolling", in: userDefaults) ?? false
         userPreferences.distanceUnit = legacyUserPreference(
             for: "distanceMeasurementType",
@@ -202,6 +203,15 @@ enum LegacyMigrationHelper {
         return RawUser(name: userName, birthday: nil, weight: userWeight, sex: nil, preferences: userPreferences.preferences, creationDate: .now)
     }
     
+    /// Maps the legacy GPS accuracy to the nearest supported value. Legacy versions stored `nil` for the standard accuracy and `-1` for
+    /// disabling the accuracy filter, the latter is mapped to the least strict supported value.
+    private static func gpsAccuracy(fromLegacyValue legacyValue: Double?) -> CLLocationAccuracy {
+        let supportedValues = UserPreferences.supportedGPSAccuracies
+        guard let legacyValue else { return UserPreferences.defaultGPSAccuracy }
+        guard legacyValue > 0 else { return supportedValues.max() ?? UserPreferences.defaultGPSAccuracy }
+        return supportedValues.min { abs($0 - legacyValue) < abs($1 - legacyValue) } ?? UserPreferences.defaultGPSAccuracy
+    }
+
     private static func legacyUserPreference<T>(for key: String, in userDefaults: UserDefaults = .standard) -> T? {
         userDefaults.object(forKey: key) as? T
     }

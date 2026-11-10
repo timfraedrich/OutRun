@@ -216,6 +216,9 @@ public class UserPreferences {
     
     /// The default value for the ``UserPreferences/requiredGPSAccuracy`` property.
     public static let defaultGPSAccuracy: CLLocationAccuracy = 20
+
+    /// The values offered for the ``UserPreferences/requiredGPSAccuracy`` property, in ascending order.
+    public static let supportedGPSAccuracies: [CLLocationAccuracy] = [10, 20, 30, 40, 50]
     
     /// Indicates whether the ``WorkoutRecorder`` should calculate it's ``WorkoutRecorder/speed`` measurement based on the last kilometer of
     /// route data or just on the last available location. The former of which will provide a more stable value while the latter will be
