@@ -79,7 +79,30 @@ class LegacyMigrationTests {
         }
     }
 
+    @Test(
+        "Legacy GPS Accuracy Maps To Supported Value",
+        arguments: [(-1, 50), (0, 50), (5, 10), (20, 20), (30, 30), (42, 40), (50, 50)] as [(Double, Double)]
+    )
+    func legacyGPSAccuracy(legacyValue: Double, expectedValue: Double) throws {
+        let (userDefaults, suiteName) = try makeUserDefaults()
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        userDefaults.set(legacyValue, forKey: "gpsAccuracy")
+        #expect(migratedUserPreferences(from: userDefaults).requiredGPSAccuracy == expectedValue)
+    }
+
+    @Test("Missing Legacy GPS Accuracy Maps To Default")
+    func missingLegacyGPSAccuracy() throws {
+        let (userDefaults, suiteName) = try makeUserDefaults()
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        #expect(migratedUserPreferences(from: userDefaults).requiredGPSAccuracy == UserPreferences.defaultGPSAccuracy)
+    }
+
     // MARK: Helper Methods
+
+    private func migratedUserPreferences(from userDefaults: UserDefaults) -> UserPreferences {
+        let user = LegacyMigrationHelper.userFromLegacyUserPreferences(in: userDefaults, legalAcceptanceDate: .now)
+        return UserPreferences(preferences: user.preferences)
+    }
 
     private func makeUserDefaults() throws -> (userDefaults: UserDefaults, suiteName: String) {
         let suiteName = "LegacyMigrationTests.\(UUID().uuidString)"
