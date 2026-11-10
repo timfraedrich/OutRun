@@ -2068,7 +2068,7 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Descartar"
           }
         },
@@ -7670,9 +7670,6 @@
           }
         }
       }
-    },
-    "Settings" : {
-
     },
     "settings_info_database_size" : {
       "localizations" : {

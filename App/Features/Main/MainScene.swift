@@ -143,7 +143,7 @@ struct MainScene: View {
         ToolbarItem(placement: .topBarTrailing) {
             if healthSyncService?.userShouldBePromptedForAuth == true {
                 let button = Button(action: showSettingsScene) {
-                    Label("Settings", systemImage: "gear.badge")
+                    Label("settings", systemImage: "gear.badge")
                         .symbolRenderingMode(.palette)
                 }
                 if #available(iOS 26.0, *) {
