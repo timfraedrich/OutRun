@@ -18,6 +18,7 @@
 
 import Foundation
 @testable import OutRunCore
+import SwiftData
 import Testing
 
 @Suite("Database Tests")
@@ -92,6 +93,35 @@ struct DatabaseTests {
         let workouts = try await database.fetchWorkouts()
         #expect(Set(workouts.map(\.id)) == [exampleWorkout.id, newWorkout.id])
         #expect(workouts.first { $0.id == exampleWorkout.id }?.name == "Updated")
+    }
+
+    @Test("Upsert Replaces Workout Children Without Orphans")
+    func upsertReplacesChildren() async throws {
+        var exampleWorkout = try readExampleWorkout()
+        exampleWorkout.heartRates = [RawWorkoutHeartRateDataSample(heartRate: 120, timestamp: exampleWorkout.startDate)]
+        exampleWorkout.events = [RawWorkoutEvent(type: .lap, timestamp: exampleWorkout.startDate)]
+        exampleWorkout.serviceMappings = [RawSyncServiceMapping(serviceIdentifier: "test", externalId: "1")]
+        let database = try await Database(isStoredInMemoryOnly: true)
+        try await database.insert(exampleWorkout)
+        var updatedWorkout = exampleWorkout
+        updatedWorkout.lastEditDate = exampleWorkout.lastEditDate.addingTimeInterval(60)
+        try await database.upsert(updatedWorkout)
+        let context = ModelContext(database.modelContainer)
+        let counts = [
+            try context.fetchCount(FetchDescriptor<WorkoutRouteDataSample>()),
+            try context.fetchCount(FetchDescriptor<WorkoutHeartRateDataSample>()),
+            try context.fetchCount(FetchDescriptor<WorkoutPause>()),
+            try context.fetchCount(FetchDescriptor<WorkoutEvent>()),
+            try context.fetchCount(FetchDescriptor<SyncServiceMapping>())
+        ]
+        let expectedCounts = [
+            updatedWorkout.route.count,
+            updatedWorkout.heartRates.count,
+            updatedWorkout.pauses.count,
+            updatedWorkout.events.count,
+            updatedWorkout.serviceMappings.count
+        ]
+        #expect(counts == expectedCounts)
     }
 
     private static let exampleWorkoutFileName = "ExampleWorkout"
