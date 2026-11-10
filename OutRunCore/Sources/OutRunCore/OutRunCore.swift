@@ -241,6 +241,7 @@ public class OutRunCore {
         do {
             let database = try await Database(modelContainer: modelContainer)
             self.database = database
+            await logOrphanedWorkoutChildren(in: database)
             try startStreamingUserUpdates()
             try startStreamingUserPreferenceUpdates()
             syncManager = await .init(
@@ -258,6 +259,17 @@ public class OutRunCore {
         } catch {
             status = .failed(error)
             logger.critical("Failed initialization: \((error as CustomDebugStringConvertible).debugDescription).")
+        }
+    }
+
+    private func logOrphanedWorkoutChildren(in database: Database) async {
+        do {
+            let summary = try await database.countOrphanedWorkoutChildren()
+                .map { "\($0.model) \($0.orphaned)/\($0.total)" }
+                .joined(separator: ", ")
+            logger.notice("Orphaned workout children (orphaned/total): \(summary, privacy: .public).")
+        } catch {
+            logger.error("Failed counting orphaned workout children: \((error as CustomDebugStringConvertible).debugDescription).")
         }
     }
     

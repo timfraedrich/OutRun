@@ -568,6 +568,28 @@ actor Database: ModelActor {
     
     // MARK: - Internal
     
+    /// Counts the workout children that are no longer attached to a workout, together with the total count of their model.
+    func countOrphanedWorkoutChildren() throws -> [(model: String, orphaned: Int, total: Int)] {
+        [
+            try countOrphans(of: WorkoutRouteDataSample.self, matching: #Predicate { $0.workout == nil }),
+            try countOrphans(of: WorkoutHeartRateDataSample.self, matching: #Predicate { $0.workout == nil }),
+            try countOrphans(of: WorkoutPause.self, matching: #Predicate { $0.workout == nil }),
+            try countOrphans(of: WorkoutEvent.self, matching: #Predicate { $0.workout == nil }),
+            try countOrphans(of: SyncServiceMapping.self, matching: #Predicate { $0.workout == nil })
+        ]
+    }
+
+    private func countOrphans<Model: PersistentModel>(
+        of model: Model.Type,
+        matching predicate: Predicate<Model>
+    ) throws -> (model: String, orphaned: Int, total: Int) {
+        (
+            String(describing: model),
+            try modelContext.fetchCount(FetchDescriptor(predicate: predicate)),
+            try modelContext.fetchCount(FetchDescriptor<Model>())
+        )
+    }
+
     func fetchWorkoutCount() throws -> Int {
         try modelContext.fetchCount(FetchDescriptor<Workout>())
     }
