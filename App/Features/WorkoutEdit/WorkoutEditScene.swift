@@ -506,6 +506,7 @@ struct WorkoutEditScene: View {
                 )
                 modelContext.insert(tempWorkout)
             }
+            tempWorkout.pauses.forEach(modelContext.delete)
             tempWorkout.pauses = editablePauses.map { WorkoutPause(from: $0) }
             if truncateRoute {
                 for sample in tempWorkout.route where sample.timestamp < startDate || sample.timestamp >= endDate {
