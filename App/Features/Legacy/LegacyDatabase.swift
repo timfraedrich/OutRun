@@ -85,8 +85,18 @@ class LegacyDatabase<DataModel: LegacyDataModel> {
         FileManager.default.fileExists(atPath: storage.fileURL.relativePath)
     }
     
-    func deleteStorage() throws {
+    /// Closes the storage and removes its file including the SQLite `-wal` and `-shm` side files.
+    func deleteStorage() async throws {
+        await close()
         try FileManager.default.removeItem(at: storage.fileURL)
+        for suffix in ["-wal", "-shm"] {
+            let sideFileURL = URL(filePath: storage.fileURL.path(percentEncoded: false) + suffix)
+            do {
+                try FileManager.default.removeItem(at: sideFileURL)
+            } catch CocoaError.fileNoSuchFile {
+                continue
+            }
+        }
     }
 }
 
