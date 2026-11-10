@@ -21,7 +21,8 @@ import OutRunCore
 
 extension RawWorkoutHeartRateDataSample {
     
-    init(from heartRateDataSample: LegacyRawDataModelV3.WorkoutHeartRateDataSample) {
-        self.init(heartRate: UInt8(heartRateDataSample.heartRate), timestamp: heartRateDataSample.timestamp)
+    init?(from heartRateDataSample: LegacyRawDataModelV3.WorkoutHeartRateDataSample) {
+        guard let heartRate = UInt8(exactly: heartRateDataSample.heartRate.rounded()) else { return nil }
+        self.init(heartRate: heartRate, timestamp: heartRateDataSample.timestamp)
     }
 }

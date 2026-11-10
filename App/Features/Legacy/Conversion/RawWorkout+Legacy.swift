@@ -89,7 +89,7 @@ extension RawWorkout {
             creationDate: workout.endDate,
             lastEditDate: lastEditDate,
             source: .native,
-            heartRates: workout.heartRates.map(RawWorkoutHeartRateDataSample.init),
+            heartRates: workout.heartRates.compactMap(RawWorkoutHeartRateDataSample.init),
             route: workout.locations.map(RawWorkoutRouteDataSample.init),
             pauses: Calculation.calculatePauses(from: pauseEvents, workoutStart: workout.startDate, workoutEnd: workout.endDate),
             events: workout.workoutEvents.compactMap(RawWorkoutEvent.init),
