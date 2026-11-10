@@ -137,7 +137,7 @@ enum LegacyMigrationHelper {
                     try await group.next()
                 }
                 group.addTask {
-                    guard let workout = extractWorkout(manager, workoutID) else { return }
+                    guard let workout = extractWorkout(manager, workoutID) else { throw LegacyMigrationError.unreadableWorkout }
                     try await migrateWorkout(.init(from: workout), into: container)
                     let count = await counter.increase()
                     continuation.yield(0.05 + 0.9 * Float(count) / Float(totalCount))

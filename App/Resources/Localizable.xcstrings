@@ -3807,6 +3807,46 @@
         }
       }
     },
+    "legacy_migration_error_unreadable_workout" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Workout konnte nicht aus der alten Datenbank gelesen werden. Die Datenbank könnte beschädigt sein."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A workout could not be read from the legacy database, it might be corrupted."
+          }
+        },
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A workout could not be read from the legacy database, it might be corrupted."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo leer un entrenamiento de la base de datos antigua, podría estar dañada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un entraînement n'a pas pu être lu depuis l'ancienne base de données, elle pourrait être corrompue."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een workout kon niet uit de oude database worden gelezen, deze is mogelijk beschadigd."
+          }
+        }
+      }
+    },
     "legacy_migration_health_disable_action" : {
       "localizations" : {
         "de" : {
