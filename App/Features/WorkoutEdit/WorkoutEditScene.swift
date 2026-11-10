@@ -57,11 +57,8 @@ struct WorkoutEditScene: View {
     private let chartHeight: CGFloat = 180
     
     private var defaultWorkoutType: WorkoutType { userPreferences.defaultWorkoutType ?? lastWorkout.last?.type ?? .running }
-    private var disableSaveButton: Bool {
-        guard type != nil, startDate < endDate, distance != nil else { return true }
-        return false
-    }
-    
+    private var canSave: Bool { type != nil && startDate < endDate && distance != nil && conflictingPauseIds.isEmpty }
+
     private var calculatedEnergy: Double? {
         guard let distance, let type else { return nil }
         return Calculation.calculateBurnedEnergy(weight: core.user?.weight, distance: distance, workoutType: type)
@@ -367,7 +364,7 @@ struct WorkoutEditScene: View {
                         .fontWeight(.semibold)
                 }
             }
-            .disabled(disableSaveButton)
+            .disabled(!canSave)
             .confirmationDialog("workout_edit_route_truncation_confirmation_title", isPresented: $confirmRouteTruncation, titleVisibility: .visible) {
                 Button("workout_edit_route_truncation_confirmation_action_truncate", role: .destructive) { save() }
                 Button("workout_edit_route_truncation_confirmation_action_keep") { save(truncateRoute: false) }
@@ -451,7 +448,7 @@ struct WorkoutEditScene: View {
     }
 
     private func save(truncateRoute: Bool = true) {
-        guard let type, startDate < endDate, let distance else { return }
+        guard canSave, let type, let distance else { return }
         let name = optionalName
         let comment = optionalComment
         do {
