@@ -262,7 +262,7 @@ public class OutRunCore {
     }
     
     private nonisolated func validateUserProperties(name: String?) throws {
-        if let name, name.isEmpty {
+        if let name, name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             throw OutRunCoreError.invalidNameProvided
         }
     }

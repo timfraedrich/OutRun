@@ -45,7 +45,8 @@ enum LegacyMigrationHelper {
     static func performLegacyMigration(
         for legacyStorageFileName: String = defaultLegacyStorageFileName,
         core: OutRunCore,
-        legalAcceptanceDate: Date
+        legalAcceptanceDate: Date,
+        userDefaults: UserDefaults = .standard
     ) -> (task: Task<Void, Never>?, progressStream: AsyncThrowingStream<Float, Error>) {
         let (stream, continuation) = AsyncThrowingStream<Float, Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         continuation.yield(0)
@@ -58,6 +59,7 @@ enum LegacyMigrationHelper {
             for: legacyStorageFileName,
             core: core,
             legalAcceptanceDate: legalAcceptanceDate,
+            userDefaults: userDefaults,
             continuation: continuation
         )
         return (task, stream)
@@ -77,6 +79,7 @@ enum LegacyMigrationHelper {
         for legacyStorageFileName: String,
         core: OutRunCore,
         legalAcceptanceDate: Date,
+        userDefaults: UserDefaults,
         continuation: AsyncThrowingStream<Float, Error>.Continuation
     ) -> Task<Void, Never> {
         Task(priority: .userInitiated) {
@@ -85,6 +88,7 @@ enum LegacyMigrationHelper {
                     for: legacyStorageFileName,
                     core: core,
                     legalAcceptanceDate: legalAcceptanceDate,
+                    userDefaults: userDefaults,
                     continuation: continuation
                 )
                 continuation.finish()
@@ -98,6 +102,7 @@ enum LegacyMigrationHelper {
         for legacyStorageFileName: String,
         core: OutRunCore,
         legalAcceptanceDate: Date,
+        userDefaults: UserDefaults,
         continuation: AsyncThrowingStream<Float, Error>.Continuation
     ) async throws {
         let coreStatusSequence = await MainActor.run { Perceptions { core.status }.buffer(policy: .unbounded) }
@@ -105,7 +110,7 @@ enum LegacyMigrationHelper {
             break
         }
         if await core.status == .needsSetup {
-            let user = userFromLegacyUserPreferences(legalAcceptanceDate: legalAcceptanceDate)
+            let user = userFromLegacyUserPreferences(in: userDefaults, legalAcceptanceDate: legalAcceptanceDate)
             try await core.setup(for: user)
         } else {
             await MainActor.run { core.userPreferences?.recordLegalAcceptance(on: legalAcceptanceDate) }
@@ -158,32 +163,55 @@ enum LegacyMigrationHelper {
         try context.save()
     }
     
-    private static func userFromLegacyUserPreferences(legalAcceptanceDate: Date) -> RawUser {
+    static func userFromLegacyUserPreferences(in userDefaults: UserDefaults, legalAcceptanceDate: Date) -> RawUser {
         let userPreferences = UserPreferences(preferences: [:])
         userPreferences.recordLegalAcceptance(on: legalAcceptanceDate)
-        userPreferences.defaultWorkoutType = legacyUserPreference(for: "standardWorkoutType").map(WorkoutType.init(legacyRawValue:))
-        userPreferences.requiredGPSAccuracy = legacyUserPreference(for: "gpsAccuracy") ?? UserPreferences.defaultGPSAccuracy
-        userPreferences.calculateRollingSpeed = legacyUserPreference(for: "makeSpeedDisplayRolling") ?? false
-        userPreferences.distanceUnit = legacyUserPreference(for: "distanceMeasurementType", possibleValues: [.kilometers, .miles])
-        userPreferences.altitudeUnit = legacyUserPreference(for: "altitudeMeasurementType", possibleValues: [.meters, .feet])
-        userPreferences.speedUnit = legacyUserPreference(for: "speedMeasurementType", possibleValues: [.kilometersPerHour, .milesPerHour])
-        userPreferences.energyUnit = legacyUserPreference(for: "energyMeasurementType", possibleValues: [.kilojoules, .kilocalories])
-        userPreferences.weightUnit = legacyUserPreference(for: "weightMeasurementType", possibleValues: [.kilograms, .pounds])
-        let userName = legacyUserPreference(for: "name") ?? String(localized: "legacy_migration_user")
-        let userWeight: Double? = legacyUserPreference(for: "weight")
+        userPreferences.defaultWorkoutType = legacyUserPreference(for: "standardWorkoutType", in: userDefaults)
+            .map(WorkoutType.init(legacyRawValue:))
+        userPreferences.requiredGPSAccuracy = legacyUserPreference(for: "gpsAccuracy", in: userDefaults) ?? UserPreferences.defaultGPSAccuracy
+        userPreferences.calculateRollingSpeed = legacyUserPreference(for: "makeSpeedDisplayRolling", in: userDefaults) ?? false
+        userPreferences.distanceUnit = legacyUserPreference(
+            for: "distanceMeasurementType",
+            in: userDefaults,
+            possibleValues: [.kilometers, .miles]
+        )
+        userPreferences.altitudeUnit = legacyUserPreference(
+            for: "altitudeMeasurementType",
+            in: userDefaults,
+            possibleValues: [.meters, .feet]
+        )
+        userPreferences.speedUnit = legacyUserPreference(
+            for: "speedMeasurementType",
+            in: userDefaults,
+            possibleValues: [.kilometersPerHour, .milesPerHour]
+        )
+        userPreferences.energyUnit = legacyUserPreference(
+            for: "energyMeasurementType",
+            in: userDefaults,
+            possibleValues: [.kilojoules, .kilocalories]
+        )
+        userPreferences.weightUnit = legacyUserPreference(
+            for: "weightMeasurementType",
+            in: userDefaults,
+            possibleValues: [.kilograms, .pounds]
+        )
+        let legacyName: String? = legacyUserPreference(for: "name", in: userDefaults)
+        let trimmedName = legacyName?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let userName = (trimmedName?.isEmpty == false ? trimmedName : nil) ?? String(localized: "legacy_migration_user")
+        let userWeight: Double? = legacyUserPreference(for: "weight", in: userDefaults)
         return RawUser(name: userName, birthday: nil, weight: userWeight, sex: nil, preferences: userPreferences.preferences, creationDate: .now)
     }
     
-    private static func legacyUserPreference<T>(for key: String) -> T? {
-        UserDefaults.standard.object(forKey: key) as? T
+    private static func legacyUserPreference<T>(for key: String, in userDefaults: UserDefaults = .standard) -> T? {
+        userDefaults.object(forKey: key) as? T
     }
     
     private static func legacyUserPreference<T>(for key: String, defaultValue: T) -> T {
         legacyUserPreference(for: key) ?? defaultValue
     }
     
-    private static func legacyUserPreference<U: Dimension>(for key: String, possibleValues: [U]) -> U? {
-        let index: Int? = legacyUserPreference(for: key)
+    private static func legacyUserPreference<U: Dimension>(for key: String, in userDefaults: UserDefaults, possibleValues: [U]) -> U? {
+        let index: Int? = legacyUserPreference(for: key, in: userDefaults)
         return possibleValues[safeIndex: index]
     }
     
