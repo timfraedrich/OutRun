@@ -269,8 +269,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vos données doivent être mises à jour. Ouvrez l’app pour continuer."
+            "state" : "machine_translated",
+            "value" : "Tes données doivent être mises à jour. Ouvre l’app pour continuer."
           }
         },
         "nl" : {
@@ -3642,5 +3642,5 @@
       }
     }
   },
-  "version" : "1.2"
+  "version" : "1.3"
 }

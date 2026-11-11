@@ -4635,8 +4635,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vos données d’origine n’ont pas été supprimées."
+            "state" : "machine_translated",
+            "value" : "Tes données d’origine n’ont pas été supprimées."
           }
         },
         "nl" : {
@@ -4823,8 +4823,8 @@
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "The app is currently performing a data migration to enable new functionality. The app should remain open while the migrtion is in progress."
+            "state" : "machine_translated",
+            "value" : "The app is currently performing a data migration to enable new functionality. The app should remain open while the migration is in progress."
           }
         },
         "es" : {
@@ -7030,8 +7030,8 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatisch Pausieren"
+            "state" : "machine_translated",
+            "value" : "Automatisch pausieren"
           }
         },
         "en" : {
@@ -8659,8 +8659,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre poids sert à estimer l’énergie dépensée."
+            "state" : "machine_translated",
+            "value" : "Ton poids sert à estimer l’énergie dépensée."
           }
         },
         "nl" : {
@@ -10063,8 +10063,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre soutien compte beaucoup et aide à faire vivre OutRun."
+            "state" : "machine_translated",
+            "value" : "Ton soutien compte beaucoup et aide à faire vivre OutRun."
           }
         },
         "nl" : {
@@ -10584,8 +10584,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre nom"
+            "state" : "machine_translated",
+            "value" : "Ton nom"
           }
         },
         "nl" : {
@@ -10784,8 +10784,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre poids"
+            "state" : "machine_translated",
+            "value" : "Ton poids"
           }
         },
         "nl" : {
@@ -11160,8 +11160,8 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pause"
+            "state" : "machine_translated",
+            "value" : "Pausen"
           }
         },
         "en" : {
